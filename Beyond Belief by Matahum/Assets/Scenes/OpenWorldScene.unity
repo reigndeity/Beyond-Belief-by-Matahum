@@ -959,16 +959,16 @@ MonoBehaviour:
       distanceCullingFadeRatio: 0.2
       distanceCullingReferenceObject: {fileID: 0}
     normalAxis: 1
-    gravity: 5
+    gravity: 5.59
     gravityDirection:
       x: 0
       y: -1
       z: 0
-    gravityFalloff: 0
+    gravityFalloff: 0.082
     stablizationTimeAfterReset: 0.1
     blendWeight: 1
     damping:
-      value: 0.05
+      value: 0.043
       useCurve: 0
       curve:
         serializedVersion: 2
@@ -1082,8 +1082,8 @@ MonoBehaviour:
     angleRestorationConstraint:
       useAngleRestoration: 1
       stiffness:
-        value: 0.2
-        useCurve: 1
+        value: 0.212
+        useCurve: 0
         curve:
           serializedVersion: 2
           m_Curve:
@@ -1108,7 +1108,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-      velocityAttenuation: 0.8
+      velocityAttenuation: 0.024
       gravityFalloff: 0
     angleLimitConstraint:
       useAngleLimit: 0
@@ -1202,7 +1202,12 @@ MonoBehaviour:
     colliderCollisionConstraint:
       mode: 1
       friction: 0.05
-      colliderList: []
+      colliderList:
+      - {fileID: 8582364927392865548}
+      - {fileID: 5929273815805070489}
+      - {fileID: 8506685928927337073}
+      - {fileID: 7409440943043768854}
+      - {fileID: 4074430331244107734}
       collisionBones: []
       limitDistance:
         value: 0.05
@@ -3881,6 +3886,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8506685928927337072}
+  - component: {fileID: 8506685928927337073}
   m_Layer: 0
   m_Name: mixamorig:RightUpLeg
   m_TagString: Untagged
@@ -4024,6 +4030,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074430331244107733}
+  - component: {fileID: 4074430331244107734}
   m_Layer: 0
   m_Name: mixamorig:Neck
   m_TagString: Untagged
@@ -4864,6 +4871,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7409440943043768853}
+  - component: {fileID: 7409440943043768854}
   m_Layer: 0
   m_Name: mixamorig:Spine2
   m_TagString: Untagged
@@ -5741,6 +5749,24 @@ Transform:
   - {fileID: 2475606604518897431}
   m_Father: {fileID: 7409440943043768853}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4074430331244107734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2425705617876762711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f5338a96461264fb9a1132c8509672, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  center: {x: 0, y: 0, z: 0}
+  size: {x: 0.093, y: 0.001, z: 0.31}
+  direction: 0
+  reverseDirection: 0
+  radiusSeparation: 0
+  alignedOnCenter: 1
 --- !u!4 &4082310580625581980
 Transform:
   m_ObjectHideFlags: 0
@@ -6768,6 +6794,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8582364927392865547}
+  - component: {fileID: 8582364927392865548}
   m_Layer: 0
   m_Name: mixamorig:Hips
   m_TagString: Untagged
@@ -8256,6 +8283,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1896756593708126625}
+  - component: {fileID: 5929273815805070489}
   m_Layer: 0
   m_Name: mixamorig:LeftUpLeg
   m_TagString: Untagged
@@ -8263,6 +8291,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &5929273815805070489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5929273815805070488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f5338a96461264fb9a1132c8509672, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  center: {x: -0.03, y: 0.21, z: -0.03}
+  size: {x: 0.149, y: 0.001, z: 0.545}
+  direction: 1
+  reverseDirection: 0
+  radiusSeparation: 0
+  alignedOnCenter: 1
 --- !u!4 &5956785695999327911
 Transform:
   m_ObjectHideFlags: 0
@@ -9698,6 +9744,24 @@ Transform:
   - {fileID: 1475633152067752011}
   m_Father: {fileID: 3097284375155015704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7409440943043768854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3158853800005447111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f5338a96461264fb9a1132c8509672, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  center: {x: 0, y: 0.03, z: -0.01}
+  size: {x: 0.116, y: 0.001, z: 0.42}
+  direction: 0
+  reverseDirection: 0
+  radiusSeparation: 0
+  alignedOnCenter: 1
 --- !u!4 &7414662074924410818
 Transform:
   m_ObjectHideFlags: 0
@@ -10620,6 +10684,24 @@ Transform:
   - {fileID: 1219935907517105309}
   m_Father: {fileID: 8582364927392865547}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8506685928927337073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2230032680973728130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f5338a96461264fb9a1132c8509672, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  center: {x: 0.04, y: 0.21, z: -0.03}
+  size: {x: 0.149, y: 0.001, z: 0.545}
+  direction: 1
+  reverseDirection: 0
+  radiusSeparation: 0
+  alignedOnCenter: 1
 --- !u!1 &8513943004524497067
 GameObject:
   m_ObjectHideFlags: 0
@@ -10687,6 +10769,20 @@ Transform:
   - {fileID: 6221429651703288979}
   m_Father: {fileID: 4425227425696974249}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8582364927392865548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4690456829675801444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2b68b2c7953ebb479b78627f19a6ccb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  center: {x: 0, y: -0.19, z: -0.06}
+  size: {x: 0.189, y: 0, z: 0}
 --- !u!1 &8592594243353453502
 GameObject:
   m_ObjectHideFlags: 0
