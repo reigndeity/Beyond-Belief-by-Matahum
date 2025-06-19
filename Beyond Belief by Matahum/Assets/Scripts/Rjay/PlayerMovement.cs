@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -5,25 +6,75 @@ public class PlayerMovement : MonoBehaviour
 {
     private CharacterController m_characterController;
     private PlayerInput m_playerInput;
-    [Header("Movement Properties")]
-    public float moveSpeed = 5f;
+
+    [Header("Movement Speeds")]
+    public float walkSpeed = 2f;
+    public float jogSpeed = 5f;
+    public float sprintSpeed = 8f;
+
+    [Header("Gravity Settings")]
     public float gravity = -9.81f;
     private float verticalVelocity = 0f;
-    public Vector3 MoveDirection { get; private set; }
-    public float Speed => new Vector2(MoveDirection.x, MoveDirection.z).magnitude;
+
+    [Header("Stamina Settings")]
+    public float maxStamina = 100f;
+    public float currentStamina;
+    public float staminaDrainRate = 15f;
+    public float staminaRegenRate = 10f;
+    public bool isSprinting = false;
+
+    [Header("Stamina Delay")]
+    public float staminaRegenDelay = 2f;
+    private float staminaRegenTimer = 0f;
+    private bool wasHoldingSprint = false;
+
+    [Header("Dash Settings")]
+    public float dashDistance = 5f;
+    public float dashCooldown = 1.5f;
+    public float dashStaminaCost = 20f;
+    public float dashDuration = 0.2f;
+    private float dashCooldownTimer = 0f;
+    public bool isDashing = false;
+    private float dashTimeRemaining = 0f;
+    private Vector3 dashDirection;
+    public static event Action OnDashStarted;
+
     [Header("Debug View")]
     [SerializeField] private Vector3 debugMoveDirection;
     [SerializeField] private float debugSpeed;
     [SerializeField] private float debugVerticalVelocity;
 
+    public Vector3 MoveDirection { get; private set; }
+    public float Speed => new Vector2(MoveDirection.x, MoveDirection.z).magnitude;
+    public bool IsWalking => isWalking;
+    private float currentMoveSpeed;
+    private bool isWalking = false;
+
     void Awake()
     {
         m_characterController = GetComponent<CharacterController>();
         m_playerInput = GetComponent<PlayerInput>();
+        currentStamina = maxStamina;
+        currentMoveSpeed = jogSpeed;
     }
 
     public void HandleMovement()
     {
+        HandleMovementMode();
+
+        if (isDashing)
+        {
+            m_characterController.Move(dashDirection * (dashDistance / dashDuration) * Time.deltaTime);
+            dashTimeRemaining -= Time.deltaTime;
+
+            if (dashTimeRemaining <= 0f)
+            {
+                isDashing = false;
+            }
+
+            return;
+        }
+
         Vector2 input = m_playerInput.GetMovementInput();
 
         Vector3 forward = Camera.main.transform.forward;
@@ -35,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
 
         HandleGravity();
 
-        Vector3 velocity = MoveDirection * moveSpeed;
+        Vector3 velocity = MoveDirection * currentMoveSpeed;
         velocity.y = verticalVelocity;
 
         m_characterController.Move(velocity * Time.deltaTime);
@@ -51,6 +102,86 @@ public class PlayerMovement : MonoBehaviour
         debugVerticalVelocity = verticalVelocity;
     }
 
+    private void HandleMovementMode()
+    {
+        dashCooldownTimer -= Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            isWalking = !isWalking;
+        }
+
+        bool isHoldingSprint = Input.GetKey(KeyCode.LeftShift);
+        bool isTryingToSprint = isHoldingSprint && MoveDirection.magnitude > 0.1f;
+        bool canSprint = currentStamina > 0f;
+
+        // Dash trigger (only when pressing Shift once)
+        if (Input.GetKeyDown(KeyCode.LeftShift) &&
+            dashCooldownTimer <= 0f &&
+            currentStamina >= dashStaminaCost &&
+            MoveDirection.magnitude > 0.1f)
+        {
+            Dash();
+        }
+
+        // Regen delay logic
+        if ((wasHoldingSprint && !isHoldingSprint) && staminaRegenTimer <= 0f)
+        {
+            staminaRegenTimer = staminaRegenDelay;
+        }
+
+        if (currentStamina <= 0f && staminaRegenTimer <= 0f)
+        {
+            staminaRegenTimer = staminaRegenDelay;
+        }
+
+        if (!isDashing)
+        {
+            if (isTryingToSprint && canSprint)
+            {
+                isSprinting = true;
+                currentMoveSpeed = sprintSpeed;
+                currentStamina -= staminaDrainRate * Time.deltaTime;
+                currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
+                staminaRegenTimer = staminaRegenDelay;
+            }
+            else
+            {
+                isSprinting = false;
+                currentMoveSpeed = isWalking ? walkSpeed : jogSpeed;
+
+                if (staminaRegenTimer > 0f)
+                {
+                    staminaRegenTimer -= Time.deltaTime;
+                }
+
+                if (staminaRegenTimer <= 0f && !isHoldingSprint && currentStamina < maxStamina)
+                {
+                    currentStamina += staminaRegenRate * Time.deltaTime;
+                    currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
+                }
+            }
+        }
+
+        wasHoldingSprint = isHoldingSprint;
+    }
+
+    private void Dash()
+    {
+        isDashing = true;
+        dashTimeRemaining = dashDuration;
+        dashCooldownTimer = dashCooldown;
+
+        currentStamina -= dashStaminaCost;
+        currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
+
+        dashDirection = MoveDirection != Vector3.zero ? MoveDirection : transform.forward;
+        verticalVelocity = 0f;
+
+        OnDashStarted?.Invoke();
+    }
+    public bool IsDashing() => isDashing;
+
     private void HandleGravity()
     {
         if (m_characterController.isGrounded && verticalVelocity < 0)
@@ -61,5 +192,10 @@ public class PlayerMovement : MonoBehaviour
         {
             verticalVelocity += gravity * Time.deltaTime;
         }
+    }
+
+    public float GetDashCooldownRemaining()
+    {
+        return Mathf.Clamp(dashCooldownTimer, 0f, dashCooldown);
     }
 }

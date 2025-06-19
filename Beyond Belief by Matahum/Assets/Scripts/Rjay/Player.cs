@@ -9,6 +9,10 @@ public class Player : MonoBehaviour
     private Animator m_animator;
     private string currentAnimationState;
 
+    void OnEnable()
+    {
+        PlayerMovement.OnDashStarted += HandleDashAnimation;
+    }
     void Awake()
     {
         if (instance != null && instance != this)
@@ -35,19 +39,31 @@ public class Player : MonoBehaviour
 
     public void HandleAnimations()
     {
+         if (m_playerMovement.IsDashing()) return;
         float speed = m_playerMovement.Speed;
-        Vector3 direction = m_playerMovement.MoveDirection;
+        bool isMoving = speed > 0.1f;
 
-        if (speed > 0.1f)
+        if (!isMoving)
         {
-            ChangeAnimationState("player_jog", 0.10f);
+            ChangeAnimationState("player_idle_1", 0.25f);
+            return;
+        }
+
+        if (m_playerMovement.isSprinting)
+        {
+            ChangeAnimationState("player_run", 0.1f);
+        }
+        else if (m_playerMovement.IsWalking)
+        {
+            ChangeAnimationState("player_walk", 0.25f);
         }
         else
         {
-            ChangeAnimationState("player_idle_1", 0.25f);
+            ChangeAnimationState("player_jog", 0.25f);
         }
     }
-    public void ChangeAnimationState(string newAnimationState, float transitionDuration = 0.1f)
+    private void HandleDashAnimation() => ChangeAnimationState("player_dash", 0.1f);
+    public void ChangeAnimationState(string newAnimationState, float transitionDuration)
     {
         if (currentAnimationState == newAnimationState) return;
         m_animator.CrossFade(newAnimationState, transitionDuration);
