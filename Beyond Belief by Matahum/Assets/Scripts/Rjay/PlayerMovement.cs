@@ -12,9 +12,21 @@ public class PlayerMovement : MonoBehaviour
     public float jogSpeed = 5f;
     public float sprintSpeed = 8f;
 
+    [Header("Jump Settings")]
+    public float jumpHeight = 2f;
+    public float jumpCooldown = 0.1f;
+    private float jumpCooldownTimer = 0f;
+    private bool isJumping = false;
+    private bool justLanded = false;
+
     [Header("Gravity Settings")]
     public float gravity = -9.81f;
+    public float fallMultiplier = 2f;
+    public float riseMultiplier = 1.2f;
     private float verticalVelocity = 0f;
+
+    [Header("Landing Settings")]
+    public float landingVelocityThreshold = -3f;
 
     [Header("Stamina Settings")]
     public float maxStamina = 100f;
@@ -47,8 +59,13 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 MoveDirection { get; private set; }
     public float Speed => new Vector2(MoveDirection.x, MoveDirection.z).magnitude;
     public bool IsWalking => isWalking;
+    public bool IsJumping() => isJumping;
+    public bool JustLanded() => justLanded && verticalVelocity < landingVelocityThreshold;
+    public float GetVerticalVelocity() => verticalVelocity;
+
     private float currentMoveSpeed;
     private bool isWalking = false;
+    private bool wasGroundedLastFrame = true;
 
     void Awake()
     {
@@ -61,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
     public void HandleMovement()
     {
         HandleMovementMode();
+        HandleJump();
 
         if (isDashing)
         {
@@ -100,6 +118,40 @@ public class PlayerMovement : MonoBehaviour
         debugMoveDirection = MoveDirection;
         debugSpeed = Speed;
         debugVerticalVelocity = verticalVelocity;
+
+        // Update landing state
+        justLanded = !wasGroundedLastFrame && m_characterController.isGrounded;
+        wasGroundedLastFrame = m_characterController.isGrounded;
+    }
+
+    private void HandleJump()
+    {
+        if (jumpCooldownTimer > 0f)
+            jumpCooldownTimer -= Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.Space) && m_characterController.isGrounded && jumpCooldownTimer <= 0f)
+        {
+            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            isJumping = true;
+            jumpCooldownTimer = jumpCooldown;
+        }
+
+        if (m_characterController.isGrounded && verticalVelocity < 0)
+        {
+            verticalVelocity = -2f;
+            isJumping = false;
+        }
+    }
+
+    private void HandleGravity()
+    {
+        if (!m_characterController.isGrounded)
+        {
+            if (verticalVelocity < 0)
+                verticalVelocity += gravity * fallMultiplier * Time.deltaTime;
+            else
+                verticalVelocity += gravity * riseMultiplier * Time.deltaTime;
+        }
     }
 
     private void HandleMovementMode()
@@ -115,7 +167,6 @@ public class PlayerMovement : MonoBehaviour
         bool isTryingToSprint = isHoldingSprint && MoveDirection.magnitude > 0.1f;
         bool canSprint = currentStamina > 0f;
 
-        // Dash trigger (only when pressing Shift once)
         if (Input.GetKeyDown(KeyCode.LeftShift) &&
             dashCooldownTimer <= 0f &&
             currentStamina >= dashStaminaCost &&
@@ -124,7 +175,6 @@ public class PlayerMovement : MonoBehaviour
             Dash();
         }
 
-        // Regen delay logic
         if ((wasHoldingSprint && !isHoldingSprint) && staminaRegenTimer <= 0f)
         {
             staminaRegenTimer = staminaRegenDelay;
@@ -180,19 +230,8 @@ public class PlayerMovement : MonoBehaviour
 
         OnDashStarted?.Invoke();
     }
-    public bool IsDashing() => isDashing;
 
-    private void HandleGravity()
-    {
-        if (m_characterController.isGrounded && verticalVelocity < 0)
-        {
-            verticalVelocity = -2f;
-        }
-        else
-        {
-            verticalVelocity += gravity * Time.deltaTime;
-        }
-    }
+    public bool IsDashing() => isDashing;
 
     public float GetDashCooldownRemaining()
     {

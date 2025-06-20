@@ -8973,6 +8973,10 @@ MonoBehaviour:
   walkSpeed: 2
   jogSpeed: 5
   sprintSpeed: 8
+  jumpHeight: 2.5
+  jumpCooldown: 0.1
+  jumpAscentMultiplier: 1.5
+  fallMultiplier: 2
   gravity: -9.81
   maxStamina: 100
   currentStamina: 0
@@ -8983,7 +8987,7 @@ MonoBehaviour:
   dashDistance: 5
   dashCooldown: 1.5
   dashStaminaCost: 20
-  dashDuration: 0.6
+  dashDuration: 0.35
   isDashing: 0
   debugMoveDirection: {x: 0, y: 0, z: 0}
   debugSpeed: 0
