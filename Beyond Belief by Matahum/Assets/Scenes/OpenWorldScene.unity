@@ -8975,9 +8975,14 @@ MonoBehaviour:
   sprintSpeed: 8
   jumpHeight: 2.5
   jumpCooldown: 0.1
-  jumpAscentMultiplier: 1.5
-  fallMultiplier: 2
+  airControlFactor: 0.4
+  airSpeedDecayRate: 0.98
+  retainMomentumAfterJump: 1
+  jumpStartDelay: 0.1
   gravity: -9.81
+  fallMultiplier: 2
+  riseMultiplier: 1.2
+  landingVelocityThreshold: -3
   maxStamina: 100
   currentStamina: 0
   staminaDrainRate: 15

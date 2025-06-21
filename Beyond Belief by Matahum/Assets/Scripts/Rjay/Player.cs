@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
         }
 
         // LANDING
-        if (justLanded && (jumpState == JumpState.Jumping || jumpState == JumpState.Falling))
+        if (isGrounded && jumpState == JumpState.Falling)
         {
             jumpState = JumpState.Landing;
             StartCoroutine(PlayLandAnimation());
@@ -129,7 +129,19 @@ public class Player : MonoBehaviour
         ChangeAnimationState("player_land");
 
         float duration = GetAnimationLength("player_land");
-        yield return new WaitForSeconds(duration);
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            if (m_playerMovement.Speed > 0.1f) // Player started moving
+            {
+                jumpState = JumpState.None;
+                yield break;
+            }
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
 
         jumpState = JumpState.None;
     }
@@ -187,13 +199,18 @@ public class Player : MonoBehaviour
         if (from == "player_idle_3" && to == "player_walk") return 0.1f;
         if (from == "player_run" && to == "player_jog") return 0.25f;
         if (from == "player_walk" && to == "player_jog") return 0.15f;
+
+        if (from == "player_land" && to == "player_jog") return 0.15f;
+        if (from == "player_land" && to == "player_walk") return 0.15f;
+        if (from == "player_land" && to == "player_run") return 0.15f;
+
         if (to == "player_idle_1") return 0.25f;
         if (to == "player_run") return 0.1f;
         if (to == "player_walk") return 0.25f;
         if (to == "player_dash") return 0.1f;
-        if (to == "player_jump") return 0.05f;
+        if (to == "player_jump") return 0.1f;
         if (to == "player_falling") return 0.25f;
-        if (to == "player_land") return 0.05f;
+        if (to == "player_land") return 0.1f;
 
         return 0.2f;
     }

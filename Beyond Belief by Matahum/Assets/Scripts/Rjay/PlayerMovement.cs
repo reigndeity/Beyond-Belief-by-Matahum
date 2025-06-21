@@ -15,9 +15,18 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump Settings")]
     public float jumpHeight = 2f;
     public float jumpCooldown = 0.1f;
+    public float airControlFactor = 0.4f; // 0 = no air control, 1 = full air control
+    public float airSpeedDecayRate = 0.98f;
+    public bool retainMomentumAfterJump = true;
+
     private float jumpCooldownTimer = 0f;
     private bool isJumping = false;
     private bool justLanded = false;
+    [Tooltip("Delay between pressing jump and the actual jump.")]
+    public float jumpStartDelay = 0f; // e.g., 0.15f for 150ms delay
+
+    private bool isJumpStarting = false;
+    private float jumpStartTimer = 0f;
 
     [Header("Gravity Settings")]
     public float gravity = -9.81f;
@@ -67,6 +76,8 @@ public class PlayerMovement : MonoBehaviour
     private bool isWalking = false;
     private bool wasGroundedLastFrame = true;
 
+    private Vector3 airMomentum = Vector3.zero;
+
     void Awake()
     {
         m_characterController = GetComponent<CharacterController>();
@@ -86,21 +97,36 @@ public class PlayerMovement : MonoBehaviour
             dashTimeRemaining -= Time.deltaTime;
 
             if (dashTimeRemaining <= 0f)
-            {
                 isDashing = false;
-            }
 
             return;
         }
 
         Vector2 input = m_playerInput.GetMovementInput();
-
         Vector3 forward = Camera.main.transform.forward;
         Vector3 right = Camera.main.transform.right;
         forward.y = 0f;
         right.y = 0f;
+        Vector3 inputDir = (forward * input.y + right * input.x).normalized;
 
-        MoveDirection = (forward * input.y + right * input.x).normalized;
+        if (m_characterController.isGrounded)
+        {
+            MoveDirection = inputDir;
+            airMomentum = Vector3.zero;
+        }
+        else
+        {
+            // Air movement control
+            airMomentum *= airSpeedDecayRate;
+            if (retainMomentumAfterJump)
+            {
+                MoveDirection = Vector3.Lerp(airMomentum, inputDir, airControlFactor);
+            }
+            else
+            {
+                MoveDirection = Vector3.Lerp(MoveDirection, inputDir, airControlFactor);
+            }
+        }
 
         HandleGravity();
 
@@ -119,7 +145,6 @@ public class PlayerMovement : MonoBehaviour
         debugSpeed = Speed;
         debugVerticalVelocity = verticalVelocity;
 
-        // Update landing state
         justLanded = !wasGroundedLastFrame && m_characterController.isGrounded;
         wasGroundedLastFrame = m_characterController.isGrounded;
     }
@@ -129,19 +154,63 @@ public class PlayerMovement : MonoBehaviour
         if (jumpCooldownTimer > 0f)
             jumpCooldownTimer -= Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.Space) && m_characterController.isGrounded && jumpCooldownTimer <= 0f)
+        // Still waiting to launch the jump after jump start
+        if (isJumpStarting)
         {
-            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            isJumping = true;
-            jumpCooldownTimer = jumpCooldown;
+            jumpStartTimer -= Time.deltaTime;
+
+            // Launch the actual jump now
+            if (jumpStartTimer <= 0f && m_characterController.isGrounded)
+            {
+                verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                isJumping = true;
+                isJumpStarting = false;
+                jumpCooldownTimer = jumpCooldown;
+
+                if (retainMomentumAfterJump)
+                    airMomentum = MoveDirection;
+            }
+
+            return;
         }
 
-        if (m_characterController.isGrounded && verticalVelocity < 0)
+        // Trigger jump start
+        if (Input.GetKeyDown(KeyCode.Space) &&
+            m_characterController.isGrounded &&
+            jumpCooldownTimer <= 0f)
+        {
+            if (jumpStartDelay > 0f)
+            {
+                isJumpStarting = true;
+                jumpStartTimer = jumpStartDelay;
+
+                // ✅ Play jump start animation immediately
+                Player.instance.ChangeAnimationState("player_jump"); 
+            }
+            else
+            {
+                verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                isJumping = true;
+                jumpCooldownTimer = jumpCooldown;
+
+                if (retainMomentumAfterJump)
+                    airMomentum = MoveDirection;
+
+                // ✅ Still play animation immediately even if no delay
+                Player.instance.ChangeAnimationState("player_jump");
+            }
+
+            return;
+        }
+
+        // Reset if grounded and not in a delayed jump
+        if (m_characterController.isGrounded && verticalVelocity < 0f && !isJumpStarting)
         {
             verticalVelocity = -2f;
             isJumping = false;
         }
     }
+
 
     private void HandleGravity()
     {
@@ -176,14 +245,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if ((wasHoldingSprint && !isHoldingSprint) && staminaRegenTimer <= 0f)
-        {
             staminaRegenTimer = staminaRegenDelay;
-        }
 
         if (currentStamina <= 0f && staminaRegenTimer <= 0f)
-        {
             staminaRegenTimer = staminaRegenDelay;
-        }
 
         if (!isDashing)
         {
@@ -201,9 +266,7 @@ public class PlayerMovement : MonoBehaviour
                 currentMoveSpeed = isWalking ? walkSpeed : jogSpeed;
 
                 if (staminaRegenTimer > 0f)
-                {
                     staminaRegenTimer -= Time.deltaTime;
-                }
 
                 if (staminaRegenTimer <= 0f && !isHoldingSprint && currentStamina < maxStamina)
                 {
@@ -232,9 +295,5 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public bool IsDashing() => isDashing;
-
-    public float GetDashCooldownRemaining()
-    {
-        return Mathf.Clamp(dashCooldownTimer, 0f, dashCooldown);
-    }
+    public float GetDashCooldownRemaining() => Mathf.Clamp(dashCooldownTimer, 0f, dashCooldown);
 }
