@@ -15,15 +15,16 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump Settings")]
     public float jumpHeight = 2f;
     public float jumpCooldown = 0.1f;
-    public float airControlFactor = 0.4f; // 0 = no air control, 1 = full air control
+    public float airControlFactor = 0.4f;
     public float airSpeedDecayRate = 0.98f;
     public bool retainMomentumAfterJump = true;
 
     private float jumpCooldownTimer = 0f;
     private bool isJumping = false;
     private bool justLanded = false;
+
     [Tooltip("Delay between pressing jump and the actual jump.")]
-    public float jumpStartDelay = 0f; // e.g., 0.15f for 150ms delay
+    public float jumpStartDelay = 0f;
 
     private bool isJumpStarting = false;
     private float jumpStartTimer = 0f;
@@ -54,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
     public float dashCooldown = 1.5f;
     public float dashStaminaCost = 20f;
     public float dashDuration = 0.2f;
+    public bool canDashWhileAirborne = false;
     private float dashCooldownTimer = 0f;
     public bool isDashing = false;
     private float dashTimeRemaining = 0f;
@@ -98,8 +100,6 @@ public class PlayerMovement : MonoBehaviour
 
             if (dashTimeRemaining <= 0f)
                 isDashing = false;
-
-            return;
         }
 
         Vector2 input = m_playerInput.GetMovementInput();
@@ -116,16 +116,10 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            // Air movement control
             airMomentum *= airSpeedDecayRate;
-            if (retainMomentumAfterJump)
-            {
-                MoveDirection = Vector3.Lerp(airMomentum, inputDir, airControlFactor);
-            }
-            else
-            {
-                MoveDirection = Vector3.Lerp(MoveDirection, inputDir, airControlFactor);
-            }
+            MoveDirection = retainMomentumAfterJump
+                ? Vector3.Lerp(airMomentum, inputDir, airControlFactor)
+                : Vector3.Lerp(MoveDirection, inputDir, airControlFactor);
         }
 
         HandleGravity();
@@ -135,10 +129,15 @@ public class PlayerMovement : MonoBehaviour
 
         m_characterController.Move(velocity * Time.deltaTime);
 
-        if (MoveDirection != Vector3.zero)
+        if (isDashing && dashDirection != Vector3.zero)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(MoveDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
+            Quaternion dashRotation = Quaternion.LookRotation(dashDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, dashRotation, 20f * Time.deltaTime);
+        }
+        else if (MoveDirection != Vector3.zero)
+        {
+            Quaternion moveRotation = Quaternion.LookRotation(MoveDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, moveRotation, 10f * Time.deltaTime);
         }
 
         debugMoveDirection = MoveDirection;
@@ -154,12 +153,10 @@ public class PlayerMovement : MonoBehaviour
         if (jumpCooldownTimer > 0f)
             jumpCooldownTimer -= Time.deltaTime;
 
-        // Still waiting to launch the jump after jump start
         if (isJumpStarting)
         {
             jumpStartTimer -= Time.deltaTime;
 
-            // Launch the actual jump now
             if (jumpStartTimer <= 0f && m_characterController.isGrounded)
             {
                 verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
@@ -168,14 +165,13 @@ public class PlayerMovement : MonoBehaviour
                 jumpCooldownTimer = jumpCooldown;
 
                 if (retainMomentumAfterJump)
-                    airMomentum = MoveDirection;
+                    airMomentum = MoveDirection.normalized * currentMoveSpeed;;
             }
 
             return;
         }
 
-        // Trigger jump start
-        if (Input.GetKeyDown(KeyCode.Space) &&
+        if (Input.GetKeyDown(m_playerInput.jumpKey) &&
             m_characterController.isGrounded &&
             jumpCooldownTimer <= 0f)
         {
@@ -183,9 +179,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 isJumpStarting = true;
                 jumpStartTimer = jumpStartDelay;
-
-                // ✅ Play jump start animation immediately
-                Player.instance.ChangeAnimationState("player_jump"); 
+                Player.instance.ChangeAnimationState("player_jump");
             }
             else
             {
@@ -196,14 +190,12 @@ public class PlayerMovement : MonoBehaviour
                 if (retainMomentumAfterJump)
                     airMomentum = MoveDirection;
 
-                // ✅ Still play animation immediately even if no delay
                 Player.instance.ChangeAnimationState("player_jump");
             }
 
             return;
         }
 
-        // Reset if grounded and not in a delayed jump
         if (m_characterController.isGrounded && verticalVelocity < 0f && !isJumpStarting)
         {
             verticalVelocity = -2f;
@@ -211,15 +203,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
     private void HandleGravity()
     {
         if (!m_characterController.isGrounded)
         {
-            if (verticalVelocity < 0)
-                verticalVelocity += gravity * fallMultiplier * Time.deltaTime;
-            else
-                verticalVelocity += gravity * riseMultiplier * Time.deltaTime;
+            verticalVelocity += (verticalVelocity < 0 ? gravity * fallMultiplier : gravity * riseMultiplier) * Time.deltaTime;
         }
     }
 
@@ -227,20 +215,34 @@ public class PlayerMovement : MonoBehaviour
     {
         dashCooldownTimer -= Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKeyDown(m_playerInput.toggleKey))
         {
             isWalking = !isWalking;
         }
 
-        bool isHoldingSprint = Input.GetKey(KeyCode.LeftShift);
+        bool isHoldingSprint = Input.GetKey(m_playerInput.sprintKey);
         bool isTryingToSprint = isHoldingSprint && MoveDirection.magnitude > 0.1f;
         bool canSprint = currentStamina > 0f;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) &&
+        if (Input.GetKeyDown(m_playerInput.sprintKey) &&
             dashCooldownTimer <= 0f &&
             currentStamina >= dashStaminaCost &&
-            MoveDirection.magnitude > 0.1f)
+            (canDashWhileAirborne || m_characterController.isGrounded))
         {
+            Vector2 input = m_playerInput.GetMovementInput();
+            if (input.sqrMagnitude > 0.01f)
+            {
+                Vector3 forward = Camera.main.transform.forward;
+                Vector3 right = Camera.main.transform.right;
+                forward.y = 0f;
+                right.y = 0f;
+                dashDirection = (forward * input.y + right * input.x).normalized;
+            }
+            else
+            {
+                dashDirection = transform.forward;
+            }
+
             Dash();
         }
 
@@ -252,7 +254,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!isDashing)
         {
-            if (isTryingToSprint && canSprint)
+            if (isTryingToSprint && canSprint && m_characterController.isGrounded)
             {
                 isSprinting = true;
                 currentMoveSpeed = sprintSpeed;
@@ -288,7 +290,6 @@ public class PlayerMovement : MonoBehaviour
         currentStamina -= dashStaminaCost;
         currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
 
-        dashDirection = MoveDirection != Vector3.zero ? MoveDirection : transform.forward;
         verticalVelocity = 0f;
 
         OnDashStarted?.Invoke();

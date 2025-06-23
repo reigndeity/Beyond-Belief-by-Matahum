@@ -1167,76 +1167,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fb406bd458138642bc48cd5386bf7b0, type: 3}
---- !u!1001 &1061834856
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 4744900335235487031}
-    m_Modifications:
-    - target: {fileID: 1344408743024326780, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
-      propertyPath: m_Name
-      value: 3rdPersonCamera_FreeForm
-      objectReference: {fileID: 0}
-    - target: {fileID: 1344408743024326780, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5396232920504610769, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
-      propertyPath: Target
-      value: 
-      objectReference: {fileID: 4744900335235487031}
-    - target: {fileID: 6643061313197899063, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6643061313197899063, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6643061313197899063, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6643061313197899063, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6643061313197899063, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6643061313197899063, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6643061313197899063, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6643061313197899063, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6643061313197899063, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6643061313197899063, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
---- !u!4 &1061834857 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6643061313197899063, guid: 4cf5eaeffce6dfa4da4d0c3897be074b, type: 3}
-  m_PrefabInstance: {fileID: 1061834856}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1132170339 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -6708913865958490189, guid: fd4f95eda47865b45a696d7e9ecc448a, type: 3}
@@ -8262,7 +8192,6 @@ Transform:
   - {fileID: 4073947097819658262}
   - {fileID: 4425227425696974249}
   - {fileID: 587344417764147751}
-  - {fileID: 1061834857}
   - {fileID: 1372992997}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8975,8 +8904,8 @@ MonoBehaviour:
   sprintSpeed: 8
   jumpHeight: 2.5
   jumpCooldown: 0.1
-  airControlFactor: 0.4
-  airSpeedDecayRate: 1
+  airControlFactor: 0.75
+  airSpeedDecayRate: 0.98
   retainMomentumAfterJump: 1
   jumpStartDelay: 0.1
   gravity: -9.81
@@ -8989,10 +8918,11 @@ MonoBehaviour:
   staminaRegenRate: 10
   isSprinting: 0
   staminaRegenDelay: 2
-  dashDistance: 5
+  dashDistance: 3.5
   dashCooldown: 1.5
   dashStaminaCost: 20
   dashDuration: 0.35
+  canDashWhileAirborne: 0
   isDashing: 0
   debugMoveDirection: {x: 0, y: 0, z: 0}
   debugSpeed: 0
@@ -9013,6 +8943,7 @@ MonoBehaviour:
   backwardKey: 115
   leftwardKey: 97
   rightwardKey: 100
+  toggleKey: 306
   sprintKey: 304
   jumpKey: 32
   normalSkillKey: 101
@@ -9581,7 +9512,7 @@ MonoBehaviour:
   AnimationFloorLevel: 0.001
   _Editor_Foldout_Setup_LegsList: 1
   _Editor_EnsureCount: 0
-  _Editor_OnValidateTrigger: 0
+  _Editor_OnValidateTrigger: 1
   _EditorAllowAutoUpdateFeetParams: 1
   _EditorCategory: 1
   _EditorSetupCategory: 1

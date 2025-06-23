@@ -8,6 +8,8 @@ public class PlayerInput : MonoBehaviour
     public KeyCode backwardKey = KeyCode.S;
     public KeyCode leftwardKey = KeyCode.A;
     public KeyCode rightwardKey = KeyCode.D;
+    [Header("Toggle Movement Input")]
+    public KeyCode toggleKey = KeyCode.LeftControl;
     
     [Header("Sprint Input")]
     public KeyCode sprintKey = KeyCode.LeftShift;
