@@ -68,7 +68,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float debugVerticalVelocity;
 
     public Vector3 MoveDirection { get; private set; }
-    public float Speed => new Vector2(MoveDirection.x, MoveDirection.z).magnitude;
+
+    // ✅ FIXED: This now returns actual motion speed
+    public float Speed => new Vector2(m_characterController.velocity.x, m_characterController.velocity.z).magnitude;
+
     public bool IsWalking => isWalking;
     public bool IsJumping() => isJumping;
     public bool JustLanded() => justLanded && verticalVelocity < landingVelocityThreshold;
@@ -90,6 +93,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void HandleMovement()
     {
+        Debug.Log($"[Speed Debug] currentMoveSpeed={currentMoveSpeed:F2}, actualSpeed={Speed:F2}, grounded={m_characterController.isGrounded}");
+
         HandleMovementMode();
         HandleJump();
 
@@ -165,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
                 jumpCooldownTimer = jumpCooldown;
 
                 if (retainMomentumAfterJump)
-                    airMomentum = MoveDirection.normalized * currentMoveSpeed;;
+                    airMomentum = MoveDirection.normalized * currentMoveSpeed;
             }
 
             return;
