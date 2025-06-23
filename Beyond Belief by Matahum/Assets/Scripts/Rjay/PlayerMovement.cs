@@ -296,4 +296,5 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsDashing() => isDashing;
     public float GetDashCooldownRemaining() => Mathf.Clamp(dashCooldownTimer, 0f, dashCooldown);
+    public bool IsAboutToJump() => isJumpStarting;
 }

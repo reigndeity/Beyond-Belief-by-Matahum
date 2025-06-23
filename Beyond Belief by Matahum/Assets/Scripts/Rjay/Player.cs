@@ -13,6 +13,9 @@ public class Player : MonoBehaviour
     private Coroutine idleCycleCoroutine;
     private bool isInIdleCycle = false;
 
+    private int consecutiveIdle1Count = 0;
+    private int requiredIdle1Repeats = 0;
+
     private enum JumpState { None, Jumping, Falling, Landing }
     private JumpState jumpState = JumpState.None;
 
@@ -38,6 +41,7 @@ public class Player : MonoBehaviour
         m_playerMovement = GetComponent<PlayerMovement>();
         m_playerInput = GetComponent<PlayerInput>();
         m_animator = GetComponent<Animator>();
+        ResetIdleRepeatCount();
     }
 
     void Update()
@@ -57,7 +61,6 @@ public class Player : MonoBehaviour
         bool isJumping = m_playerMovement.IsJumping();
         bool justLanded = m_playerMovement.JustLanded();
 
-        // JUMPING
         if (isJumping && jumpState == JumpState.None)
         {
             jumpState = JumpState.Jumping;
@@ -65,7 +68,6 @@ public class Player : MonoBehaviour
             return;
         }
 
-        // FALLING
         if (!isGrounded && verticalVelocity < -1f && jumpState != JumpState.Falling)
         {
             jumpState = JumpState.Falling;
@@ -73,7 +75,6 @@ public class Player : MonoBehaviour
             return;
         }
 
-        // LANDING
         if (isGrounded && jumpState == JumpState.Falling)
         {
             jumpState = JumpState.Landing;
@@ -81,10 +82,15 @@ public class Player : MonoBehaviour
             return;
         }
 
-        // Prevent idle/movement animation if jump-related animation is ongoing
-        if (jumpState != JumpState.None) return;
+        // Prevent idle/move animation if in-air or about to jump
+        if (jumpState != JumpState.None || 
+            !isGrounded || 
+            m_playerMovement.IsJumping() || 
+            m_playerMovement.IsAboutToJump())
+        {
+            return;
+        }
 
-        // Idle Cycle
         if (!isMoving)
         {
             if (currentAnimationState != "player_idle_1" &&
@@ -102,7 +108,6 @@ public class Player : MonoBehaviour
             return;
         }
 
-        // Stop idle cycle if player starts moving
         if (idleCycleCoroutine != null)
         {
             StopCoroutine(idleCycleCoroutine);
@@ -133,7 +138,7 @@ public class Player : MonoBehaviour
 
         while (timer < duration)
         {
-            if (m_playerMovement.Speed > 0.1f) // Player started moving
+            if (m_playerMovement.Speed > 0.1f)
             {
                 jumpState = JumpState.None;
                 yield break;
@@ -149,10 +154,24 @@ public class Player : MonoBehaviour
     private IEnumerator IdleCycleRoutine()
     {
         isInIdleCycle = true;
-
+        
+        if (!m_playerMovement.GetComponent<CharacterController>().isGrounded)
+        {
+            isInIdleCycle = false;
+            yield break;
+        }
         yield return new WaitForSeconds(GetAnimationLength("player_idle_1"));
 
         if (m_playerMovement.Speed > 0.1f) { isInIdleCycle = false; yield break; }
+
+        consecutiveIdle1Count++;
+
+        if (consecutiveIdle1Count < requiredIdle1Repeats)
+        {
+            ChangeAnimationState("player_idle_1");
+            idleCycleCoroutine = StartCoroutine(IdleCycleRoutine());
+            yield break;
+        }
 
         string nextIdle = Random.value > 0.5f ? "player_idle_2" : "player_idle_3";
         ChangeAnimationState(nextIdle);
@@ -161,7 +180,15 @@ public class Player : MonoBehaviour
         if (m_playerMovement.Speed > 0.1f) { isInIdleCycle = false; yield break; }
 
         ChangeAnimationState("player_idle_1");
-        isInIdleCycle = false;
+        ResetIdleRepeatCount();
+
+        idleCycleCoroutine = StartCoroutine(IdleCycleRoutine());
+    }
+
+    private void ResetIdleRepeatCount()
+    {
+        consecutiveIdle1Count = 0;
+        requiredIdle1Repeats = Random.Range(3, 6); // 3 to 5
     }
 
     private float GetAnimationLength(string animName)
@@ -203,6 +230,11 @@ public class Player : MonoBehaviour
         if (from == "player_land" && to == "player_jog") return 0.15f;
         if (from == "player_land" && to == "player_walk") return 0.15f;
         if (from == "player_land" && to == "player_run") return 0.15f;
+
+        if (from == "player_idle_1" && to == "player_idle_2") return 0f;
+        if (from == "player_idle_1" && to == "player_idle_3") return 0f;
+        if (from == "player_idle_2" && to == "player_idle_3") return 0f;
+        if (from == "player_idle_3" && to == "player_idle_2") return 0f;
 
         if (to == "player_idle_1") return 0.25f;
         if (to == "player_run") return 0.1f;

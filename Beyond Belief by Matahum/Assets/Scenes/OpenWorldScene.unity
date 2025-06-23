@@ -3154,7 +3154,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -40, y: 37.7}
+  m_AnchoredPosition: {x: -40, y: 37.69995}
   m_SizeDelta: {x: 129.88982, y: 129.88982}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &2092220836
@@ -7548,7 +7548,7 @@ SkinnedMeshRenderer:
   - {fileID: 1749972767748953668}
   - {fileID: 2672788107044103913}
   m_BlendShapeWeights:
-  - 0
+  - -8.43
   - 0
   - 0
   - 0
@@ -8976,12 +8976,12 @@ MonoBehaviour:
   jumpHeight: 2.5
   jumpCooldown: 0.1
   airControlFactor: 0.4
-  airSpeedDecayRate: 0.98
+  airSpeedDecayRate: 1
   retainMomentumAfterJump: 1
   jumpStartDelay: 0.1
   gravity: -9.81
   fallMultiplier: 2
-  riseMultiplier: 1.2
+  riseMultiplier: 1.5
   landingVelocityThreshold: -3
   maxStamina: 100
   currentStamina: 0
@@ -9581,7 +9581,7 @@ MonoBehaviour:
   AnimationFloorLevel: 0.001
   _Editor_Foldout_Setup_LegsList: 1
   _Editor_EnsureCount: 0
-  _Editor_OnValidateTrigger: 1
+  _Editor_OnValidateTrigger: 0
   _EditorAllowAutoUpdateFeetParams: 1
   _EditorCategory: 1
   _EditorSetupCategory: 1
