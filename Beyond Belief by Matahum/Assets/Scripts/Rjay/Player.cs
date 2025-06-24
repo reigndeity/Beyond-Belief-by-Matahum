@@ -13,6 +13,9 @@ public class Player : MonoBehaviour
     private Coroutine idleCycleCoroutine;
     private bool isInIdleCycle = false;
 
+    private Coroutine stopAnimationCoroutine;
+    private bool isPlayingStopAnimation = false;
+
     private int consecutiveIdle1Count = 0;
     private int requiredIdle1Repeats = 0;
 
@@ -99,16 +102,32 @@ public class Player : MonoBehaviour
 
         if (!isMoving)
         {
-            if (currentAnimationState != "player_idle_1" &&
-                currentAnimationState != "player_idle_2" &&
-                currentAnimationState != "player_idle_3")
+            if (!isPlayingStopAnimation)
             {
-                ChangeAnimationState("player_idle_1");
-            }
+                if (lastFrameSpeed >= 7.9f && currentAnimationState != "player_runToStop")
+                {
+                    stopAnimationCoroutine = StartCoroutine(PlayStopAnimation("player_runToStop"));
+                    return;
+                }
+                else if (lastFrameSpeed >= 4.9f && currentAnimationState != "player_jogToStop")
+                {
+                    stopAnimationCoroutine = StartCoroutine(PlayStopAnimation("player_jogToStop"));
+                    return;
+                }
+                else
+                {
+                    if (currentAnimationState != "player_idle_1" &&
+                        currentAnimationState != "player_idle_2" &&
+                        currentAnimationState != "player_idle_3")
+                    {
+                        ChangeAnimationState("player_idle_1");
+                    }
 
-            if (!isInIdleCycle && currentAnimationState == "player_idle_1")
-            {
-                idleCycleCoroutine = StartCoroutine(IdleCycleRoutine());
+                    if (!isInIdleCycle && currentAnimationState == "player_idle_1")
+                    {
+                        idleCycleCoroutine = StartCoroutine(IdleCycleRoutine());
+                    }
+                }
             }
 
             return;
@@ -133,6 +152,29 @@ public class Player : MonoBehaviour
         {
             ChangeAnimationState("player_jog");
         }
+    }
+
+    private IEnumerator PlayStopAnimation(string animName)
+    {
+        isPlayingStopAnimation = true;
+
+        ChangeAnimationState(animName);
+        float duration = GetAnimationLength(animName);
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            if (m_playerMovement.Speed > 0.1f)
+            {
+                isPlayingStopAnimation = false;
+                yield break;
+            }
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        isPlayingStopAnimation = false;
     }
 
     private IEnumerator PlayLandAnimation()
@@ -231,19 +273,18 @@ public class Player : MonoBehaviour
         if (from == "player_idle_2" && to == "player_walk") return 0.1f;
         if (from == "player_idle_3" && to == "player_jog") return 0.05f;
         if (from == "player_idle_3" && to == "player_walk") return 0.1f;
-        if (from == "player_run" && to == "player_jog") return 0.25f;
+        if (from == "player_run" && to == "player_jog") return 0.5f;
         if (from == "player_walk" && to == "player_jog") return 0.15f;
 
         if (from == "player_land" && to == "player_jog") return 0.15f;
         if (from == "player_land" && to == "player_walk") return 0.15f;
         if (from == "player_land" && to == "player_run") return 0.15f;
-        
+
         // MIGHT REMOVE THIS LATER
         if (from == "player_idle_1" && to == "player_idle_2") return 0f;
         if (from == "player_idle_1" && to == "player_idle_3") return 0f;
         if (from == "player_idle_2" && to == "player_idle_3") return 0f;
         if (from == "player_idle_3" && to == "player_idle_2") return 0f;
-        // TBD
 
         if (from == "player_run" && to == "player_idle_1") return 0.25f;
 
@@ -254,6 +295,10 @@ public class Player : MonoBehaviour
         if (to == "player_jump") return 0.1f;
         if (to == "player_falling") return 0.25f;
         if (to == "player_land") return 0.1f;
+
+        if (from == "player_jog" && to == "player_jogToStop") return 0.25f;
+        if (from == "player_run" && to == "player_jogToStop") return 0.25f;
+        if (from == "player_run" && to == "player_runToStop") return 0.5f;
 
         return 0.2f;
     }
