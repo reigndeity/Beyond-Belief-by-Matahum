@@ -69,7 +69,6 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector3 MoveDirection { get; private set; }
 
-    // ✅ FIXED: This now returns actual motion speed
     public float Speed => new Vector2(m_characterController.velocity.x, m_characterController.velocity.z).magnitude;
 
     public bool IsWalking => isWalking;
@@ -93,19 +92,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void HandleMovement()
     {
-        Debug.Log($"[Speed Debug] currentMoveSpeed={currentMoveSpeed:F2}, actualSpeed={Speed:F2}, grounded={m_characterController.isGrounded}");
-
         HandleMovementMode();
+        HandleDash();
         HandleJump();
-
-        if (isDashing)
-        {
-            m_characterController.Move(dashDirection * (dashDistance / dashDuration) * Time.deltaTime);
-            dashTimeRemaining -= Time.deltaTime;
-
-            if (dashTimeRemaining <= 0f)
-                isDashing = false;
-        }
 
         Vector2 input = m_playerInput.GetMovementInput();
         Vector3 forward = Camera.main.transform.forward;
@@ -184,7 +173,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 isJumpStarting = true;
                 jumpStartTimer = jumpStartDelay;
-                Player.instance.ChangeAnimationState("player_jump");
+                PlayerAnimator.instance.ChangeAnimationState("player_jump");
             }
             else
             {
@@ -195,7 +184,7 @@ public class PlayerMovement : MonoBehaviour
                 if (retainMomentumAfterJump)
                     airMomentum = MoveDirection;
 
-                Player.instance.ChangeAnimationState("player_jump");
+                PlayerAnimator.instance.ChangeAnimationState("player_jump");
             }
 
             return;
@@ -218,8 +207,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovementMode()
     {
-        dashCooldownTimer -= Time.deltaTime;
-
         if (Input.GetKeyDown(m_playerInput.toggleKey))
         {
             isWalking = !isWalking;
@@ -228,28 +215,6 @@ public class PlayerMovement : MonoBehaviour
         bool isHoldingSprint = Input.GetKey(m_playerInput.sprintKey);
         bool isTryingToSprint = isHoldingSprint && MoveDirection.magnitude > 0.1f;
         bool canSprint = currentStamina > 0f;
-
-        if (Input.GetKeyDown(m_playerInput.sprintKey) &&
-            dashCooldownTimer <= 0f &&
-            currentStamina >= dashStaminaCost &&
-            (canDashWhileAirborne || m_characterController.isGrounded))
-        {
-            Vector2 input = m_playerInput.GetMovementInput();
-            if (input.sqrMagnitude > 0.01f)
-            {
-                Vector3 forward = Camera.main.transform.forward;
-                Vector3 right = Camera.main.transform.right;
-                forward.y = 0f;
-                right.y = 0f;
-                dashDirection = (forward * input.y + right * input.x).normalized;
-            }
-            else
-            {
-                dashDirection = transform.forward;
-            }
-
-            Dash();
-        }
 
         if ((wasHoldingSprint && !isHoldingSprint) && staminaRegenTimer <= 0f)
             staminaRegenTimer = staminaRegenDelay;
@@ -286,7 +251,38 @@ public class PlayerMovement : MonoBehaviour
         wasHoldingSprint = isHoldingSprint;
     }
 
-    private void Dash()
+    private void HandleDash()
+    {
+        dashCooldownTimer -= Time.deltaTime;
+
+        if (Input.GetKeyDown(m_playerInput.sprintKey) &&
+            dashCooldownTimer <= 0f &&
+            currentStamina >= dashStaminaCost &&
+            (canDashWhileAirborne || m_characterController.isGrounded))
+        {
+            Vector2 input = m_playerInput.GetMovementInput();
+            Vector3 forward = Camera.main.transform.forward;
+            Vector3 right = Camera.main.transform.right;
+            forward.y = right.y = 0f;
+
+            dashDirection = input.sqrMagnitude > 0.01f
+                ? (forward * input.y + right * input.x).normalized
+                : transform.forward;
+
+            StartDash();
+        }
+
+        if (isDashing)
+        {
+            m_characterController.Move(dashDirection * (dashDistance / dashDuration) * Time.deltaTime);
+            dashTimeRemaining -= Time.deltaTime;
+
+            if (dashTimeRemaining <= 0f)
+                isDashing = false;
+        }
+    }
+
+    private void StartDash()
     {
         isDashing = true;
         dashTimeRemaining = dashDuration;
