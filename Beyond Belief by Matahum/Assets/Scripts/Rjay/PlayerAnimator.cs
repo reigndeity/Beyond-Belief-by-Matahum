@@ -7,7 +7,7 @@ public class PlayerAnimator : MonoBehaviour
     private PlayerMovement m_playerMovement;
     private PlayerInput m_playerInput;
 
-    private Animator m_animator;
+    public Animator animator;
     private string currentAnimationState;
 
     private Coroutine idleCycleCoroutine;
@@ -45,7 +45,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         m_playerMovement = GetComponent<PlayerMovement>();
         m_playerInput = GetComponent<PlayerInput>();
-        m_animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         ResetIdleRepeatCount();
     }
     
@@ -231,7 +231,7 @@ public class PlayerAnimator : MonoBehaviour
 
     private float GetAnimationLength(string animName)
     {
-        RuntimeAnimatorController ac = m_animator.runtimeAnimatorController;
+        RuntimeAnimatorController ac = animator.runtimeAnimatorController;
         foreach (var clip in ac.animationClips)
         {
             if (clip.name == animName)
@@ -250,7 +250,7 @@ public class PlayerAnimator : MonoBehaviour
         if (currentAnimationState == newAnimationState) return;
 
         float transitionDuration = GetTransitionDuration(currentAnimationState, newAnimationState);
-        m_animator.CrossFade(newAnimationState, transitionDuration);
+        animator.CrossFade(newAnimationState, transitionDuration);
         currentAnimationState = newAnimationState;
     }
 
@@ -285,7 +285,7 @@ public class PlayerAnimator : MonoBehaviour
         if (to == "player_falling") return 0.25f;
         if (to == "player_land") return 0.1f;
 
-        if (from == "player_jog" && to == "player_jogToStop") return 0.25f;
+        if (from == "player_jog" && to == "player_jogToStop") return 0.3f;
         if (from == "player_run" && to == "player_jogToStop") return 0.25f;
         if (from == "player_run" && to == "player_runToStop") return 0.5f;
 
