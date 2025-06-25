@@ -46,11 +46,11 @@ public class PlayerAnimator : MonoBehaviour
     {
         m_playerMovement = GetComponent<PlayerMovement>();
         m_playerInput = GetComponent<PlayerInput>();
-        m_playerCombat =GetComponent<PlayerCombat>();
+        m_playerCombat = GetComponent<PlayerCombat>();
         animator = GetComponent<Animator>();
         ResetIdleRepeatCount();
     }
-    
+
     public void HandleAnimations()
     {
         if (m_playerMovement.IsDashing()) return;
@@ -58,7 +58,7 @@ public class PlayerAnimator : MonoBehaviour
         float speed = m_playerMovement.Speed;
         bool hasInput = m_playerMovement.MoveDirection.magnitude > 0.1f;
         bool isMoving = hasInput && !m_playerCombat.IsAttacking();
-        
+
         float verticalVelocity = m_playerMovement.GetVerticalVelocity();
         bool isGrounded = m_playerMovement.GetComponent<CharacterController>().isGrounded;
         bool isJumping = m_playerMovement.IsJumping();
@@ -85,9 +85,9 @@ public class PlayerAnimator : MonoBehaviour
             return;
         }
 
-        if (jumpState != JumpState.None || 
-            !isGrounded || 
-            m_playerMovement.IsJumping() || 
+        if (jumpState != JumpState.None ||
+            !isGrounded ||
+            m_playerMovement.IsJumping() ||
             m_playerMovement.IsAboutToJump())
         {
             return;
@@ -116,7 +116,7 @@ public class PlayerAnimator : MonoBehaviour
                         ChangeAnimationState("player_idle_1");
                     }
 
-                    if (!isInIdleCycle && currentAnimationState == "player_idle_1")
+                    if (!isInIdleCycle && currentAnimationState == "player_idle_1" && m_playerMovement.Speed <= 0.1f)
                     {
                         idleCycleCoroutine = StartCoroutine(IdleCycleRoutine());
                     }
@@ -131,6 +131,7 @@ public class PlayerAnimator : MonoBehaviour
             StopCoroutine(idleCycleCoroutine);
             idleCycleCoroutine = null;
             isInIdleCycle = false;
+            ResetIdleRepeatCount();
         }
 
         if (m_playerMovement.isSprinting)
@@ -196,41 +197,59 @@ public class PlayerAnimator : MonoBehaviour
     {
         isInIdleCycle = true;
 
-        if (!m_playerMovement.GetComponent<CharacterController>().isGrounded)
+        while (true)
         {
-            isInIdleCycle = false;
-            yield break;
+            yield return new WaitForSeconds(GetAnimationLength("player_idle_1"));
+
+            if (m_playerMovement.Speed > 0.1f || !m_playerMovement.GetComponent<CharacterController>().isGrounded)
+            {
+                ResetIdleCycle();
+                yield break;
+            }
+
+            if (currentAnimationState != "player_idle_1")
+            {
+                ResetIdleCycle();
+                yield break;
+            }
+
+            consecutiveIdle1Count++;
+
+            if (consecutiveIdle1Count >= requiredIdle1Repeats)
+            {
+                string nextIdle = Random.value > 0.5f ? "player_idle_2" : "player_idle_3";
+                ChangeAnimationState(nextIdle);
+
+                yield return new WaitForSeconds(GetAnimationLength(nextIdle));
+
+                if (m_playerMovement.Speed > 0.1f)
+                {
+                    ResetIdleCycle();
+                    yield break;
+                }
+
+                ChangeAnimationState("player_idle_1");
+                ResetIdleRepeatCount();
+            }
         }
-
-        yield return new WaitForSeconds(GetAnimationLength("player_idle_1"));
-
-        if (m_playerMovement.Speed > 0.1f) { isInIdleCycle = false; yield break; }
-
-        consecutiveIdle1Count++;
-
-        if (consecutiveIdle1Count < requiredIdle1Repeats)
-        {
-            ChangeAnimationState("player_idle_1");
-            idleCycleCoroutine = StartCoroutine(IdleCycleRoutine());
-            yield break;
-        }
-
-        string nextIdle = Random.value > 0.5f ? "player_idle_2" : "player_idle_3";
-        ChangeAnimationState(nextIdle);
-        yield return new WaitForSeconds(GetAnimationLength(nextIdle));
-
-        if (m_playerMovement.Speed > 0.1f) { isInIdleCycle = false; yield break; }
-
-        ChangeAnimationState("player_idle_1");
-        ResetIdleRepeatCount();
-
-        idleCycleCoroutine = StartCoroutine(IdleCycleRoutine());
     }
 
     private void ResetIdleRepeatCount()
     {
         consecutiveIdle1Count = 0;
         requiredIdle1Repeats = Random.Range(3, 6);
+    }
+
+    private void ResetIdleCycle()
+    {
+        isInIdleCycle = false;
+        ResetIdleRepeatCount();
+
+        if (idleCycleCoroutine != null)
+        {
+            StopCoroutine(idleCycleCoroutine);
+            idleCycleCoroutine = null;
+        }
     }
 
     private float GetAnimationLength(string animName)
@@ -273,7 +292,6 @@ public class PlayerAnimator : MonoBehaviour
         if (from == "player_land" && to == "player_walk") return 0.15f;
         if (from == "player_land" && to == "player_run") return 0.15f;
 
-        // MIGHT REMOVE THIS LATER
         if (from == "player_idle_1" && to == "player_idle_2") return 0f;
         if (from == "player_idle_1" && to == "player_idle_3") return 0f;
         if (from == "player_idle_2" && to == "player_idle_3") return 0f;
@@ -292,6 +310,12 @@ public class PlayerAnimator : MonoBehaviour
         if (from == "player_jog" && to == "player_jogToStop") return 0.3f;
         if (from == "player_run" && to == "player_jogToStop") return 0.25f;
         if (from == "player_run" && to == "player_runToStop") return 0.5f;
+
+        
+        if (from == "player_attack_1" && to == "player_jog") return 0.25f;
+        if (from == "player_attack_2" && to == "player_jog") return 0.25f;
+        if (from == "player_attack_3" && to == "player_jog") return 0.25f;
+        if (from == "player_attack_4" && to == "player_jog") return 0.25f;
 
         return 0.2f;
     }

@@ -9,7 +9,6 @@ public class PlayerCombat : MonoBehaviour
 
     public bool isAttacking = false;
     private bool canMoveDuringAttack = false;
-
     public bool IsAttacking() => isAttacking;
     public bool CanMoveDuringAttack() => canMoveDuringAttack;
 
@@ -24,7 +23,7 @@ public class PlayerCombat : MonoBehaviour
     {
         // Prevent attacking while not grounded
         if (!m_playerMovement.GetComponent<CharacterController>().isGrounded) return;
-
+        
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             m_playerAnimator.animator.SetTrigger("attack");
@@ -70,5 +69,10 @@ public class PlayerCombat : MonoBehaviour
     {
         isAttacking = false;
         canMoveDuringAttack = true;
+    }
+    public void ResetAttackCombo()
+    {
+        int attackLayerIndex = m_playerAnimator.animator.GetLayerIndex("Attack Layer");
+        m_playerAnimator.animator.Play("Empty State", attackLayerIndex, 0f);
     }
 }

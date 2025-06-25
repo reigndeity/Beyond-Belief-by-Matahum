@@ -293,6 +293,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void StartDash()
     {
+        m_playerCombat.ResetAttackCombo();
         isDashing = true;
         dashTimeRemaining = dashDuration;
         dashCooldownTimer = dashCooldown;
