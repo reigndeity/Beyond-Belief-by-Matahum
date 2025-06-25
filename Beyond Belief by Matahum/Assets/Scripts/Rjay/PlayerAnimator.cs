@@ -6,6 +6,7 @@ public class PlayerAnimator : MonoBehaviour
     public static PlayerAnimator instance;
     private PlayerMovement m_playerMovement;
     private PlayerInput m_playerInput;
+    private PlayerCombat m_playerCombat;
 
     public Animator animator;
     private string currentAnimationState;
@@ -45,6 +46,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         m_playerMovement = GetComponent<PlayerMovement>();
         m_playerInput = GetComponent<PlayerInput>();
+        m_playerCombat =GetComponent<PlayerCombat>();
         animator = GetComponent<Animator>();
         ResetIdleRepeatCount();
     }
@@ -54,7 +56,9 @@ public class PlayerAnimator : MonoBehaviour
         if (m_playerMovement.IsDashing()) return;
 
         float speed = m_playerMovement.Speed;
-        bool isMoving = speed > 0.1f;
+        bool hasInput = m_playerMovement.MoveDirection.magnitude > 0.1f;
+        bool isMoving = hasInput && !m_playerCombat.IsAttacking();
+        
         float verticalVelocity = m_playerMovement.GetVerticalVelocity();
         bool isGrounded = m_playerMovement.GetComponent<CharacterController>().isGrounded;
         bool isJumping = m_playerMovement.IsJumping();

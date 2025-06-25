@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private CharacterController m_characterController;
     private PlayerInput m_playerInput;
+    private PlayerCombat m_playerCombat;
 
     [Header("Movement Speeds")]
     public float walkSpeed = 2f;
@@ -36,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     private float verticalVelocity = 0f;
 
     [Header("Landing Settings")]
-    public float landingVelocityThreshold = -3f;
+    public float landingVelocityThreshold = -2f;
 
     [Header("Stamina Settings")]
     public float maxStamina = 100f;
@@ -82,10 +83,11 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 airMomentum = Vector3.zero;
 
-    void Awake()
+    void Start()
     {
         m_characterController = GetComponent<CharacterController>();
         m_playerInput = GetComponent<PlayerInput>();
+        m_playerCombat = GetComponent<PlayerCombat>();
         currentStamina = maxStamina;
         currentMoveSpeed = jogSpeed;
     }
@@ -93,8 +95,6 @@ public class PlayerMovement : MonoBehaviour
     public void HandleMovement()
     {
         HandleMovementMode();
-        HandleDash();
-        HandleJump();
 
         Vector2 input = m_playerInput.GetMovementInput();
         Vector3 forward = Camera.main.transform.forward;
@@ -102,6 +102,12 @@ public class PlayerMovement : MonoBehaviour
         forward.y = 0f;
         right.y = 0f;
         Vector3 inputDir = (forward * input.y + right * input.x).normalized;
+
+        if (m_playerCombat.IsAttacking() && !m_playerCombat.CanMoveDuringAttack())
+        {
+            MoveDirection = Vector3.zero;
+            return; // skip rest of movement
+        }
 
         if (m_characterController.isGrounded)
         {
@@ -142,8 +148,11 @@ public class PlayerMovement : MonoBehaviour
         wasGroundedLastFrame = m_characterController.isGrounded;
     }
 
-    private void HandleJump()
+    public void HandleJump()
     {
+        if (m_playerCombat.IsAttacking() && !m_playerCombat.CanMoveDuringAttack())
+        return;
+        
         if (jumpCooldownTimer > 0f)
             jumpCooldownTimer -= Time.deltaTime;
 
@@ -251,7 +260,7 @@ public class PlayerMovement : MonoBehaviour
         wasHoldingSprint = isHoldingSprint;
     }
 
-    private void HandleDash()
+    public void HandleDash()
     {
         dashCooldownTimer -= Time.deltaTime;
 

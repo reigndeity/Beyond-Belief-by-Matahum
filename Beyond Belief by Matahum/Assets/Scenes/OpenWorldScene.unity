@@ -8918,7 +8918,8 @@ MonoBehaviour:
   gravity: -9.81
   fallMultiplier: 2
   riseMultiplier: 1.5
-  landingVelocityThreshold: -3
+  landingVelocityThreshold: -5
+  minAirTimeToTriggerLanding: 0.15
   maxStamina: 100
   currentStamina: 0
   staminaDrainRate: 15
@@ -9599,6 +9600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a9d6292a5f48448b27241ff19572cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
 --- !u!114 &5373521251738816406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9611,6 +9613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f51875afea4eb6f4cb9dbcf2fd466a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAttacking: 0
 --- !u!114 &5373521251738816407
 MonoBehaviour:
   m_ObjectHideFlags: 0

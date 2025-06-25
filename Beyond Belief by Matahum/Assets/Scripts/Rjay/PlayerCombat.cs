@@ -7,6 +7,12 @@ public class PlayerCombat : MonoBehaviour
     private PlayerMovement m_playerMovement;
     private CharacterController m_characterController;
 
+    public bool isAttacking = false;
+    private bool canMoveDuringAttack = false;
+
+    public bool IsAttacking() => isAttacking;
+    public bool CanMoveDuringAttack() => canMoveDuringAttack;
+
     void Start()
     {
         m_playerAnimator = GetComponent<PlayerAnimator>();
@@ -16,23 +22,15 @@ public class PlayerCombat : MonoBehaviour
 
     public void HandleAttack()
     {
+        // Prevent attacking while not grounded
+        if (!m_playerMovement.GetComponent<CharacterController>().isGrounded) return;
+
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             m_playerAnimator.animator.SetTrigger("attack");
+            AttackState();
         }
     }
-
-    public void EnableRootMotion()
-    {
-        m_playerAnimator.animator.applyRootMotion = true;
-    }
-    public void DisableRootMotion()
-    {
-        m_playerAnimator.animator.applyRootMotion = false;
-    }
-    public void AttackTwoPush() => PushPlayerForward(0.5f,0.12f);
-    public void AttackThreePush() => PushPlayerForward(1f, 0.3f);
-    public void AttackFourPush() => PushPlayerForward(0.5f, 0.15f);
     public void PushPlayerForward(float distance, float duration)
     {
         StartCoroutine(SmoothPushRoutine(distance, duration));
@@ -48,12 +46,29 @@ public class PlayerCombat : MonoBehaviour
         while (elapsed < duration)
         {
             float step = (totalDistance / duration) * Time.deltaTime;
-            m_characterController.Move(direction * step);
+
+            // Combine horizontal push and vertical motion
+            Vector3 push = direction * step;
+            push.y = m_playerMovement.GetVerticalVelocity() * Time.deltaTime;
+
+            m_characterController.Move(push);
 
             elapsed += Time.deltaTime;
             yield return null;
         }
     }
-
-
+    // ANIMATOR EVENT SYSTEM
+    public void AttackTwoPush() => PushPlayerForward(0.5f,0.12f);
+    public void AttackThreePush() => PushPlayerForward(1f, 0.3f);
+    public void AttackFourPush() => PushPlayerForward(0.5f, 0.15f);
+    private void AttackState()
+    {
+        isAttacking = true;
+        canMoveDuringAttack = false;
+    }
+    private void ResetAttackState()
+    {
+        isAttacking = false;
+        canMoveDuringAttack = true;
+    }
 }
