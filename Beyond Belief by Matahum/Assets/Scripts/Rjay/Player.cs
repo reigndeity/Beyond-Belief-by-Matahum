@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        m_playerAnimator.HandleAnimations();
+        
         m_playerMovement.HandleMovement();
         m_playerMovement.HandleDash();
         m_playerMovement.HandleJump();
@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
 
         float currentSpeed = m_playerMovement.Speed;
         m_playerAnimator.lastFrameSpeed = currentSpeed;
+        m_playerAnimator.HandleAnimations();
 
         // --- Determine current player state ---
         if (m_playerMovement.IsDashing())

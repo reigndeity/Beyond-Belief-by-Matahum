@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerAnimator : MonoBehaviour
 {
-    public static PlayerAnimator instance;
     private PlayerMovement m_playerMovement;
     private PlayerInput m_playerInput;
     private PlayerCombat m_playerCombat;
@@ -25,21 +25,15 @@ public class PlayerAnimator : MonoBehaviour
 
     public float lastFrameSpeed = 0f;
 
+    // Speed buffer fields
+    private Queue<float> recentSpeeds = new Queue<float>();
+    private float speedSampleInterval = 0.02f;
+    private float speedSampleTimer = 0f;
+    private float speedMemoryDuration = 0.1f;
+
     void OnEnable()
     {
         PlayerMovement.OnDashStarted += HandleDashAnimation;
-    }
-
-    void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            instance = this;
-        }
     }
 
     void Start()
@@ -56,13 +50,24 @@ public class PlayerAnimator : MonoBehaviour
         if (m_playerMovement.IsDashing()) return;
 
         float speed = m_playerMovement.Speed;
+        lastFrameSpeed = speed;
+
+        // Update recent speed history
+        speedSampleTimer += Time.deltaTime;
+        if (speedSampleTimer >= speedSampleInterval)
+        {
+            speedSampleTimer = 0f;
+            recentSpeeds.Enqueue(speed);
+            while (recentSpeeds.Count > Mathf.CeilToInt(speedMemoryDuration / speedSampleInterval))
+                recentSpeeds.Dequeue();
+        }
+
         bool hasInput = m_playerMovement.MoveDirection.magnitude > 0.1f;
         bool isMoving = hasInput && !m_playerCombat.IsAttacking();
 
         float verticalVelocity = m_playerMovement.GetVerticalVelocity();
         bool isGrounded = m_playerMovement.GetComponent<CharacterController>().isGrounded;
         bool isJumping = m_playerMovement.IsJumping();
-        bool justLanded = m_playerMovement.JustLanded();
 
         if (isJumping && jumpState == JumpState.None)
         {
@@ -95,64 +100,81 @@ public class PlayerAnimator : MonoBehaviour
 
         if (!isMoving)
         {
-            if (!isPlayingStopAnimation)
-            {
-                if (lastFrameSpeed >= 7.9f && currentAnimationState != "player_runToStop")
-                {
-                    stopAnimationCoroutine = StartCoroutine(PlayStopAnimation("player_runToStop"));
-                    return;
-                }
-                else if (lastFrameSpeed >= 4.9f && currentAnimationState != "player_jogToStop")
-                {
-                    stopAnimationCoroutine = StartCoroutine(PlayStopAnimation("player_jogToStop"));
-                    return;
-                }
-                else
-                {
-                    if (currentAnimationState != "player_idle_1" &&
-                        currentAnimationState != "player_idle_2" &&
-                        currentAnimationState != "player_idle_3")
-                    {
-                        ChangeAnimationState("player_idle_1");
-                    }
-
-                    if (!isInIdleCycle && currentAnimationState == "player_idle_1" && m_playerMovement.Speed <= 0.1f)
-                    {
-                        idleCycleCoroutine = StartCoroutine(IdleCycleRoutine());
-                    }
-                }
-            }
-
-            return;
-        }
-
-        if (idleCycleCoroutine != null)
-        {
-            StopCoroutine(idleCycleCoroutine);
-            idleCycleCoroutine = null;
-            isInIdleCycle = false;
-            ResetIdleRepeatCount();
-        }
-
-        if (m_playerMovement.isSprinting)
-        {
-            ChangeAnimationState("player_run");
-        }
-        else if (m_playerMovement.IsWalking)
-        {
-            ChangeAnimationState("player_walk");
+            HandleStopAndIdleAnimations();
         }
         else
         {
-            ChangeAnimationState("player_jog");
+            if (idleCycleCoroutine != null)
+            {
+                StopCoroutine(idleCycleCoroutine);
+                idleCycleCoroutine = null;
+                isInIdleCycle = false;
+                ResetIdleRepeatCount();
+            }
+
+            if (m_playerMovement.isSprinting)
+            {
+                ChangeAnimationState("player_run");
+            }
+            else if (m_playerMovement.IsWalking)
+            {
+                ChangeAnimationState("player_walk");
+            }
+            else
+            {
+                ChangeAnimationState("player_jog");
+            }
         }
+    }
+
+    private void HandleStopAndIdleAnimations()
+    {
+        if (isPlayingStopAnimation) return;
+
+        if (JustStoppedAbruptly(7.9f))
+        {
+            ChangeAnimationState("player_runToStop");
+            stopAnimationCoroutine = StartCoroutine(PlayStopAnimation("player_runToStop"));
+            return;
+        }
+        else if (JustStoppedAbruptly(4.9f))
+        {
+            ChangeAnimationState("player_jogToStop");
+            stopAnimationCoroutine = StartCoroutine(PlayStopAnimation("player_jogToStop"));
+            return;
+        }
+
+        if (currentAnimationState != "player_idle_1" &&
+            currentAnimationState != "player_idle_2" &&
+            currentAnimationState != "player_idle_3")
+        {
+            ChangeAnimationState("player_idle_1");
+        }
+
+        if (!isInIdleCycle && currentAnimationState == "player_idle_1" && m_playerMovement.Speed <= 0.1f)
+        {
+            idleCycleCoroutine = StartCoroutine(IdleCycleRoutine());
+        }
+    }
+
+    private bool JustStoppedAbruptly(float threshold)
+    {
+        if (m_playerMovement.Speed > 0.1f) return false;
+
+        foreach (float pastSpeed in recentSpeeds)
+        {
+            if (pastSpeed >= threshold)
+                return true;
+        }
+
+        return false;
     }
 
     private IEnumerator PlayStopAnimation(string animName)
     {
+
         isPlayingStopAnimation = true;
 
-        ChangeAnimationState(animName);
         float duration = GetAnimationLength(animName);
         float timer = 0f;
 
@@ -174,6 +196,7 @@ public class PlayerAnimator : MonoBehaviour
     private IEnumerator PlayLandAnimation()
     {
         ChangeAnimationState("player_land");
+        recentSpeeds.Clear(); // clear buffer when landing
 
         float duration = GetAnimationLength("player_land");
         float timer = 0f;
@@ -266,6 +289,7 @@ public class PlayerAnimator : MonoBehaviour
     private void HandleDashAnimation()
     {
         ChangeAnimationState("player_dash");
+        recentSpeeds.Clear(); // clear buffer on dash
     }
 
     public void ChangeAnimationState(string newAnimationState)
@@ -311,7 +335,6 @@ public class PlayerAnimator : MonoBehaviour
         if (from == "player_run" && to == "player_jogToStop") return 0.25f;
         if (from == "player_run" && to == "player_runToStop") return 0.5f;
 
-        
         if (from == "player_attack_1" && to == "player_jog") return 0.25f;
         if (from == "player_attack_2" && to == "player_jog") return 0.25f;
         if (from == "player_attack_3" && to == "player_jog") return 0.25f;

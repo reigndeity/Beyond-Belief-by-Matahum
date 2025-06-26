@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController m_characterController;
     private PlayerInput m_playerInput;
     private PlayerCombat m_playerCombat;
+    private PlayerAnimator m_playerAnimator;
 
     [Header("Movement Speeds")]
     public float walkSpeed = 2f;
@@ -88,6 +89,7 @@ public class PlayerMovement : MonoBehaviour
         m_characterController = GetComponent<CharacterController>();
         m_playerInput = GetComponent<PlayerInput>();
         m_playerCombat = GetComponent<PlayerCombat>();
+        m_playerAnimator = GetComponent<PlayerAnimator>();
         currentStamina = maxStamina;
         currentMoveSpeed = jogSpeed;
     }
@@ -182,7 +184,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 isJumpStarting = true;
                 jumpStartTimer = jumpStartDelay;
-                PlayerAnimator.instance.ChangeAnimationState("player_jump");
+                m_playerAnimator.ChangeAnimationState("player_jump");
             }
             else
             {
@@ -193,7 +195,7 @@ public class PlayerMovement : MonoBehaviour
                 if (retainMomentumAfterJump)
                     airMomentum = MoveDirection;
 
-                PlayerAnimator.instance.ChangeAnimationState("player_jump");
+                m_playerAnimator.ChangeAnimationState("player_jump");
             }
 
             return;
