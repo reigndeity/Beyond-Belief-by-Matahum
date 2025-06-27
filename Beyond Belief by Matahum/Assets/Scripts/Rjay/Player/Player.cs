@@ -9,13 +9,14 @@ public enum PlayerState
     COMBAT,
     DASHING
 }
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     private PlayerAnimator m_playerAnimator;
     private PlayerMovement m_playerMovement;
     private PlayerInput m_playerInput;
     private PlayerCombat m_playerCombat;
-    
+    private PlayerSkills m_playerSkills;
+    private PlayerStats m_playerStats;
     public PlayerState currentState;
 
 
@@ -25,6 +26,8 @@ public class Player : MonoBehaviour
         m_playerMovement = GetComponent<PlayerMovement>();
         m_playerInput = GetComponent<PlayerInput>();
         m_playerCombat = GetComponent<PlayerCombat>();
+        m_playerSkills = GetComponent<PlayerSkills>();
+        m_playerStats = GetComponent<PlayerStats>();
     }
 
     void Update()
@@ -34,6 +37,7 @@ public class Player : MonoBehaviour
         m_playerMovement.HandleDash();
         m_playerMovement.HandleJump();
         m_playerCombat.HandleAttack();
+        m_playerSkills.HandleSkills();
 
         float currentSpeed = m_playerMovement.Speed;
         m_playerAnimator.lastFrameSpeed = currentSpeed;
@@ -67,6 +71,35 @@ public class Player : MonoBehaviour
         else
         {
             currentState = PlayerState.IDLE;
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        bool isCriticalHit = Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
+        float damageReduction = m_playerStats.p_defense * 0.66f; // Defense Scaling
+        float reducedDamage = damage - damageReduction; // Damage after Defense
+        if (isCriticalHit)
+        {
+            reducedDamage *= (1f + (m_playerStats.p_criticalDamage / 100f)); // Crit multiplier if critical hit
+        }
+        int finalDamage = Mathf.Max(Mathf.FloorToInt(reducedDamage), 1); // If defense is greater, cap the damage at 1
+
+        m_playerStats.p_currentHealth -= finalDamage; // Final Damage
+        m_playerStats.p_currentHealth = Mathf.Clamp(m_playerStats.p_currentHealth, 0f, m_playerStats.p_maxHealth); // Health cannot go below 0
+
+        if (isCriticalHit) // Damage Pop Up Here
+        {
+            Debug.Log($"💥 CRITICAL HIT! Player took {finalDamage} damage. Current Health: {m_playerStats.p_currentHealth}");
+        }
+        else
+        {
+            Debug.Log($"Player took {finalDamage} damage. Current Health: {m_playerStats.p_currentHealth}");
+        }
+
+        if (m_playerStats.p_currentHealth <= 0f) // Death check
+        {
+            Debug.Log("Player is dead.");
         }
     }
 }

@@ -36,6 +36,12 @@ public class PlayerCamera : MonoBehaviour
 
     private Vector3 currentVelocity;
 
+    // Camera shake
+    private float shakeTimer = 0f;
+    private float shakeDuration = 0f;
+    private float shakeMagnitude = 0f;
+    private Vector3 shakeOffset = Vector3.zero;
+
     void Start()
     {
         desiredDistance = currentDistance = maxDistance;
@@ -60,32 +66,42 @@ public class PlayerCamera : MonoBehaviour
     void LateUpdate()
     {
         if (playerTarget == null) return;
-
         Vector3 targetPosition = playerTarget.position;
 
-        // Smooth rotation
+        UpdateShake();
+        UpdateRotation();
+        UpdateDistanceWithCollision(targetPosition);
+        UpdateCameraPosition(targetPosition);
+    }
+
+    void UpdateRotation()
+    {
         Vector3 targetRotation = new Vector3(pitch, yaw);
         currentRotation = Vector3.SmoothDamp(currentRotation, targetRotation, ref rotationSmoothVelocity, rotationSmoothTime);
-        Quaternion rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, 0);
+        transform.rotation = Quaternion.Euler(currentRotation + shakeOffset); // apply shake here
+    }
 
-        // Calculate desired camera position
+    void UpdateDistanceWithCollision(Vector3 targetPosition)
+    {
+        Quaternion rotation = Quaternion.Euler(currentRotation);
         Vector3 desiredCameraPos = targetPosition - (rotation * Vector3.forward * desiredDistance);
 
-        // Sphere cast for collision
         if (Physics.SphereCast(targetPosition, cameraRadius, desiredCameraPos - targetPosition, out RaycastHit hit, desiredDistance, collisionLayers))
         {
-            float adjustedDistance = hit.distance - 0.1f;
-            currentDistance = Mathf.SmoothDamp(currentDistance, Mathf.Clamp(adjustedDistance, minDistance, maxDistance), ref distanceSmoothVelocity, 1f / collisionSmoothSpeed);
+            float adjustedDistance = Mathf.Max(hit.distance - 0.1f, minDistance);
+            currentDistance = Mathf.SmoothDamp(currentDistance, adjustedDistance, ref distanceSmoothVelocity, 1f / collisionSmoothSpeed);
         }
         else
         {
             currentDistance = Mathf.SmoothDamp(currentDistance, desiredDistance, ref distanceSmoothVelocity, 1f / collisionSmoothSpeed);
         }
+    }
 
-        // Final camera position
+    void UpdateCameraPosition(Vector3 targetPosition)
+    {
+        Quaternion rotation = Quaternion.Euler(currentRotation);
         Vector3 finalCameraPos = targetPosition - (rotation * Vector3.forward * currentDistance);
         transform.position = Vector3.SmoothDamp(transform.position, finalCameraPos, ref currentVelocity, 1f / followSmoothSpeed);
-        transform.rotation = rotation;
     }
 
     void HandleRotation()
@@ -120,6 +136,28 @@ public class PlayerCamera : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+        }
+    }
+
+    public void CameraShake(float duration, float magnitude)
+    {
+        shakeDuration = duration;
+        shakeMagnitude = magnitude;
+        shakeTimer = duration;
+    }
+
+    void UpdateShake()
+    {
+        if (shakeTimer > 0f)
+        {
+            shakeTimer -= Time.deltaTime;
+            float shakeStrength = shakeMagnitude * (shakeTimer / shakeDuration); // linear fade
+            shakeOffset = Random.insideUnitSphere * shakeStrength;
+            shakeOffset.z = 0f; // don't shake forward/backward
+        }
+        else
+        {
+            shakeOffset = Vector3.zero;
         }
     }
 }

@@ -5,6 +5,7 @@ public class PlayerCombat : MonoBehaviour
 {
     private PlayerAnimator m_playerAnimator;
     private PlayerMovement m_playerMovement;
+    private PlayerWeapon m_playerWeapon;
     private CharacterController m_characterController;
 
     public bool isAttacking = false;
@@ -16,6 +17,7 @@ public class PlayerCombat : MonoBehaviour
     {
         m_playerAnimator = GetComponent<PlayerAnimator>();
         m_playerMovement = GetComponent<PlayerMovement>();
+        m_playerWeapon = GetComponentInChildren<PlayerWeapon>();
         m_characterController = GetComponent<CharacterController>();
     }
 
@@ -57,6 +59,11 @@ public class PlayerCombat : MonoBehaviour
         }
     }
     // ANIMATOR EVENT SYSTEM
+    public void DashState()
+    {
+        ResetAttackState();
+        DisableWeaponCollider();
+    }
     public void AttackTwoPush() => PushPlayerForward(0.5f,0.12f);
     public void AttackThreePush() => PushPlayerForward(1f, 0.3f);
     public void AttackFourPush() => PushPlayerForward(0.5f, 0.15f);
@@ -75,4 +82,7 @@ public class PlayerCombat : MonoBehaviour
         int attackLayerIndex = m_playerAnimator.animator.GetLayerIndex("Attack Layer");
         m_playerAnimator.animator.Play("Empty State", attackLayerIndex, 0f);
     }
+    public void AttackScaling (float value) => m_playerWeapon.m_scalingAmount = value;
+    public void EnableWeaponCollider() => m_playerWeapon.weaponCollider.enabled = true;
+    public void DisableWeaponCollider() => m_playerWeapon.weaponCollider.enabled = false;
 }

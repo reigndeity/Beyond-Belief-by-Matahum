@@ -96,6 +96,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void HandleMovement()
     {
+        if (GetComponent<PlayerSkills>().isUsingNormalSkill || GetComponent<PlayerSkills>().isUsingUltimateSkill)
+            return;
+        
         HandleMovementMode();
 
         Vector2 input = m_playerInput.GetMovementInput();
@@ -152,8 +155,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void HandleJump()
     {
+        if (GetComponent<PlayerSkills>().isUsingNormalSkill || GetComponent<PlayerSkills>().isUsingUltimateSkill)
+            return;
         if (m_playerCombat.IsAttacking() && !m_playerCombat.CanMoveDuringAttack())
-        return;
+            return;
         
         if (jumpCooldownTimer > 0f)
             jumpCooldownTimer -= Time.deltaTime;
@@ -264,6 +269,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void HandleDash()
     {
+        if (GetComponent<PlayerSkills>().isUsingNormalSkill || GetComponent<PlayerSkills>().isUsingUltimateSkill)
+            return;
+        
         dashCooldownTimer -= Time.deltaTime;
 
         if (Input.GetKeyDown(m_playerInput.sprintKey) &&
