@@ -1481,6 +1481,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &905839486 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -4731029571240481571, guid: 3d2fbe369b19fe94da7063cdebef2d08, type: 3}
+  m_PrefabInstance: {fileID: 1637495815}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &914969748 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3283938581938065238, guid: 439d232f993104043ae34afc9227a767, type: 3}
@@ -31789,6 +31794,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3d2fbe369b19fe94da7063cdebef2d08, type: 3}
   m_PrefabInstance: {fileID: 1637495815}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &1091222989 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4091825310068372407, guid: 3d2fbe369b19fe94da7063cdebef2d08, type: 3}
+  m_PrefabInstance: {fileID: 1637495815}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1132170339 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -6708913865958490189, guid: fd4f95eda47865b45a696d7e9ecc448a, type: 3}
@@ -31869,6 +31879,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1268134436}
   m_CullTransparentMesh: 1
+--- !u!137 &1308690727 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -8046322957678719608, guid: 3d2fbe369b19fe94da7063cdebef2d08, type: 3}
+  m_PrefabInstance: {fileID: 1637495815}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1347329958
 GameObject:
   m_ObjectHideFlags: 0
@@ -35635,6 +35650,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83182c285e105334188237462dcd2ccf, type: 3}
+--- !u!137 &1736791539 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1063473005156076099, guid: 3d2fbe369b19fe94da7063cdebef2d08, type: 3}
+  m_PrefabInstance: {fileID: 1637495815}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1873212884
 GameObject:
   m_ObjectHideFlags: 0
@@ -35969,6 +35989,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!137 &1927216395 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -6469497316127715952, guid: 3d2fbe369b19fe94da7063cdebef2d08, type: 3}
+  m_PrefabInstance: {fileID: 1637495815}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1928640821
 GameObject:
   m_ObjectHideFlags: 0
@@ -36172,6 +36197,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponCollider: {fileID: 0}
   m_scalingAmount: 0
+  renderers:
+  - {fileID: 905839486}
+  - {fileID: 1736791539}
+  - {fileID: 1927216395}
+  - {fileID: 1091222989}
+  - {fileID: 1308690727}
 --- !u!4 &2026743946 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6990385437608035585, guid: 5e3557cff7729fe4486e5cd224460e35, type: 3}
@@ -43703,7 +43734,7 @@ MonoBehaviour:
   AnimationFloorLevel: 0.001
   _Editor_Foldout_Setup_LegsList: 1
   _Editor_EnsureCount: 0
-  _Editor_OnValidateTrigger: 1
+  _Editor_OnValidateTrigger: 0
   _EditorAllowAutoUpdateFeetParams: 1
   _EditorCategory: 1
   _EditorSetupCategory: 1

@@ -74,6 +74,7 @@ public class Player : MonoBehaviour, IDamageable
         }
     }
 
+
     public void TakeDamage(float damage)
     {
         bool isCriticalHit = Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
