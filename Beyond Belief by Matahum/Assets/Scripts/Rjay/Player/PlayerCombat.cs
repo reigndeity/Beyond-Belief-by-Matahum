@@ -63,7 +63,6 @@ public class PlayerCombat : MonoBehaviour
     {
         ResetAttackState();
         DisableWeaponCollider();
-        HideWeapon();
     }
     public void AttackTwoPush() => PushPlayerForward(0.5f,0.12f);
     public void AttackThreePush() => PushPlayerForward(1f, 0.3f);
@@ -89,5 +88,9 @@ public class PlayerCombat : MonoBehaviour
     public void EnableWeaponCollider() => m_playerWeapon.weaponCollider.enabled = true;
     public void DisableWeaponCollider() => m_playerWeapon.weaponCollider.enabled = false;
     public void ShowWeapon() => m_playerWeapon.UndissolveWeapon(0.1f);
-    public void HideWeapon() => m_playerWeapon.DissolveWeapon(1f);
+    public void HideWeapon()
+    {
+        m_playerWeapon.DissolveWeapon(1f);
+        m_playerWeapon.swordParticleSystem.Play();
+    }
 }

@@ -7,6 +7,8 @@ public class PlayerWeapon : MonoBehaviour
     private PlayerStats m_playerStats;
     public Collider weaponCollider;
     public float m_scalingAmount;
+    [Header("Particle To Play when Dissolving Weapon")]
+    public ParticleSystem swordParticleSystem;
 
     [Header("Materials to Dissolve (shared shader)")]
     public Renderer[] renderers;
@@ -25,7 +27,7 @@ public class PlayerWeapon : MonoBehaviour
     {
         m_playerStats = GetComponentInParent<PlayerStats>();
         weaponCollider = GetComponent<Collider>();
-        UndissolveWeapon(0f);
+        DissolveWeapon(0f);
     }
     private void OnTriggerEnter(Collider other)
     {
