@@ -184,6 +184,16 @@ public class PlayerCombat : MonoBehaviour
     public void HideWeapon() => m_playerWeapon.DissolveWeapon(1f);
     public void ShowWeaponParticle() => m_playerWeapon.ShowDissolveWeaponParticles();
     public void HideWeaponParticle() => m_playerWeapon.HideDissolveWeaponParticles();
+
+    public void SwordSlashOne() => m_playerWeapon.SpawnSwordTrail(0);
+    public void SwordSlashTwo() => m_playerWeapon.SpawnSwordTrail(1);
+    public void SwordSlashThree() => m_playerWeapon.SpawnSwordTrail(2);
+    public void SwordSlashFour() => m_playerWeapon.SpawnSwordTrail(3);
+    public void SwordSlashFive() => m_playerWeapon.SpawnSwordTrail(4);
+
+
+
+
     void OnDrawGizmosSelected()
     {
     #if UNITY_EDITOR

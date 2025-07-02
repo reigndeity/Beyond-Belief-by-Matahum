@@ -124,6 +124,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -5326450124388076661, guid: fd4f95eda47865b45a696d7e9ecc448a, type: 3}
   m_PrefabInstance: {fileID: 1716928225}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &128006491
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 128006492}
+  m_Layer: 3
+  m_Name: Sword Slash Transform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &128006492
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 128006491}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4744900335235487031}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &208270190
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36035,6 +36066,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponCollider: {fileID: 0}
   m_scalingAmount: 0
+  swordTrail:
+  - {fileID: 2510393243666132724, guid: 451fa94e4fefcde44aeaa9fd5dc99eaa, type: 3}
+  - {fileID: 3108299431024383809, guid: 78166505f7407bb4cbdb950029882746, type: 3}
+  - {fileID: 5759961639807214046, guid: b4ba7b59f5432c3469319362da682e8b, type: 3}
+  - {fileID: 8210780047171757745, guid: c6abff791bf26fa4c9c96687dbb19acb, type: 3}
+  - {fileID: 4790812795876911426, guid: 9787cfee2353df443b55f247bb3e00d5, type: 3}
+  swordTrailTransform: {fileID: 128006492}
   hitImpactPrefab: {fileID: 2387171128282569241, guid: 2500a65a02b5d684c83264a63bf1abb8, type: 3}
   isWeaponShowing: 0
   dissolveParticleSystem: {fileID: 2100754522}
@@ -46599,6 +46637,7 @@ Transform:
   - {fileID: 587344417764147751}
   - {fileID: 1372992997}
   - {fileID: 1557210791}
+  - {fileID: 128006492}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4748622647606302142
