@@ -7,6 +7,8 @@ public class PlayerWeapon : MonoBehaviour
     private PlayerStats m_playerStats;
     public Collider weaponCollider;
     public float m_scalingAmount;
+    [Header("Hit Impact")]
+    public GameObject hitImpactPrefab;
 
     [Header("Weapon Visibility")]
     public bool isWeaponShowing;
@@ -44,6 +46,8 @@ public class PlayerWeapon : MonoBehaviour
             float damage = m_playerStats.p_attack * m_scalingAmount;
             Debug.Log(m_scalingAmount);
             damageable.TakeDamage(damage);
+
+            SpawnHitImpact(other.ClosestPoint(transform.position));
         }
     }
 
@@ -108,5 +112,22 @@ public class PlayerWeapon : MonoBehaviour
     public void HideDissolveWeaponParticles()
     {
         dissolveParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+    }
+
+    private void SpawnHitImpact(Vector3 position)
+    {
+        if (hitImpactPrefab == null) return;
+
+        GameObject vfx = Instantiate(hitImpactPrefab, position, Quaternion.identity);
+
+        ParticleSystem ps = vfx.GetComponent<ParticleSystem>();
+        if (ps != null)
+        {
+            Destroy(vfx, ps.main.duration + ps.main.startLifetime.constantMax);
+        }
+        else
+        {
+            Destroy(vfx, 1.5f); // fallback if no particle system
+        }
     }
 }
