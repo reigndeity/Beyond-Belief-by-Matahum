@@ -7,8 +7,10 @@ public class PlayerWeapon : MonoBehaviour
     private PlayerStats m_playerStats;
     public Collider weaponCollider;
     public float m_scalingAmount;
+
     [Header("Weapon Visibility")]
     public bool isWeaponShowing;
+
     [Header("Particle To Play when Dissolving Weapon")]
     public ParticleSystem dissolveParticleSystem;
 
@@ -16,7 +18,6 @@ public class PlayerWeapon : MonoBehaviour
     public Renderer[] renderers;
 
     private List<Material> materials = new List<Material>();
-
     private Coroutine currentRoutine;
 
     private const string DISSOLVE_PROPERTY = "_Dissolve";
@@ -25,15 +26,18 @@ public class PlayerWeapon : MonoBehaviour
     {
         InitializeMaterials();
     }
+
     void Start()
     {
         m_playerStats = GetComponentInParent<PlayerStats>();
         weaponCollider = GetComponent<Collider>();
         DissolveWeapon(0f);
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player")) return;
+
         IDamageable damageable = other.GetComponent<IDamageable>();
         if (damageable != null)
         {
@@ -70,13 +74,13 @@ public class PlayerWeapon : MonoBehaviour
         currentRoutine = StartCoroutine(AnimateDissolve(GetCurrentDissolveValue(), 0f, duration));
         isWeaponShowing = true;
     }
+
     private float GetCurrentDissolveValue()
     {
         if (materials.Count > 0)
             return materials[0].GetFloat(DISSOLVE_PROPERTY);
         return 0f;
     }
-
 
     private IEnumerator AnimateDissolve(float from, float to, float duration)
     {
@@ -96,15 +100,13 @@ public class PlayerWeapon : MonoBehaviour
         foreach (var mat in materials)
             mat.SetFloat(DISSOLVE_PROPERTY, to);
     }
-    public void DissolveWeaponParticles()
+
+    public void ShowDissolveWeaponParticles()
     {
-        if (isWeaponShowing == false)
-        {
-            dissolveParticleSystem.Play();
-        }
-        else
-        {
-            return;
-        }
+        dissolveParticleSystem.Play();
+    }
+    public void HideDissolveWeaponParticles()
+    {
+        dissolveParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 }

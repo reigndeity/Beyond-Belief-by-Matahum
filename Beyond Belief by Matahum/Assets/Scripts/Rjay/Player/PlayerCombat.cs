@@ -161,6 +161,7 @@ public class PlayerCombat : MonoBehaviour
         isAttacking = true;
         canMoveDuringAttack = false;
         ShowWeapon();
+        HideWeaponParticle();
     }
 
     private void ResetAttackState()
@@ -168,7 +169,7 @@ public class PlayerCombat : MonoBehaviour
         isAttacking = false;
         canMoveDuringAttack = true;
         HideWeapon();
-        HideWeaponParticle();
+        ShowWeaponParticle();
     }
     public void ResetAttackCombo()
     {
@@ -181,8 +182,8 @@ public class PlayerCombat : MonoBehaviour
     public void DisableWeaponCollider() => m_playerWeapon.weaponCollider.enabled = false;
     public void ShowWeapon() => m_playerWeapon.UndissolveWeapon(0.1f);
     public void HideWeapon() => m_playerWeapon.DissolveWeapon(1f);
-    public void HideWeaponParticle() => m_playerWeapon.DissolveWeaponParticles();
-
+    public void ShowWeaponParticle() => m_playerWeapon.ShowDissolveWeaponParticles();
+    public void HideWeaponParticle() => m_playerWeapon.HideDissolveWeaponParticles();
     void OnDrawGizmosSelected()
     {
     #if UNITY_EDITOR
