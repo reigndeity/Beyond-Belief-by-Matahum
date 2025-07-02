@@ -7,8 +7,10 @@ public class PlayerWeapon : MonoBehaviour
     private PlayerStats m_playerStats;
     public Collider weaponCollider;
     public float m_scalingAmount;
+    [Header("Weapon Visibility")]
+    public bool isWeaponShowing;
     [Header("Particle To Play when Dissolving Weapon")]
-    public ParticleSystem swordParticleSystem;
+    public ParticleSystem dissolveParticleSystem;
 
     [Header("Materials to Dissolve (shared shader)")]
     public Renderer[] renderers;
@@ -59,12 +61,14 @@ public class PlayerWeapon : MonoBehaviour
     {
         if (currentRoutine != null) StopCoroutine(currentRoutine);
         currentRoutine = StartCoroutine(AnimateDissolve(GetCurrentDissolveValue(), 1f, duration));
+        isWeaponShowing = false;
     }
 
     public void UndissolveWeapon(float duration)
     {
         if (currentRoutine != null) StopCoroutine(currentRoutine);
         currentRoutine = StartCoroutine(AnimateDissolve(GetCurrentDissolveValue(), 0f, duration));
+        isWeaponShowing = true;
     }
     private float GetCurrentDissolveValue()
     {
@@ -91,5 +95,16 @@ public class PlayerWeapon : MonoBehaviour
 
         foreach (var mat in materials)
             mat.SetFloat(DISSOLVE_PROPERTY, to);
+    }
+    public void DissolveWeaponParticles()
+    {
+        if (isWeaponShowing == false)
+        {
+            dissolveParticleSystem.Play();
+        }
+        else
+        {
+            return;
+        }
     }
 }

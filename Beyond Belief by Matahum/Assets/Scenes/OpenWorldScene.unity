@@ -36035,7 +36035,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponCollider: {fileID: 0}
   m_scalingAmount: 0
-  swordParticleSystem: {fileID: 2100754522}
+  isWeaponShowing: 0
+  dissolveParticleSystem: {fileID: 2100754522}
   renderers:
   - {fileID: 905839486}
   - {fileID: 1736791539}
@@ -37451,11 +37452,11 @@ PrefabInstance:
       objectReference: {fileID: 905839486}
     - target: {fileID: 3315561627888505420, guid: ae579bed191d60b4bb7e98e811b6ad1b, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
-      value: 20
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3315561627888505420, guid: ae579bed191d60b4bb7e98e811b6ad1b, type: 3}
       propertyPath: EmissionModule.rateOverTime.minScalar
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3315561627888505420, guid: ae579bed191d60b4bb7e98e811b6ad1b, type: 3}
       propertyPath: EmissionModule.rateOverDistance.scalar
@@ -37523,11 +37524,11 @@ PrefabInstance:
       objectReference: {fileID: 905839486}
     - target: {fileID: 8644319683738868808, guid: ae579bed191d60b4bb7e98e811b6ad1b, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
-      value: 20
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8644319683738868808, guid: ae579bed191d60b4bb7e98e811b6ad1b, type: 3}
       propertyPath: EmissionModule.rateOverTime.minScalar
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8644319683738868808, guid: ae579bed191d60b4bb7e98e811b6ad1b, type: 3}
       propertyPath: EmissionModule.rateOverDistance.scalar

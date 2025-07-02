@@ -149,6 +149,7 @@ public class PlayerCombat : MonoBehaviour
         isAttacking = false;
         canMoveDuringAttack = true;
         DisableWeaponCollider();
+        HideWeapon();
     }
 
     public void AttackTwoPush() => PushPlayerForward(0.5f, 0.12f);
@@ -169,7 +170,6 @@ public class PlayerCombat : MonoBehaviour
         HideWeapon();
         HideWeaponParticle();
     }
-
     public void ResetAttackCombo()
     {
         int attackLayerIndex = m_playerAnimator.animator.GetLayerIndex("Attack Layer");
@@ -181,7 +181,7 @@ public class PlayerCombat : MonoBehaviour
     public void DisableWeaponCollider() => m_playerWeapon.weaponCollider.enabled = false;
     public void ShowWeapon() => m_playerWeapon.UndissolveWeapon(0.1f);
     public void HideWeapon() => m_playerWeapon.DissolveWeapon(1f);
-    public void HideWeaponParticle() => m_playerWeapon.swordParticleSystem.Play();
+    public void HideWeaponParticle() => m_playerWeapon.DissolveWeaponParticles();
 
     void OnDrawGizmosSelected()
     {
