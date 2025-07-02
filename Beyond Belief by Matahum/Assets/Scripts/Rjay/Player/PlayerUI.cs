@@ -7,6 +7,7 @@ public class PlayerUI : MonoBehaviour
     private PlayerMovement m_playerMovement;
     private PlayerSkills m_playerSkills;
     private PlayerStats m_playerStats;
+
     [Header("Health UI Properties")]
     [SerializeField] private Image healthFillDelayed;
     [SerializeField] private Image healthFillInstant;
@@ -20,13 +21,17 @@ public class PlayerUI : MonoBehaviour
     private float lastStaminaUseTime;
     private bool isStaminaVisible = false;
     [SerializeField] private Image dashFill;
+
     [Header("Normal Skill UI Properties")]
-    [SerializeField] private Image normalSkillCooldownFill;
     [SerializeField] private Image normalSkillBackground;
+    [SerializeField] private Image normalSkillForeground;
+    [SerializeField] private Image normalSkillCooldownOutlineFill;
     [SerializeField] private TextMeshProUGUI normalSkillCooldownTxt;
+
     [Header("Ultimate Skill UI Properties")]
-    [SerializeField] private Image ultimateskillCooldownFill;
     [SerializeField] private Image ultimateSkillBackground;
+    [SerializeField] private Image ultimateSkillForeground;
+    [SerializeField] private Image ultimateSkillCooldownOutlineFill;
     [SerializeField] private TextMeshProUGUI ultimateSkillCooldownTxt;
 
     void Start()
@@ -61,7 +66,8 @@ public class PlayerUI : MonoBehaviour
         {
             staminaFillDelayed.fillAmount = percent;
         }
-        if (current < max) // stamina is being used
+
+        if (current < max)
         {
             lastStaminaUseTime = Time.time;
 
@@ -73,7 +79,6 @@ public class PlayerUI : MonoBehaviour
         }
         else
         {
-            // if 1 second have passed since last use, fade out
             if (isStaminaVisible && Time.time - lastStaminaUseTime >= 1)
             {
                 m_playerStaminaCanvas.FadeOut(0.5f);
@@ -81,36 +86,44 @@ public class PlayerUI : MonoBehaviour
             }
         }
     }
+
     void UIDashCooldownUpdate()
     {
         float dashPercent = 1f - (m_playerMovement.GetDashCooldownRemaining() / m_playerMovement.dashCooldown);
         dashFill.fillAmount = dashPercent;
     }
+
     void UINormalSkillCooldownUpdate()
     {
         float remaining = m_playerSkills.GetNormalSkillCooldownRemaining();
         float total = m_playerSkills.GetNormalSkillCooldown();
 
-        
-        float fill = 1f - (remaining / total);
-        normalSkillCooldownFill.fillAmount = fill;
+        float fill = remaining / total; // Now drains 1 -> 0
+        normalSkillCooldownOutlineFill.fillAmount = fill;
 
         Color bgAlpha = normalSkillBackground.color;
-        
-        if (normalSkillCooldownFill.fillAmount == 1)
+        Color fgAlpha = normalSkillForeground.color;
+
+        if (fill <= 0f)
         {
+            normalSkillCooldownOutlineFill.enabled = false;
             normalSkillCooldownTxt.enabled = false;
-            
-            bgAlpha.a = 1f;
+
+            bgAlpha.a = 0.5f;
+            fgAlpha.a = 0.5f;
             normalSkillBackground.color = bgAlpha;
+            normalSkillForeground.color = fgAlpha;
         }
-        else if (normalSkillCooldownFill.fillAmount < 1)
+        else
         {
+            normalSkillCooldownOutlineFill.enabled = true;
             normalSkillCooldownTxt.enabled = true;
             normalSkillCooldownTxt.text = remaining.ToString("F1");
 
-            bgAlpha.a = 0.5f;
+            bgAlpha.a = 0.25f;
+            fgAlpha.a = 0.25f;
             normalSkillBackground.color = bgAlpha;
+            normalSkillForeground.color = fgAlpha;
         }
     }
 
@@ -119,25 +132,32 @@ public class PlayerUI : MonoBehaviour
         float remaining = m_playerSkills.GetUltimateSkillCooldownRemaining();
         float total = m_playerSkills.GetUltimateSkillCooldown();
 
-        float fill = 1f - (remaining / total);
-        ultimateskillCooldownFill.fillAmount = fill;
+        float fill = remaining / total; // Now drains 1 -> 0
+        ultimateSkillCooldownOutlineFill.fillAmount = fill;
 
         Color bgAlpha = ultimateSkillBackground.color;
-        
-        if (ultimateskillCooldownFill.fillAmount == 1)
+        Color fgAlpha = ultimateSkillForeground.color;
+
+        if (fill <= 0f)
         {
+            ultimateSkillCooldownOutlineFill.enabled = false;
             ultimateSkillCooldownTxt.enabled = false;
             
-            bgAlpha.a = 1f;
+            bgAlpha.a = 0.5f;
+            fgAlpha.a = 0.5f;
             ultimateSkillBackground.color = bgAlpha;
+            ultimateSkillForeground.color = fgAlpha;
         }
-        else if (ultimateskillCooldownFill.fillAmount < 1)
+        else
         {
+            ultimateSkillCooldownOutlineFill.enabled = true;
             ultimateSkillCooldownTxt.enabled = true;
             ultimateSkillCooldownTxt.text = remaining.ToString("F1");
 
-            bgAlpha.a = 0.5f;
+            bgAlpha.a = 0.25f;
+            fgAlpha.a = 0.25f;
             ultimateSkillBackground.color = bgAlpha;
+            ultimateSkillForeground.color = fgAlpha;
         }
     }
 

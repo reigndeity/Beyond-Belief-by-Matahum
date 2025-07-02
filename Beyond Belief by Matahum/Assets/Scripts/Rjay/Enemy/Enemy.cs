@@ -1,6 +1,7 @@
 using UnityEngine;
 using BlazeAISpace;
 using System.Collections;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
@@ -50,12 +51,16 @@ public class Enemy : MonoBehaviour, IDamageable
     public void GetHit()
     {
         m_blazeAI.Hit();
+        PushBackward(0.5f);
+        FindFirstObjectByType<PlayerCamera>().CameraShake(0.1f, 1f);
+        HitStop.Instance.TriggerHitStop(0.05f);
         FacePlayer();
     }
     public void PushBackward(float distance)
     {
         StartCoroutine(SmoothPushRoutine(distance, 0.15f));
     }
+
     private IEnumerator SmoothPushRoutine(float totalDistance, float duration)
     {
         float elapsed = 0f;

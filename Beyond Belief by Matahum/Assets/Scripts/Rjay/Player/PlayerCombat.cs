@@ -18,6 +18,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float detectionAngle = 360f;
     [SerializeField] private float boostDistance = 2f;
     [SerializeField] private float boostDuration = 0.15f;
+    [SerializeField] private float stopBeforeDistance = 0.5f; // Distance to stop before hitting the enemy
     [SerializeField] private float minBoostTriggerDistance = 1.5f;
     [SerializeField] private float maxBoostTriggerDistance = 2.0f;
     [SerializeField] private LayerMask enemyLayer;
@@ -37,7 +38,8 @@ public class PlayerCombat : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Transform enemy = GetNearestEnemy();
-            TryCombatBoost(enemy);
+            FaceTarget(enemy);
+            //TryCombatBoost(enemy);
 
             m_playerAnimator.animator.SetTrigger("attack");
             AttackState();
@@ -75,18 +77,23 @@ public class PlayerCombat : MonoBehaviour
     {
         if (enemy == null) return;
 
-        // Always face the enemy
-        Vector3 lookPos = enemy.position;
-        lookPos.y = transform.position.y;
-        transform.LookAt(lookPos);
+        FaceTarget(enemy);
 
-        // Check if the enemy is within the "boost sweet spot"
         float distance = Vector3.Distance(transform.position, enemy.position);
-        
+
         if (distance > minBoostTriggerDistance && distance < maxBoostTriggerDistance)
         {
             StartCoroutine(DashTowardEnemy(enemy.position, boostDistance, boostDuration));
         }
+    }
+
+    private void FaceTarget(Transform target)
+    {
+        if (target == null) return;
+
+        Vector3 lookPos = target.position;
+        lookPos.y = transform.position.y; // Prevent tilting
+        transform.LookAt(lookPos);
     }
 
     private IEnumerator DashTowardEnemy(Vector3 targetPos, float totalDistance, float duration)
@@ -97,6 +104,11 @@ public class PlayerCombat : MonoBehaviour
 
         while (elapsed < duration)
         {
+            float currentDistance = Vector3.Distance(transform.position, targetPos);
+
+            if (currentDistance <= stopBeforeDistance)
+                break;
+
             float step = (totalDistance / duration) * Time.deltaTime;
             Vector3 push = dir * step;
             push.y = m_playerMovement.GetVerticalVelocity() * Time.deltaTime;
@@ -134,7 +146,8 @@ public class PlayerCombat : MonoBehaviour
     // ANIMATOR EVENT SYSTEM
     public void DashState()
     {
-        ResetAttackState();
+        isAttacking = false;
+        canMoveDuringAttack = true;
         DisableWeaponCollider();
     }
 
@@ -154,6 +167,7 @@ public class PlayerCombat : MonoBehaviour
         isAttacking = false;
         canMoveDuringAttack = true;
         HideWeapon();
+        HideWeaponParticle();
     }
 
     public void ResetAttackCombo()
@@ -166,33 +180,28 @@ public class PlayerCombat : MonoBehaviour
     public void EnableWeaponCollider() => m_playerWeapon.weaponCollider.enabled = true;
     public void DisableWeaponCollider() => m_playerWeapon.weaponCollider.enabled = false;
     public void ShowWeapon() => m_playerWeapon.UndissolveWeapon(0.1f);
-    public void HideWeapon()
-    {
-        m_playerWeapon.DissolveWeapon(1f);
-        m_playerWeapon.swordParticleSystem.Play();
-    }
+    public void HideWeapon() => m_playerWeapon.DissolveWeapon(1f);
+    public void HideWeaponParticle() => m_playerWeapon.swordParticleSystem.Play();
 
     void OnDrawGizmosSelected()
     {
     #if UNITY_EDITOR
         // Draw detection radius
-        Gizmos.color = new Color(1f, 0.5f, 0f, 0.3f); // Orange transparent
+        Gizmos.color = new Color(1f, 0.5f, 0f, 0.3f);
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
 
-        // Draw vision cone lines
         Vector3 forward = transform.forward;
         forward.y = 0f;
         forward.Normalize();
 
         float halfAngle = detectionAngle * 0.5f;
-
         Quaternion leftRayRotation = Quaternion.Euler(0, -halfAngle, 0);
         Quaternion rightRayRotation = Quaternion.Euler(0, halfAngle, 0);
 
         Vector3 leftRayDirection = leftRayRotation * forward;
         Vector3 rightRayDirection = rightRayRotation * forward;
 
-        Gizmos.color = new Color(1f, 0.5f, 0f, 1f); // Solid orange
+        Gizmos.color = new Color(1f, 0.5f, 0f, 1f);
         Gizmos.DrawRay(transform.position, leftRayDirection * detectionRadius);
         Gizmos.DrawRay(transform.position, rightRayDirection * detectionRadius);
     #endif
