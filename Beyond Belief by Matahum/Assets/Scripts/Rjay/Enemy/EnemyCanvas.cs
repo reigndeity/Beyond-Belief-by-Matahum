@@ -5,8 +5,6 @@ public class EnemyCanvas : MonoBehaviour
 {
     [Header("Billboard Settings")]
     [SerializeField] private Transform targetCamera;
-    [SerializeField] private Vector3 offsetFromPlayer = new Vector3(0.5f, 1.5f, 0f); // tuned to taste
-    [SerializeField] private float positionSmoothSpeed = 10f;
     private CanvasGroup m_canvasGroup;
     private Coroutine currentFadeRoutine;
 
@@ -28,8 +26,10 @@ public class EnemyCanvas : MonoBehaviour
 
     private void FaceCamera()
     {
-        // Billboard towards the camera
-        transform.forward = targetCamera.forward;
+        if (targetCamera == null) return;
+
+        Vector3 direction = transform.position - targetCamera.position;
+        transform.rotation = Quaternion.LookRotation(direction);
     }
 
     public void FadeIn(float duration) // alpha: 0 to 1

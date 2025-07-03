@@ -10,13 +10,28 @@ public class Enemy : MonoBehaviour, IDamageable
     private EnemyStats m_enemyStats;
     private BlazeAI m_blazeAI;
     private Rigidbody m_rigidbody;
-    void Start()
+    private EnemyUI m_enemyUI;
+
+    void Awake()
     {
         m_playerStats = FindFirstObjectByType<PlayerStats>();
         m_player = FindFirstObjectByType<Player>();
         m_enemyStats = GetComponent<EnemyStats>();
         m_blazeAI = GetComponent<BlazeAI>();
         m_rigidbody = GetComponent<Rigidbody>();
+        m_enemyUI = GetComponent<EnemyUI>();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            ShowCanvas();
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            HideCanvas();
+        }
     }
     public void TakeDamage(float damage)
     {
@@ -47,7 +62,6 @@ public class Enemy : MonoBehaviour, IDamageable
             Debug.Log("Enemy is dead.");
         }
     }
-
     public void GetHit()
     {
         m_blazeAI.Hit();
@@ -55,12 +69,12 @@ public class Enemy : MonoBehaviour, IDamageable
         FindFirstObjectByType<PlayerCamera>().CameraShake(0.1f, 1f);
         HitStop.Instance.TriggerHitStop(0.05f);
         FacePlayer();
+        m_enemyUI.HealthBarFadeIn(0.15f);
     }
     public void PushBackward(float distance)
     {
         StartCoroutine(SmoothPushRoutine(distance, 0.15f));
     }
-
     private IEnumerator SmoothPushRoutine(float totalDistance, float duration)
     {
         float elapsed = 0f;
@@ -89,5 +103,26 @@ public class Enemy : MonoBehaviour, IDamageable
             Quaternion lookRotation = Quaternion.LookRotation(dirToPlayer.normalized);
             transform.rotation = lookRotation;
         }
+    }
+
+    public void ShowCanvas()
+    {
+        StartCoroutine(Surprise());
+    }
+    public void HideCanvas()
+    {
+        m_enemyUI.AlertFadeOut(1.0f);
+        m_enemyUI.HealthBarFadeOut(0.25f);
+    }
+    IEnumerator Surprise()
+    {
+        m_enemyUI.AlertFadeIn(0.25f);
+        m_enemyUI.ShowAlert();
+        yield return new WaitForSeconds(0.5f);
+        m_enemyUI.AlertFadeOut(0.5f);
+        yield return new WaitForSeconds(0.5f);
+        m_enemyUI.HealthBarFadeIn(0.25f);
+        //yield return new WaitForSeconds(1.833f);
+        
     }
 }
