@@ -7,9 +7,11 @@ public class PlayerWeapon : MonoBehaviour
     private PlayerStats m_playerStats;
     public Collider weaponCollider;
     public float m_scalingAmount;
+    [Header("Hit Cooldown")]
+    private Dictionary<Collider, float> hitTimestamps = new Dictionary<Collider, float>();
+    public float hitCooldown = 0.3f; // Time between valid hits to the same enemy
     [Header("Sword Trail")]
-    public GameObject[] swordTrail; // 0 = slash 1, 1 = slash 2, 2 = slash 3, 3 = slash 4, 4 = slash 5
-    public Transform swordTrailTransform;
+    public GameObject swordTrail;
     [Header("Hit Impact")]
     public GameObject hitImpactPrefab;
 
@@ -38,10 +40,23 @@ public class PlayerWeapon : MonoBehaviour
         weaponCollider = GetComponent<Collider>();
         DissolveWeapon(0f);
     }
+    private void Update()
+    {
+        ClearHitStamps();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player")) return;
+
+        // Check hit cooldown
+        if (hitTimestamps.TryGetValue(other, out float lastHitTime))
+        {
+            if (Time.time - lastHitTime < hitCooldown)
+            {
+                return; // Recently hit, ignore
+            }
+        }
 
         IDamageable damageable = other.GetComponent<IDamageable>();
         if (damageable != null)
@@ -50,8 +65,21 @@ public class PlayerWeapon : MonoBehaviour
             Debug.Log(m_scalingAmount);
             damageable.TakeDamage(damage);
 
+            hitTimestamps[other] = Time.time; // Record this hit
             SpawnHitImpact(other.ClosestPoint(transform.position));
         }
+    }
+
+    void ClearHitStamps()
+    {
+        var keysToRemove = new List<Collider>();
+        foreach (var kvp in hitTimestamps)
+        {
+            if (Time.time - kvp.Value > hitCooldown * 2f)
+                keysToRemove.Add(kvp.Key);
+        }
+        foreach (var key in keysToRemove)
+            hitTimestamps.Remove(key);
     }
 
     void InitializeMaterials()
@@ -131,26 +159,6 @@ public class PlayerWeapon : MonoBehaviour
         else
         {
             Destroy(vfx, 1.5f); // fallback if no particle system
-        }
-    }
-    public void SpawnSwordTrail(int currentSlash)
-    {
-        if (swordTrail[currentSlash] == null || swordTrailTransform == null) return;
-
-        GameObject trail = Instantiate(
-            swordTrail[currentSlash],
-            swordTrailTransform.position,
-            swordTrailTransform.rotation
-        );
-
-        ParticleSystem ps = trail.GetComponent<ParticleSystem>();
-        if (ps != null)
-        {
-            Destroy(trail, ps.main.duration + ps.main.startLifetime.constantMax);
-        }
-        else
-        {
-            Destroy(trail, 1.5f); // fallback
         }
     }
 }
