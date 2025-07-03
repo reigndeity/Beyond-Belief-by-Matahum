@@ -11,7 +11,7 @@ public class PlayerWeapon : MonoBehaviour
     private Dictionary<Collider, float> hitTimestamps = new Dictionary<Collider, float>();
     public float hitCooldown = 0.3f; // Time between valid hits to the same enemy
     [Header("Sword Trail")]
-    public GameObject swordTrail;
+    public ParticleSystem swordTrail;
     [Header("Hit Impact")]
     public GameObject hitImpactPrefab;
 
@@ -160,5 +160,13 @@ public class PlayerWeapon : MonoBehaviour
         {
             Destroy(vfx, 1.5f); // fallback if no particle system
         }
+    }
+    public void ShowSwordTrail()
+    {
+        swordTrail.Play();
+    }
+    public void HideSwordTrail()
+    {
+        swordTrail.Stop();
     }
 }

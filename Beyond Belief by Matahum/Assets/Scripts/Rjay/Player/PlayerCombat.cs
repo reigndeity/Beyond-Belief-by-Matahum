@@ -150,6 +150,7 @@ public class PlayerCombat : MonoBehaviour
         canMoveDuringAttack = true;
         DisableWeaponCollider();
         HideWeapon();
+        HideAttackSlash();
     }
 
     public void AttackTwoPush() => PushPlayerForward(0.5f, 0.12f);
@@ -178,12 +179,20 @@ public class PlayerCombat : MonoBehaviour
     }
 
     public void AttackScaling(float value) => m_playerWeapon.m_scalingAmount = value;
-    public void EnableWeaponCollider() => m_playerWeapon.weaponCollider.enabled = true;
-    public void DisableWeaponCollider() => m_playerWeapon.weaponCollider.enabled = false;
+    public void EnableWeaponCollider()
+    {
+        m_playerWeapon.weaponCollider.enabled = true;
+    }
+    public void DisableWeaponCollider()
+    {
+        m_playerWeapon.weaponCollider.enabled = false;
+    }
     public void ShowWeapon() => m_playerWeapon.UndissolveWeapon(0.1f);
     public void HideWeapon() => m_playerWeapon.DissolveWeapon(1f);
     public void ShowWeaponParticle() => m_playerWeapon.ShowDissolveWeaponParticles();
     public void HideWeaponParticle() => m_playerWeapon.HideDissolveWeaponParticles();
+    public void ShowAttackSlash() => m_playerWeapon.ShowSwordTrail();
+    public void HideAttackSlash() => m_playerWeapon.HideSwordTrail();
 
 
     void OnDrawGizmosSelected()

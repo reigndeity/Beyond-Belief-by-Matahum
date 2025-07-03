@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour, IDamageable
     private BlazeAI m_blazeAI;
     private Rigidbody m_rigidbody;
     private EnemyUI m_enemyUI;
+    private NavMeshAgent m_navMeshAgent;
 
     void Awake()
     {
@@ -20,19 +21,9 @@ public class Enemy : MonoBehaviour, IDamageable
         m_blazeAI = GetComponent<BlazeAI>();
         m_rigidbody = GetComponent<Rigidbody>();
         m_enemyUI = GetComponent<EnemyUI>();
+        m_navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            ShowCanvas();
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            HideCanvas();
-        }
-    }
     public void TakeDamage(float damage)
     {
         GetHit();
@@ -64,13 +55,15 @@ public class Enemy : MonoBehaviour, IDamageable
     }
     public void GetHit()
     {
+        m_navMeshAgent.enabled = false;
         m_blazeAI.Hit();
-        PushBackward(0.5f);
+        PushBackward(1f);
         FindFirstObjectByType<PlayerCamera>().CameraShake(0.1f, 1f);
         HitStop.Instance.TriggerHitStop(0.05f);
         FacePlayer();
         m_enemyUI.HealthBarFadeIn(0.15f);
     }
+
     public void PushBackward(float distance)
     {
         StartCoroutine(SmoothPushRoutine(distance, 0.15f));
@@ -92,6 +85,7 @@ public class Enemy : MonoBehaviour, IDamageable
             elapsed += Time.deltaTime;
             yield return null;
         }
+        m_navMeshAgent.enabled = true;
     }
     private void FacePlayer()
     {
