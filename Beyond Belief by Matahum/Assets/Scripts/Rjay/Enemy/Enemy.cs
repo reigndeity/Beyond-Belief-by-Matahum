@@ -2,6 +2,7 @@ using UnityEngine;
 using BlazeAISpace;
 using System.Collections;
 using UnityEngine.AI;
+using FIMSpace.FProceduralAnimation;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
@@ -12,6 +13,8 @@ public class Enemy : MonoBehaviour, IDamageable
     private Rigidbody m_rigidbody;
     private EnemyUI m_enemyUI;
     private NavMeshAgent m_navMeshAgent;
+    private LegsAnimator m_legsAnimator;
+    private EnemyAttack m_enemyAttack;
 
     void Awake()
     {
@@ -22,8 +25,15 @@ public class Enemy : MonoBehaviour, IDamageable
         m_rigidbody = GetComponent<Rigidbody>();
         m_enemyUI = GetComponent<EnemyUI>();
         m_navMeshAgent = GetComponent<NavMeshAgent>();
+        m_legsAnimator = GetComponent<LegsAnimator>();
+        m_enemyAttack = GetComponentInChildren<EnemyAttack>();
     }
 
+    void Start()
+    {
+        DisableAllRagdollParts();
+    }
+    #region DAMAGE
     public void TakeDamage(float damage)
     {
         GetHit();
@@ -50,9 +60,11 @@ public class Enemy : MonoBehaviour, IDamageable
 
         if (m_enemyStats.e_currentHealth <= 0f) // Death check
         {
-            Debug.Log("Enemy is dead.");
+            Death();
         }
     }
+    #endregion
+    #region GET HIT
     public void GetHit()
     {
         m_navMeshAgent.enabled = false;
@@ -99,6 +111,8 @@ public class Enemy : MonoBehaviour, IDamageable
         }
     }
 
+    #endregion
+    #region ALERT BEHAVIOR
     public void ShowCanvas()
     {
         StartCoroutine(Surprise());
@@ -108,6 +122,7 @@ public class Enemy : MonoBehaviour, IDamageable
         m_enemyUI.AlertFadeOut(1.0f);
         m_enemyUI.HealthBarFadeOut(0.25f);
     }
+
     IEnumerator Surprise()
     {
         m_enemyUI.AlertFadeIn(0.25f);
@@ -117,6 +132,68 @@ public class Enemy : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(0.5f);
         m_enemyUI.HealthBarFadeIn(0.25f);
         //yield return new WaitForSeconds(1.833f);
+    }
+    #endregion
+    #region DEATH
+    void IgnorePlayerLayer()
+    {
+        int playerLayerMask = 1 << LayerMask.NameToLayer("Player");
+        foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
+        {
+            if (rb.gameObject != gameObject) // skip main root
+                rb.excludeLayers = playerLayerMask;
+        }
+
+        foreach (Collider col in GetComponentsInChildren<Collider>())
+        {
+            if (col.gameObject != gameObject) // skip main capsule
+                col.excludeLayers = playerLayerMask;
+        }
+    }
+    void DisableAllRagdollParts()
+    {
+        foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
+        {
+            if (rb.gameObject != gameObject) // skip main root
+                rb.isKinematic = true;
+        }
+
+        foreach (Collider col in GetComponentsInChildren<Collider>())
+        {
+            if (col.gameObject != gameObject) // skip main capsule
+                col.enabled = false;
+        }
+    }
+    void EnableAllRagdollParts()
+    {
+        foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
+        {
+            if (rb.gameObject != gameObject) // skip main root
+                rb.isKinematic = false;
+        }
+
+        foreach (Collider col in GetComponentsInChildren<Collider>())
+        {
+            if (col.gameObject != gameObject) // skip main capsule
+                col.enabled = true;
+        }
+    }
+    public void Death()
+    {
+        StartCoroutine(Dying());
         
     }
+    IEnumerator Dying()
+    {
+        HideCanvas();
+        m_legsAnimator.enabled = false;
+        EnableAllRagdollParts();
+        m_blazeAI.Death();
+        IgnorePlayerLayer();
+        yield return new WaitForSeconds(0.5f);
+    }
+    #endregion
+
+    public void EnableAttack() => m_enemyAttack.EnableAttackCollider();
+    public void DisableAttack() => m_enemyAttack.DisableAttackCollider();
 }
