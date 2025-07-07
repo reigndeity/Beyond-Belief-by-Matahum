@@ -47722,7 +47722,7 @@ Transform:
   m_GameObject: {fileID: 5373521251738816397}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.1, y: 2.198, z: -25.41}
+  m_LocalPosition: {x: -34.43, y: 3.37, z: -26.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -49665,7 +49665,7 @@ MonoBehaviour:
   AnimationFloorLevel: 0.001
   _Editor_Foldout_Setup_LegsList: 1
   _Editor_EnsureCount: 0
-  _Editor_OnValidateTrigger: 1
+  _Editor_OnValidateTrigger: 0
   _EditorAllowAutoUpdateFeetParams: 1
   _EditorCategory: 0
   _EditorSetupCategory: 0
@@ -49781,6 +49781,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 1024
+  combatBoostCooldown: 1.25
 --- !u!114 &5373521251738816407
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -21,8 +21,6 @@ public class Player : MonoBehaviour, IDamageable
     public PlayerState currentState;
 
 
-
-
     void Start()
     {
         m_playerAnimator = GetComponent<PlayerAnimator>();
@@ -108,5 +106,6 @@ public class Player : MonoBehaviour, IDamageable
         }
     }
 
-
+    public bool isDead = false;
+    public bool IsDead() => isDead;
 }

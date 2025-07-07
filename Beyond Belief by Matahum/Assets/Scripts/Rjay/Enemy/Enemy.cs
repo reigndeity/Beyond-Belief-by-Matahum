@@ -180,11 +180,14 @@ public class Enemy : MonoBehaviour, IDamageable
     }
     public void Death()
     {
-        StartCoroutine(Dying());
-        
+        StartCoroutine(Dying());        
     }
+    public bool isDead = false;
+    public bool IsDead() => isDead;
     IEnumerator Dying()
     {
+        isDead = true;
+        gameObject.layer = LayerMask.NameToLayer("Default");
         HideCanvas();
         m_legsAnimator.enabled = false;
         EnableAllRagdollParts();

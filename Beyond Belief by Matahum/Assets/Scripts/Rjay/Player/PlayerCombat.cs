@@ -18,10 +18,16 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float detectionAngle = 360f;
     [SerializeField] private float boostDistance = 2f;
     [SerializeField] private float boostDuration = 0.15f;
-    [SerializeField] private float stopBeforeDistance = 0.5f; // Distance to stop before hitting the enemy
+    [SerializeField] private float stopBeforeDistance = 0.5f;
     [SerializeField] private float minBoostTriggerDistance = 1.5f;
     [SerializeField] private float maxBoostTriggerDistance = 2.0f;
     [SerializeField] private LayerMask enemyLayer;
+
+    // --- Combat Boost Cooldown ---
+    [Header("Combat Boost Settings")]
+    [SerializeField] private float combatBoostCooldown = 1.25f;
+    private float combatBoostCooldownTimer = 0f;
+    public bool CanCombatBoost() => combatBoostCooldownTimer <= 0f;
 
     void Start()
     {
@@ -29,7 +35,13 @@ public class PlayerCombat : MonoBehaviour
         m_playerMovement = GetComponent<PlayerMovement>();
         m_playerWeapon = GetComponentInChildren<PlayerWeapon>();
         m_characterController = GetComponent<CharacterController>();
-        
+    }
+
+    void Update()
+    {
+        // --- Combat Boost Cooldown Tick ---
+        if (combatBoostCooldownTimer > 0f)
+            combatBoostCooldownTimer -= Time.deltaTime;
     }
 
     public void HandleAttack()
@@ -40,7 +52,7 @@ public class PlayerCombat : MonoBehaviour
         {
             Transform enemy = GetNearestEnemy();
             FaceTarget(enemy);
-            //TryCombatBoost(enemy);
+            // TryCombatBoost(enemy); // Commented out for animator-based trigger
 
             m_playerAnimator.animator.SetTrigger("attack");
             AttackState();
@@ -57,6 +69,9 @@ public class PlayerCombat : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
+            var damageable = hit.GetComponent<IDamageable>();
+            if (damageable == null || damageable.IsDead()) continue; // ✅ Only accept alive enemies
+
             Vector3 dirToEnemy = (hit.transform.position - origin).normalized;
             float angleToEnemy = Vector3.Angle(transform.forward, dirToEnemy);
 
@@ -76,7 +91,10 @@ public class PlayerCombat : MonoBehaviour
 
     public void TryCombatBoost(Transform enemy)
     {
-        if (enemy == null) return;
+        if (enemy == null || !CanCombatBoost()) return;
+
+        // --- Extra Layer Check ---
+        if (((1 << enemy.gameObject.layer) & enemyLayer) == 0) return;
 
         FaceTarget(enemy);
 
@@ -85,15 +103,18 @@ public class PlayerCombat : MonoBehaviour
         if (distance > minBoostTriggerDistance && distance < maxBoostTriggerDistance)
         {
             StartCoroutine(DashTowardEnemy(enemy.position, boostDistance, boostDuration));
+            combatBoostCooldownTimer = combatBoostCooldown;
         }
     }
+
+
 
     private void FaceTarget(Transform target)
     {
         if (target == null) return;
 
         Vector3 lookPos = target.position;
-        lookPos.y = transform.position.y; // Prevent tilting
+        lookPos.y = transform.position.y;
         transform.LookAt(lookPos);
     }
 
@@ -173,6 +194,7 @@ public class PlayerCombat : MonoBehaviour
         HideWeapon();
         ShowWeaponParticle();
     }
+
     public void ResetAttackCombo()
     {
         int attackLayerIndex = m_playerAnimator.animator.GetLayerIndex("Attack Layer");
@@ -180,44 +202,42 @@ public class PlayerCombat : MonoBehaviour
     }
 
     public void AttackScaling(float value) => m_playerWeapon.m_scalingAmount = value;
-    public void EnableWeaponCollider()
-    {
-        m_playerWeapon.weaponCollider.enabled = true;
-    }
-    public void DisableWeaponCollider()
-    {
-        m_playerWeapon.weaponCollider.enabled = false;
-    }
+    public void EnableWeaponCollider() => m_playerWeapon.weaponCollider.enabled = true;
+    public void DisableWeaponCollider() => m_playerWeapon.weaponCollider.enabled = false;
     public void ShowWeapon() => m_playerWeapon.UndissolveWeapon(0.1f);
     public void HideWeapon() => m_playerWeapon.DissolveWeapon(1f);
     public void ShowWeaponParticle() => m_playerWeapon.ShowDissolveWeaponParticles();
     public void HideWeaponParticle() => m_playerWeapon.HideDissolveWeaponParticles();
     public void ShowAttackSlash() => m_playerWeapon.ShowSwordTrail();
     public void HideAttackSlash() => m_playerWeapon.HideSwordTrail();
-
     public void ShowLastAttack() => m_playerWeapon.LastAttack();
+
+    public void CombatBoost()
+    {
+        Transform enemy = GetNearestEnemy();
+        TryCombatBoost(enemy);
+    }
 
     void OnDrawGizmosSelected()
     {
     #if UNITY_EDITOR
-        // Draw detection radius
-        Gizmos.color = new Color(1f, 0.5f, 0f, 0.3f);
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+            Gizmos.color = new Color(1f, 0.5f, 0f, 0.3f);
+            Gizmos.DrawWireSphere(transform.position, detectionRadius);
 
-        Vector3 forward = transform.forward;
-        forward.y = 0f;
-        forward.Normalize();
+            Vector3 forward = transform.forward;
+            forward.y = 0f;
+            forward.Normalize();
 
-        float halfAngle = detectionAngle * 0.5f;
-        Quaternion leftRayRotation = Quaternion.Euler(0, -halfAngle, 0);
-        Quaternion rightRayRotation = Quaternion.Euler(0, halfAngle, 0);
+            float halfAngle = detectionAngle * 0.5f;
+            Quaternion leftRayRotation = Quaternion.Euler(0, -halfAngle, 0);
+            Quaternion rightRayRotation = Quaternion.Euler(0, halfAngle, 0);
 
-        Vector3 leftRayDirection = leftRayRotation * forward;
-        Vector3 rightRayDirection = rightRayRotation * forward;
+            Vector3 leftRayDirection = leftRayRotation * forward;
+            Vector3 rightRayDirection = rightRayRotation * forward;
 
-        Gizmos.color = new Color(1f, 0.5f, 0f, 1f);
-        Gizmos.DrawRay(transform.position, leftRayDirection * detectionRadius);
-        Gizmos.DrawRay(transform.position, rightRayDirection * detectionRadius);
+            Gizmos.color = new Color(1f, 0.5f, 0f, 1f);
+            Gizmos.DrawRay(transform.position, leftRayDirection * detectionRadius);
+            Gizmos.DrawRay(transform.position, rightRayDirection * detectionRadius);
     #endif
     }
 }
