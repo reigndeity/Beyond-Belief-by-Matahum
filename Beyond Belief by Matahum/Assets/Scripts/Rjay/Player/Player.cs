@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 public enum PlayerState 
 {
@@ -18,6 +19,8 @@ public class Player : MonoBehaviour, IDamageable
     private PlayerSkills m_playerSkills;
     private PlayerStats m_playerStats;
     public PlayerState currentState;
+
+
 
 
     void Start()
@@ -77,6 +80,7 @@ public class Player : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damage)
     {
+        m_playerAnimator.GetHit();
         bool isCriticalHit = Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
         float damageReduction = m_playerStats.p_defense * 0.66f; // Defense Scaling
         float reducedDamage = damage - damageReduction; // Damage after Defense
@@ -103,4 +107,6 @@ public class Player : MonoBehaviour, IDamageable
             Debug.Log("Player is dead.");
         }
     }
+
+
 }

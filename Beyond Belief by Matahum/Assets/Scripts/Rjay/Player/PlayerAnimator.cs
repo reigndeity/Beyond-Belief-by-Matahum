@@ -31,6 +31,13 @@ public class PlayerAnimator : MonoBehaviour
     private float speedSampleTimer = 0f;
     private float speedMemoryDuration = 0.1f;
 
+    [Header("Hit Properties")]
+    public bool isHit;
+    [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private float faceEnemyRadius = 10f;
+    [SerializeField] private float rotationSmoothness = 10f; // Degrees per second
+    private Coroutine faceEnemyCoroutine;
+
     void OnEnable()
     {
         PlayerMovement.OnDashStarted += HandleDashAnimation;
@@ -47,6 +54,7 @@ public class PlayerAnimator : MonoBehaviour
 
     public void HandleAnimations()
     {
+        if (isHit) return;
         if (m_playerMovement.IsDashing()) return;
 
         float speed = m_playerMovement.Speed;
@@ -292,6 +300,82 @@ public class PlayerAnimator : MonoBehaviour
         recentSpeeds.Clear(); // clear buffer on dash
     }
 
+    public void GetHit()
+    {
+        isHit = true;
+        FaceClosestEnemy();
+        // Play random getHit animation
+        int hitIndex = Random.Range(1, 4); // 1 to 3
+        string hitAnim = $"player_getHit_{hitIndex}";
+        ChangeAnimationState(hitAnim);
+
+        // Apply brief stun (e.g., can't move for 0.1s)
+        StartCoroutine(ApplyHitStun(0.8f));
+    }
+    private IEnumerator ApplyHitStun(float duration)
+    {
+        m_playerInput.enabled = false;
+        m_playerMovement.enabled = false;
+
+        yield return new WaitForSeconds(duration);
+
+        m_playerInput.enabled = true;
+        m_playerMovement.enabled = true;
+        isHit = false;
+    }
+
+    private void FaceClosestEnemy()
+    {
+        Collider[] enemies = Physics.OverlapSphere(transform.position, faceEnemyRadius, enemyLayer);
+        if (enemies.Length == 0) return;
+
+        Transform closest = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (Collider enemy in enemies)
+        {
+            float dist = Vector3.Distance(transform.position, enemy.transform.position);
+            if (dist < closestDistance)
+            {
+                closest = enemy.transform;
+                closestDistance = dist;
+            }
+        }
+
+        if (closest != null)
+        {
+            if (faceEnemyCoroutine != null)
+                StopCoroutine(faceEnemyCoroutine);
+
+            faceEnemyCoroutine = StartCoroutine(SmoothRotateTo(closest));
+        }
+    }
+    private IEnumerator SmoothRotateTo(Transform target)
+    {
+        Quaternion startRotation = transform.rotation;
+        Vector3 direction = (target.position - transform.position).normalized;
+        direction.y = 0f;
+
+        if (direction == Vector3.zero)
+            yield break;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        float angleDiff = Quaternion.Angle(startRotation, targetRotation);
+        float duration = angleDiff / rotationSmoothness;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsed / duration);
+            yield return null;
+        }
+
+        transform.rotation = targetRotation; // snap to final rotation at end
+    }
+
+
     public void ChangeAnimationState(string newAnimationState)
     {
         if (currentAnimationState == newAnimationState) return;
@@ -330,6 +414,9 @@ public class PlayerAnimator : MonoBehaviour
         if (to == "player_jump") return 0.1f;
         if (to == "player_falling") return 0.25f;
         if (to == "player_land") return 0.1f;
+        if (to == "player_getHit_1") return 0f;
+        if (to == "player_getHit_2") return 0f;
+        if (to == "player_getHit_3") return 0f;
 
         if (from == "player_jog" && to == "player_jogToStop") return 0.3f;
         if (from == "player_run" && to == "player_jogToStop") return 0.25f;
