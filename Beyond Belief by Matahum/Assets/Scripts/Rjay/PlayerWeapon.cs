@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.VFX;
 
 public class PlayerWeapon : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class PlayerWeapon : MonoBehaviour
     public float hitCooldown = 0.3f; // Time between valid hits to the same enemy
     [Header("Sword Trail")]
     public ParticleSystem swordTrail;
+    public VisualEffect lastAttackEffect;
     [Header("Hit Impact")]
     public GameObject hitImpactPrefab;
 
@@ -39,6 +41,7 @@ public class PlayerWeapon : MonoBehaviour
         m_playerStats = GetComponentInParent<PlayerStats>();
         weaponCollider = GetComponent<Collider>();
         DissolveWeapon(0f);
+        lastAttackEffect.Stop();
     }
     private void Update()
     {
@@ -168,5 +171,10 @@ public class PlayerWeapon : MonoBehaviour
     public void HideSwordTrail()
     {
         swordTrail.Stop();
+    }
+
+    public void LastAttack()
+    {
+        lastAttackEffect.Play();
     }
 }

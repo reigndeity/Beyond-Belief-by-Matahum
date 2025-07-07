@@ -29,6 +29,7 @@ public class PlayerCombat : MonoBehaviour
         m_playerMovement = GetComponent<PlayerMovement>();
         m_playerWeapon = GetComponentInChildren<PlayerWeapon>();
         m_characterController = GetComponent<CharacterController>();
+        
     }
 
     public void HandleAttack()
@@ -194,6 +195,7 @@ public class PlayerCombat : MonoBehaviour
     public void ShowAttackSlash() => m_playerWeapon.ShowSwordTrail();
     public void HideAttackSlash() => m_playerWeapon.HideSwordTrail();
 
+    public void ShowLastAttack() => m_playerWeapon.LastAttack();
 
     void OnDrawGizmosSelected()
     {
