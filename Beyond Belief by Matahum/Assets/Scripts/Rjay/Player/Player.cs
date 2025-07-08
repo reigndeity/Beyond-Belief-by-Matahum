@@ -39,6 +39,7 @@ public class Player : MonoBehaviour, IDamageable
         m_playerMovement.HandleJump();
         m_playerCombat.HandleAttack();
         m_playerSkills.HandleSkills();
+        HandleGrassInteraction();
 
         float currentSpeed = m_playerMovement.Speed;
         m_playerAnimator.lastFrameSpeed = currentSpeed;
@@ -108,4 +109,6 @@ public class Player : MonoBehaviour, IDamageable
 
     public bool isDead = false;
     public bool IsDead() => isDead;
+
+    void HandleGrassInteraction() => Shader.SetGlobalVector("_Player", transform.position + Vector3.up * 0.1f);
 }

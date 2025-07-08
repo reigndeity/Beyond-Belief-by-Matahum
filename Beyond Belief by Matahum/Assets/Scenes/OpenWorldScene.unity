@@ -1677,8 +1677,7 @@ Transform:
   m_LocalPosition: {x: 0.8049, y: 1.0207, z: 0.6473}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1631357543}
+  m_Children: []
   m_Father: {fileID: 1919879486}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &843691271
@@ -32946,7 +32945,7 @@ GameObject:
   - component: {fileID: 1631357545}
   - component: {fileID: 1631357544}
   m_Layer: 0
-  m_Name: SwordPoke
+  m_Name: Sword Poke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32960,13 +32959,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1631357542}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.031648394, y: 0.7070522, z: 0.6895403, w: -0.15365492}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.05031586, y: -0.1043945, z: -0.005288405, w: 0.9932483}
+  m_LocalPosition: {x: 0.037, y: 0.892, z: 1.459}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 828987406}
-  m_LocalEulerAnglesHint: {x: -100, y: 89.39, z: 105.726}
+  m_Father: {fileID: 4744900335235487031}
+  m_LocalEulerAnglesHint: {x: -5.8, y: -12, z: 0}
 --- !u!73398921 &1631357544
 VFXRenderer:
   serializedVersion: 1
@@ -40345,6 +40344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c20461622501a7642b56f5160a72985a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDead: 0
 --- !u!54 &919132148850789559
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -40939,7 +40939,7 @@ MonoBehaviour:
   AnimationFloorLevel: 0.001
   _Editor_Foldout_Setup_LegsList: 1
   _Editor_EnsureCount: 0
-  _Editor_OnValidateTrigger: 0
+  _Editor_OnValidateTrigger: 1
   _EditorAllowAutoUpdateFeetParams: 1
   _EditorCategory: 0
   _EditorSetupCategory: 1
@@ -47722,7 +47722,7 @@ Transform:
   m_GameObject: {fileID: 5373521251738816397}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -34.43, y: 3.37, z: -26.86}
+  m_LocalPosition: {x: -23.75, y: 3.37, z: -26.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -47736,6 +47736,7 @@ Transform:
   - {fileID: 587344417764147751}
   - {fileID: 1372992997}
   - {fileID: 1557210791}
+  - {fileID: 1631357543}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4748622648641926084
@@ -49665,7 +49666,7 @@ MonoBehaviour:
   AnimationFloorLevel: 0.001
   _Editor_Foldout_Setup_LegsList: 1
   _Editor_EnsureCount: 0
-  _Editor_OnValidateTrigger: 0
+  _Editor_OnValidateTrigger: 1
   _EditorAllowAutoUpdateFeetParams: 1
   _EditorCategory: 0
   _EditorSetupCategory: 0
@@ -49758,6 +49759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
+  isDead: 0
 --- !u!114 &5373521251738816406
 MonoBehaviour:
   m_ObjectHideFlags: 0
