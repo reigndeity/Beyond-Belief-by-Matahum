@@ -121,6 +121,8 @@ public class ItemSlot : MonoBehaviour
             quantityText.text = currentItem.quantity.ToString();
         else
             quantityText.text = "";
+
+        quantityText.gameObject.transform.SetAsLastSibling();
     }
 
 

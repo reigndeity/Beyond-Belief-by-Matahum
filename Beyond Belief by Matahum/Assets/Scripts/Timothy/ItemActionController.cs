@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 //using static UnityEditor.Progress;
 using Unity.VisualScripting;
 using Unity.PlasticSCM.Editor.WebApi;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public class ItemActionController : MonoBehaviour
 {
@@ -244,10 +245,21 @@ public class ItemActionController : MonoBehaviour
     // Called by "Destroy" button
     public void DestroySelectedItem()
     {
-        InventoryItem item = currentSelectedSlot.GetComponentInChildren<InventoryItem>();
+        /*InventoryItem item = currentSelectedSlot.GetComponentInChildren<InventoryItem>();
         if (item != null)
         {
             Destroy(item.gameObject);
+        }*/
+
+        if (currentSelectedSlot == null || currentSelectedSlot.isSlotLocked) return;
+
+        Inventory inventory = currentSelectedSlot.GetComponentInParent<Inventory>();
+        if (inventory == null) return;
+
+        if (inventory.slots.Contains(currentSelectedSlot))
+        {
+            inventory.slots.Remove(currentSelectedSlot);
+            Destroy(currentSelectedSlot.gameObject);
         }
 
         ShowChoices(false);
