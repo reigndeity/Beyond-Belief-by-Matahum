@@ -44,7 +44,6 @@ public class ItemSlot : MonoBehaviour
         //EventSystem.current.SetSelectedGameObject(null);
 
         ItemActionController.Instance?.HandleSlotSelection(this);
-        Debug.Log($"Selected {gameObject.name}");
     }
 
     public void SaveLockedState()

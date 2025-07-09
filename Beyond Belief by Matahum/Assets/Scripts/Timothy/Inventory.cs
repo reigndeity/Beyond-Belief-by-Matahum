@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Inventory : MonoBehaviour
 {
     [Header("Prefabs and Parents")]
-    [SerializeField] private GameObject slotPrefab;
+    public GameObject slotPrefab;
 
     public List<ItemSlot> slots = new List<ItemSlot>();
     public List<InventoryItem> allItemsInInventory = new();
@@ -14,6 +14,11 @@ public class Inventory : MonoBehaviour
     private const int MAX_STACK_SIZE = 999;
 
     private void Start()
+    {
+        Invoke("LateStart",0.1f);
+    }
+
+    void LateStart()
     {
         slots = GetComponentsInChildren<ItemSlot>().ToList();
 
@@ -85,7 +90,6 @@ public class Inventory : MonoBehaviour
                 newStackItem.transform.SetParent(newSlot.transform, false);
                 newSlot.SetItem(newStackItem);
 
-                slots.Add(newSlot);
                 allItemsInInventory.Add(newStackItem);
                 remainingQuantity -= stackAmount;
             }
@@ -125,7 +129,7 @@ public class Inventory : MonoBehaviour
 
     public void AddSlot(bool isAgimat = false)
     {
-        GameObject newSlotGO = Instantiate(slotPrefab, gameObject.transform); //slotParent);
+        GameObject newSlotGO = Instantiate(slotPrefab, gameObject.transform);
         ItemSlot newSlot = newSlotGO.GetComponent<ItemSlot>();
 
         if (isAgimat)
@@ -173,6 +177,7 @@ public class Inventory : MonoBehaviour
             Destroy(slot.gameObject);
         }
         slots.Clear();
+        allItemsInInventory.Clear();
     }
 
     // 🧹 Sort all items based on type: Consumable → Material → Misc → Pamana

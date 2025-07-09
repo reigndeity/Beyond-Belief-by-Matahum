@@ -20,7 +20,15 @@ public class ItemActionController : MonoBehaviour
     public Button moveButton; //Move any item. Moving it to another item will swap them
     public Button removeItemButton; //Delete any item. Doesnt work with Agimat
     public Button lockAndUnlockButton; //Lock or Unlock a slot. Cannot interact with
-    //public Button sortMainInventoryButton; //Sort the main inventory based on their item type
+
+    [Header("Remove Item Confirmation")]
+    public GameObject removeItemConfirmationPanel;
+    public Button increaseAmountButton;
+    public Button decreaseAmountButton;
+    public int amountToRemove = 1;
+    public TextMeshProUGUI amountToRemoveText;
+    public TextMeshProUGUI itemName;
+    public ItemSlot toDelete;
 
     [Header("For Moving")]
     public bool isMoving;
@@ -47,6 +55,9 @@ public class ItemActionController : MonoBehaviour
         removeItemButton.onClick.AddListener(DestroySelectedItem);
         useButton.onClick.AddListener(UseSelectedItem);
         lockAndUnlockButton.onClick.AddListener(LockOrUnlock);
+
+        increaseAmountButton.onClick.AddListener(IncreaseAmountToDelete);
+        decreaseAmountButton.onClick.AddListener(DecreaseAmountToDelete);
 
         equipFirstAbilityButton.onClick.AddListener(EquipToFirstSlot);
         equipSecondAbilityButton.onClick.AddListener(EquipToSecondSlot);
@@ -137,7 +148,7 @@ public class ItemActionController : MonoBehaviour
                     equipSecondText.text = "Unequip";
                 }
             }
-            removeItemButton.interactable = true;
+            //removeItemButton.interactable = true;
         }
     }
 
@@ -242,27 +253,96 @@ public class ItemActionController : MonoBehaviour
 
 
 
-    // Called by "Destroy" button
+    // Called by "Remove" button
     public void DestroySelectedItem()
     {
-        /*InventoryItem item = currentSelectedSlot.GetComponentInChildren<InventoryItem>();
-        if (item != null)
-        {
-            Destroy(item.gameObject);
-        }*/
-
-        if (currentSelectedSlot == null || currentSelectedSlot.isSlotLocked) return;
+        /*if (currentSelectedSlot == null || currentSelectedSlot.isSlotLocked) return;
 
         Inventory inventory = currentSelectedSlot.GetComponentInParent<Inventory>();
         if (inventory == null) return;
+
 
         if (inventory.slots.Contains(currentSelectedSlot))
         {
             inventory.slots.Remove(currentSelectedSlot);
             Destroy(currentSelectedSlot.gameObject);
-        }
+        }*/
+        
+        toDelete = currentSelectedSlot;
+        amountToRemove = 1;
+        amountToRemoveText.text = amountToRemove.ToString();
+        itemName.text = toDelete.GetComponentInChildren<InventoryItem>().itemName;
+        removeItemConfirmationPanel.SetActive(true);
 
         ShowChoices(false);
+    }
+
+    public void IncreaseAmountToDelete()
+    {
+        int maxQuantity = toDelete.GetComponentInChildren<InventoryItem>().quantity;
+
+        if (amountToRemove < maxQuantity)
+        {
+            amountToRemove++;
+            amountToRemoveText.text = amountToRemove.ToString();
+        }
+        else return;
+    }
+
+    public void DecreaseAmountToDelete()
+    {
+        int minQuantity = 1;
+
+        if (amountToRemove > minQuantity)
+        {
+            amountToRemove--;
+            amountToRemoveText.text = amountToRemove.ToString();
+        }
+        else return;
+    }
+
+    public void RemoveItem()
+    {
+        InventoryItem item = toDelete.GetComponentInChildren<InventoryItem>();
+
+        item.quantity -= amountToRemove;
+        item.SetQuantity(item.quantity);
+        if (item.quantity <= 0)
+        {
+            Inventory inventory = toDelete.GetComponentInParent<Inventory>();
+            if (inventory == null) return;
+
+            if (inventory.slots.Contains(toDelete) && inventory.allItemsInInventory.Contains(item))
+            {
+                inventory.slots.Remove(toDelete);
+                inventory.allItemsInInventory.Remove(item);
+                Destroy(toDelete.gameObject);
+                Debug.Log("Destroy Slot");
+            }
+        }
+
+        amountToRemove = 1;
+        removeItemConfirmationPanel.SetActive(false);
+    }
+
+    public void RemoveSpecificItem(string itemID , int amount)
+    {
+        Inventory inventory = GameObject.Find("Main Inventory").GetComponent<Inventory>();
+        if(inventory == null) return;
+
+        foreach (ItemSlot itemSlot in inventory.slots)
+        {
+            InventoryItem item = itemSlot.GetComponentInChildren<InventoryItem>();
+            if (item != null)
+            {
+                if (item.itemID == itemID)
+                {
+                    toDelete = itemSlot;
+                    amountToRemove = amount;
+                    RemoveItem();
+                }
+            }
+        }      
     }
 
     // Called by "Use" button
