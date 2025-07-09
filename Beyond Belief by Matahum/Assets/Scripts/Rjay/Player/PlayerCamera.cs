@@ -42,6 +42,9 @@ public class PlayerCamera : MonoBehaviour
     private float shakeMagnitude = 0f;
     private Vector3 shakeOffset = Vector3.zero;
 
+    // Cursor toggle
+    private bool isCursorVisible = false;
+
     void Start()
     {
         desiredDistance = currentDistance = maxDistance;
@@ -127,15 +130,20 @@ public class PlayerCamera : MonoBehaviour
 
     void HandleMouseLock()
     {
-        if (Input.GetKey(KeyCode.LeftAlt))
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            isCursorVisible = !isCursorVisible;
+
+            if (isCursorVisible)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
         }
     }
 
