@@ -9678,6 +9678,7 @@ GameObject:
   - component: {fileID: 674178703183645871}
   - component: {fileID: 4616776590992548460}
   - component: {fileID: 9081826742802713233}
+  - component: {fileID: 6947547147558299740}
   - component: {fileID: -8520545149747543427}
   m_Layer: 0
   m_Name: NormalSkillPrefab
@@ -9813,6 +9814,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!136 &6947547147558299740
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3001216498212357524}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.14649376
+  m_Height: 2.9967806
+  m_Direction: 1
+  m_Center: {x: -0.35, y: -0.0000020272123, z: -0.006427079}
 --- !u!114 &-8520545149747543427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9825,6 +9849,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59ae1f72ea3ef4b439102f3deee47144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normalSkillDamagePercent: 0.3
+  hitCooldown: 0.3
+  hitImpactPrefab: {fileID: 2387171128282569241, guid: 2500a65a02b5d684c83264a63bf1abb8, type: 3}
 --- !u!1 &8001688654864117822
 GameObject:
   m_ObjectHideFlags: 0

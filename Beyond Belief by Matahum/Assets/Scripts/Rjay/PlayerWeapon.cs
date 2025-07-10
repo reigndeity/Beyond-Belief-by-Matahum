@@ -69,7 +69,6 @@ public class PlayerWeapon : MonoBehaviour
         if (damageable != null)
         {
             float damage = m_playerStats.p_attack * m_scalingAmount;
-            Debug.Log(m_scalingAmount);
             damageable.TakeDamage(damage);
 
             hitTimestamps[other] = Time.time; // Record this hit

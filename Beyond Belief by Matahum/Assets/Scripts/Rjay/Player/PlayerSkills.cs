@@ -84,10 +84,7 @@ public class PlayerSkills : MonoBehaviour
     {
         Vector3 forwardDirection = normalSkillSpawnPoint.forward;
         Quaternion directionRotation = Quaternion.LookRotation(forwardDirection);
-
-        // Your prefab's baked offset is 45 X and 90 Y
         Quaternion prefabOffset = Quaternion.Euler(45f, 90f, 0f);
-
         GameObject skillGO = Instantiate(normalSkill, normalSkillSpawnPoint.position, directionRotation * prefabOffset);
 
         PlayerNormalSkill skillScript = skillGO.GetComponent<PlayerNormalSkill>();
@@ -96,16 +93,25 @@ public class PlayerSkills : MonoBehaviour
             skillScript.Initialize(normalSkillSpeed, normalSkillLifetime, forwardDirection);
         }
     }
+
     public void EndNormalSkill()
     {
         isUsingNormalSkill = false;
         m_playerCombat.HideWeapon();
         m_playerCombat.ShowWeaponParticle();
     }
+    public void StartUltimateSkill()
+    {
+        m_playerCombat.isAttacking = false;
+        m_playerCombat.canMoveDuringAttack = true;
+        m_playerCombat.ShowWeapon();
+    }
 
     public void EndUltimateSkill()
     {
         isUsingUltimateSkill = false;
+        m_playerCombat.HideWeapon();
+        m_playerCombat.ShowWeaponParticle();
     }
 
 }
