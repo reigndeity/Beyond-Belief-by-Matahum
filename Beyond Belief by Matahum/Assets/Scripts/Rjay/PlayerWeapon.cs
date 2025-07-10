@@ -8,6 +8,10 @@ public class PlayerWeapon : MonoBehaviour
     private PlayerStats m_playerStats;
     public Collider weaponCollider;
     public float m_scalingAmount;
+
+    [Header("Weapon Stats")]
+    public int swordLevel;
+    public float swordAttack;
     [Header("Hit Cooldown")]
     private Dictionary<Collider, float> hitTimestamps = new Dictionary<Collider, float>();
     public float hitCooldown = 0.3f; // Time between valid hits to the same enemy

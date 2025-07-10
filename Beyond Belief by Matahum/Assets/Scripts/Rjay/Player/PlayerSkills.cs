@@ -10,6 +10,10 @@ public class PlayerSkills : MonoBehaviour
     public float normalSkillCooldown = 3f;
     private float normalSkillTimer = 0f;
     public bool isUsingNormalSkill = false;
+    [SerializeField] GameObject normalSkill;
+    [SerializeField] float normalSkillLifetime;
+    [SerializeField] float normalSkillSpeed;
+    [SerializeField] private Transform normalSkillSpawnPoint;
 
     [Header("Ultimate Skill")]
     [SerializeField] Animator weaponAnimator;
@@ -55,6 +59,7 @@ public class PlayerSkills : MonoBehaviour
         normalSkillTimer = normalSkillCooldown;
     }
 
+
     void ActivateUltimateSkill()
     {
         isUsingUltimateSkill = true;
@@ -69,9 +74,33 @@ public class PlayerSkills : MonoBehaviour
     public float GetUltimateSkillCooldown() => ultimateSkillCooldown;
 
     // ANIMATOR EVENT SYSTEM
+    public void StartNormalSkill()
+    {
+        m_playerCombat.isAttacking = false;
+        m_playerCombat.canMoveDuringAttack = true;
+        m_playerCombat.ShowWeapon();
+    }
+    void SpawnNormalSkill()
+    {
+        Vector3 forwardDirection = normalSkillSpawnPoint.forward;
+        Quaternion directionRotation = Quaternion.LookRotation(forwardDirection);
+
+        // Your prefab's baked offset is 45 X and 90 Y
+        Quaternion prefabOffset = Quaternion.Euler(45f, 90f, 0f);
+
+        GameObject skillGO = Instantiate(normalSkill, normalSkillSpawnPoint.position, directionRotation * prefabOffset);
+
+        PlayerNormalSkill skillScript = skillGO.GetComponent<PlayerNormalSkill>();
+        if (skillScript != null)
+        {
+            skillScript.Initialize(normalSkillSpeed, normalSkillLifetime, forwardDirection);
+        }
+    }
     public void EndNormalSkill()
     {
         isUsingNormalSkill = false;
+        m_playerCombat.HideWeapon();
+        m_playerCombat.ShowWeaponParticle();
     }
 
     public void EndUltimateSkill()

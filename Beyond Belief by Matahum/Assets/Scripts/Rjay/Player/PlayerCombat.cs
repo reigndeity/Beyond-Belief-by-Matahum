@@ -9,7 +9,7 @@ public class PlayerCombat : MonoBehaviour
     private CharacterController m_characterController;
 
     public bool isAttacking = false;
-    private bool canMoveDuringAttack = false;
+    public bool canMoveDuringAttack = false;
     public bool IsAttacking() => isAttacking;
     public bool CanMoveDuringAttack() => canMoveDuringAttack;
 
@@ -211,6 +211,7 @@ public class PlayerCombat : MonoBehaviour
     public void ShowAttackSlash() => m_playerWeapon.ShowSwordTrail();
     public void HideAttackSlash() => m_playerWeapon.HideSwordTrail();
     public void ShowLastAttack() => m_playerWeapon.LastAttack();
+
 
     public void CombatBoost()
     {
