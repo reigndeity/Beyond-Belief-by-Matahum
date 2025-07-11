@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.VFX;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -63,6 +65,9 @@ public class PlayerMovement : MonoBehaviour
     private float dashTimeRemaining = 0f;
     private Vector3 dashDirection;
     public static event Action OnDashStarted;
+    [SerializeField] private VisualEffect dashVFX;
+    [SerializeField] private float dashVFXDuration = 1f; // Set this to match VFX duration
+    [SerializeField] ParticleSystem dashTrail;
 
     [Header("Debug View")]
     [SerializeField] private Vector3 debugMoveDirection;
@@ -265,6 +270,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         wasHoldingSprint = isHoldingSprint;
+
+        if (isSprinting == false)
+        {
+            StopDashTrail();
+        }
     }
 
     public void HandleDash()
@@ -318,5 +328,31 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsDashing() => isDashing;
     public float GetDashCooldownRemaining() => Mathf.Clamp(dashCooldownTimer, 0f, dashCooldown);
+
+    public void DashParticle()
+    {
+        if (dashVFX == null) return;
+
+        // Activate and play the effect
+        dashVFX.gameObject.SetActive(true);
+        dashVFX.Play();
+
+        // Automatically disable after it's done
+        StartCoroutine(DisableVFXAfterDuration(dashVFXDuration));
+    }
+    public void StartDashTrail()
+    {
+        dashTrail.Play();
+    }
+    public void StopDashTrail()
+    {
+        dashTrail.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+    }
+
+    private IEnumerator DisableVFXAfterDuration(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        dashVFX.gameObject.SetActive(false);
+    }
     public bool IsAboutToJump() => isJumpStarting;
 }

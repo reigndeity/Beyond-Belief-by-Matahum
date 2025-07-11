@@ -173,6 +173,7 @@ public class PlayerCombat : MonoBehaviour
         DisableWeaponCollider();
         HideWeapon();
         HideAttackSlash();
+        m_playerMovement.DashParticle();
     }
 
     public void AttackTwoPush() => PushPlayerForward(0.5f, 0.12f);
