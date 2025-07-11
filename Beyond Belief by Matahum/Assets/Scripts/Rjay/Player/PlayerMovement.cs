@@ -65,9 +65,11 @@ public class PlayerMovement : MonoBehaviour
     private float dashTimeRemaining = 0f;
     private Vector3 dashDirection;
     public static event Action OnDashStarted;
+
+    [Header("Movement Visuals")]
     [SerializeField] private VisualEffect dashVFX;
     [SerializeField] private float dashVFXDuration = 1f; // Set this to match VFX duration
-    [SerializeField] ParticleSystem dashTrail;
+    [SerializeField] ParticleSystem sprintTrail;
 
     [Header("Debug View")]
     [SerializeField] private Vector3 debugMoveDirection;
@@ -273,7 +275,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (isSprinting == false)
         {
-            StopDashTrail();
+            StopSprintTrail();
         }
     }
 
@@ -340,13 +342,13 @@ public class PlayerMovement : MonoBehaviour
         // Automatically disable after it's done
         StartCoroutine(DisableVFXAfterDuration(dashVFXDuration));
     }
-    public void StartDashTrail()
+    public void StartSprintTrail()
     {
-        dashTrail.Play();
+        sprintTrail.Play();
     }
-    public void StopDashTrail()
+    public void StopSprintTrail()
     {
-        dashTrail.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        sprintTrail.Stop(true, ParticleSystemStopBehavior.StopEmitting);
     }
 
     private IEnumerator DisableVFXAfterDuration(float duration)

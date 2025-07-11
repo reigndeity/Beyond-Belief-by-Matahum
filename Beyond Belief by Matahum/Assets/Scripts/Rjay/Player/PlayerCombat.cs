@@ -109,7 +109,7 @@ public class PlayerCombat : MonoBehaviour
 
 
 
-    private void FaceTarget(Transform target)
+    public void FaceTarget(Transform target)
     {
         if (target == null) return;
 

@@ -57,6 +57,9 @@ public class PlayerSkills : MonoBehaviour
         isUsingNormalSkill = true;
         m_playerAnimator.ChangeAnimationState("player_normalSkill");
         normalSkillTimer = normalSkillCooldown;
+
+        Transform enemy = m_playerCombat.GetNearestEnemy();
+        m_playerCombat.FaceTarget(enemy);
     }
 
 
