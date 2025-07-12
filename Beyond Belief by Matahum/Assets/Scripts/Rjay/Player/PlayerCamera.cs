@@ -55,17 +55,6 @@ public class PlayerCamera : MonoBehaviour
         yaw = angles.y;
         pitch = angles.x;
     }
-
-    void Update()
-    {
-        HandleMouseLock();
-
-        if (Cursor.lockState == CursorLockMode.Locked)
-            HandleRotation();
-
-        HandleZoom();
-    }
-
     void LateUpdate()
     {
         if (playerTarget == null) return;
@@ -107,7 +96,7 @@ public class PlayerCamera : MonoBehaviour
         transform.position = Vector3.SmoothDamp(transform.position, finalCameraPos, ref currentVelocity, 1f / followSmoothSpeed);
     }
 
-    void HandleRotation()
+    public void HandleRotation()
     {
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
@@ -118,7 +107,7 @@ public class PlayerCamera : MonoBehaviour
         pitch = Mathf.Clamp(pitch, pitchMin, pitchMax);
     }
 
-    void HandleZoom()
+    public void HandleZoom()
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0f)
@@ -128,7 +117,7 @@ public class PlayerCamera : MonoBehaviour
         }
     }
 
-    void HandleMouseLock()
+    public void HandleMouseLock()
     {
         if (Input.GetKeyDown(KeyCode.LeftAlt))
         {

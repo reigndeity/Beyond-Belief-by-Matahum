@@ -19,6 +19,8 @@ public class Player : MonoBehaviour, IDamageable
     private PlayerSkills m_playerSkills;
     private PlayerStats m_playerStats;
     public PlayerState currentState;
+    private PlayerMinimap m_playerMinimap;
+    private PlayerCamera m_playerCamera;
 
 
     void Start()
@@ -29,17 +31,41 @@ public class Player : MonoBehaviour, IDamageable
         m_playerCombat = GetComponent<PlayerCombat>();
         m_playerSkills = GetComponent<PlayerSkills>();
         m_playerStats = GetComponent<PlayerStats>();
+        m_playerMinimap = GetComponentInChildren<PlayerMinimap>();
+        m_playerCamera = FindFirstObjectByType<PlayerCamera>();
     }
 
     void Update()
-    {
-        
-        m_playerMovement.HandleMovement();
-        m_playerMovement.HandleDash();
-        m_playerMovement.HandleJump();
-        m_playerCombat.HandleAttack();
-        m_playerSkills.HandleSkills();
-        HandleGrassInteraction();
+    {   
+
+        // Player Camera
+        m_playerCamera.HandleMouseLock();
+        if (Cursor.lockState == CursorLockMode.Locked)
+            m_playerCamera.HandleRotation();
+        if (!m_playerMinimap.IsMapOpen())
+        {
+            m_playerCamera.HandleZoom();
+            m_playerMinimap.projectedViewIcon.enabled = true; // show when map is closed
+        }
+        else
+        {
+            m_playerMinimap.projectedViewIcon.enabled = false; // hide when map is open
+        }
+
+        // Map
+        m_playerMinimap.ProjectionRotation();
+        m_playerMinimap.HandleMapToggle();
+        m_playerMinimap.ZoomControl();
+
+        if (!m_playerMinimap.IsMapOpen())
+        {
+            m_playerMovement.HandleMovement();
+            m_playerMovement.HandleDash();
+            m_playerMovement.HandleJump();
+            m_playerCombat.HandleAttack();
+            m_playerSkills.HandleSkills();
+            HandleGrassInteraction();
+        }
 
         float currentSpeed = m_playerMovement.Speed;
         m_playerAnimator.lastFrameSpeed = currentSpeed;
