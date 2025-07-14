@@ -3,21 +3,22 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 //using static UnityEditor.Progress;
 using Unity.VisualScripting;
 using Unity.PlasticSCM.Editor.WebApi;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using static UnityEditor.Progress;
 
 public class ItemActionController : MonoBehaviour
 {
     public static ItemActionController Instance;
 
-
     [Header("Item Button Choices")]
     public GameObject itemActionControllerGameObject;
     public Button equipButton; //Equip the item
     public Button useButton; //Use a consumable item
-    public Button moveButton; //Move any item. Moving it to another item will swap them
+    //public Button moveButton; //Move any item. Moving it to another item will swap them
     public Button removeItemButton; //Delete any item. Doesnt work with Agimat
     public Button lockAndUnlockButton; //Lock or Unlock a slot. Cannot interact with
 
@@ -40,7 +41,9 @@ public class ItemActionController : MonoBehaviour
     public Button equipSecondAbilityButton;
     public ItemSlot agimatFirstSlot;
     public ItemSlot agimatSecondSlot;
-    //public Button sortAgimatInventoryButton; //Sort    
+
+    [Header("Is Character Details Active")]
+    public GameObject charDetailsHolder;
 
     private void Awake()
     {
@@ -51,7 +54,7 @@ public class ItemActionController : MonoBehaviour
     private void Start()
     {
         equipButton.onClick.AddListener(EquipOrUnequipSelectedItem);
-        moveButton.onClick.AddListener(TryMoveOrSwap);
+        //moveButton.onClick.AddListener(TryMoveOrSwap);
         removeItemButton.onClick.AddListener(DestroySelectedItem);
         useButton.onClick.AddListener(UseSelectedItem);
         lockAndUnlockButton.onClick.AddListener(LockOrUnlock);
@@ -62,7 +65,8 @@ public class ItemActionController : MonoBehaviour
         equipFirstAbilityButton.onClick.AddListener(EquipToFirstSlot);
         equipSecondAbilityButton.onClick.AddListener(EquipToSecondSlot);
 
-        ShowChoices(false);
+        DisableAllButtons();
+        //ShowChoices(false);
     }
 
     // Called when an ItemSlot is clicked
@@ -70,11 +74,10 @@ public class ItemActionController : MonoBehaviour
     {
         if (selectedSlot == currentSelectedSlot)
         {
-            //DisableAllButtons();
-            ShowChoices(false);
+            DisableAllButtons();
+            //ShowChoices(false);
             selectedSlot.DeselectItem();
             currentSelectedSlot = null;
-            Debug.Log("Same Slot");
             return;
         }
 
@@ -94,8 +97,8 @@ public class ItemActionController : MonoBehaviour
     public void CheckForOptions(ItemSlot selectedSlot)
     {
         // Start by disabling everything
-        //DisableAllButtons();
-        ShowChoices(true);
+        DisableAllButtons();
+        //ShowChoices(true);
         lockAndUnlockButton.gameObject.SetActive(true);
 
         TextMeshProUGUI lockSlotText = lockAndUnlockButton.GetComponentInChildren<TextMeshProUGUI>();
@@ -123,7 +126,9 @@ public class ItemActionController : MonoBehaviour
         InventoryItem item = selectedSlot.currentItem;
         if (item != null)
         {
-            if (item.isEquippable)
+            //moveButton.gameObject.SetActive(true);
+
+            if (item.isEquippable && charDetailsHolder.gameObject.activeInHierarchy)
             {
                 TextMeshProUGUI equipFirstText = equipFirstAbilityButton.GetComponentInChildren<TextMeshProUGUI>();
                 TextMeshProUGUI equipSecondText = equipSecondAbilityButton.GetComponentInChildren<TextMeshProUGUI>();
@@ -132,19 +137,17 @@ public class ItemActionController : MonoBehaviour
 
                 equipFirstAbilityButton.gameObject.SetActive(true);
                 equipSecondAbilityButton.gameObject.SetActive(true);
-                moveButton.gameObject.SetActive(true);
+                
 
                 if (selectedSlot == agimatFirstSlot)
                 {
-                    //moveButton.interactable = false;
-                    moveButton.gameObject.SetActive(false);
+                    //moveButton.gameObject.SetActive(false);
                     equipFirstText.text = "Unequip";
                 }
 
                 if (selectedSlot == agimatSecondSlot)
                 {
-                    //moveButton.interactable = false;
-                    moveButton.gameObject.SetActive(false);
+                    //moveButton.gameObject.SetActive(false);
                     equipSecondText.text = "Unequip";
                 }
             }
@@ -162,27 +165,28 @@ public class ItemActionController : MonoBehaviour
         else
             equippable.Unequip();
 
-        //DisableAllButtons();
-        ShowChoices(false);
+        DisableAllButtons();
+        //ShowChoices(false);
     }
 
     public void EquipToSecondSlot()
     {
-        IEquippable equippable = currentSelectedSlot.GetComponentInChildren<IEquippable>();
+        InventoryItem item = currentSelectedSlot.GetComponentInChildren<InventoryItem>();
+        IEquippable equippable = item.GetComponent<IEquippable>();
 
         if (!equippable.isEquipped || currentSelectedSlot != agimatSecondSlot)
             equippable.Equip(agimatSecondSlot);
         else
             equippable.Unequip();
 
-        //DisableAllButtons();
-        ShowChoices(false);
+        DisableAllButtons();
+        //ShowChoices(false);
     }
 
     private void ItemAny(ItemSlot selectedSlot)
     {
         IEquippable itemEquipped = selectedSlot.GetComponentInChildren<IEquippable>();
-        if (itemEquipped != null && itemEquipped.isEquipped)
+        if (itemEquipped != null && itemEquipped.isEquipped && charDetailsHolder.gameObject.activeInHierarchy)
         {
             TextMeshProUGUI equipText = equipButton.GetComponentInChildren<TextMeshProUGUI>();
             equipText.text = "Unequip";
@@ -191,19 +195,18 @@ public class ItemActionController : MonoBehaviour
             return;
         }
 
-
         InventoryItem item = selectedSlot.currentItem;
         if (item != null)
         {
             if (item.isUsable) useButton.gameObject.SetActive(true);
-            if (item.isEquippable)
+            if (item.isEquippable && charDetailsHolder.gameObject.activeInHierarchy)
             {
                 TextMeshProUGUI equipText = equipButton.GetComponentInChildren<TextMeshProUGUI>();
                 equipText.text = "Equip";
 
                 equipButton.gameObject.SetActive(true);
             }
-            moveButton.gameObject.SetActive(true);
+            //moveButton.gameObject.SetActive(true);
             removeItemButton.gameObject.SetActive(true);
         }
     }
@@ -229,7 +232,7 @@ public class ItemActionController : MonoBehaviour
                 
                 isMoving = false;
                 movingFromSlot.GetComponent<Image>().color = Color.black;
-                ShowChoices(false);
+                //ShowChoices(false);
 
                 if (movingFromSlot.isSlotLocked || currentSelectedSlot.isSlotLocked)//if the slot is locked
                 {
@@ -239,6 +242,8 @@ public class ItemActionController : MonoBehaviour
 
             }
 
+            Inventory inventory = WhichInventory(movingFromSlot.GetComponentInChildren<InventoryItem>());
+
             SwapItemsAnimated(movingFromSlot, currentSelectedSlot);
 
             //Temporary
@@ -246,35 +251,23 @@ public class ItemActionController : MonoBehaviour
 
             isMoving = false;
             movingFromSlot = null;
-            ShowChoices(false);
+
+            DisableAllButtons();
+            //ShowChoices(false);
         }
     }
 
-
-
-
     // Called by "Remove" button
     public void DestroySelectedItem()
-    {
-        /*if (currentSelectedSlot == null || currentSelectedSlot.isSlotLocked) return;
-
-        Inventory inventory = currentSelectedSlot.GetComponentInParent<Inventory>();
-        if (inventory == null) return;
-
-
-        if (inventory.slots.Contains(currentSelectedSlot))
-        {
-            inventory.slots.Remove(currentSelectedSlot);
-            Destroy(currentSelectedSlot.gameObject);
-        }*/
-        
+    {       
         toDelete = currentSelectedSlot;
         amountToRemove = 1;
         amountToRemoveText.text = amountToRemove.ToString();
         itemName.text = toDelete.GetComponentInChildren<InventoryItem>().itemName;
         removeItemConfirmationPanel.SetActive(true);
 
-        ShowChoices(false);
+        DisableAllButtons();
+        //ShowChoices(false);
     }
 
     public void IncreaseAmountToDelete()
@@ -307,20 +300,40 @@ public class ItemActionController : MonoBehaviour
 
         item.quantity -= amountToRemove;
         item.SetQuantity(item.quantity);
+
+        Inventory inventory = WhichInventory(item);
+
+        if (inventory == null) return;
+
         if (item.quantity <= 0)
         {
-            Inventory inventory = toDelete.GetComponentInParent<Inventory>();
-            if (inventory == null) return;
+            if (item.itemType == ItemType.Agimat)
+            {
+                if (!InventoryManager.Instance.agimatItems.Contains(toDelete.currentItem))
+                {
+                    Debug.Log($"{item.name} does not exists in manager");
+                }
+                InventoryManager.Instance.agimatItems.Remove(toDelete.currentItem);
+                InventoryManager.Instance.agimatInventorySlots.Remove(toDelete);
+            }
+            else
+            {
+                if (!InventoryManager.Instance.mainInventoryItems.Contains(toDelete.currentItem))
+                {
+                    Debug.Log($"{item.name} does not exists in manager");
+                }
+                InventoryManager.Instance.mainInventoryItems.Remove(toDelete.currentItem);
+                InventoryManager.Instance.mainInventorySlots.Remove(toDelete);
+            }
 
-            if (inventory.slots.Contains(toDelete) && inventory.allItemsInInventory.Contains(item))
+            if (inventory.slots.Contains(toDelete) && inventory.items.Contains(item))
             {
                 inventory.slots.Remove(toDelete);
-                inventory.allItemsInInventory.Remove(item);
+                inventory.items.Remove(item);
                 Destroy(toDelete.gameObject);
-                Debug.Log("Destroy Slot");
             }
         }
-
+        
         amountToRemove = 1;
         removeItemConfirmationPanel.SetActive(false);
     }
@@ -352,19 +365,24 @@ public class ItemActionController : MonoBehaviour
         IUsable usable = item.GetComponent<IUsable>();
 
         usable.Use();
+
+        DisableAllButtons();
+        //ShowChoices(false);
     }
 
     // Equip/Unequip could later be expanded for your equipment system
     public void EquipOrUnequipSelectedItem()
     {
-        IEquippable equippable = currentSelectedSlot.GetComponentInChildren<IEquippable>();
+        InventoryItem item = currentSelectedSlot.GetComponentInChildren<InventoryItem>();
+        IEquippable equippable = item.GetComponent<IEquippable>();
 
         if (equippable.isEquipped == false)
             equippable.Equip();
         else
             equippable.Unequip();
 
-        ShowChoices(false);
+        DisableAllButtons();
+        //ShowChoices(false);
     }
 
     public void LockOrUnlock()
@@ -377,7 +395,8 @@ public class ItemActionController : MonoBehaviour
 
         currentSelectedSlot.SaveLockedState();
 
-        ShowChoices(false);
+        DisableAllButtons();
+        //ShowChoices(false);
         movingFromSlot = null;
         currentSelectedSlot = null;
     }
@@ -389,10 +408,16 @@ public class ItemActionController : MonoBehaviour
         equipSecondAbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = "Equip to Second Slot";
         lockAndUnlockButton.GetComponentInChildren<TextMeshProUGUI>().text = "Lock/Unlock";
 
-        ShowChoices(false);
+        equipButton.gameObject.SetActive(false);
+        useButton.gameObject.SetActive(false);
+        removeItemButton.gameObject.SetActive(false);
+
+        equipFirstAbilityButton.gameObject.SetActive(false);
+        equipSecondAbilityButton.gameObject.SetActive(false);
+        //ShowChoices(false);
     }
 
-    public void ShowChoices(bool isShow)
+    /*public void ShowChoices(bool isShow)
     {
         int childCount = itemActionControllerGameObject.transform.childCount;
         GameObject[] children = new GameObject[childCount];
@@ -409,16 +434,60 @@ public class ItemActionController : MonoBehaviour
 
         if (isShow)
         {
-            itemActionControllerGameObject.SetActive(isShow);
+            itemActionControllerGameObject.SetActive(true);
+
             GameObject slotObj = currentSelectedSlot.gameObject;
-            itemActionControllerGameObject.transform.position = new Vector2(slotObj.transform.position.x, slotObj.transform.position.y + 50);
+
+            // Get screen position of the slot
+            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, slotObj.transform.position);
+
+            // Adjust based on screen height
+            float offsetY = 50f;
+            float screenHeight = Screen.height;
+
+            RectTransform rectTransform = itemActionControllerGameObject.GetComponent<RectTransform>();
+            rectTransform.pivot = new Vector2(0.5f, 0);
+
+            if (screenPos.y > screenHeight * 0.5f)
+            {
+                offsetY = -50f; // move upward if slot is in lower part of screen
+                rectTransform.pivot = new Vector2(0.5f, 1);
+            }
+
+            // Final position
+            Vector2 adjustedScreenPos = new Vector2(screenPos.x, screenPos.y + offsetY);
+
+            // Convert screen space to local position in the canvas
+            RectTransform canvasRect = itemActionControllerGameObject.transform.parent.GetComponent<RectTransform>();
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, adjustedScreenPos, null, out Vector2 localPoint);
+
+            itemActionControllerGameObject.GetComponent<RectTransform>().anchoredPosition = localPoint;
         }
         else
         {
+            removeItemButton.gameObject.SetActive(false);
+            useButton.gameObject.SetActive(false);
+
+
             itemActionControllerGameObject.SetActive(false);
             EventSystem.current.SetSelectedGameObject(null);
-            ItemActionController.Instance.currentSelectedSlot = null;
+            currentSelectedSlot = null;
         }
+    }*/
+    public List<ItemSlot> WhichSlotList(InventoryItem item)
+    {
+        if (item.itemType != ItemType.Agimat)
+            return InventoryManager.Instance.mainInventorySlots;
+        else
+            return InventoryManager.Instance.agimatInventorySlots;
+    }
+
+    public Inventory WhichInventory(InventoryItem item)
+    {
+        if (item.itemType != ItemType.Agimat)
+            return GameObject.Find("Main Inventory").GetComponent<Inventory>();
+        else
+            return GameObject.Find("Agimat Inventory").GetComponent<Inventory>();
     }
 
     public void SwapItemsAnimated(ItemSlot fromSlot, ItemSlot toSlot)

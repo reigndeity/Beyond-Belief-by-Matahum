@@ -15,8 +15,6 @@ public class PamanaInventory : MonoBehaviour
     private Dictionary<ItemSlot, PamanaType> slotToType = new();
     private Dictionary<ItemSlot, (PamanaStat main, PamanaStat sub)> storedStats = new();
 
-    //public ItemSlot slotPrefab;
-
     private PamanaSetPieces setPiece;
     //private PlayerStats player;
     private Temp_PlayerStats player;
@@ -28,20 +26,11 @@ public class PamanaInventory : MonoBehaviour
         slotToType[diwataSlot] = PamanaType.Diwata;
         slotToType[lihimSlot] = PamanaType.Lihim_ng_Karunungan;
         slotToType[SalamangkeroSlot] = PamanaType.Salamangkero;
-
-        /*pamanaSlots.Add(diwataSlot);
-        pamanaSlots.Add(lihimSlot);
-        pamanaSlots.Add(SalamangkeroSlot);*/
     }
 
     private void Start()
     {
         player = FindFirstObjectByType<Temp_PlayerStats>();
-
-        /*foreach (var slot in pamanaSlots)
-        {
-            slot.OnItemChanged += HandleItemChanged;
-        }*/
 
         StartCoroutine(DelayedInit());
     }

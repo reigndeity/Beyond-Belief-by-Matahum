@@ -16,6 +16,12 @@ public class PamanaUI : MonoBehaviour, IEquippable, IDescription
     public string subStatType;
     public float subStatValue;
 
+    void Start()
+    {
+        ItemSlot parentSlot = GetComponentInParent<ItemSlot>();
+        if (parentSlot.isEquipmentSlot) isEquipped = true;
+        else isEquipped = false;
+    }
     public void Initialize(Pamana pamana)
     {
         assignedPamana = pamana;
@@ -38,13 +44,13 @@ public class PamanaUI : MonoBehaviour, IEquippable, IDescription
 
     public void Equip()
     {
-        string equipTarget = $"{pamanaType} Slot";
-        GameObject slotObject = GameObject.Find(equipTarget);
-        ItemSlot equipSlot = slotObject?.GetComponent<ItemSlot>();
+        ItemSlot equipSlot = GameObject.Find($"{pamanaType} Slot").GetComponent<ItemSlot>();
         if (equipSlot.isSlotLocked) return;
 
         ItemSlot currentItemSlot = GetComponentInParent<ItemSlot>();
         currentItemSlot?.ClearItem();
+
+        InventoryManager.Instance.mainInventoryItems.Remove(GetComponent<InventoryItem>());
 
         //Checking for existing equipped pamana, unequip if there is one
         InventoryItem equippedItem = equipSlot.GetComponentInChildren<InventoryItem>();
@@ -52,6 +58,7 @@ public class PamanaUI : MonoBehaviour, IEquippable, IDescription
         {
             PamanaUI equippedUI = equippedItem.GetComponent<PamanaUI>();
             equippedUI.Unequip();
+            InventoryManager.Instance.mainInventoryItems.Add(GetComponent<InventoryItem>());
         }
 
         InventoryItem item = GetComponent<InventoryItem>();
@@ -68,14 +75,17 @@ public class PamanaUI : MonoBehaviour, IEquippable, IDescription
 
     public void Unequip()
     {
+        System.Collections.Generic.List<ItemSlot> slots = InventoryManager.Instance.mainInventorySlots;
+
         string equipTarget = $"Main Inventory";
         GameObject slotObject = GameObject.Find(equipTarget);
         Inventory inventory = slotObject?.GetComponent<Inventory>();
+
         InventoryItem item = GetComponent<InventoryItem>();
         ItemSlot currentSlot = GetComponentInParent<ItemSlot>();
         currentSlot?.ClearItem();
 
-        if (inventory == null || item == null)
+        if (item == null)
             return;
 
         // Step 1: Find an empty inventory slot
@@ -101,7 +111,7 @@ public class PamanaUI : MonoBehaviour, IEquippable, IDescription
         isEquipped = false;
     }
 
-    public bool isEquipped { get; set; } = false;
+    public bool isEquipped { get; set; }
 
     public void LevelUpPamana()
     {

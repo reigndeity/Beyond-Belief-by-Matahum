@@ -40,7 +40,8 @@ public class ItemSelector : MonoBehaviour
             if (!nullSelected)
             {
                 ItemActionController.Instance.currentSelectedSlot = null;
-                ItemActionController.Instance.ShowChoices(false);
+                ItemActionController.Instance.DisableAllButtons();
+                //ItemActionController.Instance.ShowChoices(false);
                 nullSelected = true;
                 EventSystem.current.SetSelectedGameObject(null);
             }

@@ -83,8 +83,8 @@ public class UseAgimat : MonoBehaviour
         }
         else
         {
-            firstAgimatIcon.enabled = false;
-            firstHotKey.text = "";
+            /*firstAgimatIcon.enabled = false;
+            firstHotKey.text = "";*/
         }
     }
 
@@ -140,8 +140,8 @@ public class UseAgimat : MonoBehaviour
         }
         else
         {
-            secondAgimatIcon.enabled = false;
-            secondHotKey.text = "";
+            /*secondAgimatIcon.enabled = false;
+            secondHotKey.text = "";*/
         }
     }
 }

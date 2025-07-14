@@ -57,7 +57,7 @@ public class Mais_Agimat : Agimat, IEquippable//, IDescription,
 
     public void Unequip()
     {
-        string equipTarget = $"Agimat Inventory";
+        string equipTarget = $"Char Details Agimat Inventory";
         GameObject slotObject = GameObject.Find(equipTarget);
         Inventory inventory = slotObject?.GetComponent<Inventory>();
         InventoryItem item = GetComponent<InventoryItem>();

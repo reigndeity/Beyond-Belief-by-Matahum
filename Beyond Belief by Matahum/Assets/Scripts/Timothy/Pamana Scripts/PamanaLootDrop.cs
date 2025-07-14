@@ -10,7 +10,7 @@ public class PamanaLootDrop : MonoBehaviour//, IPickable
     {
     }
 
-    void Start()
+    /*void Start()
     {
         pamanaSpawner = FindFirstObjectByType<PamanaSpawner>();
         pamanaUIScript = pamanaSpawner.SpawnPamana(transform.gameObject);
@@ -18,7 +18,7 @@ public class PamanaLootDrop : MonoBehaviour//, IPickable
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
         Destroy(transform.gameObject, 60f);
-    }
+    }*/
 
     public void PickUp()
     {

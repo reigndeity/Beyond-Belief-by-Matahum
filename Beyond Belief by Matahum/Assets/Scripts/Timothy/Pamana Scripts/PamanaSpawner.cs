@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.IO;
+using static UnityEditor.Progress;
 
 public class PamanaSpawner : MonoBehaviour
 {
     [Header("Pamana Item Prefab and Main Inventory")]
     public GameObject pamanaUIPrefab;
     public Inventory mainInventory;
+    public Inventory pamanaInventory;
 
     [Header("Pamana that can spawn")]
     public Pamana[] availablePamanas; //Scriptable Object
@@ -23,8 +25,9 @@ public class PamanaSpawner : MonoBehaviour
     private void Start()
     {
         mainInventory = GameObject.Find("Main Inventory").GetComponent<Inventory>();
+        pamanaInventory = GameObject.Find("Pamana Only Inventory").GetComponent<Inventory>();
     }
-    public PamanaUI SpawnPamana(GameObject prefabParent)
+    public PamanaUI SpawnPamana(/*GameObject prefabParent*/)
     {
         if (availablePamanas.Length == 0)
         {
@@ -54,7 +57,7 @@ public class PamanaSpawner : MonoBehaviour
         SavePamanaJson(newPamana);
 
         // 7️⃣ Instantiate UI prefab
-        GameObject pamanaUI = Instantiate(pamanaUIPrefab, prefabParent.transform);
+        GameObject pamanaUI = Instantiate(pamanaUIPrefab/*, prefabParent.transform*/);
 
         // 8️⃣ Assign the saved Pamana to the UI
         PamanaUI pamanaUIScript = pamanaUI.GetComponent<PamanaUI>();
@@ -104,11 +107,10 @@ public class PamanaSpawner : MonoBehaviour
 
     public void SpawnPamanaInventoryItem()
     {
-        PamanaUI spawnedPamanaUI = SpawnPamana(transform.gameObject);
-        InsertToInventory(spawnedPamanaUI);
+        PamanaUI spawnedPamanaUI = SpawnPamana();
+        InventoryItem item = spawnedPamanaUI.GetComponent<InventoryItem>();
+        mainInventory.AddItem(item);
     }
-
-
     void SavePamanaJson(Pamana pamana)
     {
         if (string.IsNullOrEmpty(pamana.uniqueID))
@@ -123,5 +125,4 @@ public class PamanaSpawner : MonoBehaviour
         File.WriteAllText(filePath, json);
         Debug.Log($"Pamana saved: {filePath}");
     }
-
 }

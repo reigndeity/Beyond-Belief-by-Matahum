@@ -2,212 +2,94 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+
+public enum InventoryType
+{
+    MainInventory,
+    PamanaOnly,
+    AgimatOnly
+}
 
 public class Inventory : MonoBehaviour
 {
-    [Header("Prefabs and Parents")]
-    public GameObject slotPrefab;
+    [Header("Where the slots will spawn")]
+    public Transform inventoryParent;
+    public Transform charDetailsInventoryParent;
+    public bool isInMain = true;
 
+    [Header("What kind of Inventory")]
+    public InventoryType inventoryType;
+
+    [Header("Slots and Items in inventory")]
     public List<ItemSlot> slots = new List<ItemSlot>();
-    public List<InventoryItem> allItemsInInventory = new();
+    public List<InventoryItem> items = new List<InventoryItem>();
 
-    private const int MAX_STACK_SIZE = 999;
-
-    private void Start()
+    //For Swapping Main Inventory to Char Details Pamana Inventory
+    public void SwapMainInventory(bool isGoingToMain)
     {
-        Invoke("LateStart",0.1f);
-    }
-
-    void LateStart()
-    {
-        slots = GetComponentsInChildren<ItemSlot>().ToList();
-
-        foreach (var slot in slots)
+        if (isGoingToMain)
         {
-            InventoryItem item = slot.GetComponentInChildren<InventoryItem>();
-            allItemsInInventory.Add(item);
-        }
-    }
-
-    // Add item and auto-spawn slot
-    public void AddItem(InventoryItem itemToAdd)
-    {
-        if (itemToAdd == null) return;
-
-        if (itemToAdd.isStackable)
-        {
-            int remainingQuantity = itemToAdd.quantity;
-
-            // Step 1: Try to stack on existing same items
-            foreach (var slot in slots)
+            // Cache children before moving them
+            List<Transform> childrenToMove = new List<Transform>();
+            foreach (Transform child in charDetailsInventoryParent.transform)
             {
-                if (slot.HasItem() && slot.currentItem.itemID == itemToAdd.itemID && slot.currentItem.quantity < MAX_STACK_SIZE)
-                {
-                    int spaceLeft = MAX_STACK_SIZE - slot.currentItem.quantity;
-                    int amountToAdd = Mathf.Min(spaceLeft, remainingQuantity);
-
-                    slot.currentItem.quantity += amountToAdd;
-                    slot.UpdateQuantityText();
-                    remainingQuantity -= amountToAdd;
-
-                    if (remainingQuantity <= 0)
-                        return;
-                }
+                childrenToMove.Add(child);
             }
 
-            // Step 2: Use empty slots before creating new ones
-            foreach (var slot in slots)
+            // Now move them
+            foreach (Transform child in childrenToMove)
             {
-                if (!slot.HasItem())
-                {
-                    int stackAmount = Mathf.Min(MAX_STACK_SIZE, remainingQuantity);
-                    InventoryItem newStackItem = Instantiate(itemToAdd);
-                    newStackItem.quantity = stackAmount;
-
-                    newStackItem.transform.SetParent(slot.transform, false);
-                    slot.SetItem(newStackItem);
-                    allItemsInInventory.Add(newStackItem);
-
-                    remainingQuantity -= stackAmount;
-
-                    if (remainingQuantity <= 0)
-                        return;
-                }
+                child.gameObject.SetActive(true);
+                child.SetParent(inventoryParent.transform, false);
             }
 
-            // Step 3: No space — create new slots
-            while (remainingQuantity > 0)
-            {
-                int stackAmount = Mathf.Min(MAX_STACK_SIZE, remainingQuantity);
-                InventoryItem newStackItem = Instantiate(itemToAdd);
-                newStackItem.quantity = stackAmount;
-
-                if (newStackItem.itemType != ItemType.Agimat) AddSlot(false);
-                else AddSlot(true);
-
-                ItemSlot newSlot = slots[slots.Count - 1].GetComponent<ItemSlot>();
-
-                newStackItem.transform.SetParent(newSlot.transform, false);
-                newSlot.SetItem(newStackItem);
-
-                allItemsInInventory.Add(newStackItem);
-                remainingQuantity -= stackAmount;
-            }
+            isInMain = true;
+            ShowAllItems();
         }
         else
         {
-            // Non-stackable items
-            foreach (var slot in slots)
+            List<Transform> childrenToMove = new List<Transform>();
+            foreach (Transform child in inventoryParent.transform)
             {
-                if (!slot.HasItem())
-                {
-                    GameObject newItemObj = Instantiate(itemToAdd.gameObject, slot.transform);
-                    InventoryItem newItem = newItemObj.GetComponent<InventoryItem>();
-                    slot.SetItem(newItem);
-                    allItemsInInventory.Add(newItem);
-                    return;
-                }
+                childrenToMove.Add(child);
             }
 
-            // No empty slot, create new one
-            if(itemToAdd.itemType != ItemType.Agimat) AddSlot(false);
-            else AddSlot(true);
+            foreach (Transform child in childrenToMove)
+            {
+                child.gameObject.SetActive(true);
+                child.SetParent(charDetailsInventoryParent.transform, false);
+            }
 
-            ItemSlot newSlot = slots[slots.Count - 1];
-            GameObject newItemObjFinal = Instantiate(itemToAdd.gameObject, newSlot.transform);
-            InventoryItem newItemFinal = newItemObjFinal.GetComponent<InventoryItem>();
-
-            newSlot.SetItem(newItemFinal);
-            allItemsInInventory.Add(newItemFinal);
+            isInMain = false;
+            FilterAndSortByType(ItemType.Pamana);
         }
-        ItemActionController.Instance.ShowChoices(false);
-        ItemActionController.Instance.currentSelectedSlot = null;
     }
 
-    int mainInventorySlotCount = 0;
-    int agimatInventorySlotCount = 0;
+    //For Swapping Agimat Inventory to Char Details Agimat Inventory
+    public void SwapAgimatInventory(bool isGoingToMain)
+    {
+        if (isGoingToMain)        
+            foreach (Transform child in charDetailsInventoryParent.transform)            
+                child.SetParent(inventoryParent.transform, false);                  
+        else        
+            foreach (Transform child in inventoryParent.transform)
+                child.SetParent(charDetailsInventoryParent.transform, false);                  
+    }
+    public void AddItem(InventoryItem item)
+    {
+        InventoryManager.Instance.AddItem(item, slots, items, inventoryParent);
+    }
 
     public void AddSlot(bool isAgimat = false)
     {
-        GameObject newSlotGO = Instantiate(slotPrefab, gameObject.transform);
-        ItemSlot newSlot = newSlotGO.GetComponent<ItemSlot>();
-
-        if (isAgimat)
-        {
-            agimatInventorySlotCount++;
-            newSlot.gameObject.name = $"Agimat Item Slot ({agimatInventorySlotCount})";
-            newSlot.isAgimatSlot = true;
-            newSlot.allowedType = ItemType.Agimat;
-        }
+        if (isInMain)       
+            InventoryManager.Instance.AddSlot(slots, inventoryParent, isAgimat);
         else
-        {
-            mainInventorySlotCount++;
-            newSlot.name = $"Item Slot ({mainInventorySlotCount})";
-            newSlot.isAgimatSlot = false;
-        }
-
-        slots.Add(newSlot);
-        ItemActionController.Instance.ShowChoices(false);
-        ItemActionController.Instance.currentSelectedSlot = null;
+            InventoryManager.Instance.AddSlot(slots, charDetailsInventoryParent, isAgimat);
     }
 
-    public void DeleteSlot()
-    {
-        ItemSlot slotToDelete = ItemActionController.Instance.currentSelectedSlot;
-        if (slotToDelete == null || slotToDelete.isSlotLocked) return;
-
-        if (slots.Contains(slotToDelete))
-        {
-            slots.Remove(slotToDelete);
-            Destroy(slotToDelete.gameObject);
-        }
-        ItemActionController.Instance.ShowChoices(false);
-        ItemActionController.Instance.currentSelectedSlot = null;
-    }
-
-    public List<ItemSlot> GetAllSlots()
-    {
-        return slots;
-    }
-
-    public void ClearAllSlots()
-    {
-        foreach (var slot in slots)
-        {
-            Destroy(slot.gameObject);
-        }
-        slots.Clear();
-        allItemsInInventory.Clear();
-    }
-
-    // 🧹 Sort all items based on type: Consumable → Material → Misc → Pamana
-    public void SortItemsByType()
-    {
-        List<InventoryItem> allItems = new List<InventoryItem>();
-        foreach (var slot in slots)
-        {
-            if (slot.HasItem() && !slot.isSlotLocked)
-            {
-                allItems.Add(slot.currentItem);
-                slot.ClearItem();
-            }
-        }
-
-        allItems = allItems.OrderBy(item => GetTypePriority(item.itemType)).ToList();
-
-        for (int i = 0; i < allItems.Count && i < slots.Count; i++)
-        {
-            if (!slots[i].isSlotLocked)
-            {
-                slots[i].SetItem(allItems[i]);
-                allItems[i].transform.SetParent(slots[i].transform);
-                allItems[i].transform.localPosition = Vector3.zero;
-            }      
-        }
-        ItemActionController.Instance.ShowChoices(false);
-        ItemActionController.Instance.currentSelectedSlot = null;
-    }
-
+    //For Main Inventory
     public void FilterAndSortByType(ItemType filterType)
     {
         foreach (var slot in slots)
@@ -215,18 +97,17 @@ public class Inventory : MonoBehaviour
             if (slot.HasItem())
             {
                 bool match = slot.currentItem.itemType == filterType;
+
                 slot.gameObject.SetActive(match);
                 slot.currentItem.gameObject.SetActive(match);
             }
-            else
-            {
-                slot.gameObject.SetActive(false); // hide empty slots
-            }
         }
-        ItemActionController.Instance.ShowChoices(false);
+        ItemActionController.Instance.DisableAllButtons();
+        //ItemActionController.Instance.ShowChoices(false);
         ItemActionController.Instance.currentSelectedSlot = null;
     }
 
+    //For Main Inventory
     public void ShowAllItems()
     {
         foreach (var slot in slots)
@@ -241,32 +122,57 @@ public class Inventory : MonoBehaviour
 
             slot.gameObject.SetActive(true);
         }
-
-        ItemActionController.Instance.ShowChoices(false);
+        ItemActionController.Instance.DisableAllButtons();
+        //ItemActionController.Instance.ShowChoices(false);
         ItemActionController.Instance.currentSelectedSlot = null;
     }
 
-    public void RefreshInventoryState()
-    {
-        allItemsInInventory = slots
-            .Where(slot => slot.HasItem())
-            .Select(slot => slot.currentItem)
-            .ToList();
-    }
-
-    private void ClearAllVisibleSlots()
+    public void ClearAllSlots()
     {
         foreach (var slot in slots)
         {
-            slot.ClearItem();
-            slot.gameObject.SetActive(false); // Ensure it's re-enabled for reuse. Set to true if you want all slots to be online
+            slot.gameObject.SetActive(false);
+        }
+        slots.Clear();
+        items.Clear();
+    }
+
+    public void SortItemsByType()
+    {
+        List<InventoryItem> allItems = new List<InventoryItem>();
+
+        // Collect all non-locked items
+        foreach (var slot in slots)
+        {
+            if (slot.HasItem() && !slot.isSlotLocked)
+            {
+                allItems.Add(slot.currentItem);
+                slot.ClearItem();
+            }
         }
 
-        foreach (var item in allItemsInInventory)
+        // Sort first by type priority, then alphabetically by name
+        allItems = allItems
+            .OrderBy(item => GetTypePriority(item.itemType))
+            .ThenBy(item => item.itemName) // Alphabetical
+            .ToList();
+
+        // Place sorted items back
+        for (int i = 0, j = 0; i < slots.Count && j < allItems.Count; i++)
         {
-            item.gameObject.SetActive(false); // Hide all items by default
+            if (!slots[i].isSlotLocked)
+            {
+                slots[i].SetItem(allItems[j]);
+                allItems[j].transform.SetParent(slots[i].transform);
+                allItems[j].transform.localPosition = Vector3.zero;
+                j++;
+            }
         }
+        ItemActionController.Instance.DisableAllButtons();
+        //ItemActionController.Instance.ShowChoices(false);
+        ItemActionController.Instance.currentSelectedSlot = null;
     }
+
 
     private int GetTypePriority(ItemType type)
     {
