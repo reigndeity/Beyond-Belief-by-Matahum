@@ -40,9 +40,6 @@ public class ItemSlot : MonoBehaviour
 
     private void HandleClick()
     {
-        //This makes the button clickable again
-        //EventSystem.current.SetSelectedGameObject(null);
-
         ItemActionController.Instance?.HandleSlotSelection(this);
     }
 
@@ -95,7 +92,6 @@ public class ItemSlot : MonoBehaviour
             Debug.Log($"{currentItem} is not valid for slot");
             return;
         }
-
 
         currentItem = newItem;
         currentItem.transform.SetParent(transform);

@@ -101,6 +101,10 @@ public class Inventory : MonoBehaviour
                 slot.gameObject.SetActive(match);
                 slot.currentItem.gameObject.SetActive(match);
             }
+            else
+            {
+                slot.gameObject.SetActive(false);
+            }
         }
         ItemActionController.Instance.DisableAllButtons();
         //ItemActionController.Instance.ShowChoices(false);
@@ -114,13 +118,18 @@ public class Inventory : MonoBehaviour
         {
             if (slot.HasItem())
             {
+                slot.gameObject.SetActive(true);
                 var item = slot.currentItem;
                 item.gameObject.SetActive(true);
                 item.transform.SetParent(slot.transform);
                 item.transform.localPosition = Vector3.zero;
             }
+            else
+            {
+                slot.gameObject.SetActive(false);
+            }
 
-            slot.gameObject.SetActive(true);
+            //slot.gameObject.SetActive(true);
         }
         ItemActionController.Instance.DisableAllButtons();
         //ItemActionController.Instance.ShowChoices(false);

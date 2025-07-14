@@ -432,8 +432,10 @@ public class GeneralItemSaveSystem : MonoBehaviour
                 instance.transform.SetParent(target.transform, false);
                 ResetItemRect(instance);
                 target.currentItem = itemScript;
+
                 if (!inv.items.Contains(itemScript))
                     inv.items.Add(itemScript); // or Insert at itemData.inventoryIndex if ordering matters
+
                 itemScript.name = itemScript.itemID;                           
             }
 
@@ -449,9 +451,23 @@ public class GeneralItemSaveSystem : MonoBehaviour
             }
 
         }
-
+        // 🔚 After loading all items
+        HideEmptySlots(mainInventory.slots);
+        HideEmptySlots(agimatInventory.slots);
 
     }
+
+    private void HideEmptySlots(List<ItemSlot> slots)
+    {
+        foreach (var slot in slots)
+        {
+            if (!slot.HasItem())
+            {
+                slot.gameObject.SetActive(false);
+            }
+        }
+    }
+
 
     private GameObject FindPrefabByID(List<GameObject> list, string id)
     {

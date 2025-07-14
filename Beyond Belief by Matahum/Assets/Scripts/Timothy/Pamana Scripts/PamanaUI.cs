@@ -49,6 +49,7 @@ public class PamanaUI : MonoBehaviour, IEquippable, IDescription
 
         ItemSlot currentItemSlot = GetComponentInParent<ItemSlot>();
         currentItemSlot?.ClearItem();
+        currentItemSlot.gameObject.SetActive(false);
 
         InventoryManager.Instance.mainInventoryItems.Remove(GetComponent<InventoryItem>());
 
@@ -63,7 +64,6 @@ public class PamanaUI : MonoBehaviour, IEquippable, IDescription
 
         InventoryItem item = GetComponent<InventoryItem>();
         equipSlot.SetItem(item);
-
 
         isEquipped = true;
     }
@@ -88,13 +88,13 @@ public class PamanaUI : MonoBehaviour, IEquippable, IDescription
         if (item == null)
             return;
 
-        // Step 1: Find an empty inventory slot
+        // ✅ Step 1: Try to reactivate an inactive, empty slot
         foreach (var slot in inventory.slots)
         {
-            if (!slot.HasItem())
+            if (!slot.HasItem() && !slot.gameObject.activeSelf)
             {
+                slot.gameObject.SetActive(true);
                 slot.SetItem(item);
-                isEquipped = false;
                 return;
             }
         }

@@ -83,8 +83,10 @@ public class ItemSelector : MonoBehaviour
                 _originTime = Time.unscaledTime;
             }
             _deltaTime = (Time.unscaledTime - _originTime) * TransitionSpeed;
-            transform.position = Vector3.Lerp(_originPosition, _currentSelection.transform.position, _deltaTime);
-            _rectTransform.localScale = Vector3.Lerp(_originLocalScale, _currentSelection.GetComponent<RectTransform>().localScale, _deltaTime);
+            /*transform.position = Vector3.Lerp(_originPosition, _currentSelection.transform.position, _deltaTime);
+            _rectTransform.localScale = Vector3.Lerp(_originLocalScale, _currentSelection.GetComponent<RectTransform>().localScale, _deltaTime);*/
+
+            transform.position = _currentSelection.transform.position;
         }
         else
         {

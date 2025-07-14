@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,6 +28,12 @@ public class Mais_Agimat : Agimat, IEquippable//, IDescription,
         player = FindFirstObjectByType<PlayerStats>();
         //  playerHealth = FindFirstObjectByType<PlayerHealth>();
     }
+    void Start()
+    {
+        ItemSlot parentSlot = GetComponentInParent<ItemSlot>();
+        if (parentSlot.isEquipmentSlot) isEquipped = true;
+        else isEquipped = false;
+    }
 
     public void Equip()
     {
@@ -39,6 +45,7 @@ public class Mais_Agimat : Agimat, IEquippable//, IDescription,
 
         ItemSlot currentItemSlot = GetComponentInParent<ItemSlot>();
         currentItemSlot?.ClearItem();
+        if(!currentItemSlot.isEquipmentSlot) currentItemSlot.gameObject.SetActive(false);
 
         //Checking for existing equipped pamana, unequip if there is one
         InventoryItem equippedItem = itemSlot.GetComponentInChildren<InventoryItem>();
@@ -57,45 +64,44 @@ public class Mais_Agimat : Agimat, IEquippable//, IDescription,
 
     public void Unequip()
     {
-        string equipTarget = $"Char Details Agimat Inventory";
+        string equipTarget = $"Agimat Inventory";
         GameObject slotObject = GameObject.Find(equipTarget);
         Inventory inventory = slotObject?.GetComponent<Inventory>();
+
         InventoryItem item = GetComponent<InventoryItem>();
+        ItemSlot currentSlot = GetComponentInParent<ItemSlot>();
+        currentSlot?.ClearItem();
 
         if (inventory == null || item == null)
             return;
 
         //Current Item Slot
-        ItemSlot currentItemSlot = GetComponentInParent<ItemSlot>();
 
-        // Step 1: Find an empty inventory slot
+        // ✅ Step 1: Try to reactivate an inactive, empty slot
         foreach (var slot in inventory.slots)
         {
-            if (!slot.HasItem())
+            if (!slot.HasItem() && !slot.gameObject.activeSelf)
             {
+                slot.gameObject.SetActive(true);
                 slot.SetItem(item);
-                isEquipped = false;
                 return;
             }
         }
 
         // Step 2: If no empty slots, create a new one
         int previousSlotCount = inventory.slots.Count;
-        inventory.AddSlot(); // Assumes this just adds to inventory.slots
+        inventory.AddSlot(true); // Assumes this just adds to inventory.slots
 
         // Step 3: Get the newly added slot (should be the last one)
         if (inventory.slots.Count > previousSlotCount)
         {
             ItemSlot newSlot = inventory.slots[inventory.slots.Count - 1];
             newSlot.SetItem(item);
-
         }
-
-
         isEquipped = false;
     }
 
-    public bool isEquipped { get; set; } = false;
+    public bool isEquipped { get; set; }
 
     public override Sprite FirstIcon() => firstIcon;
 

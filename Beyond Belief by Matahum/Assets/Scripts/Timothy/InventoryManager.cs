@@ -70,6 +70,7 @@ public class InventoryManager : MonoBehaviour
             {
                 if (!slot.HasItem())
                 {
+                    slot.gameObject.SetActive(true);
                     int stackAmount = Mathf.Min(MAX_STACK_SIZE, remainingQuantity);
                     InventoryItem newStackItem = Instantiate(itemToAdd);
                     newStackItem.name = itemToAdd.itemID;

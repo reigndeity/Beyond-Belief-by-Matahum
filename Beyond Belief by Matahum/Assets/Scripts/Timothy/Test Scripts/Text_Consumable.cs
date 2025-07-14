@@ -25,6 +25,7 @@ public class Text_Consumable : MonoBehaviour, IUsable
         {
             slot.ClearItem();
             Destroy(gameObject);
+            slot.gameObject.SetActive(false);
         }
     }
 }

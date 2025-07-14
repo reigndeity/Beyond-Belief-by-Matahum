@@ -242,8 +242,6 @@ public class ItemActionController : MonoBehaviour
 
             }
 
-            Inventory inventory = WhichInventory(movingFromSlot.GetComponentInChildren<InventoryItem>());
-
             SwapItemsAnimated(movingFromSlot, currentSelectedSlot);
 
             //Temporary
@@ -330,7 +328,8 @@ public class ItemActionController : MonoBehaviour
             {
                 inventory.slots.Remove(toDelete);
                 inventory.items.Remove(item);
-                Destroy(toDelete.gameObject);
+                toDelete.gameObject.SetActive(false);
+                //Destroy(toDelete.gameObject);
             }
         }
         
