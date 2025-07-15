@@ -25,10 +25,35 @@ public class MapTeleportManager : MonoBehaviour
     private Coroutine circleTween;
     private MapTeleporter currentTeleporter;
 
+    [Header("Map Fog")]
+    [SerializeField] MinimapFog minimapFog;
+    public FogRevealPoint[] lewenriVillage;
+
     void Awake()
     {
         instance = this;
         circleSelect.sizeOnMinimap = startSize;
+
+        foreach (var point in lewenriVillage)
+        {
+            point.minimapFog = minimapFog;
+        }
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            RevealArea();
+        }
+    }
+
+    public void RevealArea()
+    {
+        foreach (var point in lewenriVillage)
+        {
+            point.Reveal();
+        }
     }
 
     public void OnClickInMinimapRendererArea(Vector3 worldClick, MinimapItem clickedItem)
