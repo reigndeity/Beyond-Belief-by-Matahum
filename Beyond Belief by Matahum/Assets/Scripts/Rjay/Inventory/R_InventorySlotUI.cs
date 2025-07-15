@@ -11,7 +11,7 @@ public class R_InventorySlotUI : MonoBehaviour
     private R_InventoryItem currentItem;
     private R_InventoryItemInfoPanel infoPanel; // This should be at the top of your script
 
-    private Button inventoryItemButton;
+    [SerializeField] private Button inventoryItemButton;
     void Awake()
     {
         inventoryItemButton.GetComponent<Button>();

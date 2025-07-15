@@ -37,6 +37,10 @@ public class UI_Game : MonoBehaviour
         teleportButton.onClick.AddListener(OnClickTeleport);
 
         consumablesFilterButton.onClick.AddListener(OnClickConsumableFilter);
+        questItemsFilterButton.onClick.AddListener(OnClickQuestItemFilter);
+        pamanaFilterButton.onClick.AddListener(OnClickCPamanaFilter);
+        agimatFilterButton.onClick.AddListener(OnClickAgimatFilter);
+        upgradeMaterialsFilterButton.onClick.AddListener(OnClickUpgradeMaterialsFilter);
         rawIngredientsFilterButton.onClick.AddListener(OnClickRawIngredientsFilter);
     }
 
@@ -54,26 +58,32 @@ public class UI_Game : MonoBehaviour
     public void OnClickConsumableFilter()
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.Consumable);
+        Debug.Log("Currently in Consumable");
     }
     public void OnClickQuestItemFilter()
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.QuestItem);
+        Debug.Log("Currently in Quest Item");
     }
     public void OnClickCPamanaFilter()
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.Pamana);
+        Debug.Log("Currently in Pamana");
     }
     public void OnClickAgimatFilter()
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.Agimat);
+        Debug.Log("Currently in Agimat");
     }
     public void OnClickUpgradeMaterialsFilter()
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.UpgradeMaterial);
+        Debug.Log("Currently in Materials");
     }
     public void OnClickRawIngredientsFilter()
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.Ingredient);
+        Debug.Log("Currently in Raw Ingredients");
     }
     #endregion
 }

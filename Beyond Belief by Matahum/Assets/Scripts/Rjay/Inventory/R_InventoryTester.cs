@@ -18,7 +18,7 @@ public class R_InventoryTester : MonoBehaviour
             if (inventory != null && testItem != null)
             {
                 inventory.AddItem(testItem, amount);
-                //inventory.AddItem(testItem2, amount);
+                inventory.AddItem(testItem2, amount);
                 inventoryUI.RefreshUI();
                 Debug.Log($"Added {amount} x {testItem.itemName} (Total: {GetTotalAmount(testItem)})");
                 Debug.Log($"Added {amount} x {testItem2.itemName} (Total: {GetTotalAmount(testItem2)})");

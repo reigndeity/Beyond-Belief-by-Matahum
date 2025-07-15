@@ -12,6 +12,9 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
     [SerializeField] private TextMeshProUGUI mainStatTxt;
     [SerializeField] private TextMeshProUGUI mainStatValueTxt;
     [SerializeField] private TextMeshProUGUI subStatTxt;
+    [SerializeField] private TextMeshProUGUI setPieceName;
+    [SerializeField] private TextMeshProUGUI twoPieceSet;
+    [SerializeField] private TextMeshProUGUI threePieceSet;
 
     public override void Show(R_ItemData itemData)
     {
@@ -25,6 +28,9 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
 
         nameText.text = itemData.itemName;
         descriptionText.text = itemData.description;
+        setPieceName.text = itemData.set.ToString();
+        twoPieceSet.text = $"2-Piece Set: {itemData.twoPieceBonusDescription}";
+        threePieceSet.text = $"3-Piece Set: {itemData.threePieceBonusDescription}";
 
         // 🔸 Pamana-specific
         if (itemData.pamanaData != null)
@@ -32,11 +38,12 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
             var pamana = itemData.pamanaData;
 
             // Level
-            levelStatTxt.text = $"Lv. {pamana.currentLevel}";
+            levelStatTxt.text = $"+{pamana.currentLevel}";
 
             // Main stat
-            string formattedMain = FormatStat(pamana.mainStatType, pamana.mainStatValue);
-            mainStatTxt.text = $"Main Stat: {formattedMain}";
+            //string formattedMain = FormatStat(pamana.mainStatType, pamana.mainStatValue);
+            mainStatTxt.text = $"{pamana.mainStatType}";
+            mainStatValueTxt.text = $"{pamana.mainStatValue}";
 
             // Substats
             if (pamana.substats != null && pamana.substats.Count > 0)
@@ -44,7 +51,7 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
                 string subStatText = "";
                 foreach (var sub in pamana.substats)
                 {
-                    subStatText += $"+{FormatStat(sub.statType, sub.value)}\n";
+                    subStatText += $"• {FormatStat(sub.statType, sub.value)}\n\n";
                 }
                 subStatTxt.text = subStatText.TrimEnd();
             }
