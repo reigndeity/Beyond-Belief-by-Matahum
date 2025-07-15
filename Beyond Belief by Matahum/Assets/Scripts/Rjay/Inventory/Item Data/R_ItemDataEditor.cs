@@ -4,7 +4,7 @@ using UnityEditor;
 [CustomEditor(typeof(R_ItemData))]
 public class R_ItemDataEditor : Editor
 {
-    // 🔹 Cache SerializedProperties to avoid repeated lookup
+    // 🔹 Cache SerializedProperties
     private SerializedProperty itemNameProp;
     private SerializedProperty itemIconProp;
     private SerializedProperty itemBackdropIconProp;
@@ -21,7 +21,8 @@ public class R_ItemDataEditor : Editor
     private SerializedProperty twoPieceBonusDescriptionProp;
     private SerializedProperty threePieceBonusDescriptionProp;
     private SerializedProperty pamanaSlotProp;
-
+    private SerializedProperty slot1AbilityProp;
+    private SerializedProperty slot2AbilityProp;
 
     private void OnEnable()
     {
@@ -39,11 +40,11 @@ public class R_ItemDataEditor : Editor
         pamanaDataProp = serializedObject.FindProperty("pamanaData");
         setProp = serializedObject.FindProperty("set");
         pamanaSlotProp = serializedObject.FindProperty("pamanaSlot");
-
         twoPieceBonusDescriptionProp = serializedObject.FindProperty("twoPieceBonusDescription");
         threePieceBonusDescriptionProp = serializedObject.FindProperty("threePieceBonusDescription");
+        slot1AbilityProp = serializedObject.FindProperty("slot1Ability");
+        slot2AbilityProp = serializedObject.FindProperty("slot2Ability");
     }
-
 
     public override void OnInspectorGUI()
     {
@@ -72,6 +73,7 @@ public class R_ItemDataEditor : Editor
             }
         }
 
+        // 🔹 Show rarity once, only when needed
         if (data.itemType == R_ItemType.Pamana || data.itemType == R_ItemType.Agimat)
         {
             EditorGUILayout.PropertyField(rarityProp);
@@ -84,6 +86,12 @@ public class R_ItemDataEditor : Editor
             EditorGUILayout.PropertyField(pamanaSlotProp);
             EditorGUILayout.PropertyField(twoPieceBonusDescriptionProp);
             EditorGUILayout.PropertyField(threePieceBonusDescriptionProp);
+        }
+
+        if (data.itemType == R_ItemType.Agimat)
+        {
+            EditorGUILayout.PropertyField(slot1AbilityProp);
+            EditorGUILayout.PropertyField(slot2AbilityProp);
         }
 
         serializedObject.ApplyModifiedProperties();

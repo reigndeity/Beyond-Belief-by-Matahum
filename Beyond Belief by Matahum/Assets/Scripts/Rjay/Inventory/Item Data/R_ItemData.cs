@@ -68,4 +68,6 @@ public class R_ItemData : ScriptableObject
 
     [TextArea]
     public string threePieceBonusDescription;
+    public R_AgimatAbility slot1Ability;
+    public R_AgimatAbility slot2Ability;   
 }
