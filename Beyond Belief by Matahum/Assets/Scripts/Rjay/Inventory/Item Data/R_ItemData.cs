@@ -69,5 +69,9 @@ public class R_ItemData : ScriptableObject
     [TextArea]
     public string threePieceBonusDescription;
     public R_AgimatAbility slot1Ability;
-    public R_AgimatAbility slot2Ability;   
+    public R_AgimatAbility slot2Ability;
+
+    [TextArea]
+    public string effectText; // UI-only, displayed in info panel
+    public R_ConsumableEffect consumableEffect; // Logic-only
 }

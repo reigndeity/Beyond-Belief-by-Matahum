@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18198787a698a2a4c8c6730c27a196e9, type: 3}
   m_Name: New Item
   m_EditorClassIdentifier: 
-  itemName: Soda pop
-  itemIcon: {fileID: 0}
-  itemBackdropIcon: {fileID: 0}
-  inventoryHeaderImage: {fileID: 0}
-  inventoryBackdropImage: {fileID: 0}
-  description: my little soda pop
+  itemName: Garlic
+  itemIcon: {fileID: 2124652845, guid: 31f54bd5977cf814194c37796607019f, type: 3}
+  itemBackdropIcon: {fileID: -1982861588, guid: 0825dc48e0b0a6845bb5494652467a8b, type: 3}
+  inventoryHeaderImage: {fileID: 1991864147, guid: 0825dc48e0b0a6845bb5494652467a8b, type: 3}
+  inventoryBackdropImage: {fileID: -1545857195, guid: 0825dc48e0b0a6845bb5494652467a8b, type: 3}
+  description: Freshest garlic on earth!
   itemType: 0
   isStackable: 1
   maxStackSize: 9999
@@ -30,3 +30,5 @@ MonoBehaviour:
   threePieceBonusDescription: 
   slot1Ability: {fileID: 0}
   slot2Ability: {fileID: 0}
+  effectText: Deez nuts are free on this side of town
+  consumableEffect: {fileID: 11400000, guid: 6bf02ccd2e174c0498e30e3369f834aa, type: 2}

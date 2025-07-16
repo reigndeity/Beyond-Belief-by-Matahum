@@ -48,52 +48,53 @@ public class R_InventoryUI : MonoBehaviour
         RefreshUI();
     }
 
-    public void RefreshUI()
+public void RefreshUI()
+{
+    List<R_InventoryItem> filteredItems = new List<R_InventoryItem>();
+
+    foreach (var item in playerInventory.items)
     {
-        List<R_InventoryItem> filteredItems = new List<R_InventoryItem>();
-
-        foreach (var item in playerInventory.items)
+        if (PassesFilter(item.itemData))
         {
-            if (PassesFilter(item.itemData))
-            {
-                filteredItems.Add(item);
-            }
+            filteredItems.Add(item);
         }
-
-        for (int i = 0; i < slotUIs.Count; i++)
-        {
-            if (i < filteredItems.Count)
-                slotUIs[i].SetSlot(filteredItems[i]);
-            else
-                slotUIs[i].SetSlot(null);
-        }
-
-        if (filteredItems.Count > 0 && infoPanel != null)
-        {
-            selectedItem = filteredItems[0];
-            infoPanel.ShowItem(selectedItem.itemData);
-
-            // 🔹 Hook up Use button logic if it's a Consumable
-            if (selectedItem.itemData.itemType == R_ItemType.Consumable)
-            {
-                (infoPanel.consumablePanelDisplay as R_InfoPanel_Consumable)?.SetUseButtonCallback(
-                    selectedItem,
-                    itemPrompt,
-                    RefreshUI
-                );
-            }
-
-            trashButton.interactable = true;
-        }
-        else
-        {
-            selectedItem = null;
-            if (infoPanel != null) infoPanel.ClearPanel();
-            trashButton.interactable = false;
-        }
-
-        trashButton.gameObject.SetActive(currentFilter != R_InventoryFilter.QuestItem);
     }
+
+    for (int i = 0; i < slotUIs.Count; i++)
+    {
+        if (i < filteredItems.Count)
+            slotUIs[i].SetSlot(filteredItems[i]);
+        else
+            slotUIs[i].SetSlot(null);
+    }
+
+    if (filteredItems.Count > 0 && infoPanel != null)
+    {
+        selectedItem = filteredItems[0];
+        infoPanel.ShowItem(selectedItem.itemData);
+
+        // 🔹 Hook up Use button + pass in playerInventory to the panel
+        if (selectedItem.itemData.itemType == R_ItemType.Consumable)
+        {
+            var panel = infoPanel.consumablePanelDisplay as R_InfoPanel_Consumable;
+            if (panel != null)
+            {
+                panel.playerInventory = playerInventory;
+                panel.SetUseButtonCallback(selectedItem, itemPrompt, RefreshUI);
+            }
+        }
+
+        trashButton.interactable = true;
+    }
+    else
+    {
+        selectedItem = null;
+        if (infoPanel != null) infoPanel.ClearPanel();
+        trashButton.interactable = false;
+    }
+
+    trashButton.gameObject.SetActive(currentFilter != R_InventoryFilter.QuestItem);
+}
 
 
 

@@ -10,8 +10,9 @@ public class R_InfoPanel_Consumable : R_ItemInfoDisplay
     [SerializeField] private Image iconImage;
     [SerializeField] private Image headerImage;
     [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI descriptionText;
+    [SerializeField] private TextMeshProUGUI condensedBodyText;
     [SerializeField] private Button useButton;
+    public R_Inventory playerInventory;
 
     public override void Show(R_ItemData itemData)
     {
@@ -25,19 +26,23 @@ public class R_InfoPanel_Consumable : R_ItemInfoDisplay
         backdropImage.sprite = itemData.inventoryBackdropImage;
         backdropImage.enabled = itemData.inventoryBackdropImage != null;
 
-        // 🔹 Set header image
+        // Header image
         if (headerImage != null)
         {
             headerImage.sprite = itemData.inventoryHeaderImage;
             headerImage.enabled = itemData.inventoryHeaderImage != null;
         }
 
-        // Set text
+        // Labels
         itemType.text = itemData.itemType.ToString();
         nameText.text = itemData.itemName;
-        descriptionText.text = itemData.description;
 
-        // Use button visible only for Consumables
+        // 🔹 Build condensed body (effectText + description)
+        string effectBlock = $"<size=36> •{itemData.effectText}</size>\n\n";
+        string descBlock = $"<size=36>{itemData.description}</size>";
+
+        condensedBodyText.text = effectBlock + descBlock;
+
         useButton.gameObject.SetActive(true);
     }
 
@@ -51,14 +56,24 @@ public class R_InfoPanel_Consumable : R_ItemInfoDisplay
         useButton.onClick.RemoveAllListeners();
         useButton.onClick.AddListener(() => {
             prompt.Open(item, R_ActionType.Use, amount => {
-                // TODO: Add healing or effect logic
-                item.quantity -= amount;
-                if (item.quantity <= 0)
+                GameObject user = GameObject.FindWithTag("Player");
+
+                if (item.itemData.consumableEffect != null)
                 {
-                    // Optional: mark for removal here, or RefreshUI will clean up
+                    for (int i = 0; i < amount; i++)
+                    {
+                        item.itemData.consumableEffect.Apply(user);
+                    }
                 }
+
+                if (playerInventory != null)
+                {
+                    playerInventory.RemoveItem(item.itemData, amount);
+                }
+
                 refreshCallback.Invoke();
             });
         });
     }
+
 }

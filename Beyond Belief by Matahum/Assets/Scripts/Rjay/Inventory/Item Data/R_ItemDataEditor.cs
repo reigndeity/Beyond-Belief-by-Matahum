@@ -23,6 +23,9 @@ public class R_ItemDataEditor : Editor
     private SerializedProperty pamanaSlotProp;
     private SerializedProperty slot1AbilityProp;
     private SerializedProperty slot2AbilityProp;
+    private SerializedProperty effectTextProp;
+    private SerializedProperty consumableEffectProp;
+
 
     private void OnEnable()
     {
@@ -44,6 +47,8 @@ public class R_ItemDataEditor : Editor
         threePieceBonusDescriptionProp = serializedObject.FindProperty("threePieceBonusDescription");
         slot1AbilityProp = serializedObject.FindProperty("slot1Ability");
         slot2AbilityProp = serializedObject.FindProperty("slot2Ability");
+        effectTextProp = serializedObject.FindProperty("effectText");
+        consumableEffectProp = serializedObject.FindProperty("consumableEffect");
     }
 
     public override void OnInspectorGUI()
@@ -62,6 +67,11 @@ public class R_ItemDataEditor : Editor
         if (data.itemType == R_ItemType.QuestItem)
         {
             EditorGUILayout.PropertyField(isConsumableProp);
+        }
+        if (data.itemType == R_ItemType.Consumable)
+        {
+            EditorGUILayout.PropertyField(effectTextProp);
+            EditorGUILayout.PropertyField(consumableEffectProp);
         }
 
         if (data.itemType != R_ItemType.Pamana && data.itemType != R_ItemType.Agimat)
@@ -93,7 +103,6 @@ public class R_ItemDataEditor : Editor
             EditorGUILayout.PropertyField(slot1AbilityProp);
             EditorGUILayout.PropertyField(slot2AbilityProp);
         }
-
         serializedObject.ApplyModifiedProperties();
     }
 }

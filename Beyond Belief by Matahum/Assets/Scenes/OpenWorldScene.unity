@@ -1482,8 +1482,9 @@ MonoBehaviour:
   iconImage: {fileID: 1634923480}
   headerImage: {fileID: 1797537565}
   nameText: {fileID: 936036463}
-  descriptionText: {fileID: 257513845}
+  condensedBodyText: {fileID: 257513845}
   useButton: {fileID: 1528839142}
+  playerInventory: {fileID: 109533887}
 --- !u!1 &91915229
 GameObject:
   m_ObjectHideFlags: 0
@@ -13345,7 +13346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: {fileID: 109533887}
   testItem: {fileID: 11400000, guid: ff6a33aad338be74e9d482381ad69de7, type: 2}
-  testItem2: {fileID: 11400000, guid: ce67ffbd202fcbf4184aca867e40cc5c, type: 2}
+  testItem2: {fileID: 11400000, guid: b90eb6063725b5e468e0eea109f5ee0f, type: 2}
   amount: 1
   inventoryUI: {fileID: 345592970}
 --- !u!114 &923221974
@@ -50376,7 +50377,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1477669341
 RectTransform:
   m_ObjectHideFlags: 0
@@ -54555,7 +54556,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1678955237
 RectTransform:
   m_ObjectHideFlags: 0
@@ -54708,7 +54709,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1682170826
 RectTransform:
   m_ObjectHideFlags: 0
@@ -58342,7 +58343,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1766473332
 RectTransform:
   m_ObjectHideFlags: 0
@@ -96551,8 +96552,8 @@ SceneRoots:
   - {fileID: 1648091484}
   - {fileID: 1473999961}
   - {fileID: 1969007834}
-  - {fileID: 109533886}
   - {fileID: 923221972}
+  - {fileID: 109533886}
   - {fileID: 1068518842}
   - {fileID: 1971108134}
   - {fileID: 1873212885}
