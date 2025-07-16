@@ -9,17 +9,11 @@ public class R_InfoPanel_Agimat : R_ItemInfoDisplay
     [SerializeField] private Image headerImage;
     [SerializeField] private Image iconImage;
     [SerializeField] private Image backdropImage;
-    
+
     [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI descriptionText;
 
-    [Header("Slot 1")]
-    [SerializeField] private TextMeshProUGUI slot1Name;
-    [SerializeField] private TextMeshProUGUI slot1Description;
-
-    [Header("Slot 2")]
-    [SerializeField] private TextMeshProUGUI slot2Name;
-    [SerializeField] private TextMeshProUGUI slot2Description;
+    [Header("Condensed Body")]
+    [SerializeField] private TextMeshProUGUI agimatCondensedBodyText;
 
     public override void Show(R_ItemData itemData)
     {
@@ -37,31 +31,21 @@ public class R_InfoPanel_Agimat : R_ItemInfoDisplay
 
         itemType.text = itemData.itemType.ToString();
         nameText.text = itemData.itemName;
-        descriptionText.text = itemData.description;
 
-        // Slot 1
-        if (itemData.slot1Ability != null)
-        {
-            slot1Name.text = $"{itemData.slot1Ability.abilityName} {(itemData.slot1Ability.isPassive ? "(Passive)" : "(Active)")}";
-            slot1Description.text = itemData.slot1Ability.description;
-        }
-        else
-        {
-            slot1Name.text = "No Slot 1 Ability";
-            slot1Description.text = "";
-        }
+        // Condensed body block
+        string slot1Header = $"<size=36>Slot 1: {itemData.slot1Ability?.abilityName ?? "None"}</size>\n";
+        string slot1Desc = itemData.slot1Ability != null
+            ? $"<size=30> •{(itemData.slot1Ability.isPassive ? "Passive" : "Active")}: {itemData.slot1Ability.description}</size>\n"
+            : "";
 
-        // Slot 2
-        if (itemData.slot2Ability != null)
-        {
-            slot2Name.text = $"{itemData.slot2Ability.abilityName} {(itemData.slot2Ability.isPassive ? "(Passive)" : "(Active)")}";
-            slot2Description.text = itemData.slot2Ability.description;
-        }
-        else
-        {
-            slot2Name.text = "No Slot 2 Ability";
-            slot2Description.text = "";
-        }
+        string slot2Header = $"<size=36>Slot 2: {itemData.slot2Ability?.abilityName ?? "None"}</size>\n";
+        string slot2Desc = itemData.slot2Ability != null
+            ? $"<size=30> •{(itemData.slot2Ability.isPassive ? "Passive" : "Active")}: {itemData.slot2Ability.description}</size>\n"
+            : "";
+
+        string desc = $"<size=36>{itemData.description}</size>";
+
+        agimatCondensedBodyText.text = slot1Header + slot1Desc + "\n" + slot2Header + slot2Desc + "\n\n" + desc;
     }
 
     public override void Hide()

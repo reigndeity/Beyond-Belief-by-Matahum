@@ -8,15 +8,14 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
     [SerializeField] private Image iconImage;
     [SerializeField] private Image backdropImage;
     [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI descriptionText;
+    //[SerializeField] private TextMeshProUGUI descriptionText; // Can be removed if unused elsewhere
     [SerializeField] private TextMeshProUGUI levelStatTxt;
     [SerializeField] private TextMeshProUGUI itemTypeTxt;
     [SerializeField] private TextMeshProUGUI mainStatTxt;
     [SerializeField] private TextMeshProUGUI mainStatValueTxt;
-    [SerializeField] private TextMeshProUGUI subStatTxt;
-    [SerializeField] private TextMeshProUGUI setPieceName;
-    [SerializeField] private TextMeshProUGUI twoPieceSet;
-    [SerializeField] private TextMeshProUGUI threePieceSet;
+
+    [Header("Condensed Body Panel")]
+    [SerializeField] private TextMeshProUGUI pamanaCondensedBodyText;
 
     public override void Show(R_ItemData itemData)
     {
@@ -28,13 +27,8 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
         backdropImage.sprite = itemData.inventoryBackdropImage;
         backdropImage.enabled = itemData.inventoryBackdropImage != null;
 
-        
         nameText.text = itemData.itemName;
-        itemTypeTxt.text = itemData.pamanaSlot.ToString();
-        descriptionText.text = itemData.description;
-        setPieceName.text = FormatSetName(itemData.set);
-        twoPieceSet.text = $"2-Piece Set: {itemData.twoPieceBonusDescription}";
-        threePieceSet.text = $"3-Piece Set: {itemData.threePieceBonusDescription}";
+        itemTypeTxt.text = FormatEnumName(itemData.pamanaSlot.ToString());
 
         if (itemData.pamanaData != null)
         {
@@ -45,26 +39,29 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
             mainStatTxt.text = FormatStatName(pamana.mainStatType);
             mainStatValueTxt.text = FormatStatValue(pamana.mainStatType, pamana.mainStatValue);
 
-            if (pamana.substats != null && pamana.substats.Count > 0)
+            // Build substat block
+            string substatBlock = "";
+            foreach (var sub in pamana.substats)
             {
-                string subStatText = "";
-                foreach (var sub in pamana.substats)
-                {
-                    subStatText += $"• {FormatStat(sub.statType, sub.value)}\n";
-                }
-                subStatTxt.text = subStatText.TrimEnd();
+                substatBlock += $" •{FormatStat(sub.statType, sub.value)}\n";
             }
-            else
-            {
-                subStatTxt.text = "";
-            }
+
+            // Build final rich text string
+            string bodyText =
+                $"<size=36><color=#000000>{substatBlock}</color></size>\n" +
+                $"<size=36><color=green>{FormatSetName(itemData.set)}</color></size>\n" +
+                $"<size=30><color=#000000> 2-Piece Set: {itemData.twoPieceBonusDescription}</color>\n" +
+                $"<color=#000000> 3-Piece Set: {itemData.threePieceBonusDescription}</color></size>\n\n" +
+                $"<size=36><color=#000000>{itemData.description}</color></size>";
+
+            pamanaCondensedBodyText.text = bodyText;
         }
         else
         {
             levelStatTxt.text = "+0";
             mainStatTxt.text = "";
             mainStatValueTxt.text = "";
-            subStatTxt.text = "";
+            pamanaCondensedBodyText.text = "";
         }
     }
 
@@ -103,8 +100,12 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
 
     private string FormatSetName(R_PamanaSet set)
     {
-        // Insert space before uppercase letters (excluding first character)
         return Regex.Replace(set.ToString(), "(?<=.)([A-Z])", " $1");
+    }
+
+    private string FormatEnumName(string rawName)
+    {
+        return Regex.Replace(rawName, "(?<=.)([A-Z])", " $1");
     }
 
     public override void Hide()
