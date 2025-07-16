@@ -10,6 +10,8 @@ public class R_InventoryItemInfoPanel : MonoBehaviour
     [SerializeField] private R_ItemInfoDisplay upgradeMaterialPanel;
     [SerializeField] private R_ItemInfoDisplay ingredientPanel;
 
+    public R_ItemInfoDisplay consumablePanelDisplay => consumablePanel;
+
     private List<R_ItemInfoDisplay> allPanels;
 
     private void Awake()

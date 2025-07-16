@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public enum R_InventoryFilter
 {
@@ -24,6 +25,16 @@ public class R_InventoryUI : MonoBehaviour
     private List<R_InventorySlotUI> slotUIs = new List<R_InventorySlotUI>();
     private R_InventoryFilter currentFilter = R_InventoryFilter.Consumable;
 
+    [SerializeField] private Button trashButton;
+    [SerializeField] private R_ItemActionPrompt itemPrompt;
+
+    private R_InventoryItem selectedItem;
+
+    void Awake()
+    {
+        trashButton.onClick.AddListener(TryToDelete);
+        
+    }
     private void Start()
     {
         GenerateSlots();
@@ -57,16 +68,33 @@ public class R_InventoryUI : MonoBehaviour
                 slotUIs[i].SetSlot(null);
         }
 
-        // 👇 Auto-select first item for info panel
         if (filteredItems.Count > 0 && infoPanel != null)
         {
-            infoPanel.ShowItem(filteredItems[0].itemData);
+            selectedItem = filteredItems[0];
+            infoPanel.ShowItem(selectedItem.itemData);
+
+            // 🔹 Hook up Use button logic if it's a Consumable
+            if (selectedItem.itemData.itemType == R_ItemType.Consumable)
+            {
+                (infoPanel.consumablePanelDisplay as R_InfoPanel_Consumable)?.SetUseButtonCallback(
+                    selectedItem,
+                    itemPrompt,
+                    RefreshUI
+                );
+            }
+
+            trashButton.interactable = true;
         }
-        else if (infoPanel != null)
+        else
         {
-            infoPanel.ClearPanel();
+            selectedItem = null;
+            if (infoPanel != null) infoPanel.ClearPanel();
+            trashButton.interactable = false;
         }
+
+        trashButton.gameObject.SetActive(currentFilter != R_InventoryFilter.QuestItem);
     }
+
 
 
     private bool PassesFilter(R_ItemData item)
@@ -94,6 +122,17 @@ public class R_InventoryUI : MonoBehaviour
             slotUI.Initialize(infoPanel);
             
             slotUIs.Add(slotUI);
+        }
+    }
+
+    public void TryToDelete()
+    {
+        if (selectedItem != null)
+        {
+            itemPrompt.Open(selectedItem, R_ActionType.Trash, amount => {
+                playerInventory.RemoveItem(selectedItem.itemData, amount);
+                RefreshUI();
+            });
         }
     }
 }
