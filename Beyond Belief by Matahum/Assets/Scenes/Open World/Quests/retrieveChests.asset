@@ -173,11 +173,15 @@ MonoBehaviour:
     m_textTableFieldID: 0
   m_icon: {fileID: 21300000, guid: 72f4572358a47d14c9ba5c6456647480, type: 3}
   m_group:
-    m_text: 
+    m_text: Side Quest
     m_stringAsset: {fileID: 0}
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
-  m_labels: []
+  m_labels:
+  - m_text: Side Quest
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
   m_questGiverID:
     m_text: 
     m_stringAsset: {fileID: 0}
@@ -185,8 +189,8 @@ MonoBehaviour:
     m_textTableFieldID: 0
   m_isTrackable: 1
   m_showInTrackHUD: 1
-  m_isAbandonable: 0
-  m_rememberIfAbandoned: 0
+  m_isAbandonable: 1
+  m_rememberIfAbandoned: 1
   m_deleteWhenComplete: 0
   m_autostartConditionSet:
     m_conditionList: []
@@ -194,8 +198,7 @@ MonoBehaviour:
     m_minConditionCount: 0
     m_numTrueConditions: 0
   m_offerConditionSet:
-    m_conditionList:
-    - {fileID: 4176195309347910150}
+    m_conditionList: []
     m_conditionCountMode: 0
     m_minConditionCount: 0
     m_numTrueConditions: 0
@@ -203,12 +206,12 @@ MonoBehaviour:
   m_offerContentList:
   - {fileID: 3669320715679722213}
   - {fileID: -8447635555258634443}
-  m_infinitelyRepeatable: 0
-  m_maxTimes: 1
+  m_infinitelyRepeatable: 1
+  m_maxTimes: 2
   m_timesAccepted: 0
-  m_cooldownSeconds: 3600
+  m_cooldownSeconds: 0
   m_cooldownSecondsRemaining: 0
-  m_noRepeatIfSuccessful: 0
+  m_noRepeatIfSuccessful: 1
   m_saveAllIfWaitingToStart: 0
   m_state: 0
   m_stateInfoList:
@@ -237,7 +240,8 @@ MonoBehaviour:
     - m_contentList: []
     - m_contentList: []
     - m_contentList: []
-  - m_actionList: []
+  - m_actionList:
+    - {fileID: 7338048471341227257}
     m_categorizedContentList:
     - m_contentList: []
     - m_contentList: []
@@ -613,27 +617,6 @@ MonoBehaviour:
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
   m_headingLevel: 1
---- !u!114 &4176195309347910150
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 732e99ba3b575dc4dad61a69b0417c96, type: 3}
-  m_Name: QuestStateQuestCondition
-  m_EditorClassIdentifier: 
-  m_alreadyTrue: 0
-  m_requiredQuest: {fileID: 0}
-  m_requiredQuestID:
-    m_text: exploreCircleAndReturn
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
-  m_isNot: 0
-  m_requiredState: 2
 --- !u!114 &6079483665432707009
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -654,6 +637,24 @@ MonoBehaviour:
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
   m_headingLevel: 1
+--- !u!114 &7338048471341227257
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93628000f09722448bbc5366a452afb2, type: 3}
+  m_Name: ControlSpawnerQuestAction
+  m_EditorClassIdentifier: 
+  m_spawnerName:
+    m_text: Capsule Spawner
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
+  m_state: 2
 --- !u!114 &8511972576534969081
 MonoBehaviour:
   m_ObjectHideFlags: 1

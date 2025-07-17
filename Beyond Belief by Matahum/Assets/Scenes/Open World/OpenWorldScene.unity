@@ -837,7 +837,7 @@ MonoBehaviour:
   m_autoStart: 0
   m_autoStartAfterSaveDataApplied: 0
   m_stopWhenMinReached: 1
-  m_despawnOnDestroy: 0
+  m_despawnOnDestroy: 1
 --- !u!4 &411251613
 Transform:
   m_ObjectHideFlags: 0
@@ -873,6 +873,10 @@ PrefabInstance:
     - target: {fileID: 273958837968841726, guid: 5e3557cff7729fe4486e5cd224460e35, type: 3}
       propertyPath: m_Name
       value: Stones
+      objectReference: {fileID: 0}
+    - target: {fileID: 273958837968841726, guid: 5e3557cff7729fe4486e5cd224460e35, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 920142067310108288, guid: 5e3557cff7729fe4486e5cd224460e35, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -1756,6 +1760,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Trees
       objectReference: {fileID: 0}
+    - target: {fileID: 7345839074608931684, guid: 1fb406bd458138642bc48cd5386bf7b0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2181,6 +2189,18 @@ PrefabInstance:
       propertyPath: 'm_questDatabases.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: 5c38cb56ba021124dac7707265547d1c, type: 2}
+    - target: {fileID: 11460356, guid: f907b1416ebdbf645a73183ab47aa2b8, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11460356, guid: f907b1416ebdbf645a73183ab47aa2b8, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 11460356, guid: f907b1416ebdbf645a73183ab47aa2b8, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
     - target: {fileID: 22400238, guid: f907b1416ebdbf645a73183ab47aa2b8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3420,6 +3440,10 @@ PrefabInstance:
     - target: {fileID: 4326478747851999907, guid: 83182c285e105334188237462dcd2ccf, type: 3}
       propertyPath: m_Name
       value: Fence
+      objectReference: {fileID: 0}
+    - target: {fileID: 4326478747851999907, guid: 83182c285e105334188237462dcd2ccf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10486,7 +10510,8 @@ MonoBehaviour:
   m_forwardEventsToListeners: 1
   m_includeInSavedGameData: 1
   m_addNewQuestsSinceSavedGame: 0
-  m_questList: []
+  m_questList:
+  - {fileID: 0}
   m_deletedStaticQuests: []
   m_id:
     m_text: Player
@@ -10504,7 +10529,7 @@ MonoBehaviour:
   m_rememberCompletedQuests: 1
   m_onlyRememberHandwrittenQuests: 0
   m_compressCompletedProcgenQuests: 0
-  m_onlyTrackOneQuestAtATime: 0
+  m_onlyTrackOneQuestAtATime: 1
 --- !u!136 &5373521251738816401
 CapsuleCollider:
   m_ObjectHideFlags: 0
