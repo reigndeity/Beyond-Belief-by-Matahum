@@ -26,6 +26,12 @@ public class PlayerWeapon : MonoBehaviour
 
     [Header("Particle To Play when Dissolving Weapon")]
     public ParticleSystem dissolveParticleSystem;
+    [Header("Ultimate Blade Renderer")]
+    [SerializeField] SkinnedMeshRenderer bladeRenderer;
+    [SerializeField] Material defaultBladeMaterial;
+    [SerializeField] Material ultimateBladeMaterial;
+    private Material runtimeUltimateBladeMat;
+    private Coroutine ultimateBladeRoutine;
 
     [Header("Materials to Dissolve (shared shader)")]
     public Renderer[] renderers;
@@ -179,5 +185,61 @@ public class PlayerWeapon : MonoBehaviour
     public void LastAttack()
     {
         lastAttackEffect.Play();
+    }
+
+    public void SetToDefaultBlade()
+    {
+        float currentDissolve = GetCurrentDissolveValue();
+        Material newMat = new Material(defaultBladeMaterial); // clone
+        newMat.SetFloat(DISSOLVE_PROPERTY, currentDissolve);
+        bladeRenderer.materials = new Material[] { newMat };
+        UpdateMaterialReferences(); // re-link to dissolve system
+    }
+
+    public void SetToUltimateBlade()
+    {
+        runtimeUltimateBladeMat = new Material(ultimateBladeMaterial);
+        runtimeUltimateBladeMat.SetFloat("_GradientNoisePower", 400f); // <-- SET DEFAULT BASELINE
+        bladeRenderer.materials = new Material[] { runtimeUltimateBladeMat };
+        materials.Clear(); // clear dissolve list
+    }
+    public void UltimateBlade(float from, float to, float duration)
+    {
+        if (ultimateBladeRoutine != null)
+            StopCoroutine(ultimateBladeRoutine);
+        ultimateBladeRoutine = StartCoroutine(AnimateUltimateBlade(from, to, duration));
+    }
+    private IEnumerator AnimateUltimateBlade(float from, float to, float duration)
+    {
+        if (runtimeUltimateBladeMat == null || !runtimeUltimateBladeMat.HasProperty("_GradientNoisePower"))
+            yield break;
+
+        float timer = 0f;
+        while (timer < duration)
+        {
+            float t = timer / duration;
+            float value = Mathf.Lerp(from, to, t);
+            runtimeUltimateBladeMat.SetFloat("_GradientNoisePower", value);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        runtimeUltimateBladeMat.SetFloat("_GradientNoisePower", to); // ensure final value
+    }
+
+    void UpdateMaterialReferences()
+    {
+        materials.Clear();
+        foreach (Renderer r in renderers)
+        {
+            foreach (var mat in r.materials)
+            {
+                if (mat.HasProperty(DISSOLVE_PROPERTY))
+                {
+                    materials.Add(mat);
+                }
+            }
+        }
     }
 }
