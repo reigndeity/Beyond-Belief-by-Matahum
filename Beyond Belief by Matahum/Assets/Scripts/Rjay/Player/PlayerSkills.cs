@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerSkills : MonoBehaviour
@@ -5,6 +6,7 @@ public class PlayerSkills : MonoBehaviour
     private PlayerInput m_playerInput;
     private PlayerAnimator m_playerAnimator;
     private PlayerCombat m_playerCombat;
+    private PlayerWeapon m_playerWeapon;
 
     [Header("Normal Skill")]
     public float normalSkillCooldown = 3f;
@@ -26,6 +28,7 @@ public class PlayerSkills : MonoBehaviour
         m_playerInput = GetComponent<PlayerInput>();
         m_playerAnimator = GetComponent<PlayerAnimator>();
         m_playerCombat = GetComponent<PlayerCombat>();
+        m_playerWeapon = GetComponentInChildren<PlayerWeapon>();
     }
 
     public void HandleSkills()
@@ -108,13 +111,22 @@ public class PlayerSkills : MonoBehaviour
         m_playerCombat.isAttacking = false;
         m_playerCombat.canMoveDuringAttack = true;
         m_playerCombat.ShowWeapon();
+        
+        StartCoroutine(UltimateBlade());
+    }
+
+    IEnumerator UltimateBlade()
+    {
+        m_playerWeapon.SetToUltimateBlade();
+        yield return new WaitForSeconds(0.1f);
+        m_playerWeapon.UltimateBlade(400, 3.8f, 0.6f);
     }
 
     public void EndUltimateSkill()
     {
+        m_playerWeapon.SetToDefaultBlade();
         isUsingUltimateSkill = false;
         m_playerCombat.HideWeapon();
         m_playerCombat.ShowWeaponParticle();
     }
-
 }
