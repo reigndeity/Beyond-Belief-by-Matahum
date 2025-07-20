@@ -4,12 +4,12 @@ using UnityEngine.UI;
 
 public class UI_Game : MonoBehaviour
 {
-    
+    private R_InventoryUI r_inventoryUI;
+    private R_CharacterDetailsPanel m_characterDetailsPanel;
     [SerializeField] Button inventoryButton; // Overall Inventory (No Equipment)
     [SerializeField] Button journalButton; // Keeps track of new findings(?)
-
+    
     [Header("Inventory Properties")]
-    private R_InventoryUI r_inventoryUI;
     [SerializeField] Button consumablesFilterButton;
     [SerializeField] Button questItemsFilterButton;
     [SerializeField] Button pamanaFilterButton;
@@ -18,8 +18,12 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Button rawIngredientsFilterButton;
 
     [Header("Character Details Properties")]
-    [SerializeField] Button characterButton; // Handles Dialogue, Pamana Equipment, Agimat Equipment
+    [SerializeField] Button characterButton; // Handles Attribute, Weapon, Agimat Equipment, Pamana Equipment
     [SerializeField] GameObject characterPanel;
+    [SerializeField] Button attributesTabButton;
+    [SerializeField] Button weaponTabButton;
+    [SerializeField] Button agimatTabButton;
+    [SerializeField] Button pamanaTabButton;
 
     [Header("Full Screen Map Properties")]
     [SerializeField] GameObject teleportPanel;
@@ -30,6 +34,7 @@ public class UI_Game : MonoBehaviour
     void Awake()
     {
         r_inventoryUI = FindFirstObjectByType<R_InventoryUI>();
+        m_characterDetailsPanel = FindFirstObjectByType<R_CharacterDetailsPanel>();
     }
     void Start()
     {
@@ -42,6 +47,12 @@ public class UI_Game : MonoBehaviour
         agimatFilterButton.onClick.AddListener(OnClickAgimatFilter);
         upgradeMaterialsFilterButton.onClick.AddListener(OnClickUpgradeMaterialsFilter);
         rawIngredientsFilterButton.onClick.AddListener(OnClickRawIngredientsFilter);
+
+
+        attributesTabButton.onClick.AddListener(OnClickAttributesTab);
+        weaponTabButton.onClick.AddListener(OnClickWeaponTab);
+        agimatTabButton.onClick.AddListener(OnClickAgimatTab);
+        pamanaTabButton.onClick.AddListener(OnClickPamanaTab);
     }
 
     public void OnClickCloseTeleportPanel()
@@ -84,6 +95,25 @@ public class UI_Game : MonoBehaviour
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.Ingredient);
         Debug.Log("Currently in Raw Ingredients");
+    }
+    #endregion
+
+    #region CHARACTER DETAILS
+    public void OnClickAttributesTab()
+    {
+        m_characterDetailsPanel.OnClick_AttributeTab();
+    }
+    public void OnClickWeaponTab()
+    {
+        m_characterDetailsPanel.OnClick_WeaponTab();
+    }
+    public void OnClickAgimatTab()
+    {
+        m_characterDetailsPanel.OnClick_AgimatTab();
+    }
+    public void OnClickPamanaTab()
+    {
+        m_characterDetailsPanel.OnClick_PamanaTab();
     }
     #endregion
 }

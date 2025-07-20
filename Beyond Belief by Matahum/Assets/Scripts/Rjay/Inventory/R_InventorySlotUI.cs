@@ -12,6 +12,7 @@ public class R_InventorySlotUI : MonoBehaviour
     private R_InventoryItemInfoPanel infoPanel;
 
     [SerializeField] private Button inventoryItemButton;
+    public R_InventoryUI inventoryUI;
 
     void Awake()
     {
@@ -81,6 +82,9 @@ public class R_InventorySlotUI : MonoBehaviour
         if (currentItem != null && currentItem.itemData != null)
         {
             infoPanel.ShowItem(currentItem.itemData);
+            if (inventoryUI != null)
+                inventoryUI.SetSelectedItem(currentItem);
         }
     }
 }
+

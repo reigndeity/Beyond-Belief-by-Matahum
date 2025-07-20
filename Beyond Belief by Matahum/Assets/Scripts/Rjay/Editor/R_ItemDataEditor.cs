@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEditor;
 
@@ -25,7 +26,8 @@ public class R_ItemDataEditor : Editor
     private SerializedProperty slot2AbilityProp;
     private SerializedProperty effectTextProp;
     private SerializedProperty consumableEffectProp;
-
+    private SerializedProperty upgradeMaterialTypeProp;
+    private SerializedProperty xpValueProp;
 
     private void OnEnable()
     {
@@ -49,6 +51,8 @@ public class R_ItemDataEditor : Editor
         slot2AbilityProp = serializedObject.FindProperty("slot2Ability");
         effectTextProp = serializedObject.FindProperty("effectText");
         consumableEffectProp = serializedObject.FindProperty("consumableEffect");
+        upgradeMaterialTypeProp = serializedObject.FindProperty("upgradeMaterialType");
+        xpValueProp = serializedObject.FindProperty("xpValue");
     }
 
     public override void OnInspectorGUI()
@@ -83,8 +87,7 @@ public class R_ItemDataEditor : Editor
             }
         }
 
-        // 🔹 Show rarity once, only when needed
-        if (data.itemType == R_ItemType.Pamana || data.itemType == R_ItemType.Agimat)
+        if (data.itemType != R_ItemType.Pamana)
         {
             EditorGUILayout.PropertyField(rarityProp);
         }
@@ -96,13 +99,30 @@ public class R_ItemDataEditor : Editor
             EditorGUILayout.PropertyField(pamanaSlotProp);
             EditorGUILayout.PropertyField(twoPieceBonusDescriptionProp);
             EditorGUILayout.PropertyField(threePieceBonusDescriptionProp);
+
+            if (data.pamanaData == null && GUILayout.Button("Generate Pamana Stats"))
+            {
+                R_PamanaData pamanaData = R_PamanaGeneratorUtility.GenerateFrom(data);
+                data.pamanaData = pamanaData;
+                EditorUtility.SetDirty(data);
+                AssetDatabase.SaveAssets();
+                Debug.Log($"Generated PamanaData for: {data.name}");
+            }
         }
 
         if (data.itemType == R_ItemType.Agimat)
         {
             EditorGUILayout.PropertyField(slot1AbilityProp);
             EditorGUILayout.PropertyField(slot2AbilityProp);
+            EditorGUILayout.PropertyField(rarityProp);
         }
+
+        if (data.itemType == R_ItemType.UpgradeMaterial)
+        {
+            EditorGUILayout.PropertyField(upgradeMaterialTypeProp);
+            EditorGUILayout.PropertyField(xpValueProp);
+        }
+
         serializedObject.ApplyModifiedProperties();
     }
 }

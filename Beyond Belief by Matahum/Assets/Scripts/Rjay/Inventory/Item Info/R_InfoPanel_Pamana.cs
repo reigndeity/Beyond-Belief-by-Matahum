@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 public class R_InfoPanel_Pamana : R_ItemInfoDisplay
 {
     [SerializeField] private Image iconImage;
+    [SerializeField] private Image headerImage;
     [SerializeField] private Image backdropImage;
     [SerializeField] private TextMeshProUGUI nameText;
     //[SerializeField] private TextMeshProUGUI descriptionText; // Can be removed if unused elsewhere
@@ -26,6 +27,12 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
 
         backdropImage.sprite = itemData.inventoryBackdropImage;
         backdropImage.enabled = itemData.inventoryBackdropImage != null;
+        // Header image
+        if (headerImage != null)
+        {
+            headerImage.sprite = itemData.inventoryHeaderImage;
+            headerImage.enabled = itemData.inventoryHeaderImage != null;
+        }
 
         nameText.text = itemData.itemName;
         itemTypeTxt.text = FormatEnumName(itemData.pamanaSlot.ToString());

@@ -107,32 +107,32 @@ public class Pamana : ScriptableObject
 
         float roll = Random.value; // Random number between 0 and 1
 
-        if (player.p_level <= 10) // Tier 1
-        {
-            if (roll < 0.80f) rarity = PamanaRarity.Common;
-            else rarity = PamanaRarity.Rare;
-        }
-        else if (player.p_level <= 20) // Tier 2
-        {
-            if (roll < 0.30f) rarity = PamanaRarity.Common;
-            else if (roll < 0.95f) rarity = PamanaRarity.Rare;
-            else rarity = PamanaRarity.Epic;
-        }
-        else if (player.p_level <= 30) // Tier 3
-        {
-            if (roll < 0.85f) rarity = PamanaRarity.Rare;
-            else rarity = PamanaRarity.Epic;
-        }
-        else if (player.p_level <= 40) // Tier 4
-        {
-            if (roll < 0.90f) rarity = PamanaRarity.Epic;
-            else rarity = PamanaRarity.Legendary;
-        }
-        else if (player.p_level <= 50) // Tier 5
-        {
-            if (roll < 0.60f) rarity = PamanaRarity.Epic;
-            else rarity = PamanaRarity.Legendary;
-        }
+        // if (player.p_level <= 10) // Tier 1
+        // {
+        //     if (roll < 0.80f) rarity = PamanaRarity.Common;
+        //     else rarity = PamanaRarity.Rare;
+        // }
+        // else if (player.p_level <= 20) // Tier 2
+        // {
+        //     if (roll < 0.30f) rarity = PamanaRarity.Common;
+        //     else if (roll < 0.95f) rarity = PamanaRarity.Rare;
+        //     else rarity = PamanaRarity.Epic;
+        // }
+        // else if (player.p_level <= 30) // Tier 3
+        // {
+        //     if (roll < 0.85f) rarity = PamanaRarity.Rare;
+        //     else rarity = PamanaRarity.Epic;
+        // }
+        // else if (player.p_level <= 40) // Tier 4
+        // {
+        //     if (roll < 0.90f) rarity = PamanaRarity.Epic;
+        //     else rarity = PamanaRarity.Legendary;
+        // }
+        // else if (player.p_level <= 50) // Tier 5
+        // {
+        //     if (roll < 0.60f) rarity = PamanaRarity.Epic;
+        //     else rarity = PamanaRarity.Legendary;
+        // }
 
         AssignStatRange();
     }

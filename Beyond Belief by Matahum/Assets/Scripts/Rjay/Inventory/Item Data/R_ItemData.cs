@@ -74,4 +74,6 @@ public class R_ItemData : ScriptableObject
     [TextArea]
     public string effectText; // UI-only, displayed in info panel
     public R_ConsumableEffect consumableEffect; // Logic-only
+    public R_UpgradeMaterialType upgradeMaterialType;
+    public int xpValue;
 }

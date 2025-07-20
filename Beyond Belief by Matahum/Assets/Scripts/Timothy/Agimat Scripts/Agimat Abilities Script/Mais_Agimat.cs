@@ -118,7 +118,7 @@ public class Mais_Agimat : Agimat, IEquippable//, IDescription,
         if (canFirst)
         {
             canFirst = false;
-            heal = 50 * player.p_level;
+            //heal = 50 * player.p_level;
             player.p_currentHealth += heal;
             if (player.p_currentHealth >= player.p_maxHealth)
             {

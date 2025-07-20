@@ -11,6 +11,10 @@ public class R_InventoryTester : MonoBehaviour
     private float keyCooldown = 0.3f;
     private float nextPressTime = 0f;
 
+    [Header("Pamana Spawning Reference")]
+    [SerializeField] private R_ItemData[] pamanaTemplates;
+    [SerializeField] private R_PamanaVisualConfig visualConfig;
+    [SerializeField] private int simulatedPlayerLevel = 1;
     private void Update()
     {
         if (Time.time >= nextPressTime && Input.GetKeyDown(KeyCode.T))
@@ -25,6 +29,10 @@ public class R_InventoryTester : MonoBehaviour
 
                 nextPressTime = Time.time + keyCooldown;
             }
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            R_PamanaSpawnerUtility.SpawnRandomPamanaFromPool(pamanaTemplates, inventory, inventoryUI, simulatedPlayerLevel, visualConfig);
         }
     }
 

@@ -121,6 +121,7 @@ public void RefreshUI()
             
             // 🔹 PASS THE INFO PANEL TO EACH SLOT
             slotUI.Initialize(infoPanel);
+            slotUI.inventoryUI = this;
             
             slotUIs.Add(slotUI);
         }
@@ -135,5 +136,28 @@ public void RefreshUI()
                 RefreshUI();
             });
         }
+    }  
+    
+    public void SetSelectedItem(R_InventoryItem item)
+        {
+            selectedItem = item;
+
+            if (item != null && infoPanel != null)
+            {
+                infoPanel.ShowItem(item.itemData);
+
+                if (item.itemData.itemType == R_ItemType.Consumable)
+                {
+                    var panel = infoPanel.consumablePanelDisplay as R_InfoPanel_Consumable;
+                    if (panel != null)
+                    {
+                        panel.playerInventory = playerInventory;
+                        panel.SetUseButtonCallback(item, itemPrompt, RefreshUI);
+                    }
+                }
+            }
+
+            trashButton.interactable = true;
+        }
     }
-}
+
