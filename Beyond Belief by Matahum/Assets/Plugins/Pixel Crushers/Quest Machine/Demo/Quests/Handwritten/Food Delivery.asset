@@ -1,5 +1,44 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-1827505678395713302
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5682394e55a192147a020b9edf624e51, type: 3}
+  m_Name: MessageQuestCondition
+  m_EditorClassIdentifier: 
+  m_alreadyTrue: 0
+  m_senderSpecifier: 0
+  m_senderID:
+    m_text: 
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
+  m_targetSpecifier: 0
+  m_targetID:
+    m_text: 
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
+  m_message:
+    m_text: Discussed Quest
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
+  m_parameter:
+    m_text: foodDelivery
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
+  m_value:
+    m_valueType: 0
+    m_intValue: 0
+    m_stringValue: 
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41,6 +80,7 @@ MonoBehaviour:
   m_showInTrackHUD: 1
   m_isAbandonable: 1
   m_rememberIfAbandoned: 0
+  m_deleteWhenComplete: 0
   m_autostartConditionSet:
     m_conditionList: []
     m_conditionCountMode: 0
@@ -56,6 +96,7 @@ MonoBehaviour:
   m_offerContentList:
   - {fileID: 11443982}
   - {fileID: 11453408}
+  m_infinitelyRepeatable: 0
   m_maxTimes: 1
   m_timesAccepted: 0
   m_cooldownSeconds: 3600
@@ -242,7 +283,7 @@ MonoBehaviour:
     m_canvasRect:
       serializedVersion: 2
       x: 180
-      y: 120
+      y: 120.82474
       width: 120
       height: 48
   - m_id:
@@ -333,15 +374,15 @@ MonoBehaviour:
       - m_contentList: []
     m_conditionSet:
       m_conditionList:
-      - {fileID: 11459432}
+      - {fileID: -1827505678395713302}
       m_conditionCountMode: 1
       m_minConditionCount: 0
       m_numTrueConditions: 0
     m_childIndexList: 05000000
     m_canvasRect:
       serializedVersion: 2
-      x: 251
-      y: 199
+      x: 250.20001
+      y: 201.4
       width: 120
       height: 48
   - m_id:
@@ -386,10 +427,11 @@ MonoBehaviour:
     m_childIndexList: 
     m_canvasRect:
       serializedVersion: 2
-      x: 250
-      y: 274
+      x: 250.75055
+      y: 279.27008
       width: 120
       height: 35
+  m_textTable: {fileID: 0}
   m_goalEntityTypeName: 
   m_nextContentID: 0
 --- !u!114 &11402898
@@ -404,11 +446,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 732e99ba3b575dc4dad61a69b0417c96, type: 3}
   m_Name: QuestStateQuestCondition
   m_EditorClassIdentifier: 
+  m_alreadyTrue: 0
+  m_requiredQuest: {fileID: 0}
   m_requiredQuestID:
     m_text: harvestCarrots
     m_stringAsset: {fileID: 0}
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
+  m_isNot: 0
   m_requiredState: 2
 --- !u!114 &11409426
 MonoBehaviour:
@@ -572,6 +617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5682394e55a192147a020b9edf624e51, type: 3}
   m_Name: MessageQuestCondition
   m_EditorClassIdentifier: 
+  m_alreadyTrue: 0
   m_senderSpecifier: 0
   m_senderID:
     m_text: 
@@ -653,44 +699,6 @@ MonoBehaviour:
     m_stringAsset: {fileID: 0}
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
---- !u!114 &11459432
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5682394e55a192147a020b9edf624e51, type: 3}
-  m_Name: MessageQuestCondition
-  m_EditorClassIdentifier: 
-  m_senderSpecifier: 0
-  m_senderID:
-    m_text: 
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
-  m_targetSpecifier: 2
-  m_targetID:
-    m_text: '{QUESTGIVERID}'
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
-  m_message:
-    m_text: Discussed Quest
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
-  m_parameter:
-    m_text: foodDelivery
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
-  m_value:
-    m_valueType: 0
-    m_intValue: 0
-    m_stringValue: 
 --- !u!114 &11465272
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -703,6 +711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c14ca0a3639b4a4f8084914f2e7227f, type: 3}
   m_Name: SetQuestNodeStateQuestAction
   m_EditorClassIdentifier: 
+  m_questToSet: {fileID: 0}
   m_questID:
     m_text: 
     m_stringAsset: {fileID: 0}
@@ -726,6 +735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c14ca0a3639b4a4f8084914f2e7227f, type: 3}
   m_Name: SetQuestNodeStateQuestAction
   m_EditorClassIdentifier: 
+  m_questToSet: {fileID: 0}
   m_questID:
     m_text: 
     m_stringAsset: {fileID: 0}
@@ -806,6 +816,7 @@ MonoBehaviour:
   m_useAudioSourceOn:
     m_type: 0
     m_id: 
+  m_interruptPreviousClip: 0
   m_audioNameProxy: 
 --- !u!114 &11493080
 MonoBehaviour:
