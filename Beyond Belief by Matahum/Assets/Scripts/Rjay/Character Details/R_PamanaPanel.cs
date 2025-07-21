@@ -102,6 +102,7 @@ public class R_PamanaPanel : MonoBehaviour
         activeFilter = slotType;
 
         RefreshPamanaList();
+        UpdateSelectedSlotVisual();
         UpdateSlotHighlight();
         inventoryParent.SetActive(true);
 
@@ -114,6 +115,8 @@ public class R_PamanaPanel : MonoBehaviour
             infoPanelObject.SetActive(true);
             unequipButton.interactable = true;
             equipButton.interactable = false; // already equipped
+
+             UpdateSelectedSlotVisual();
         }
         else if (filteredPamanaItems.Count > 0)
         {
@@ -124,6 +127,8 @@ public class R_PamanaPanel : MonoBehaviour
             bool alreadyEquipped = IsItemEquipped(selectedItem);
             equipButton.interactable = !alreadyEquipped;
             unequipButton.interactable = false;
+
+            UpdateSelectedSlotVisual();
         }
         else
         {
@@ -156,6 +161,8 @@ public class R_PamanaPanel : MonoBehaviour
             equipButton.interactable = false;
             unequipButton.interactable = false;
         }
+
+        UpdateSelectedSlotVisual();
     }
 
     private void EquipSelectedPamana()
@@ -168,7 +175,14 @@ public class R_PamanaPanel : MonoBehaviour
 
         RefreshPamanaList();
         UpdateSlotHighlight();
+
+        // 🔹 Instant feedback
+        equipButton.interactable = false;
+        unequipButton.interactable = true;
+
+        UpdateSelectedSlotVisual();
     }
+
 
     private void UnequipCurrentSlot()
     {
@@ -178,12 +192,30 @@ public class R_PamanaPanel : MonoBehaviour
         player.UnequipPamana(pendingEquipSlot.Value);
         Debug.Log($"Unequipped Pamana from {pendingEquipSlot}");
 
-        selectedItem = null;
         RefreshPamanaList();
-        infoPanel.Hide();
-        infoPanelObject.SetActive(false);
         UpdateSlotHighlight();
+
+        // 🔹 DO NOT auto-select a new one — just stay on the same item
+        if (selectedItem != null)
+        {
+            infoPanel.Show(selectedItem.itemData);
+            infoPanelObject.SetActive(true);
+
+            equipButton.interactable = true;
+            unequipButton.interactable = false;
+        }
+        else
+        {
+            infoPanel.Hide();
+            infoPanelObject.SetActive(false);
+            equipButton.interactable = false;
+            unequipButton.interactable = false;
+        }
+
+        UpdateSelectedSlotVisual();
     }
+
+
 
     private void ClearFilter()
     {
@@ -245,6 +277,17 @@ public class R_PamanaPanel : MonoBehaviour
             unequipButton.interactable = false;
             UpdateSlotHighlight();
             RefreshPamanaList();
+        }
+    }
+
+    private void UpdateSelectedSlotVisual()
+    {
+        foreach (var obj in uiSlots)
+        {
+            if (obj.TryGetComponent<R_PamanaSlotUI>(out var slotUI))
+            {
+                slotUI.SetSelected(slotUI.RepresentsItem(selectedItem));
+            }
         }
     }
 }

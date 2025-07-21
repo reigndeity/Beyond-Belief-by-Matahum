@@ -14,6 +14,9 @@ public class R_InventorySlotUI : MonoBehaviour
     [SerializeField] private Button inventoryItemButton;
     public R_InventoryUI inventoryUI;
 
+    private Vector3 defaultScale = Vector3.one;
+    private Vector3 selectedScale = Vector3.one * 1.1f;
+
     void Awake()
     {
         inventoryItemButton.GetComponent<Button>();
@@ -86,5 +89,16 @@ public class R_InventorySlotUI : MonoBehaviour
                 inventoryUI.SetSelectedItem(currentItem);
         }
     }
+
+    public void SetSelected(bool isSelected)
+    {
+        transform.localScale = isSelected ? selectedScale : defaultScale;
+    }
+
+    public bool RepresentsItem(R_InventoryItem item)
+    {
+        return currentItem == item;
+    }
+
 }
 

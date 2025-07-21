@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
@@ -71,5 +72,54 @@ public class PlayerStats : MonoBehaviour
 
         p_stamina = baseStamina;
     }
+
+    public void ApplyPamanaBonuses(Dictionary<R_PamanaSlotType, R_InventoryItem> equippedPamanas)
+    {
+        // Reset all modifiers first
+        p_flatHP = 0;
+        p_hpPrcnt = 0;
+        p_flatAtk = 0;
+        p_atkPrcnt = 0;
+        p_flatDef = 0;
+        p_defPrcnt = 0;
+        p_critRate = 0;
+        p_critDmg = 0;
+        p_cooldownReduction = 0;
+
+        foreach (var kvp in equippedPamanas)
+        {
+            var item = kvp.Value;
+            if (item?.itemData?.pamanaData == null)
+                continue;
+
+            // Apply main stat
+            ApplyStat(item.itemData.pamanaData.mainStatType, item.itemData.pamanaData.mainStatValue);
+
+            // Apply substats
+            foreach (var sub in item.itemData.pamanaData.substats)
+            {
+                ApplyStat(sub.statType, sub.value);
+            }
+        }
+
+        RecalculateStats();
+    }
+
+    private void ApplyStat(R_StatType statType, float value)
+    {
+        switch (statType)
+        {
+            case R_StatType.FlatHP: p_flatHP += value; break;
+            case R_StatType.PercentHP: p_hpPrcnt += value; break;
+            case R_StatType.FlatATK: p_flatAtk += value; break;
+            case R_StatType.PercentATK: p_atkPrcnt += value; break;
+            case R_StatType.FlatDEF: p_flatDef += value; break;
+            case R_StatType.PercentDEF: p_defPrcnt += value; break;
+            case R_StatType.CRITRate: p_critRate += value; break;
+            case R_StatType.CRITDamage: p_critDmg += value; break;
+            case R_StatType.CooldownReduction: p_cooldownReduction += value; break;
+        }
+    }
+
 }
 

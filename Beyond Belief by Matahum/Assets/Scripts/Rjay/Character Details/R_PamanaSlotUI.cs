@@ -14,6 +14,9 @@ public class R_PamanaSlotUI : MonoBehaviour
     private R_InventoryItem representedItem;
     private R_PamanaPanel parentPanel;
 
+    private Vector3 defaultScale = Vector3.one;
+    private Vector3 selectedScale = Vector3.one * 1.1f;
+
     public void Setup(R_InventoryItem item, R_PamanaPanel panel)
     {
         representedItem = item;
@@ -41,5 +44,14 @@ public class R_PamanaSlotUI : MonoBehaviour
         // Selection Button
         selectButton.onClick.RemoveAllListeners();
         selectButton.onClick.AddListener(() => parentPanel.OnPamanaSelected(representedItem));
+    }
+
+    public void SetSelected(bool isSelected)
+    {
+        transform.localScale = isSelected ? selectedScale : defaultScale;
+    }
+    public bool RepresentsItem(R_InventoryItem item)
+    {
+        return representedItem == item;
     }
 }

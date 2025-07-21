@@ -104523,6 +104523,7 @@ GameObject:
   - component: {fileID: 5373521251738816408}
   - component: {fileID: 5373521251738816410}
   - component: {fileID: 5373521251738816409}
+  - component: {fileID: 5373521251738816411}
   m_Layer: 3
   m_Name: Layag
   m_TagString: Player
@@ -105402,7 +105403,7 @@ MonoBehaviour:
   AnimationFloorLevel: 0.001
   _Editor_Foldout_Setup_LegsList: 1
   _Editor_EnsureCount: 0
-  _Editor_OnValidateTrigger: 1
+  _Editor_OnValidateTrigger: 0
   _EditorAllowAutoUpdateFeetParams: 1
   _EditorCategory: 0
   _EditorSetupCategory: 0
@@ -105635,6 +105636,20 @@ MonoBehaviour:
   followRotationOf: 1
   customGameObjectToFollowRotation: {fileID: 526148975}
   movementsSmoothing: 14
+--- !u!114 &5373521251738816411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5373521251738816397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdde6bd775df0f04e928e692cfa35403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  playerStats: {fileID: 0}
 --- !u!1 &5380463990402697678
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,6 +22,7 @@ public class Player : MonoBehaviour, IDamageable
     
     private PlayerMinimap m_playerMinimap;
     private PlayerCamera m_playerCamera;
+    private PlayerPamanaSetBonus m_setBonus;
 
     [Header("Player States")]
     public PlayerState currentState;
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour, IDamageable
     [Header("Inventory Properties")]
     public R_Inventory playerInventory;
 
+    
 
     void Awake()
     {
@@ -46,6 +48,7 @@ public class Player : MonoBehaviour, IDamageable
         m_playerStats = GetComponent<PlayerStats>();
         m_playerMinimap = GetComponentInChildren<PlayerMinimap>();
         m_playerCamera = FindFirstObjectByType<PlayerCamera>();
+        m_setBonus = GetComponent<PlayerPamanaSetBonus>();
     }
 
     void Update()
@@ -151,6 +154,7 @@ public class Player : MonoBehaviour, IDamageable
 
     void HandleGrassInteraction() => Shader.SetGlobalVector("_Player", transform.position + Vector3.up * 0.1f);
 
+    #region PAMANA EQUIPMENT
     // 🧠 Holds equipped Pamanas by slot (Diwata, Lihim, Salamangkero)
     private Dictionary<R_PamanaSlotType, R_InventoryItem> equippedPamanaSet = new();
 
@@ -166,12 +170,16 @@ public class Player : MonoBehaviour, IDamageable
             return;
 
         equippedPamanaSet[item.itemData.pamanaSlot] = item;
+
+        ReapplyPamanaBonuses();
     }
 
     public void UnequipPamana(R_PamanaSlotType slot)
     {
         if (equippedPamanaSet.ContainsKey(slot))
             equippedPamanaSet[slot] = null;
+        
+        ReapplyPamanaBonuses();
     }
 
     public bool IsPamanaEquipped(R_InventoryItem item)
@@ -183,5 +191,14 @@ public class Player : MonoBehaviour, IDamageable
         }
         return false;
     }
+    private void ReapplyPamanaBonuses()
+    {
+        m_playerStats.ApplyPamanaBonuses(equippedPamanaSet);
 
+        if (m_setBonus != null)
+            m_setBonus.ApplySetBonuses(equippedPamanaSet);
+
+        m_playerStats.RecalculateStats();
+    }
+    #endregion
 }
