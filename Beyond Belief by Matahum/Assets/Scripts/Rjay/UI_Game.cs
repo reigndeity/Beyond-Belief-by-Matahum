@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class UI_Game : MonoBehaviour
 {
-    private R_InventoryUI r_inventoryUI;
-    private R_CharacterDetailsPanel m_characterDetailsPanel;
+    [SerializeField] private R_InventoryUI r_inventoryUI;
+    [SerializeField] private R_CharacterDetailsPanel m_characterDetailsPanel;
     [SerializeField] Button inventoryButton; // Overall Inventory (No Equipment)
     [SerializeField] Button journalButton; // Keeps track of new findings(?)
     
@@ -24,6 +24,11 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Button weaponTabButton;
     [SerializeField] Button agimatTabButton;
     [SerializeField] Button pamanaTabButton;
+    [Header("------------------------")]
+    [SerializeField] Button diwataSlotButton;
+    [SerializeField] Button lihimSlotButton;
+    [SerializeField] Button salamangkeroSlotButton;
+    [SerializeField] private R_PamanaPanel m_pamanaPanel;
 
     [Header("Full Screen Map Properties")]
     [SerializeField] GameObject teleportPanel;
@@ -33,8 +38,9 @@ public class UI_Game : MonoBehaviour
 
     void Awake()
     {
-        r_inventoryUI = FindFirstObjectByType<R_InventoryUI>();
-        m_characterDetailsPanel = FindFirstObjectByType<R_CharacterDetailsPanel>();
+        // r_inventoryUI = FindFirstObjectByType<R_InventoryUI>();
+        // m_characterDetailsPanel = FindFirstObjectByType<R_CharacterDetailsPanel>();
+        // m_pamanaPanel = FindFirstObjectByType<R_PamanaPanel>();
     }
     void Start()
     {
@@ -53,6 +59,9 @@ public class UI_Game : MonoBehaviour
         weaponTabButton.onClick.AddListener(OnClickWeaponTab);
         agimatTabButton.onClick.AddListener(OnClickAgimatTab);
         pamanaTabButton.onClick.AddListener(OnClickPamanaTab);
+        diwataSlotButton.onClick.AddListener(OnClickDiwataSort);
+        lihimSlotButton.onClick.AddListener(OnClickLihimSort);
+        salamangkeroSlotButton.onClick.AddListener(OnClickSalamangkeroSort);
     }
 
     public void OnClickCloseTeleportPanel()
@@ -114,6 +123,18 @@ public class UI_Game : MonoBehaviour
     public void OnClickPamanaTab()
     {
         m_characterDetailsPanel.OnClick_PamanaTab();
+    }
+    public void OnClickDiwataSort()
+    {
+        m_pamanaPanel.OnClick_EquipSlot_Diwata();
+    }
+    public void OnClickLihimSort()
+    {
+        m_pamanaPanel.OnClick_EquipSlot_Lihim();
+    }
+    public void OnClickSalamangkeroSort()
+    {
+        m_pamanaPanel.OnClick_EquipSlot_Salamangkero();
     }
     #endregion
 }
