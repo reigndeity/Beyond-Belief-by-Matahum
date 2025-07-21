@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 public enum PlayerState 
 {
@@ -18,11 +19,23 @@ public class Player : MonoBehaviour, IDamageable
     private PlayerCombat m_playerCombat;
     private PlayerSkills m_playerSkills;
     private PlayerStats m_playerStats;
-    public PlayerState currentState;
+    
     private PlayerMinimap m_playerMinimap;
     private PlayerCamera m_playerCamera;
 
+    [Header("Player States")]
+    public PlayerState currentState;
+    public bool isDead = false;
 
+    [Header("Inventory Properties")]
+    public R_Inventory playerInventory;
+
+
+    void Awake()
+    {
+        foreach (R_PamanaSlotType slot in System.Enum.GetValues(typeof(R_PamanaSlotType)))
+            equippedPamanaSet[slot] = null;
+    }
     void Start()
     {
         m_playerAnimator = GetComponent<PlayerAnimator>();
@@ -133,8 +146,42 @@ public class Player : MonoBehaviour, IDamageable
         }
     }
 
-    public bool isDead = false;
+    
     public bool IsDead() => isDead;
 
     void HandleGrassInteraction() => Shader.SetGlobalVector("_Player", transform.position + Vector3.up * 0.1f);
+
+    // 🧠 Holds equipped Pamanas by slot (Diwata, Lihim, Salamangkero)
+    private Dictionary<R_PamanaSlotType, R_InventoryItem> equippedPamanaSet = new();
+
+    // 🧠 Allow external read access
+    public R_InventoryItem GetEquippedPamana(R_PamanaSlotType slot)
+    {
+        return equippedPamanaSet.TryGetValue(slot, out var item) ? item : null;
+    }
+
+    public void EquipPamana(R_InventoryItem item)
+    {
+        if (item == null || item.itemData == null || item.itemData.itemType != R_ItemType.Pamana)
+            return;
+
+        equippedPamanaSet[item.itemData.pamanaSlot] = item;
+    }
+
+    public void UnequipPamana(R_PamanaSlotType slot)
+    {
+        if (equippedPamanaSet.ContainsKey(slot))
+            equippedPamanaSet[slot] = null;
+    }
+
+    public bool IsPamanaEquipped(R_InventoryItem item)
+    {
+        foreach (var kvp in equippedPamanaSet)
+        {
+            if (kvp.Value == item)
+                return true;
+        }
+        return false;
+    }
+
 }

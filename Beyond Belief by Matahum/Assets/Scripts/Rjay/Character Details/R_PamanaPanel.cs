@@ -10,8 +10,8 @@ public class R_PamanaPanel : MonoBehaviour
 
     [Header("Info Display")]
     [SerializeField] private R_InfoPanel_Pamana infoPanel;
-    [SerializeField] private GameObject inventoryParent; // container for the pamana grid
-    [SerializeField] private GameObject infoPanelObject; // full info panel container
+    [SerializeField] private GameObject inventoryParent;
+    [SerializeField] private GameObject infoPanelObject;
 
     [Header("Slot Buttons")]
     [SerializeField] private Button slotDiwata;
@@ -23,15 +23,38 @@ public class R_PamanaPanel : MonoBehaviour
     [SerializeField] private GameObject highlightLihim;
     [SerializeField] private GameObject highlightSalamangkero;
 
+    [Header("Equipped Icons")]
+    [SerializeField] private Image iconDiwata;
+    [SerializeField] private Image iconLihim;
+    [SerializeField] private Image iconSalamangkero;
+
     [Header("Inventory Display")]
     [SerializeField] private Transform pamanaListParent;
     [SerializeField] private GameObject pamanaSlotPrefab;
+
+    [Header("Equip/Unequip Buttons")]
+    [SerializeField] private Button equipButton;
+    [SerializeField] private Button unequipButton;
 
     private List<R_InventoryItem> filteredPamanaItems = new();
     private List<GameObject> uiSlots = new();
 
     private R_PamanaSlotType? activeFilter = null;
     private R_PamanaSlotType? pendingEquipSlot = null;
+
+    private R_InventoryItem selectedItem;
+    private Player player;
+
+    private void Awake()
+    {
+        player = FindFirstObjectByType<Player>();
+    }
+
+    private void Start()
+    {
+        equipButton.onClick.AddListener(EquipSelectedPamana);
+        unequipButton.onClick.AddListener(UnequipCurrentSlot);
+    }
 
     private void OnEnable()
     {
@@ -51,9 +74,9 @@ public class R_PamanaPanel : MonoBehaviour
                 continue;
 
             if (activeFilter.HasValue && item.itemData.pamanaSlot != activeFilter.Value)
-                continue; // 🔁 Correct: skip items that don't match
+                continue;
 
-            filteredPamanaItems.Add(item); // ✅ Only add matching items
+            filteredPamanaItems.Add(item);
         }
 
         foreach (var obj in uiSlots)
@@ -67,8 +90,6 @@ public class R_PamanaPanel : MonoBehaviour
             slotUI.Setup(item, this);
             uiSlots.Add(slotObj);
         }
-
-        
     }
 
     public void OnClick_EquipSlot_Diwata() => SelectEquipSlot(R_PamanaSlotType.Diwata);
@@ -82,36 +103,94 @@ public class R_PamanaPanel : MonoBehaviour
 
         RefreshPamanaList();
         UpdateSlotHighlight();
-
         inventoryParent.SetActive(true);
-        infoPanelObject.SetActive(true);
 
-        // Auto-select equipped Pamana first, else first available
         R_InventoryItem equippedItem = GetEquippedPamanaForSlot(slotType);
+
         if (equippedItem != null)
         {
+            selectedItem = equippedItem;
             infoPanel.Show(equippedItem.itemData);
+            infoPanelObject.SetActive(true);
+            unequipButton.interactable = true;
+            equipButton.interactable = false; // already equipped
         }
         else if (filteredPamanaItems.Count > 0)
         {
-            infoPanel.Show(filteredPamanaItems[0].itemData);
+            selectedItem = filteredPamanaItems[0];
+            infoPanel.Show(selectedItem.itemData);
+            infoPanelObject.SetActive(true);
+
+            bool alreadyEquipped = IsItemEquipped(selectedItem);
+            equipButton.interactable = !alreadyEquipped;
+            unequipButton.interactable = false;
         }
         else
         {
+            selectedItem = null;
             infoPanel.Hide();
+            infoPanelObject.SetActive(false);
+            equipButton.interactable = false;
+            unequipButton.interactable = false;
         }
     }
 
     public void OnPamanaSelected(R_InventoryItem item)
     {
+        selectedItem = item;
+
         if (infoPanel != null)
             infoPanel.Show(item.itemData);
+
+        if (pendingEquipSlot.HasValue)
+        {
+            var equippedItem = GetEquippedPamanaForSlot(pendingEquipSlot.Value);
+            bool isSameSlotMatch = item.itemData.pamanaSlot == pendingEquipSlot.Value;
+            bool alreadyEquippedInSlot = equippedItem == item;
+
+            equipButton.interactable = isSameSlotMatch && !alreadyEquippedInSlot;
+            unequipButton.interactable = equippedItem != null;
+        }
+        else
+        {
+            equipButton.interactable = false;
+            unequipButton.interactable = false;
+        }
+    }
+
+    private void EquipSelectedPamana()
+    {
+        if (selectedItem == null || pendingEquipSlot == null || selectedItem.itemData.pamanaSlot != pendingEquipSlot.Value)
+            return;
+
+        player.EquipPamana(selectedItem);
+        Debug.Log($"Equipped {selectedItem.itemData.itemName} to {pendingEquipSlot.Value}");
+
+        RefreshPamanaList();
+        UpdateSlotHighlight();
+    }
+
+    private void UnequipCurrentSlot()
+    {
+        if (player == null || pendingEquipSlot == null)
+            return;
+
+        player.UnequipPamana(pendingEquipSlot.Value);
+        Debug.Log($"Unequipped Pamana from {pendingEquipSlot}");
+
+        selectedItem = null;
+        RefreshPamanaList();
+        infoPanel.Hide();
+        infoPanelObject.SetActive(false);
+        UpdateSlotHighlight();
     }
 
     private void ClearFilter()
     {
         activeFilter = null;
         pendingEquipSlot = null;
+        selectedItem = null;
+        unequipButton.interactable = false;
         UpdateSlotHighlight();
     }
 
@@ -120,12 +199,38 @@ public class R_PamanaPanel : MonoBehaviour
         highlightDiwata.SetActive(pendingEquipSlot == R_PamanaSlotType.Diwata);
         highlightLihim.SetActive(pendingEquipSlot == R_PamanaSlotType.Lihim);
         highlightSalamangkero.SetActive(pendingEquipSlot == R_PamanaSlotType.Salamangkero);
+        UpdateEquippedIcons();
+    }
+
+    private void UpdateEquippedIcons()
+    {
+        SetSlotIcon(iconDiwata, GetEquippedPamanaForSlot(R_PamanaSlotType.Diwata));
+        SetSlotIcon(iconLihim, GetEquippedPamanaForSlot(R_PamanaSlotType.Lihim));
+        SetSlotIcon(iconSalamangkero, GetEquippedPamanaForSlot(R_PamanaSlotType.Salamangkero));
+    }
+
+    private void SetSlotIcon(Image targetImage, R_InventoryItem item)
+    {
+        if (item != null && item.itemData != null && item.itemData.itemIcon != null)
+        {
+            targetImage.sprite = item.itemData.itemIcon;
+            targetImage.enabled = true;
+        }
+        else
+        {
+            targetImage.sprite = null;
+            targetImage.enabled = false;
+        }
     }
 
     private R_InventoryItem GetEquippedPamanaForSlot(R_PamanaSlotType slotType)
     {
-        // ⛔ Placeholder for now — replace with actual equipped data when we implement equip logic
-        return null;
+        return player != null ? player.GetEquippedPamana(slotType) : null;
+    }
+
+    public bool IsItemEquipped(R_InventoryItem item)
+    {
+        return player != null && player.IsPamanaEquipped(item);
     }
 
     private void Update()
@@ -134,9 +239,11 @@ public class R_PamanaPanel : MonoBehaviour
         {
             pendingEquipSlot = null;
             activeFilter = null;
-            UpdateSlotHighlight();
+            selectedItem = null;
             inventoryParent.SetActive(false);
             infoPanelObject.SetActive(false);
+            unequipButton.interactable = false;
+            UpdateSlotHighlight();
             RefreshPamanaList();
         }
     }

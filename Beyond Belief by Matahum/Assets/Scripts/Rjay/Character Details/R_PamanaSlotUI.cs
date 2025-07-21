@@ -9,6 +9,7 @@ public class R_PamanaSlotUI : MonoBehaviour
     [SerializeField] private Image backdropImage;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Button selectButton;
+    [SerializeField] private GameObject equippedLabel;
 
     private R_InventoryItem representedItem;
     private R_PamanaPanel parentPanel;
@@ -20,15 +21,24 @@ public class R_PamanaSlotUI : MonoBehaviour
 
         if (item != null && item.itemData != null)
         {
+            // Icon
             iconImage.sprite = item.itemData.itemIcon;
             iconImage.enabled = true;
 
-            backdropImage.sprite = item.itemData.inventoryBackdropImage;
+            // Backdrop
+            backdropImage.sprite = item.itemData.itemBackdropIcon;
             backdropImage.enabled = backdropImage.sprite != null;
 
-            levelText.text = $"+{item.itemData.pamanaData?.currentLevel ?? 0}";
+            // Level Display
+            int level = item.itemData.pamanaData?.currentLevel ?? 0;
+            levelText.text = $"+{level}";
+
+            // Equipped Label Logic
+            bool isEquipped = panel.IsItemEquipped(item);
+            equippedLabel.SetActive(isEquipped);
         }
 
+        // Selection Button
         selectButton.onClick.RemoveAllListeners();
         selectButton.onClick.AddListener(() => parentPanel.OnPamanaSelected(representedItem));
     }
