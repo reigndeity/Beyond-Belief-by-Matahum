@@ -12,6 +12,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Image healthFillDelayed;
     [SerializeField] private Image healthFillInstant;
     [SerializeField] private float healthFillDelaySpeed = 2f;
+    [SerializeField] private TextMeshProUGUI healthAmountTxt;
 
     [Header("Stamina and Dash UI Properties")]
     [SerializeField] private Image staminaFillDelayed;
@@ -178,5 +179,7 @@ public class PlayerUI : MonoBehaviour
         {
             healthFillDelayed.fillAmount = targetFill;
         }
+
+        healthAmountTxt.text = $"{current} / {max}";
     }
 }

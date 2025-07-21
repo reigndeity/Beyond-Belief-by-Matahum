@@ -61,16 +61,25 @@ public class PlayerStats : MonoBehaviour
         float baseATK = PlayerStatGrowthTable.GetATK(level);
         float baseDEF = PlayerStatGrowthTable.GetDEF(level);
 
+        float oldMax = p_maxHealth;
+
         p_maxHealth = (baseHP + p_flatHP) * (1f + p_hpPrcnt / 100f);
         p_attack = Mathf.RoundToInt((baseATK + p_flatAtk) * (1f + p_atkPrcnt / 100f));
         p_defense = (baseDEF + p_flatDef) * (1f + p_defPrcnt / 100f);
 
         p_criticalRate = baseCriticalRate + p_critRate;
         p_criticalDamage = baseCriticalDamage + p_critDmg;
-
         p_cooldownReduction = baseCooldownReduction;
-
         p_stamina = baseStamina;
+
+        // 🔹 Preserve health ratio when max health changes
+        if (oldMax > 0)
+        {
+            float percent = p_currentHealth / oldMax;
+            p_currentHealth = p_maxHealth * percent;
+        }
+
+        p_currentHealth = Mathf.Clamp(p_currentHealth, 0f, p_maxHealth);
     }
 
     public void ApplyPamanaBonuses(Dictionary<R_PamanaSlotType, R_InventoryItem> equippedPamanas)
