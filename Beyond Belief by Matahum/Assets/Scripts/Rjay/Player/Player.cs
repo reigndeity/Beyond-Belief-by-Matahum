@@ -237,6 +237,17 @@ public class Player : MonoBehaviour, IDamageable
             equippedAgimatSlot2 = null;
     }
 
+    public R_ItemRarity GetAgimatRarity(int slot)
+    {
+        var item = GetEquippedAgimat(slot);
+        return item?.itemData?.rarity ?? R_ItemRarity.Common; // fallback to Common if null
+    }
+    public R_AgimatAbility GetAgimatAbility(int slot)
+    {
+        var item = GetEquippedAgimat(slot);
+        return item?.itemData?.slot1Ability; // Assumes slot1Ability is the main one
+    }
+
     #endregion
 
 }

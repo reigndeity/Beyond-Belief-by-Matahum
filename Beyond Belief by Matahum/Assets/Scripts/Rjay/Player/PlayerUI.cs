@@ -7,6 +7,8 @@ public class PlayerUI : MonoBehaviour
     private PlayerMovement m_playerMovement;
     private PlayerSkills m_playerSkills;
     private PlayerStats m_playerStats;
+    private Player m_player;
+    private PlayerAgimatManager m_playerAgimatManager;
 
     [Header("Health UI Properties")]
     [SerializeField] private Image healthFillDelayed;
@@ -35,11 +37,21 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Image ultimateSkillCooldownOutlineFill;
     [SerializeField] private TextMeshProUGUI ultimateSkillCooldownTxt;
 
+    [Header("Agimat UI Properties")]
+    [SerializeField] private Image agimat1Icon;
+    [SerializeField] private Image agimat2Icon;
+    [SerializeField] private Image agimat1CooldownOverlay;
+    [SerializeField] private Image agimat2CooldownOverlay;
+    [SerializeField] private TextMeshProUGUI agimat1CooldownText;
+    [SerializeField] private TextMeshProUGUI agimat2CooldownText;
+
     void Start()
     {
         m_playerMovement = GetComponent<PlayerMovement>();
         m_playerSkills = GetComponent<PlayerSkills>();
         m_playerStats = GetComponent<PlayerStats>();
+        m_player = GetComponent<Player>();
+        m_playerAgimatManager = GetComponent<PlayerAgimatManager>();
     }
 
     void Update()
@@ -49,6 +61,7 @@ public class PlayerUI : MonoBehaviour
         UINormalSkillCooldownUpdate();
         UIUltimateSkillCooldownUpdate();
         UIHealthUpdate();
+        UIAgimatUpdate();
     }
 
     void UIStaminaUpdate()
@@ -182,4 +195,63 @@ public class PlayerUI : MonoBehaviour
 
         healthAmountTxt.text = $"{current:F0} / {max:F0}";
     }
+
+
+    void UIAgimatUpdate()
+    {
+        // SLOT 1
+        var agimat1 = m_player.GetAgimatAbility(1);
+        bool has1 = agimat1 != null;
+
+        agimat1Icon.enabled = has1;
+        agimat1CooldownOverlay.enabled = has1;
+        agimat1CooldownText.enabled = has1;
+
+        if (has1)
+        {
+            agimat1Icon.sprite = agimat1.abilityIcon;
+
+            float remaining = m_playerAgimatManager.GetCooldownRemaining(1);
+            float total = m_playerAgimatManager.GetCooldownMax(1);
+
+            float fill = total > 0f ? remaining / total : 0f;
+            agimat1CooldownOverlay.fillAmount = fill;
+
+            agimat1CooldownText.text = remaining > 0f ? remaining.ToString("F1") : "";
+
+            // 🔹 Fade icon if on cooldown
+            Color iconColor = agimat1Icon.color;
+            iconColor.a = fill <= 0f ? 1f : 0.5f;
+            agimat1Icon.color = iconColor;
+        }
+
+        // SLOT 2
+        var agimat2 = m_player.GetAgimatAbility(2);
+        bool has2 = agimat2 != null;
+
+        agimat2Icon.enabled = has2;
+        agimat2CooldownOverlay.enabled = has2;
+        agimat2CooldownText.enabled = has2;
+
+        if (has2)
+        {
+            agimat2Icon.sprite = agimat2.abilityIcon;
+
+            float remaining = m_playerAgimatManager.GetCooldownRemaining(2);
+            float total = m_playerAgimatManager.GetCooldownMax(2);
+
+            float fill = total > 0f ? remaining / total : 0f;
+            agimat2CooldownOverlay.fillAmount = fill;
+
+            agimat2CooldownText.text = remaining > 0f ? remaining.ToString("F1") : "";
+
+            // 🔹 Fade icon if on cooldown
+            Color iconColor = agimat2Icon.color;
+            iconColor.a = fill <= 0f ? 1f : 0.5f;
+            agimat2Icon.color = iconColor;
+        }
+    }
+
+
+
 }
