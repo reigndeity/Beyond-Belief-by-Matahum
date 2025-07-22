@@ -14,7 +14,13 @@ public class R_InventoryTester : MonoBehaviour
     [Header("Pamana Spawning Reference")]
     [SerializeField] private R_ItemData[] pamanaTemplates;
     [SerializeField] private R_PamanaVisualConfig visualConfig;
+
+    [Header("Agimat Spawning Reference")]
+    [SerializeField] private R_ItemData[] agimatTemplates;
+    [SerializeField] private R_AgimatVisualConfig agimatVisualConfig;
+
     [SerializeField] private int simulatedPlayerLevel = 1;
+
     private void Update()
     {
         if (Time.time >= nextPressTime && Input.GetKeyDown(KeyCode.T))
@@ -30,9 +36,15 @@ public class R_InventoryTester : MonoBehaviour
                 nextPressTime = Time.time + keyCooldown;
             }
         }
+
         if (Input.GetKeyDown(KeyCode.P))
         {
             R_PamanaSpawnerUtility.SpawnRandomPamanaFromPool(pamanaTemplates, inventory, inventoryUI, simulatedPlayerLevel, visualConfig);
+        }
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            R_AgimatSpawnerUtility.SpawnRandomAgimatFromPool(agimatTemplates, inventory, inventoryUI, simulatedPlayerLevel, agimatVisualConfig);
         }
     }
 

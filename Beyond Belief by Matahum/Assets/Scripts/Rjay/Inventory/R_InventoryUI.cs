@@ -132,6 +132,24 @@ public void RefreshUI()
     {
         if (selectedItem != null)
         {
+            Player player = FindFirstObjectByType<Player>();
+            bool isEquipped = false;
+
+            if (selectedItem.itemData.itemType == R_ItemType.Pamana && player != null)
+            {
+                isEquipped = player.IsPamanaEquipped(selectedItem);
+            }
+            else if (selectedItem.itemData.itemType == R_ItemType.Agimat && player != null)
+            {
+                isEquipped = player.IsAgimatEquipped(selectedItem);
+            }
+
+            if (isEquipped)
+            {
+                Debug.Log("Cannot delete an equipped item!");
+                return;
+            }
+
             itemPrompt.Open(selectedItem, R_ActionType.Trash, amount => {
                 playerInventory.RemoveItem(selectedItem.itemData, amount);
                 RefreshUI();
@@ -158,7 +176,18 @@ public void RefreshUI()
             }
         }
 
-        trashButton.interactable = true;
+        Player player = FindFirstObjectByType<Player>();
+        bool isEquipped = false;
+        if (item.itemData.itemType == R_ItemType.Pamana && player != null)
+        {
+            isEquipped = player.IsPamanaEquipped(item);
+        }
+        else if (item.itemData.itemType == R_ItemType.Agimat && player != null)
+        {
+            isEquipped = player.IsAgimatEquipped(item);
+        }
+
+        trashButton.interactable = !isEquipped;
         UpdateSelectedSlotVisual();
     }
 

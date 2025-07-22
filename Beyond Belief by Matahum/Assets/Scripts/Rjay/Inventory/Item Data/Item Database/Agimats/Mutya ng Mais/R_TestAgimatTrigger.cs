@@ -29,7 +29,7 @@ public class R_TestAgimatTrigger : MonoBehaviour
 
         if (ability != null && !ability.isPassive)
         {
-            ability.Activate(user);
+            //ability.Activate(user);
         }
         else
         {

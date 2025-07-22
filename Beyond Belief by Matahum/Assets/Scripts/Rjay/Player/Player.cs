@@ -201,4 +201,42 @@ public class Player : MonoBehaviour, IDamageable
         m_playerStats.RecalculateStats();
     }
     #endregion
+
+    #region AGIMAT EQUIPMENT
+    private R_InventoryItem equippedAgimatSlot1;
+    private R_InventoryItem equippedAgimatSlot2;
+
+    public R_InventoryItem GetEquippedAgimat(int slot)
+    {
+        return slot == 1 ? equippedAgimatSlot1 : equippedAgimatSlot2;
+    }
+
+    public bool IsAgimatEquipped(R_InventoryItem item)
+    {
+        return item != null && (item == equippedAgimatSlot1 || item == equippedAgimatSlot2);
+    }
+
+    public void EquipAgimat(R_InventoryItem item, int slotIndex)
+    {
+        if (item == null || item.itemData == null || item.itemData.itemType != R_ItemType.Agimat)
+            return;
+
+        if (slotIndex == 1)
+            equippedAgimatSlot1 = item;
+        else if (slotIndex == 2)
+            equippedAgimatSlot2 = item;
+
+        // Recalculate if needed
+    }
+
+    public void UnequipAgimat(int slotIndex)
+    {
+        if (slotIndex == 1)
+            equippedAgimatSlot1 = null;
+        else if (slotIndex == 2)
+            equippedAgimatSlot2 = null;
+    }
+
+    #endregion
+
 }

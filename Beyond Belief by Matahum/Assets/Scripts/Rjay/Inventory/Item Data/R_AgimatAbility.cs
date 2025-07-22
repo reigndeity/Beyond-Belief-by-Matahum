@@ -4,8 +4,11 @@ public abstract class R_AgimatAbility : ScriptableObject
 {
     public string abilityName;
     public Sprite abilityIcon;
-    [TextArea] public string description;
     public bool isPassive;
 
-    public abstract void Activate(GameObject user);
+    // Generate the full description at runtime based on rarity
+    public abstract string GetDescription(R_ItemRarity rarity);
+
+    // Called when the player activates it
+    public abstract void Activate(GameObject user, R_ItemRarity rarity);
 }

@@ -17,9 +17,15 @@ public class R_InventorySlotUI : MonoBehaviour
     private Vector3 defaultScale = Vector3.one;
     private Vector3 selectedScale = Vector3.one * 1.1f;
 
+    [SerializeField] private GameObject equippedLabel;  // 🔹 Add this field
+    private Player player;
+
+
     void Awake()
     {
         inventoryItemButton.GetComponent<Button>();
+        player = FindFirstObjectByType<Player>();
+
     }
 
     void Start()
@@ -78,6 +84,20 @@ public class R_InventorySlotUI : MonoBehaviour
             icon.enabled = false;
             quantityText.text = "";
         }
+
+        if (equippedLabel != null)
+        {
+            bool isEquipped = false;
+
+            if (item != null && item.itemData != null && item.itemData.itemType == R_ItemType.Pamana && player != null)
+            {
+                isEquipped = player.IsPamanaEquipped(item);
+            }
+
+            equippedLabel.SetActive(isEquipped);
+        }
+
+
     }
 
     public void OnClickSlot()

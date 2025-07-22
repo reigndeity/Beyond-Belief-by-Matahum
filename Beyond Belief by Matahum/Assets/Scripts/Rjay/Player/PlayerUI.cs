@@ -180,6 +180,6 @@ public class PlayerUI : MonoBehaviour
             healthFillDelayed.fillAmount = targetFill;
         }
 
-        healthAmountTxt.text = $"{current} / {max}";
+        healthAmountTxt.text = $"{current:F0} / {max:F0}";
     }
 }

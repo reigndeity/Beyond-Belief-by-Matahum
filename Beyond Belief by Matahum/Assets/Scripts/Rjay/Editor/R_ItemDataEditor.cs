@@ -114,8 +114,9 @@ public class R_ItemDataEditor : Editor
         {
             EditorGUILayout.PropertyField(slot1AbilityProp);
             EditorGUILayout.PropertyField(slot2AbilityProp);
-            EditorGUILayout.PropertyField(rarityProp);
+            // 🔹 Rarity is assigned automatically — no need to show
         }
+
 
         if (data.itemType == R_ItemType.UpgradeMaterial)
         {

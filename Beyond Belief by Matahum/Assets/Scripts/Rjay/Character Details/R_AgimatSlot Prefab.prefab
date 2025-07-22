@@ -228,7 +228,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5618565635748322902
 RectTransform:
   m_ObjectHideFlags: 0
@@ -359,9 +359,9 @@ GameObject:
   - component: {fileID: 393761791064360015}
   - component: {fileID: 1183630246300527672}
   - component: {fileID: -7305857326985426978}
-  - component: {fileID: -2218056257114160461}
+  - component: {fileID: 6557012424101959721}
   m_Layer: 5
-  m_Name: R_PamanaSlot Prefab
+  m_Name: R_AgimatSlot Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -471,7 +471,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &-2218056257114160461
+--- !u!114 &6557012424101959721
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -480,11 +480,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4270716259121224376}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a9f5045e4db69a468bc7a431a78715b, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c2513a6878cba749a621dcb6e1dce69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   iconImage: {fileID: 676392397222130447}
   backdropImage: {fileID: 1183630246300527672}
-  levelText: {fileID: 7228670788516846458}
-  selectButton: {fileID: -7305857326985426978}
   equippedLabel: {fileID: 600250964721567019}
+  selectButton: {fileID: -7305857326985426978}

@@ -9,7 +9,6 @@ public class R_InfoPanel_Agimat : R_ItemInfoDisplay
     [SerializeField] private Image headerImage;
     [SerializeField] private Image iconImage;
     [SerializeField] private Image backdropImage;
-
     [SerializeField] private TextMeshProUGUI nameText;
 
     [Header("Condensed Body")]
@@ -19,34 +18,38 @@ public class R_InfoPanel_Agimat : R_ItemInfoDisplay
     {
         gameObject.SetActive(true);
 
-        // General
-        headerImage.sprite = itemData.inventoryHeaderImage;
-        headerImage.enabled = itemData.inventoryHeaderImage != null;
-
         iconImage.sprite = itemData.itemIcon;
         iconImage.enabled = itemData.itemIcon != null;
 
         backdropImage.sprite = itemData.inventoryBackdropImage;
         backdropImage.enabled = itemData.inventoryBackdropImage != null;
 
+        headerImage.sprite = itemData.inventoryHeaderImage;
+        headerImage.enabled = itemData.inventoryHeaderImage != null;
+
         itemType.text = itemData.itemType.ToString();
         nameText.text = itemData.itemName;
 
-        // Condensed body block
-        string slot1Header = $"<size=36>Slot 1: {itemData.slot1Ability?.abilityName ?? "None"}</size>\n";
-        string slot1Desc = itemData.slot1Ability != null
-            ? $"<size=30> •{(itemData.slot1Ability.isPassive ? "Passive" : "Active")}: {itemData.slot1Ability.description}</size>\n"
-            : "";
+        // 🔹 Use clean formatter methods
+        string slot1Text = FormatAbilityBlock("Slot 1", itemData.slot1Ability, itemData.rarity);
+        string slot2Text = FormatAbilityBlock("Slot 2", itemData.slot2Ability, itemData.rarity);
+        string descriptionBlock = $"<size=36>{itemData.description}</size>";
 
-        string slot2Header = $"<size=36>Slot 2: {itemData.slot2Ability?.abilityName ?? "None"}</size>\n";
-        string slot2Desc = itemData.slot2Ability != null
-            ? $"<size=30> •{(itemData.slot2Ability.isPassive ? "Passive" : "Active")}: {itemData.slot2Ability.description}</size>\n"
-            : "";
-
-        string desc = $"<size=36>{itemData.description}</size>";
-
-        agimatCondensedBodyText.text = slot1Header + slot1Desc + "\n" + slot2Header + slot2Desc + "\n\n" + desc;
+        agimatCondensedBodyText.text = slot1Text + "\n" + slot2Text + "\n\n" + descriptionBlock;
     }
+
+    private string FormatAbilityBlock(string slotLabel, R_AgimatAbility ability, R_ItemRarity rarity)
+    {
+        if (ability == null)
+            return $"<size=36>{slotLabel}: None</size>";
+
+        string typeLabel = ability.isPassive ? "Passive" : "Active";
+        string description = ability.GetDescription(rarity);
+
+        return $"<size=36>{slotLabel}: {ability.abilityName}</size>\n" +
+            $"<size=30>• {typeLabel}: {description}</size>";
+    }
+
 
     public override void Hide()
     {
