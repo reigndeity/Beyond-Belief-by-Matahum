@@ -9,6 +9,7 @@ public class R_AgimatSlotUI : MonoBehaviour
     [SerializeField] private Image backdropImage;
     [SerializeField] private GameObject equippedLabel;
     [SerializeField] private Button selectButton;
+    [SerializeField] private TextMeshProUGUI quantityText;
 
     private R_InventoryItem representedItem;
     private R_AgimatPanel parentPanel;
@@ -28,6 +29,9 @@ public class R_AgimatSlotUI : MonoBehaviour
             // Icon
             iconImage.sprite = item.itemData.itemIcon;
             iconImage.enabled = true;
+
+            // Quantity
+            quantityText.text = "1";
 
             // Backdrop
             backdropImage.sprite = item.itemData.itemBackdropIcon;

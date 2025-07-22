@@ -3,18 +3,27 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgMais_S2")]
 public class MutyaNgMais_S2 : R_AgimatAbility
 {
+    [HideInInspector] public float cachedFlatHeal;
+
     public override string GetDescription(R_ItemRarity rarity)
     {
-        float healAmount = GetRandomFlatHeal(rarity);
-        return $"Regenerates {healAmount:F1} HP every 5 seconds.";
+        if (cachedFlatHeal == 0f)
+            cachedFlatHeal = GetRandomFlatHeal(rarity);
+
+        return $"Regenerates {cachedFlatHeal:F1} HP every 5 seconds.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity)
     {
-        float heal = GetRandomFlatHeal(rarity);
-        Debug.Log($"🌽 Passive heal: {heal} every 5s (apply this over time externally)");
-        // You’d register this in a passive regen system or coroutine.
+        if (cachedFlatHeal == 0f)
+            cachedFlatHeal = GetRandomFlatHeal(rarity);
+
+        user.GetComponent<Player>().Heal(cachedFlatHeal);
+
+        Debug.Log($"🌽 Passive heal: +{cachedFlatHeal:F1} HP every {baseCooldown:F1}s");
+        Debug.Log($"🌽 [PASSIVE] MutyaNgMais_S2 activated at {Time.time:F2}s");
     }
+
 
     private float GetRandomFlatHeal(R_ItemRarity rarity)
     {

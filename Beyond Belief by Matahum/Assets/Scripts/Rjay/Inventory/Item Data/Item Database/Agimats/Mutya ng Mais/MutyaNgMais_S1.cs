@@ -3,19 +3,26 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgMais_S1")]
 public class MutyaNgMais_S1 : R_AgimatAbility
 {
+    [HideInInspector] public float cachedHealPercent;
+
     public override string GetDescription(R_ItemRarity rarity)
     {
-        float healAmount = GetRandomHealPercent(rarity);
-        return $"Heals {healAmount:F1}% of the player's HP.";
+        // ✅ Cache the random result once
+        if (cachedHealPercent == 0f)
+            cachedHealPercent = GetRandomHealPercent(rarity);
+
+        return $"Heals {cachedHealPercent:F1}% of the player's HP.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity)
     {
-        float percent = GetRandomHealPercent(rarity) / 100f;
-        // float amount = user.GetComponent<PlayerStats>().maxHP * percent;
-        // user.GetComponent<PlayerStats>().Heal(amount);
+        float percent = cachedHealPercent / 100f;
+        float maxHP = user.GetComponent<PlayerStats>().p_maxHealth; // You'll need to expose this
+        float amountToHeal = maxHP * percent;
 
-        // Debug.Log($"🌽 Healing for {amount} HP ({percent * 100}%)");
+        user.GetComponent<Player>().Heal(amountToHeal);
+
+        Debug.Log($"🌽 Healing for {percent * 100}% of HP.");
     }
 
     private float GetRandomHealPercent(R_ItemRarity rarity)

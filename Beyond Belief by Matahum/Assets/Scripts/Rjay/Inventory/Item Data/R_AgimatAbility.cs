@@ -4,6 +4,10 @@ public abstract class R_AgimatAbility : ScriptableObject
 {
     public string abilityName;
     public Sprite abilityIcon;
+    
+    [Header("Passive Timing")]
+    public float passiveTriggerDelay = 1f; // configurable buffer after reaching cooldown
+
     public bool isPassive;
 
     // 🔸 Base cooldown value, can be overridden by child class

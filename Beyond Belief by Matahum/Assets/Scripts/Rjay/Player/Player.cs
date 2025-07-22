@@ -116,9 +116,14 @@ public class Player : MonoBehaviour, IDamageable
         {
             currentState = PlayerState.IDLE;
         }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            TakeDamage(50);
+        }
     }
 
-
+    #region ACCESSIBLE FUNCTIONS
     public void TakeDamage(float damage)
     {
         m_playerAnimator.GetHit();
@@ -148,11 +153,26 @@ public class Player : MonoBehaviour, IDamageable
             Debug.Log("Player is dead.");
         }
     }
+    public void Heal(float amount)
+    {
+        if (amount <= 0f || isDead)
+            return;
 
-    
+        float maxHP = m_playerStats.p_maxHealth;
+        float oldHP = m_playerStats.p_currentHealth;
+
+        m_playerStats.p_currentHealth = Mathf.Min(oldHP + amount, maxHP);
+
+        Debug.Log($"💚 Healed {amount} HP. Current Health: {m_playerStats.p_currentHealth} / {maxHP}");
+    }
+
+    #endregion
+    #region MISC
+
     public bool IsDead() => isDead;
 
     void HandleGrassInteraction() => Shader.SetGlobalVector("_Player", transform.position + Vector3.up * 0.1f);
+    #endregion
 
     #region PAMANA EQUIPMENT
     // 🧠 Holds equipped Pamanas by slot (Diwata, Lihim, Salamangkero)
@@ -245,7 +265,10 @@ public class Player : MonoBehaviour, IDamageable
     public R_AgimatAbility GetAgimatAbility(int slot)
     {
         var item = GetEquippedAgimat(slot);
-        return item?.itemData?.slot1Ability; // Assumes slot1Ability is the main one
+        if (item == null || item.itemData == null)
+            return null;
+
+        return slot == 1 ? item.itemData.slot1Ability : item.itemData.slot2Ability;
     }
 
     #endregion

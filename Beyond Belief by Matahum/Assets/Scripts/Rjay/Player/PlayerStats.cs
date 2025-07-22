@@ -69,7 +69,6 @@ public class PlayerStats : MonoBehaviour
 
         p_criticalRate = baseCriticalRate + p_critRate;
         p_criticalDamage = baseCriticalDamage + p_critDmg;
-        p_cooldownReduction = baseCooldownReduction;
         p_stamina = baseStamina;
 
         // 🔹 Preserve health ratio when max health changes
