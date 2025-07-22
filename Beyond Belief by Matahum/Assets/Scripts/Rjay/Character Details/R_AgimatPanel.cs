@@ -9,7 +9,6 @@ public class R_AgimatPanel : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private R_AgimatSwitchPrompt switchPrompt;
 
-
     [Header("Slot Buttons")]
     [SerializeField] private Button slot1Button;
     [SerializeField] private Button slot2Button;
@@ -148,7 +147,6 @@ public class R_AgimatPanel : MonoBehaviour
         UpdateInfoPanelAndButtons();
         UpdateSelectionVisuals();
     }
-
     private void OnClickEquip()
     {
         if (selectedItem == null || selectedSlot == null)
@@ -157,16 +155,24 @@ public class R_AgimatPanel : MonoBehaviour
         int currentSlot = selectedSlot.Value;
         int otherSlot = currentSlot == 1 ? 2 : 1;
 
-        var isEquippedOnOtherSlot = player.GetEquippedAgimat(otherSlot) == selectedItem;
-        var isAlreadyEquipped = player.GetEquippedAgimat(currentSlot) == selectedItem;
+        var equippedInCurrent = player.GetEquippedAgimat(currentSlot);
+        var equippedInOther = player.GetEquippedAgimat(otherSlot);
 
-        if (isAlreadyEquipped)
+        bool isSelectedEquippedInCurrent = equippedInCurrent != null && 
+                                        equippedInCurrent.runtimeID == selectedItem.runtimeID;
+
+        bool isSelectedEquippedInOther = equippedInOther != null && 
+                                        equippedInOther.runtimeID == selectedItem.runtimeID;
+
+        // 🟡 CASE 1: Trying to re-equip the same Agimat in the same slot
+        if (isSelectedEquippedInCurrent)
         {
-            Debug.Log("This item is already equipped in the selected slot.");
+            Debug.Log("This Agimat is already equipped in the selected slot.");
             return;
         }
 
-        if (isEquippedOnOtherSlot)
+        // 🔵 CASE 2: Trying to switch equipped Agimat to another slot (desired prompt)
+        if (isSelectedEquippedInOther)
         {
             string itemName = selectedItem.itemData.itemName;
             switchPrompt.Open(itemName, otherSlot, currentSlot, () => {
@@ -175,16 +181,40 @@ public class R_AgimatPanel : MonoBehaviour
                 UpdateSlotIcons();
                 UpdateInfoPanelAndButtons();
                 UpdateSelectionVisuals();
+                RefreshAgimatList();
             });
-
-            return; // wait for confirmation
+            return;
         }
 
+        // 🔴 CASE 3: Trying to equip a DIFFERENT Agimat with the same name → reject
+        if (equippedInCurrent != null && equippedInCurrent.itemData.name == selectedItem.itemData.name)
+        {
+            Debug.Log("A different copy of this Agimat is already equipped. Select the equipped one to move it.");
+            return;
+        }
+
+        // ✅ Prevent equipping two of the same named Agimat in both slots
+        bool duplicateNameEquippedElsewhere =
+            equippedInOther != null &&
+            equippedInOther.itemData.name == selectedItem.itemData.name &&
+            equippedInOther.runtimeID != selectedItem.runtimeID;
+
+        if (duplicateNameEquippedElsewhere)
+        {
+            // ADD VISUAL POP UP LATER
+            Debug.Log("You cannot equip two of the same Agimat.");
+            return;
+        }
+
+        // ✅ Equip normally
         player.EquipAgimat(selectedItem, currentSlot);
         UpdateSlotIcons();
         UpdateInfoPanelAndButtons();
         UpdateSelectionVisuals();
+        RefreshAgimatList();
+        
     }
+
 
     private void OnClickUnequip()
     {
@@ -200,6 +230,7 @@ public class R_AgimatPanel : MonoBehaviour
         UpdateSlotIcons();
         UpdateInfoPanelAndButtons();
         UpdateSelectionVisuals();
+        RefreshAgimatList();
     }
 
     private void UpdateSlotIcons()
@@ -243,12 +274,14 @@ public class R_AgimatPanel : MonoBehaviour
         if (selectedSlot != null)
         {
             var equipped = player.GetEquippedAgimat(selectedSlot.Value);
-            unequipButton.interactable = equipped != null;
+            bool isSameInstance = equipped != null && equipped == selectedItem;
+            unequipButton.interactable = isSameInstance;
         }
         else
         {
             unequipButton.interactable = false;
         }
+
     }
 
     private void UpdateSelectionVisuals()

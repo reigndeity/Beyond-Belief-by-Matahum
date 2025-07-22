@@ -14,7 +14,12 @@ public class R_AgimatSwitchPrompt : MonoBehaviour
     public void Open(string itemName, int fromSlot, int toSlot, Action confirmCallback)
     {
         gameObject.SetActive(true);
-        messageText.text = $"{itemName} is equipped on Slot {fromSlot}. Equip it to Slot {toSlot} instead?";
+
+        if (fromSlot == toSlot)
+            messageText.text = $"{itemName} is already equipped in Slot {fromSlot}. Replace it with this one instead?";
+        else
+            messageText.text = $"{itemName} is equipped on Slot {fromSlot}. Equip it to Slot {toSlot} instead?";
+
         onConfirm = confirmCallback;
 
         yesButton.onClick.RemoveAllListeners();
@@ -27,6 +32,7 @@ public class R_AgimatSwitchPrompt : MonoBehaviour
 
         cancelButton.onClick.AddListener(Close);
     }
+
 
     public void Close()
     {
