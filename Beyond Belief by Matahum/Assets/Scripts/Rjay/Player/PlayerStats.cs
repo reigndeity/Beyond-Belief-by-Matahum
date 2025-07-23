@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    [Header("Leveling")]
+    private Player m_player;
+    [Header("Player Leveling")]
     public int currentLevel = 1;
     public int currentExp = 0;
     public static event Action OnExpChange;
+
+    [Header("Weapon Leveling")]
+    public int weaponLevel = 1;
+    public int weaponXP = 0;
+    public int maxWeaponLevel = 50;
 
     [Header("Currency")]
     public int currentGoldCoins = 0;
@@ -40,6 +46,11 @@ public class PlayerStats : MonoBehaviour
     public float p_critDmg;
     public float p_cooldownReduction;
 
+
+    void Awake()
+    {
+        m_player = GetComponent<Player>();
+    }
     void Start()
     {
         RecalculateStats();
@@ -70,6 +81,8 @@ public class PlayerStats : MonoBehaviour
             float percent = p_currentHealth / oldMax;
             p_currentHealth = p_maxHealth * percent;
         }
+
+        p_attack += Mathf.RoundToInt(m_player.GetWeaponATK());
 
         p_currentHealth = Mathf.Clamp(p_currentHealth, 0f, p_maxHealth);
     }

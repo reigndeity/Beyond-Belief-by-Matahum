@@ -121,10 +121,11 @@ public class Player : MonoBehaviour, IDamageable
         {
             TakeDamage(50);
             GainXP(500);
+            GainWeaponXP(500);
         }
     }
 
-    #region ACCESSIBLE FUNCTIONS
+    #region DAMAGE / HEAL FUNCTIONS
     public void TakeDamage(float damage)
     {
         m_playerAnimator.GetHit();
@@ -166,6 +167,9 @@ public class Player : MonoBehaviour, IDamageable
 
         Debug.Log($"💚 Healed {amount} HP. Current Health: {m_playerStats.p_currentHealth} / {maxHP}");
     }
+    #endregion
+
+    #region PLAYER EXP
 
     public void GainXP(int amount)
     {
@@ -182,7 +186,34 @@ public class Player : MonoBehaviour, IDamageable
 
         m_playerStats.NotifyXPChanged();
     }
+    #endregion
+    #region WEAPON EXP
+    public void GainWeaponXP(int amount)
+    {
+        m_playerStats.weaponXP += amount;
+        while (m_playerStats.weaponLevel < m_playerStats.maxWeaponLevel &&
+            m_playerStats.weaponXP >= GetWeaponXPRequired(m_playerStats.weaponLevel))
+        {
+            m_playerStats.weaponXP -= GetWeaponXPRequired(m_playerStats.weaponLevel);
+            m_playerStats.weaponLevel++;
+            Debug.Log($"🔼 Weapon leveled up to Lv.{m_playerStats.weaponLevel}!");
+            m_playerStats.RecalculateStats();
+        }
+    }
+    public int GetWeaponXPRequired(int level)
+    {
+        return 100 + (level * 25);
+    }
 
+    public float GetWeaponATK()
+    {
+        return WeaponStatGrowthTable.GetATK(m_playerStats.weaponLevel);
+    }
+
+    #endregion
+
+
+    #region GOLD COINS
     public void AddGoldCoins(int amount)
     {
         m_playerStats.currentGoldCoins += amount;
