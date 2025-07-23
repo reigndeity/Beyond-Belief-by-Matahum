@@ -27,8 +27,12 @@ public class R_AttributePanel : MonoBehaviour
     private void OnEnable()
     {
         RefreshStats();
+        PlayerStats.OnExpChange += RefreshStats;
     }
-
+    void OnDisable()
+    {
+        PlayerStats.OnExpChange -= RefreshStats;
+    }
     public void RefreshStats()
     {
         if (playerStats == null)

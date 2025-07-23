@@ -120,6 +120,7 @@ public class Player : MonoBehaviour, IDamageable
         if (Input.GetKeyDown(KeyCode.H))
         {
             TakeDamage(50);
+            GainXP(500);
         }
     }
 
@@ -164,6 +165,22 @@ public class Player : MonoBehaviour, IDamageable
         m_playerStats.p_currentHealth = Mathf.Min(oldHP + amount, maxHP);
 
         Debug.Log($"💚 Healed {amount} HP. Current Health: {m_playerStats.p_currentHealth} / {maxHP}");
+    }
+
+    public void GainXP(int amount)
+    {
+        m_playerStats.currentExp += amount;
+
+        while (m_playerStats.currentLevel < 50 &&
+            m_playerStats.currentExp >= PlayerLevelTable.GetXPRequiredForLevel(m_playerStats.currentLevel))
+        {
+            m_playerStats.currentExp -= PlayerLevelTable.GetXPRequiredForLevel(m_playerStats.currentLevel);
+            m_playerStats.currentLevel++;
+            Debug.Log($"🔼 Level up! New level: {m_playerStats.currentLevel}");
+            m_playerStats.RecalculateStats();
+        }
+
+        m_playerStats.NotifyXPChanged();
     }
 
     #endregion

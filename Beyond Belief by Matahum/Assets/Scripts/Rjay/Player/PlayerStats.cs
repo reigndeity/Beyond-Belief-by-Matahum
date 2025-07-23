@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ public class PlayerStats : MonoBehaviour
     [Header("Leveling")]
     public int currentLevel = 1;
     public int currentExp = 0;
+    public static event Action OnExpChange;
 
     [Header("Base Constants")]
     public float baseCriticalRate = 5f;    // 5%
@@ -39,18 +41,6 @@ public class PlayerStats : MonoBehaviour
     {
         RecalculateStats();
         p_currentHealth = p_maxHealth;
-    }
-
-    public void GainXP(int amount)
-    {
-        currentExp += amount;
-        while (currentLevel < 50 && currentExp >= PlayerLevelTable.GetXPRequiredForLevel(currentLevel))
-        {
-            currentExp -= PlayerLevelTable.GetXPRequiredForLevel(currentLevel);
-            currentLevel++;
-            Debug.Log($"🔼 Level up! New level: {currentLevel}");
-            RecalculateStats();
-        }
     }
 
     public void RecalculateStats()
@@ -127,6 +117,11 @@ public class PlayerStats : MonoBehaviour
             case R_StatType.CRITDamage: p_critDmg += value; break;
             case R_StatType.CooldownReduction: p_cooldownReduction += value; break;
         }
+    }
+
+    public void NotifyXPChanged()
+    {
+        OnExpChange?.Invoke();
     }
 
 }

@@ -18,9 +18,8 @@ public class R_CharacterDetailsPanel : MonoBehaviour
 
     private CharacterDetailsTab currentTab;
 
-    private void Start()
+    void OnEnable()
     {
-        // Optional: default to Attribute panel on open
         SwitchToTab(CharacterDetailsTab.Attribute);
     }
 

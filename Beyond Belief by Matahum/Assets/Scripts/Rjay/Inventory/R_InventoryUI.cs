@@ -30,175 +30,177 @@ public class R_InventoryUI : MonoBehaviour
 
     private R_InventoryItem selectedItem;
 
+    void OnEnable()
+    {
+        SetFilter(R_InventoryFilter.Consumable);
+    }
     void Awake()
     {
         trashButton.onClick.AddListener(TryToDelete);
-        
     }
     private void Start()
     {
         GenerateSlots();
         RefreshUI();
-        SetFilter(R_InventoryFilter.Consumable);
+        
     }
-
     public void SetFilter(R_InventoryFilter filter)
     {
         currentFilter = filter;
         RefreshUI();
     }
 
-public void RefreshUI()
-{
-    List<R_InventoryItem> filteredItems = new List<R_InventoryItem>();
-
-    foreach (var item in playerInventory.items)
+    public void RefreshUI()
     {
-        if (PassesFilter(item.itemData))
+        List<R_InventoryItem> filteredItems = new List<R_InventoryItem>();
+
+        foreach (var item in playerInventory.items)
         {
-            filteredItems.Add(item);
-        }
-    }
-
-    for (int i = 0; i < slotUIs.Count; i++)
-    {
-        if (i < filteredItems.Count)
-            slotUIs[i].SetSlot(filteredItems[i]);
-        else
-            slotUIs[i].SetSlot(null);
-    }
-
-    if (filteredItems.Count > 0 && infoPanel != null)
-    {
-        selectedItem = filteredItems[0];
-        infoPanel.ShowItem(selectedItem.itemData);
-
-        // 🔹 Hook up Use button + pass in playerInventory to the panel
-        if (selectedItem.itemData.itemType == R_ItemType.Consumable)
-        {
-            var panel = infoPanel.consumablePanelDisplay as R_InfoPanel_Consumable;
-            if (panel != null)
+            if (PassesFilter(item.itemData))
             {
-                panel.playerInventory = playerInventory;
-                panel.SetUseButtonCallback(selectedItem, itemPrompt, RefreshUI);
+                filteredItems.Add(item);
             }
         }
 
-        trashButton.interactable = true;
-        UpdateSelectedSlotVisual();
-    }
-    else
-    {
-        selectedItem = null;
-        if (infoPanel != null) infoPanel.ClearPanel();
-        trashButton.interactable = false;
-    }
-
-    trashButton.gameObject.SetActive(currentFilter != R_InventoryFilter.QuestItem);
-}
-
-
-
-    private bool PassesFilter(R_ItemData item)
-    {
-        return currentFilter switch
+        for (int i = 0; i < slotUIs.Count; i++)
         {
-            R_InventoryFilter.Consumable => item.itemType == R_ItemType.Consumable,
-            R_InventoryFilter.QuestItem => item.itemType == R_ItemType.QuestItem,
-            R_InventoryFilter.Pamana => item.itemType == R_ItemType.Pamana,
-            R_InventoryFilter.Agimat => item.itemType == R_ItemType.Agimat,
-            R_InventoryFilter.UpgradeMaterial => item.itemType == R_ItemType.UpgradeMaterial,
-            R_InventoryFilter.Ingredient => item.itemType == R_ItemType.Ingredient,
-            _ => false
-        };
-    }
-
-    private void GenerateSlots()
-    {
-        for (int i = 0; i < playerInventory.maxSlots; i++)
-        {
-            GameObject go = Instantiate(slotPrefab, slotParent);
-            var slotUI = go.GetComponent<R_InventorySlotUI>();
-            
-            // 🔹 PASS THE INFO PANEL TO EACH SLOT
-            slotUI.Initialize(infoPanel);
-            slotUI.inventoryUI = this;
-            
-            slotUIs.Add(slotUI);
+            if (i < filteredItems.Count)
+                slotUIs[i].SetSlot(filteredItems[i]);
+            else
+                slotUIs[i].SetSlot(null);
         }
-    }
 
-    public void TryToDelete()
-    {
-        if (selectedItem != null)
+        if (filteredItems.Count > 0 && infoPanel != null)
         {
-            Player player = FindFirstObjectByType<Player>();
-            bool isEquipped = false;
+            selectedItem = filteredItems[0];
+            infoPanel.ShowItem(selectedItem.itemData);
 
-            if (selectedItem.itemData.itemType == R_ItemType.Pamana && player != null)
-            {
-                isEquipped = player.IsPamanaEquipped(selectedItem);
-            }
-            else if (selectedItem.itemData.itemType == R_ItemType.Agimat && player != null)
-            {
-                isEquipped = player.IsAgimatEquipped(selectedItem);
-            }
-
-            if (isEquipped)
-            {
-                Debug.Log("Cannot delete an equipped item!");
-                return;
-            }
-
-            itemPrompt.Open(selectedItem, R_ActionType.Trash, amount => {
-                playerInventory.RemoveItem(selectedItem.itemData, amount);
-                RefreshUI();
-            });
-        }
-    }  
-    
-    public void SetSelectedItem(R_InventoryItem item)
-    {
-        selectedItem = item;
-
-            if (item != null && infoPanel != null)
-            {
-                infoPanel.ShowItem(item.itemData);
-
-            if (item.itemData.itemType == R_ItemType.Consumable)
+            // 🔹 Hook up Use button + pass in playerInventory to the panel
+            if (selectedItem.itemData.itemType == R_ItemType.Consumable)
             {
                 var panel = infoPanel.consumablePanelDisplay as R_InfoPanel_Consumable;
                 if (panel != null)
                 {
                     panel.playerInventory = playerInventory;
-                    panel.SetUseButtonCallback(item, itemPrompt, RefreshUI);
-                 }
+                    panel.SetUseButtonCallback(selectedItem, itemPrompt, RefreshUI);
+                }
+            }
+
+            trashButton.interactable = true;
+            UpdateSelectedSlotVisual();
+        }
+        else
+        {
+            selectedItem = null;
+            if (infoPanel != null) infoPanel.ClearPanel();
+            trashButton.interactable = false;
+        }
+
+        trashButton.gameObject.SetActive(currentFilter != R_InventoryFilter.QuestItem);
+    }
+
+
+
+        private bool PassesFilter(R_ItemData item)
+        {
+            return currentFilter switch
+            {
+                R_InventoryFilter.Consumable => item.itemType == R_ItemType.Consumable,
+                R_InventoryFilter.QuestItem => item.itemType == R_ItemType.QuestItem,
+                R_InventoryFilter.Pamana => item.itemType == R_ItemType.Pamana,
+                R_InventoryFilter.Agimat => item.itemType == R_ItemType.Agimat,
+                R_InventoryFilter.UpgradeMaterial => item.itemType == R_ItemType.UpgradeMaterial,
+                R_InventoryFilter.Ingredient => item.itemType == R_ItemType.Ingredient,
+                _ => false
+            };
+        }
+
+        private void GenerateSlots()
+        {
+            for (int i = 0; i < playerInventory.maxSlots; i++)
+            {
+                GameObject go = Instantiate(slotPrefab, slotParent);
+                var slotUI = go.GetComponent<R_InventorySlotUI>();
+                
+                // 🔹 PASS THE INFO PANEL TO EACH SLOT
+                slotUI.Initialize(infoPanel);
+                slotUI.inventoryUI = this;
+                
+                slotUIs.Add(slotUI);
             }
         }
 
-        Player player = FindFirstObjectByType<Player>();
-        bool isEquipped = false;
-        if (item.itemData.itemType == R_ItemType.Pamana && player != null)
+        public void TryToDelete()
         {
-            isEquipped = player.IsPamanaEquipped(item);
-        }
-        else if (item.itemData.itemType == R_ItemType.Agimat && player != null)
+            if (selectedItem != null)
+            {
+                Player player = FindFirstObjectByType<Player>();
+                bool isEquipped = false;
+
+                if (selectedItem.itemData.itemType == R_ItemType.Pamana && player != null)
+                {
+                    isEquipped = player.IsPamanaEquipped(selectedItem);
+                }
+                else if (selectedItem.itemData.itemType == R_ItemType.Agimat && player != null)
+                {
+                    isEquipped = player.IsAgimatEquipped(selectedItem);
+                }
+
+                if (isEquipped)
+                {
+                    Debug.Log("Cannot delete an equipped item!");
+                    return;
+                }
+
+                itemPrompt.Open(selectedItem, R_ActionType.Trash, amount => {
+                    playerInventory.RemoveItem(selectedItem.itemData, amount);
+                    RefreshUI();
+                });
+            }
+        }  
+        
+        public void SetSelectedItem(R_InventoryItem item)
         {
-            isEquipped = player.IsAgimatEquipped(item);
+            selectedItem = item;
+
+                if (item != null && infoPanel != null)
+                {
+                    infoPanel.ShowItem(item.itemData);
+
+                if (item.itemData.itemType == R_ItemType.Consumable)
+                {
+                    var panel = infoPanel.consumablePanelDisplay as R_InfoPanel_Consumable;
+                    if (panel != null)
+                    {
+                        panel.playerInventory = playerInventory;
+                        panel.SetUseButtonCallback(item, itemPrompt, RefreshUI);
+                    }
+                }
+            }
+
+            Player player = FindFirstObjectByType<Player>();
+            bool isEquipped = false;
+            if (item.itemData.itemType == R_ItemType.Pamana && player != null)
+            {
+                isEquipped = player.IsPamanaEquipped(item);
+            }
+            else if (item.itemData.itemType == R_ItemType.Agimat && player != null)
+            {
+                isEquipped = player.IsAgimatEquipped(item);
+            }
+
+            trashButton.interactable = !isEquipped;
+            UpdateSelectedSlotVisual();
         }
 
-        trashButton.interactable = !isEquipped;
-        UpdateSelectedSlotVisual();
-    }
-
-    private void UpdateSelectedSlotVisual()
-    {
-        foreach (var slot in slotUIs)
+        private void UpdateSelectedSlotVisual()
         {
-            slot.SetSelected(slot.RepresentsItem(selectedItem));
+            foreach (var slot in slotUIs)
+            {
+                slot.SetSelected(slot.RepresentsItem(selectedItem));
+            }
         }
     }
-}
 
     
 
