@@ -32,7 +32,6 @@ public class Player : MonoBehaviour, IDamageable
     public R_Inventory playerInventory;
 
     
-
     void Awake()
     {
         foreach (R_PamanaSlotType slot in System.Enum.GetValues(typeof(R_PamanaSlotType)))
@@ -170,7 +169,6 @@ public class Player : MonoBehaviour, IDamageable
     #endregion
 
     #region PLAYER EXP
-
     public void GainXP(int amount)
     {
         m_playerStats.currentExp += amount;
@@ -187,6 +185,7 @@ public class Player : MonoBehaviour, IDamageable
         m_playerStats.NotifyXPChanged();
     }
     #endregion
+
     #region WEAPON EXP
     public void GainWeaponXP(int amount)
     {
@@ -212,7 +211,6 @@ public class Player : MonoBehaviour, IDamageable
 
     #endregion
 
-
     #region GOLD COINS
     public void AddGoldCoins(int amount)
     {
@@ -235,6 +233,7 @@ public class Player : MonoBehaviour, IDamageable
         return false;
     }
     #endregion
+
     #region MISC
 
     public bool IsDead() => isDead;
