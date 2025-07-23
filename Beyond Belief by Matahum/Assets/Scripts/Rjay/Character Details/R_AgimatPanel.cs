@@ -22,7 +22,8 @@ public class R_AgimatPanel : MonoBehaviour
     [SerializeField] private Image iconSlot2;
 
     [Header("Inventory List")]
-    [SerializeField] private Transform agimatListParent;
+    [SerializeField] private GameObject agimatListParent;         // controls SetActive(true/false)
+    [SerializeField] private Transform agimatSlotContainer;       // where slots are actually instantiated
     [SerializeField] private GameObject agimatSlotPrefab;
 
     [Header("Info Panel")]
@@ -121,14 +122,18 @@ public class R_AgimatPanel : MonoBehaviour
 
         foreach (var item in agimatItems)
         {
-            GameObject slotObj = Instantiate(agimatSlotPrefab, agimatListParent);
+            GameObject slotObj = Instantiate(agimatSlotPrefab, agimatSlotContainer);
             var slotUI = slotObj.GetComponent<R_AgimatSlotUI>();
             slotUI.Setup(item, this);
             slotUIObjects.Add(slotObj);
         }
 
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(agimatSlotContainer.GetComponent<RectTransform>());
+
         UpdateSelectionVisuals();
     }
+
 
     public void OnAgimatSelected(R_InventoryItem item)
     {

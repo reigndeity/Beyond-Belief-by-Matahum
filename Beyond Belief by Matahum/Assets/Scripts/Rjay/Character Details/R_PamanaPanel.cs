@@ -11,6 +11,7 @@ public class R_PamanaPanel : MonoBehaviour
     [Header("Info Display")]
     [SerializeField] private R_InfoPanel_Pamana infoPanel;
     [SerializeField] private GameObject inventoryParent;
+    [SerializeField] private Transform pamanaSlotContainer;    // actual parent for spawned slots
     [SerializeField] private GameObject infoPanelObject;
 
     [Header("Slot Buttons")]
@@ -44,6 +45,7 @@ public class R_PamanaPanel : MonoBehaviour
 
     private R_InventoryItem selectedItem;
     private Player player;
+
 
     private void Awake()
     {
@@ -85,7 +87,8 @@ public class R_PamanaPanel : MonoBehaviour
 
         foreach (var item in filteredPamanaItems)
         {
-            GameObject slotObj = Instantiate(pamanaSlotPrefab, pamanaListParent);
+            GameObject slotObj = Instantiate(pamanaSlotPrefab, pamanaSlotContainer);
+
             R_PamanaSlotUI slotUI = slotObj.GetComponent<R_PamanaSlotUI>();
             slotUI.Setup(item, this);
             uiSlots.Add(slotObj);

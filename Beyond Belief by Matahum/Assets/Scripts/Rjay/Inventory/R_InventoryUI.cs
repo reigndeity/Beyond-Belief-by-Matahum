@@ -62,20 +62,27 @@ public class R_InventoryUI : MonoBehaviour
             }
         }
 
+        // Show slots with items, hide the rest
         for (int i = 0; i < slotUIs.Count; i++)
         {
             if (i < filteredItems.Count)
+            {
+                slotUIs[i].gameObject.SetActive(true);
                 slotUIs[i].SetSlot(filteredItems[i]);
+            }
             else
+            {
                 slotUIs[i].SetSlot(null);
+                slotUIs[i].gameObject.SetActive(false);
+            }
         }
 
+        // Set up first selected item
         if (filteredItems.Count > 0 && infoPanel != null)
         {
             selectedItem = filteredItems[0];
             infoPanel.ShowItem(selectedItem.itemData);
 
-            // 🔹 Hook up Use button + pass in playerInventory to the panel
             if (selectedItem.itemData.itemType == R_ItemType.Consumable)
             {
                 var panel = infoPanel.consumablePanelDisplay as R_InfoPanel_Consumable;
@@ -97,7 +104,12 @@ public class R_InventoryUI : MonoBehaviour
         }
 
         trashButton.gameObject.SetActive(currentFilter != R_InventoryFilter.QuestItem);
+
+        // ✅ Force layout update (necessary after activating/deactivating children)
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(slotParent.GetComponent<RectTransform>());
     }
+
 
 
 
