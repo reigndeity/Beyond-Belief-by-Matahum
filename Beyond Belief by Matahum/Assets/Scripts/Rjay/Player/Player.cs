@@ -183,6 +183,26 @@ public class Player : MonoBehaviour, IDamageable
         m_playerStats.NotifyXPChanged();
     }
 
+    public void AddGoldCoins(int amount)
+    {
+        m_playerStats.currentGoldCoins += amount;
+        if (m_playerStats.currentGoldCoins < 0) m_playerStats.currentGoldCoins = 0;
+
+        Debug.Log($"Gold Coins: {m_playerStats.currentGoldCoins}");
+        // TODO: You can call a UI update here
+    }
+    public bool SpendGoldCoins(int amount)
+    {
+        if (m_playerStats.currentGoldCoins >= amount)
+        {
+            m_playerStats.currentGoldCoins -= amount;
+            Debug.Log($"Spent {amount} coins. Remaining: {m_playerStats.currentGoldCoins}");
+            return true;
+        }
+
+        Debug.Log("Not enough coins!");
+        return false;
+    }
     #endregion
     #region MISC
 

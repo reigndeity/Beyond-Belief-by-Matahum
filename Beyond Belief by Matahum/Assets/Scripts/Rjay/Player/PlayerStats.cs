@@ -9,6 +9,9 @@ public class PlayerStats : MonoBehaviour
     public int currentExp = 0;
     public static event Action OnExpChange;
 
+    [Header("Currency")]
+    public int currentGoldCoins = 0;
+
     [Header("Base Constants")]
     public float baseCriticalRate = 5f;    // 5%
     public float baseCriticalDamage = 50f; // 50%

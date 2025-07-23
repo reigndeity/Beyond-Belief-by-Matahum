@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public enum R_InventoryFilter
 {
@@ -28,6 +29,9 @@ public class R_InventoryUI : MonoBehaviour
     [SerializeField] private Button trashButton;
     [SerializeField] private R_ItemActionPrompt itemPrompt;
 
+    [SerializeField] private TextMeshProUGUI currentGoldCoinsTxt;
+    private PlayerStats m_playerStats;
+
     private R_InventoryItem selectedItem;
 
     void OnEnable()
@@ -37,12 +41,13 @@ public class R_InventoryUI : MonoBehaviour
     void Awake()
     {
         trashButton.onClick.AddListener(TryToDelete);
+        m_playerStats = FindFirstObjectByType<PlayerStats>();
     }
     private void Start()
     {
         GenerateSlots();
         RefreshUI();
-        
+        currentGoldCoinsTxt.text = m_playerStats.currentGoldCoins.ToString();
     }
     public void SetFilter(R_InventoryFilter filter)
     {
