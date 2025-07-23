@@ -93,6 +93,10 @@ public class R_InventorySlotUI : MonoBehaviour
             {
                 isEquipped = player.IsPamanaEquipped(item);
             }
+            if (item != null && item.itemData != null && item.itemData.itemType == R_ItemType.Agimat && player != null)
+            {
+                isEquipped = player.IsAgimatEquipped(item);
+            }
 
             equippedLabel.SetActive(isEquipped);
         }

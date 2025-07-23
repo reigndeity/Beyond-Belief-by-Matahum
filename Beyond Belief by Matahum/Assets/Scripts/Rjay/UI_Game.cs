@@ -6,10 +6,13 @@ public class UI_Game : MonoBehaviour
 {
     [SerializeField] private R_InventoryUI r_inventoryUI;
     [SerializeField] private R_CharacterDetailsPanel m_characterDetailsPanel;
-    [SerializeField] Button inventoryButton; // Overall Inventory (No Equipment)
     [SerializeField] Button journalButton; // Keeps track of new findings(?)
     
     [Header("Inventory Properties")]
+    [SerializeField] Button inventoryButton; // Overall Inventory (No Equipment)
+    [SerializeField] GameObject inventoryPanel;
+    [SerializeField] Button closeInventoryButton;
+    [Header("------------------------")]
     [SerializeField] Button consumablesFilterButton;
     [SerializeField] Button questItemsFilterButton;
     [SerializeField] Button pamanaFilterButton;
@@ -18,8 +21,10 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Button rawIngredientsFilterButton;
 
     [Header("Character Details Properties")]
-    [SerializeField] Button characterButton; // Handles Attribute, Weapon, Agimat Equipment, Pamana Equipment
-    [SerializeField] GameObject characterPanel;
+    [SerializeField] Button characterDetailsButton;
+    [SerializeField] GameObject characterDetailPanel;
+    [SerializeField] Button closeCharacterDetailsButton;
+    [Header("------------------------")]
     [SerializeField] Button attributesTabButton;
     [SerializeField] Button weaponTabButton;
     [SerializeField] Button agimatTabButton;
@@ -47,6 +52,8 @@ public class UI_Game : MonoBehaviour
         closeTeleportPanelButton.onClick.AddListener(OnClickCloseTeleportPanel);
         teleportButton.onClick.AddListener(OnClickTeleport);
 
+        inventoryButton.onClick.AddListener(OnClickOpenInventory);
+        closeInventoryButton.onClick.AddListener(OnClickCloseInventory);
         consumablesFilterButton.onClick.AddListener(OnClickConsumableFilter);
         questItemsFilterButton.onClick.AddListener(OnClickQuestItemFilter);
         pamanaFilterButton.onClick.AddListener(OnClickCPamanaFilter);
@@ -55,6 +62,8 @@ public class UI_Game : MonoBehaviour
         rawIngredientsFilterButton.onClick.AddListener(OnClickRawIngredientsFilter);
 
 
+        characterDetailsButton.onClick.AddListener(OnClickOpenCharacterDetails);
+        closeCharacterDetailsButton.onClick.AddListener(OnClickCloseCharacterDetails);
         attributesTabButton.onClick.AddListener(OnClickAttributesTab);
         weaponTabButton.onClick.AddListener(OnClickWeaponTab);
         agimatTabButton.onClick.AddListener(OnClickAgimatTab);
@@ -75,6 +84,14 @@ public class UI_Game : MonoBehaviour
     }
 
     #region INVENTORY
+    public void OnClickOpenInventory()
+    {
+        inventoryPanel.SetActive(true);
+    }
+    public void OnClickCloseInventory()
+    {
+        inventoryPanel.SetActive(false);
+    }
     public void OnClickConsumableFilter()
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.Consumable);
@@ -108,6 +125,14 @@ public class UI_Game : MonoBehaviour
     #endregion
 
     #region CHARACTER DETAILS
+    public void OnClickOpenCharacterDetails()
+    {
+        characterDetailPanel.SetActive(true);
+    }
+    public void OnClickCloseCharacterDetails()
+    {
+        characterDetailPanel.SetActive(false);
+    }
     public void OnClickAttributesTab()
     {
         m_characterDetailsPanel.OnClick_AttributeTab();

@@ -175,6 +175,10 @@ public class Player : MonoBehaviour, IDamageable
     #endregion
 
     #region PAMANA EQUIPMENT
+    public Dictionary<R_PamanaSlotType, R_InventoryItem> GetEquippedPamanas()
+    {
+        return equippedPamanaSet;
+    }
     // 🧠 Holds equipped Pamanas by slot (Diwata, Lihim, Salamangkero)
     private Dictionary<R_PamanaSlotType, R_InventoryItem> equippedPamanaSet = new();
 

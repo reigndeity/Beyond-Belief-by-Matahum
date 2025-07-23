@@ -178,6 +178,7 @@ public class R_AgimatPanel : MonoBehaviour
             switchPrompt.Open(itemName, otherSlot, currentSlot, () => {
                 player.UnequipAgimat(otherSlot);
                 player.EquipAgimat(selectedItem, currentSlot);
+                infoPanel.Show(selectedItem.itemData);
                 UpdateSlotIcons();
                 UpdateInfoPanelAndButtons();
                 UpdateSelectionVisuals();
@@ -208,6 +209,7 @@ public class R_AgimatPanel : MonoBehaviour
 
         // ✅ Equip normally
         player.EquipAgimat(selectedItem, currentSlot);
+        infoPanel.Show(selectedItem.itemData);
         UpdateSlotIcons();
         UpdateInfoPanelAndButtons();
         UpdateSelectionVisuals();

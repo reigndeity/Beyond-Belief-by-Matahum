@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Text.RegularExpressions;
+using Febucci.UI;
 
 public class R_InfoPanel_Pamana : R_ItemInfoDisplay
 {
@@ -27,7 +28,7 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
 
         backdropImage.sprite = itemData.inventoryBackdropImage;
         backdropImage.enabled = itemData.inventoryBackdropImage != null;
-        // Header image
+
         if (headerImage != null)
         {
             headerImage.sprite = itemData.inventoryHeaderImage;
@@ -42,9 +43,38 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
             var pamana = itemData.pamanaData;
 
             levelStatTxt.text = $"+{pamana.currentLevel}";
-
             mainStatTxt.text = FormatStatName(pamana.mainStatType);
             mainStatValueTxt.text = FormatStatValue(pamana.mainStatType, pamana.mainStatValue);
+
+            // 🧠 Determine if set bonuses are active
+            int equippedCount = 0;
+            var player = FindFirstObjectByType<Player>();
+            var equipped = player.GetEquippedPamanas();
+            foreach (var kvp in equipped)
+            {
+                var equippedPamana = kvp.Value?.itemData?.pamanaData;
+                if (equippedPamana != null && equippedPamana.set == pamana.set)
+                    equippedCount++;
+            }
+
+            
+
+            // ✨ Apply glow to bonuses if active
+            string twoPieceBonus = itemData.twoPieceBonusDescription;
+            string threePieceBonus = itemData.threePieceBonusDescription;
+            string twoPieceLine = $" 2-Piece Set: {twoPieceBonus}";
+            string threePieceLine = $" 3-Piece Set: {threePieceBonus}";
+
+            if (equippedCount >= 2)
+                twoPieceBonus = $"<wave><color=#FFA500>{twoPieceBonus}</color></wave>";
+            if (equippedCount >= 3)
+                threePieceBonus = $"<wave><color=#FFA500>{threePieceBonus}</color></wave>";
+
+            if (equippedCount >= 2)
+                twoPieceLine = $"<wave><color=#FFA500>{twoPieceLine}</color></wave>";
+            if (equippedCount >= 3)
+                threePieceLine = $"<wave><color=#FFA500>{threePieceLine}</color></wave>";
+
 
             // Build substat block
             string substatBlock = "";
@@ -53,12 +83,12 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
                 substatBlock += $" •{FormatStat(sub.statType, sub.value)}\n";
             }
 
-            // Build final rich text string
+            // Build final body text
             string bodyText =
                 $"<size=36><color=#000000>{substatBlock}</color></size>\n" +
                 $"<size=36><color=green>{FormatSetName(itemData.set)}</color></size>\n" +
-                $"<size=30><color=#000000> 2-Piece Set: {itemData.twoPieceBonusDescription}</color>\n" +
-                $"<color=#000000> 3-Piece Set: {itemData.threePieceBonusDescription}</color></size>\n\n" +
+                $"<size=30><color=#000000>{twoPieceLine}</color>\n" +
+                $"<color=#000000>{threePieceLine}</color></size>\n\n" +
                 $"<size=36><color=#000000>{itemData.description}</color></size>";
 
             pamanaCondensedBodyText.text = bodyText;
@@ -71,6 +101,7 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
             pamanaCondensedBodyText.text = "";
         }
     }
+
 
     private string FormatStat(R_StatType statType, float value)
     {

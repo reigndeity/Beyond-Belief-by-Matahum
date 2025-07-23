@@ -17,7 +17,7 @@ public enum R_StatType
 [CreateAssetMenu(menuName = "Inventory/Pamana Data", fileName = "New Pamana Data")]
 public class R_PamanaData : ScriptableObject
 {
-    
+    public R_PamanaSet set;
     public R_PamanaSlotType slot;
     public R_ItemRarity rarity;
 

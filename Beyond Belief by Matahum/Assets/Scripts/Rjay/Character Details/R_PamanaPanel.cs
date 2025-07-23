@@ -171,6 +171,7 @@ public class R_PamanaPanel : MonoBehaviour
             return;
 
         player.EquipPamana(selectedItem);
+        infoPanel.Show(selectedItem.itemData);
         Debug.Log($"Equipped {selectedItem.itemData.itemName} to {pendingEquipSlot.Value}");
 
         RefreshPamanaList();
