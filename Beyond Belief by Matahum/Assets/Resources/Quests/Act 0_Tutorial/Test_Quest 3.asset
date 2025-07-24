@@ -15,7 +15,18 @@ MonoBehaviour:
   questID: testQuest4
   questTitle: Testing Side Quest
   actNumber: Act 5
-  description: ASDFASDFSADFAV ASDASDASDASD
+  questJournalDescription:
+  - para sa side quest na on going
+  - para sa side quest na on completion
+  - para sa side quest na on claimed
+  questHudDescription: wabwabawbawba
+  questHudWhereToClaimQueDescription: hablablaba
   questType: 1
-  missions: []
+  state: 1
+  missions:
+  - whatMustBeDone: bruh
+    targetID: bruh
+    requiredAmount: 1
+    currentAmount: 0
   rewards: []
+  isBeingTracked: 0

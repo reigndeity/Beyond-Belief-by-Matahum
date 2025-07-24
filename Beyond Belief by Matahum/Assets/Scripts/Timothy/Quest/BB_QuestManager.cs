@@ -14,7 +14,7 @@ public class BB_QuestManager : MonoBehaviour
     public List<BB_Quest> activeMainQuests = new List<BB_Quest>();
     public List<BB_Quest> activeSideQuests = new List<BB_Quest>();
 
-    public static event Action OnQuestUpdate;
+    public event Action OnQuestUpdate;
 
     private void Awake()
     {
@@ -147,6 +147,8 @@ public class BB_QuestManager : MonoBehaviour
             }
 
             quest.state = QuestState.Claimed;
-        } 
+
+            OnQuestUpdate?.Invoke();
+        }
     }
 }

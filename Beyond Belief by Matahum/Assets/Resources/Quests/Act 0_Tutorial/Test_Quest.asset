@@ -15,17 +15,24 @@ MonoBehaviour:
   questID: testQuest
   questTitle: Testing Quest
   actNumber: Act 1
-  description:
-  - This is the body text for when its on going
-  - This is the body text for when the missions are complete
-  - This is the body text for when the quest is completed
+  questJournalDescription:
+  - Test for on going Quest
+  - Test for on completion Quest
+  - Test for on Reward Claimed
+  questHudDescription: This is the Quest HUD Description
+  questHudWhereToClaimQueDescription: Go to your mom to report what happened
   questType: 0
   state: 2
   missions:
-  - description: asd
+  - whatMustBeDone: Destroy GameObject
     targetID: testMission
+    requiredAmount: 5
+    currentAmount: 5
+  - whatMustBeDone: Destroy the other GameObject
+    targetID: anotherTestMission
     requiredAmount: 5
     currentAmount: 5
   rewards:
   - {fileID: 11400000, guid: 9b56dd6f8cf7ec349bb224f12bc87230, type: 2}
   - {fileID: 11400000, guid: 31b0ab4b496c76a43811a782ce88f796, type: 2}
+  isBeingTracked: 1

@@ -24,7 +24,9 @@ public class BB_Quest : ScriptableObject
     public string questTitle;
     public string actNumber;
     [TextArea(3, 10)]
-    public string[] description;
+    public string[] questJournalDescription;
+    public string questHudDescription;
+    public string questHudWhereToClaimQueDescription;
     public BB_QuestType questType;
     public QuestState state = QuestState.Inactive;
 
@@ -35,13 +37,14 @@ public class BB_Quest : ScriptableObject
     public List<BB_RewardSO> rewards = new List<BB_RewardSO>();
 
     public bool IsCompleted => missions.TrueForAll(m => m.isCompleted);
+    public bool isBeingTracked = false;
 }
 
 [Serializable]
 public class BB_Mission
 {
-    public string description;
-    public string targetID; // e.g., enemy name, item ID, etc.
+    public string whatMustBeDone; //example "Killed Duwende" 
+    public string targetID; // example "killedDuwende"
     public int requiredAmount = 1;
     public int currentAmount = 0;
     public bool isCompleted => currentAmount >= requiredAmount;

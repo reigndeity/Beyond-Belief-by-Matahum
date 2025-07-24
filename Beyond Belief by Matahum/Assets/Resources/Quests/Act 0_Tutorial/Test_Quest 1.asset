@@ -15,14 +15,20 @@ MonoBehaviour:
   questID: testQuest2
   questTitle: Another Testing Quest
   actNumber: Act 1
-  description: []
+  questJournalDescription:
+  - ito at isang test para sa kasalukuyang ginagawang quest
+  - ito at isang test para sa kasalukuyang tinatapos na quest
+  - ito at isang test para sa kasalukuyang pagkuha ng gantimpala
+  questHudDescription: test HUD Desc
+  questHudWhereToClaimQueDescription: Go to your kahit saan
   questType: 0
-  state: 2
+  state: 1
   missions:
-  - description: 
+  - whatMustBeDone: idk
     targetID: testicles
     requiredAmount: 3
-    currentAmount: 3
+    currentAmount: 0
   rewards:
   - {fileID: 11400000, guid: 31b0ab4b496c76a43811a782ce88f796, type: 2}
   - {fileID: 11400000, guid: 9b56dd6f8cf7ec349bb224f12bc87230, type: 2}
+  isBeingTracked: 1

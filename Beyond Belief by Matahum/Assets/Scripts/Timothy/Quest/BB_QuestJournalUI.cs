@@ -28,6 +28,11 @@ public class BB_QuestJournalUI : MonoBehaviour
     public Transform questRewardList;
     public GameObject questRewardGroupTemplate;
 
+    [Header("Quest Tracker")]
+    public BB_Quest currentSelectedQuest;
+    public Button questTrackButton;
+    public Button questUntrackButton;
+
     // Holds instantiated Act groups for reuse
     private Dictionary<string, Transform> actGroups = new Dictionary<string, Transform>();
     private HashSet<string> initializedActButtons = new HashSet<string>();
@@ -40,6 +45,12 @@ public class BB_QuestJournalUI : MonoBehaviour
             DontDestroyOnLoad(gameObject); // Optional: persist across scenes
         }
         else Destroy(gameObject);
+    }
+
+    private void Start()
+    {
+        questTrackButton.onClick.AddListener(TrackQuest);
+        questUntrackButton.onClick.AddListener(UnTrackQuest);
     }
 
     public void OnOpenJournal(Transform questPanel) //This will auto select the first Quest when opening either the Journal, or switching between quest panels
@@ -61,8 +72,6 @@ public class BB_QuestJournalUI : MonoBehaviour
             }
         }     
     }
-
-
 
     public void AddQuestToJournal(BB_Quest quest)
     {
@@ -115,25 +124,27 @@ public class BB_QuestJournalUI : MonoBehaviour
 
     public void ShowQuestDetails(BB_Quest quest)
     {
+        currentSelectedQuest = quest;
+
         questDetailsQuestTitle.text = quest.questTitle;
 
-        if (quest.description != null)
+        if (quest.questJournalDescription != null)
         {
             switch (quest.state)
             {
                 case QuestState.Active:
-                    if (quest.description.Length > 0 && !string.IsNullOrEmpty(quest.description[0]))
-                        questDetailsBodyText.text = quest.description[0];
+                    if (quest.questJournalDescription.Length > 0 && !string.IsNullOrEmpty(quest.questJournalDescription[0]))
+                        questDetailsBodyText.text = quest.questJournalDescription[0];
                     break;
 
                 case QuestState.Completed:
-                    if (quest.description.Length > 1 && !string.IsNullOrEmpty(quest.description[1]))
-                        questDetailsBodyText.text = quest.description[1];
+                    if (quest.questJournalDescription.Length > 1 && !string.IsNullOrEmpty(quest.questJournalDescription[1]))
+                        questDetailsBodyText.text = quest.questJournalDescription[1];
                     break;
 
                 case QuestState.Claimed:
-                    if (quest.description.Length > 2 && !string.IsNullOrEmpty(quest.description[2]))
-                        questDetailsBodyText.text = quest.description[2];
+                    if (quest.questJournalDescription.Length > 2 && !string.IsNullOrEmpty(quest.questJournalDescription[2]))
+                        questDetailsBodyText.text = quest.questJournalDescription[2];
                     break;
             }
         }
@@ -159,6 +170,9 @@ public class BB_QuestJournalUI : MonoBehaviour
 
             Debug.Log("Theres a reward");
         }
+
+
+        ChangeTrackerButtonDisplay(quest);
     }
 
     public void ClearDetails()
@@ -180,5 +194,89 @@ public class BB_QuestJournalUI : MonoBehaviour
     public void RewardSample()
     {
         Debug.Log("Received Reward");
+    }
+
+    public void TrackQuest()
+    {
+        if (currentSelectedQuest.questType == BB_QuestType.Main)
+        {
+            BB_QuestHUD.instance.trackedMainQuest = currentSelectedQuest;
+
+            foreach (BB_Quest quest in BB_QuestManager.Instance.activeSideQuests)
+                quest.isBeingTracked = false;
+        }
+        else
+        {
+            BB_QuestHUD.instance.trackedSideQuest = currentSelectedQuest;
+
+            foreach (BB_Quest quest in BB_QuestManager.Instance.activeSideQuests)
+                quest.isBeingTracked = false;
+        }
+
+        currentSelectedQuest.isBeingTracked = true;
+        ChangeTrackerButtonDisplay(currentSelectedQuest);
+        ChangeSiblingArrangement();
+        BB_QuestHUD.instance.UpdateUI();
+    }
+
+    public void UnTrackQuest()
+    {
+        if (currentSelectedQuest.questType == BB_QuestType.Main)
+            BB_QuestHUD.instance.trackedMainQuest = null;
+        else
+            BB_QuestHUD.instance.trackedSideQuest = null;
+
+        currentSelectedQuest.isBeingTracked = false;
+        ChangeTrackerButtonDisplay(currentSelectedQuest);
+        BB_QuestHUD.instance.UpdateUI();
+    }
+
+    public void ChangeSiblingArrangement()
+    {
+        // Get the list container for the current quest
+        string actKey = $"{currentSelectedQuest.questType}_{currentSelectedQuest.actNumber}";
+        if (!actGroups.TryGetValue(actKey, out Transform actGroupContainer))
+            return;
+
+        Transform questList = actGroupContainer.Find("Quest List");
+        if (questList == null) return;
+
+        foreach (Transform child in questList)
+        {
+            if (child.name == currentSelectedQuest.questTitle)
+            {
+                if (currentSelectedQuest.state == QuestState.Claimed)
+                {
+                    child.SetAsLastSibling(); // move claimed quests to the bottom
+                }
+                else if (currentSelectedQuest.isBeingTracked)
+                {
+                    child.SetAsFirstSibling(); // move tracked quests to the top
+                }
+                break;
+            }
+        }
+    }
+
+
+    public void ChangeTrackerButtonDisplay(BB_Quest quest)
+    {
+        if (quest.state == QuestState.Claimed)
+        {
+            questTrackButton.gameObject.SetActive(false);
+            questUntrackButton.gameObject.SetActive(false);
+            return;
+        }
+
+        if (quest.isBeingTracked)
+        {
+            questTrackButton.gameObject.SetActive(false);
+            questUntrackButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            questTrackButton.gameObject.SetActive(true);
+            questUntrackButton.gameObject.SetActive(false);
+        }
     }
 }

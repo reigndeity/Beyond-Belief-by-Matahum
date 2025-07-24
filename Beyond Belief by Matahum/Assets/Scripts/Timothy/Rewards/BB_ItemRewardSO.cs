@@ -12,7 +12,7 @@ public class BB_ItemRewardSO : BB_RewardSO
         R_InventoryUI inventoryUI = FindFirstObjectByType<R_InventoryUI>();
 
         inventory.AddItem(item, RewardQuantity());
-        inventoryUI.RefreshUI();
+        inventoryUI?.RefreshUI();
     }
 
     public override Sprite RewardIcon() => item.itemIcon;
