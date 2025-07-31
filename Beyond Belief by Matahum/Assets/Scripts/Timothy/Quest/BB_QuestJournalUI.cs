@@ -28,6 +28,12 @@ public class BB_QuestJournalUI : MonoBehaviour
     public Transform questRewardList;
     public GameObject questRewardGroupTemplate;
 
+    [Header("Quest Selected Indicator")] 
+    public Sprite defaultSprite;
+    public Sprite selectedSprite; // Assign this manually or load it
+    private Button currentlySelectedButton;
+    private Image currentlySelectedImage;
+    
     [Header("Quest Tracker")]
     public BB_Quest currentSelectedQuest;
     public Button questTrackButton;
@@ -61,7 +67,9 @@ public class BB_QuestJournalUI : MonoBehaviour
 
         if (questList == null || questList.childCount == 0)
         {
+            currentSelectedQuest = null;
             ClearDetails();
+            ChangeTrackerButtonDisplay(currentSelectedQuest);
         }
         else
         {
@@ -110,7 +118,15 @@ public class BB_QuestJournalUI : MonoBehaviour
         newQuestButton.transform.name = quest.questTitle;
 
         // Add onClick to show details
-        newQuestButton.onClick.AddListener(() => ShowQuestDetails(quest));
+        //newQuestButton.onClick.AddListener(() => ShowQuestDetails(quest));
+        Button capturedButton = newQuestButton;
+        Image capturedImage = newQuestButton.GetComponent<Image>();
+
+        newQuestButton.onClick.AddListener(() =>
+        {
+            OnQuestButtonClicked(quest, capturedButton, capturedImage);
+        });
+
 
         // Add onClick to set inactive Quest List if it hasnt set up yet
         Button actButton = actGroupContainer.Find(quest.actNumber).GetComponent<Button>();
@@ -120,6 +136,23 @@ public class BB_QuestJournalUI : MonoBehaviour
             initializedActButtons.Add(actKey);
         }
 
+    }
+
+    private void OnQuestButtonClicked(BB_Quest quest, Button clickedButton, Image clickedImage)
+    {
+        // Reset previous button to default sprite
+        if (currentlySelectedImage != null)
+        {
+            currentlySelectedImage.sprite = defaultSprite;
+        }
+
+        // Set new button sprite to selected
+        currentlySelectedButton = clickedButton;
+        currentlySelectedImage = clickedImage;
+        currentlySelectedImage.sprite = selectedSprite;
+
+        // Show quest details
+        ShowQuestDetails(quest);
     }
 
     public void ShowQuestDetails(BB_Quest quest)
@@ -202,7 +235,7 @@ public class BB_QuestJournalUI : MonoBehaviour
         {
             BB_QuestHUD.instance.trackedMainQuest = currentSelectedQuest;
 
-            foreach (BB_Quest quest in BB_QuestManager.Instance.activeSideQuests)
+            foreach (BB_Quest quest in BB_QuestManager.Instance.activeMainQuests)
                 quest.isBeingTracked = false;
         }
         else
@@ -261,10 +294,11 @@ public class BB_QuestJournalUI : MonoBehaviour
 
     public void ChangeTrackerButtonDisplay(BB_Quest quest)
     {
-        if (quest.state == QuestState.Claimed)
+        if (quest == null || quest.state == QuestState.Claimed)
         {
             questTrackButton.gameObject.SetActive(false);
             questUntrackButton.gameObject.SetActive(false);
+            Debug.Log("Track and Untrack Button disabled");
             return;
         }
 

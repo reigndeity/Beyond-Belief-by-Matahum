@@ -45,6 +45,7 @@ public class BB_QuestManager : MonoBehaviour
         }
 
         quest.state = QuestState.Active;
+        quest.isBeingTracked = false;
         foreach (var missions in quest.missions)
         {
             missions.currentAmount = 0;
