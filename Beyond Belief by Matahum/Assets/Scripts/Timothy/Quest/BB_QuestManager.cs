@@ -52,7 +52,7 @@ public class BB_QuestManager : MonoBehaviour
         }
 
         OrganizeAcceptedQuests();
-        BB_QuestJournalUI.Instance.AddQuestToJournal(quest);
+        BB_QuestJournalUI.instance.AddQuestToJournal(quest);
     }
 
     public void AcceptQuestByID(string questID)

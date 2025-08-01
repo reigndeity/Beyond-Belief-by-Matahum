@@ -1,16 +1,21 @@
 using UnityEngine;
 
-public class BB_ArchiveSO : MonoBehaviour
+public enum ArchiveType
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    creature,
+    location,
+    wildlife,
+    plant
+}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+[CreateAssetMenu(menuName = "Beyond Belief/Archives")]
+public class BB_ArchiveSO : ScriptableObject
+{
+    public string archiveName;
+    public Sprite archiveImage;
+    [TextArea(1,3)]
+    public string archiveDescription;
+    public ArchiveType archiveType;
+
+    public bool isDiscovered;
 }

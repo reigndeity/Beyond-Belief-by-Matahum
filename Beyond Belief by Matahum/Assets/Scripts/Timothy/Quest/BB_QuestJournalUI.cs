@@ -7,19 +7,20 @@ using System.Linq;
 
 public class BB_QuestJournalUI : MonoBehaviour
 {
-    public static BB_QuestJournalUI Instance;
+    public static BB_QuestJournalUI instance;
+
+    [Header("Quest Button Manager")]
+    public BB_Quest_ButtonManager buttonManager;
 
     [Header("Main Quest Category")]
-    public GameObject mainQuestPanel;
     public Transform mainQuestSelectionScrollContent;  
 
     [Header("Side Quest Category")]
-    public GameObject SideQuestPanel;
     public Transform SideQuestSelectionScrollContent;
 
     [Header("Quest Group Template")]
     public GameObject questGroupTemplate;
-    public Button questTitle;
+    public Button questTitleTemplate;
 
     [Header("Quest Details")]
     public TextMeshProUGUI questDetailsQuestTitle;
@@ -36,8 +37,6 @@ public class BB_QuestJournalUI : MonoBehaviour
     
     [Header("Quest Tracker")]
     public BB_Quest currentSelectedQuest;
-    public Button questTrackButton;
-    public Button questUntrackButton;
 
     // Holds instantiated Act groups for reuse
     private Dictionary<string, Transform> actGroups = new Dictionary<string, Transform>();
@@ -45,18 +44,12 @@ public class BB_QuestJournalUI : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
             DontDestroyOnLoad(gameObject); // Optional: persist across scenes
         }
         else Destroy(gameObject);
-    }
-
-    private void Start()
-    {
-        questTrackButton.onClick.AddListener(TrackQuest);
-        questUntrackButton.onClick.AddListener(UnTrackQuest);
     }
 
     public void OnOpenJournal(Transform questPanel) //This will auto select the first Quest when opening either the Journal, or switching between quest panels
@@ -112,7 +105,7 @@ public class BB_QuestJournalUI : MonoBehaviour
         Transform questList = actGroupContainer.Find("Quest List").transform;
 
         // Instantiate the quest title button under the Act Group
-        Button newQuestButton = Instantiate(questTitle, questList);
+        Button newQuestButton = Instantiate(questTitleTemplate, questList);
         newQuestButton.gameObject.SetActive(true);
         newQuestButton.GetComponentInChildren<TextMeshProUGUI>().text = quest.questTitle;
         newQuestButton.transform.name = quest.questTitle;
@@ -224,46 +217,6 @@ public class BB_QuestJournalUI : MonoBehaviour
         isObjectActive.gameObject.SetActive(!isActive);
     }
 
-    public void RewardSample()
-    {
-        Debug.Log("Received Reward");
-    }
-
-    public void TrackQuest()
-    {
-        if (currentSelectedQuest.questType == BB_QuestType.Main)
-        {
-            BB_QuestHUD.instance.trackedMainQuest = currentSelectedQuest;
-
-            foreach (BB_Quest quest in BB_QuestManager.Instance.activeMainQuests)
-                quest.isBeingTracked = false;
-        }
-        else
-        {
-            BB_QuestHUD.instance.trackedSideQuest = currentSelectedQuest;
-
-            foreach (BB_Quest quest in BB_QuestManager.Instance.activeSideQuests)
-                quest.isBeingTracked = false;
-        }
-
-        currentSelectedQuest.isBeingTracked = true;
-        ChangeTrackerButtonDisplay(currentSelectedQuest);
-        ChangeSiblingArrangement();
-        BB_QuestHUD.instance.UpdateUI();
-    }
-
-    public void UnTrackQuest()
-    {
-        if (currentSelectedQuest.questType == BB_QuestType.Main)
-            BB_QuestHUD.instance.trackedMainQuest = null;
-        else
-            BB_QuestHUD.instance.trackedSideQuest = null;
-
-        currentSelectedQuest.isBeingTracked = false;
-        ChangeTrackerButtonDisplay(currentSelectedQuest);
-        BB_QuestHUD.instance.UpdateUI();
-    }
-
     public void ChangeSiblingArrangement()
     {
         // Get the list container for the current quest
@@ -291,26 +244,24 @@ public class BB_QuestJournalUI : MonoBehaviour
         }
     }
 
-
     public void ChangeTrackerButtonDisplay(BB_Quest quest)
     {
         if (quest == null || quest.state == QuestState.Claimed)
         {
-            questTrackButton.gameObject.SetActive(false);
-            questUntrackButton.gameObject.SetActive(false);
-            Debug.Log("Track and Untrack Button disabled");
+            buttonManager.questTrackButton.gameObject.SetActive(false);
+            buttonManager.questUntrackButton.gameObject.SetActive(false);
             return;
         }
 
         if (quest.isBeingTracked)
         {
-            questTrackButton.gameObject.SetActive(false);
-            questUntrackButton.gameObject.SetActive(true);
+            buttonManager.questTrackButton.gameObject.SetActive(false);
+            buttonManager.questUntrackButton.gameObject.SetActive(true);
         }
         else
         {
-            questTrackButton.gameObject.SetActive(true);
-            questUntrackButton.gameObject.SetActive(false);
+            buttonManager.questTrackButton.gameObject.SetActive(true);
+            buttonManager.questUntrackButton.gameObject.SetActive(false);
         }
     }
 }
