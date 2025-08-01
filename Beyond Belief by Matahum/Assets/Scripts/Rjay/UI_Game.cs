@@ -6,7 +6,7 @@ public class UI_Game : MonoBehaviour
 {
     [SerializeField] private R_InventoryUI r_inventoryUI;
     [SerializeField] private R_CharacterDetailsPanel m_characterDetailsPanel;
-    [SerializeField] Button journalButton; // Keeps track of new findings(?)
+    
     
     [Header("Inventory Properties")]
     [SerializeField] Button inventoryButton; // Overall Inventory (No Equipment)
@@ -34,6 +34,11 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Button lihimSlotButton;
     [SerializeField] Button salamangkeroSlotButton;
     [SerializeField] private R_PamanaPanel m_pamanaPanel;
+
+    [Header("Quest Journal Properties")]
+    [SerializeField] Button questButton;
+    [SerializeField] Button closeQuestButton;
+    [SerializeField] GameObject questPanel;
 
     [Header("Full Screen Map Properties")]
     [SerializeField] GameObject teleportPanel;
@@ -71,6 +76,9 @@ public class UI_Game : MonoBehaviour
         diwataSlotButton.onClick.AddListener(OnClickDiwataSort);
         lihimSlotButton.onClick.AddListener(OnClickLihimSort);
         salamangkeroSlotButton.onClick.AddListener(OnClickSalamangkeroSort);
+
+        questButton.onClick.AddListener(OnClickOpenQuestJournal);
+        closeQuestButton.onClick.AddListener(OnClickCloseQuestJournal);
     }
 
     public void OnClickCloseTeleportPanel()
@@ -160,6 +168,16 @@ public class UI_Game : MonoBehaviour
     public void OnClickSalamangkeroSort()
     {
         m_pamanaPanel.OnClick_EquipSlot_Salamangkero();
+    }
+    #endregion
+    #region QUEST JOURNAL
+    public void OnClickOpenQuestJournal()
+    {
+        questPanel.SetActive(true);
+    }
+    public void OnClickCloseQuestJournal()
+    {
+        questPanel.SetActive(false);
     }
     #endregion
 }
