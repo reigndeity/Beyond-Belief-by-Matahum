@@ -31,6 +31,8 @@ public class Player : MonoBehaviour, IDamageable
     [Header("Inventory Properties")]
     public R_Inventory playerInventory;
 
+    [HideInInspector] public bool suppressInputUntilNextFrame = false;
+
     
     void Awake()
     {
@@ -52,7 +54,6 @@ public class Player : MonoBehaviour, IDamageable
 
     void Update()
     {   
-
         // Player Camera
         m_playerCamera.HandleMouseLock();
         if (Cursor.lockState == CursorLockMode.Locked)
@@ -120,6 +121,9 @@ public class Player : MonoBehaviour, IDamageable
             GainXP(500);
             GainWeaponXP(500);
         }
+
+        if (suppressInputUntilNextFrame)
+            suppressInputUntilNextFrame = false;
     }
 
     #region DAMAGE / HEAL FUNCTIONS

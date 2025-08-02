@@ -150,6 +150,7 @@ public class DialogueManager : MonoBehaviour
         
 
         onDialogueEnd?.Invoke();
+        FindFirstObjectByType<Player>().suppressInputUntilNextFrame = true;
     }
 
     public bool IsDialoguePlaying() => isPlaying;

@@ -162,6 +162,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void HandleJump()
     {
+        if (GetComponent<Player>().suppressInputUntilNextFrame) return;
         if (GetComponent<PlayerSkills>().isUsingNormalSkill || GetComponent<PlayerSkills>().isUsingUltimateSkill)
             return;
         if (m_playerCombat.IsAttacking() && !m_playerCombat.CanMoveDuringAttack())
@@ -226,6 +227,21 @@ public class PlayerMovement : MonoBehaviour
         {
             verticalVelocity += (verticalVelocity < 0 ? gravity * fallMultiplier : gravity * riseMultiplier) * Time.deltaTime;
         }
+    }
+
+    public void ApplyGravityStep()
+    {
+        if (!m_characterController.isGrounded)
+        {
+            verticalVelocity += (verticalVelocity < 0 ? gravity * fallMultiplier : gravity * riseMultiplier) * Time.deltaTime;
+        }
+        else if (verticalVelocity < 0f)
+        {
+            verticalVelocity = -2f; // force slight downward push to keep grounded
+        }
+
+        Vector3 velocity = new Vector3(0, verticalVelocity, 0);
+        m_characterController.Move(velocity * Time.deltaTime);
     }
 
     private void HandleMovementMode()
