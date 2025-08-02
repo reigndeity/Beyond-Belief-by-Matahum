@@ -71,8 +71,8 @@ public class Player : MonoBehaviour, IDamageable
         m_playerMinimap.ProjectionRotation();
         m_playerMinimap.HandleMapToggle();
         m_playerMinimap.ZoomControl();
-
-        if (!m_playerMinimap.IsMapOpen())
+        
+        if (!m_playerMinimap.IsMapOpen() && !DialogueManager.Instance.isDialoguePlaying)
         {
             m_playerMovement.HandleMovement();
             m_playerMovement.HandleDash();
@@ -91,21 +91,18 @@ public class Player : MonoBehaviour, IDamageable
         {
             currentState = PlayerState.DASHING;
         }
-        else if (m_playerMovement.IsJumping())
+        else if (m_playerCombat.IsAttacking())
         {
-            currentState = PlayerState.JUMPING;
-        }
-        else if (m_playerMovement.GetVerticalVelocity() < -1f && !m_playerMovement.GetComponent<CharacterController>().isGrounded)
-        {
-            currentState = PlayerState.FALLING;
+            currentState = PlayerState.COMBAT;
         }
         else if (m_playerMovement.JustLanded())
         {
             currentState = PlayerState.LANDING;
         }
-        else if (m_playerCombat.IsAttacking())
+        else if (!m_playerMovement.GetComponent<CharacterController>().isGrounded)
         {
-            currentState = PlayerState.COMBAT;
+            float verticalVel = m_playerMovement.GetVerticalVelocity();
+            currentState = verticalVel < -1f ? PlayerState.FALLING : PlayerState.JUMPING;
         }
         else if (currentSpeed > 0.1f)
         {
@@ -115,6 +112,7 @@ public class Player : MonoBehaviour, IDamageable
         {
             currentState = PlayerState.IDLE;
         }
+
 
         if (Input.GetKeyDown(KeyCode.H))
         {

@@ -55,6 +55,7 @@ public class PlayerCamera : MonoBehaviour
         yaw = angles.y;
         pitch = angles.x;
     }
+
     void LateUpdate()
     {
         if (playerTarget == null) return;
@@ -109,6 +110,10 @@ public class PlayerCamera : MonoBehaviour
 
     public void HandleZoom()
     {
+        // 🛡 Prevent zooming if interacting
+        if (InteractionManager.IsUsingScrollInput)
+            return;
+
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0f)
         {

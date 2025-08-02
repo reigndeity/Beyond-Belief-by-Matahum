@@ -220,7 +220,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void HandleGravity()
+    public void HandleGravity()
     {
         if (!m_characterController.isGrounded)
         {
