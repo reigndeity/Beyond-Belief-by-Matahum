@@ -26,7 +26,6 @@ public class BB_Quest : ScriptableObject
     [TextArea(3, 10)]
     public string[] questJournalDescription;
     public string questHudDescription;
-    public string questHudWhereToClaimQueDescription;
     public BB_QuestType questType;
     public QuestState state = QuestState.Inactive;
 
@@ -45,6 +44,9 @@ public class BB_Mission
 {
     public string whatMustBeDone; //example "Killed Duwende" 
     public string targetID; // example "killedDuwende"
+
+    [Header("If Mission has counter")]
+    public bool hasCounter;
     public int requiredAmount = 1;
     public int currentAmount = 0;
     public bool isCompleted => currentAmount >= requiredAmount;

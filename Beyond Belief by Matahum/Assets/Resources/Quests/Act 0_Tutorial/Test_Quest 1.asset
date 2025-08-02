@@ -22,12 +22,13 @@ MonoBehaviour:
   questHudDescription: test HUD Desc
   questHudWhereToClaimQueDescription: Go to your kahit saan
   questType: 0
-  state: 1
+  state: 3
   missions:
   - whatMustBeDone: idk
     targetID: testicles
+    hasCounter: 1
     requiredAmount: 3
-    currentAmount: 0
+    currentAmount: 3
   rewards:
   - {fileID: 11400000, guid: 31b0ab4b496c76a43811a782ce88f796, type: 2}
   - {fileID: 11400000, guid: 9b56dd6f8cf7ec349bb224f12bc87230, type: 2}

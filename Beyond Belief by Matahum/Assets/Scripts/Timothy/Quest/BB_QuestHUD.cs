@@ -5,7 +5,7 @@ public class BB_QuestHUD : MonoBehaviour
 {
     public static BB_QuestHUD instance;
 
-    [Header("Main Quest HUD")]
+    /*[Header("Main Quest HUD")]
     public TextMeshProUGUI mainQuestTitle;
     public TextMeshProUGUI mainQuestDescription;
     public Transform mainQuestMissionList;
@@ -13,13 +13,20 @@ public class BB_QuestHUD : MonoBehaviour
     [Header("Side Quest HUD")]
     public TextMeshProUGUI sideQuestTitle;
     public TextMeshProUGUI sideQuestDescription;
-    public Transform sideQuestMissionList;
+    public Transform sideQuestMissionList;*/
+
+    [Header("Quest HUD")]
+    public TextMeshProUGUI questTitle;
+    public TextMeshProUGUI questDescription;
+    public Transform questMissionList;
 
     [Header("Quest Mission HUD Template")]
-    public BB_QuestHUDUIGroupTemplate questHUDTemplate;
+    public BB_QuestMissionTemplate questHUDTemplate;
 
-    public BB_Quest trackedMainQuest;
-    public BB_Quest trackedSideQuest;
+    /*public BB_Quest trackedMainQuest;
+    public BB_Quest trackedSideQuest;*/
+
+    public BB_Quest trackedQuest;
 
     private void Awake()
     {
@@ -33,11 +40,50 @@ public class BB_QuestHUD : MonoBehaviour
 
     public void UpdateUI()
     {
-        UpdateMainQuestHud();
-        UpdateSideQuestHud();
+        UpdateQuestHud();
     }
 
-    public void UpdateMainQuestHud()
+    public void UpdateQuestHud()
+    {
+        foreach (Transform child in questMissionList)
+        {
+            Destroy(child.gameObject);
+        }
+
+        if (trackedQuest != null)
+        {
+            if (trackedQuest.state == QuestState.Active)
+            {
+                questTitle.text = trackedQuest.questTitle;
+                questDescription.text = trackedQuest.questHudDescription;
+                questDescription.color = Color.black;
+
+                foreach (BB_Mission mission in trackedQuest.missions)
+                {
+                    BB_QuestMissionTemplate missionHUD = Instantiate(questHUDTemplate, questMissionList);
+                    missionHUD.missionDescription.text = $"{mission.whatMustBeDone}";
+                    if (mission.hasCounter)
+                    {
+                        missionHUD.missionCounter.gameObject.SetActive(true);
+                        missionHUD.missionCounter.text = $"{mission.currentAmount}/{mission.requiredAmount}";
+                    }
+                }
+            }
+            else if (trackedQuest.state == QuestState.Completed)
+            {
+                questTitle.text = trackedQuest.questTitle;
+                questDescription.text = "Quest Completed";
+                questDescription.color = Color.green;
+            }
+        }
+        else
+        {
+            questTitle.text = "";
+            questDescription.text = "";
+        }
+    }
+
+    /*public void UpdateMainQuestHud()
     {
         foreach (Transform child in mainQuestMissionList)
         {
@@ -53,8 +99,13 @@ public class BB_QuestHUD : MonoBehaviour
 
                 foreach (BB_Mission mission in trackedMainQuest.missions)
                 {
-                    BB_QuestHUDUIGroupTemplate missionHUD = Instantiate(questHUDTemplate, mainQuestMissionList);
-                    missionHUD.missionGoal.text = $"{mission.whatMustBeDone}:{mission.currentAmount}/{mission.requiredAmount}";
+                    BB_QuestMissionTemplate missionHUD = Instantiate(questHUDTemplate, mainQuestMissionList);
+                    missionHUD.missionDescription.text = $"{mission.whatMustBeDone}";
+                    if (mission.hasCounter)
+                    {
+                        missionHUD.missionCounter.gameObject.SetActive(true);
+                        missionHUD.missionCounter.text = $"{mission.currentAmount}/{mission.requiredAmount}";
+                    }
                 }
             }
             else if (trackedMainQuest.state == QuestState.Completed)
@@ -91,9 +142,14 @@ public class BB_QuestHUD : MonoBehaviour
 
                 foreach (BB_Mission mission in trackedSideQuest.missions)
                 {
-                    BB_QuestHUDUIGroupTemplate missionHUD = Instantiate(questHUDTemplate, sideQuestMissionList);
-                    missionHUD.missionGoal.text = $"{mission.whatMustBeDone}:{mission.currentAmount}/{mission.requiredAmount}";
-
+                    BB_QuestMissionTemplate missionHUD = Instantiate(questHUDTemplate, sideQuestMissionList);
+                    missionHUD.missionDescription.text = $"{mission.whatMustBeDone}";
+                    if (mission.hasCounter)
+                    {
+                        missionHUD.missionCounter.gameObject.SetActive(true);
+                        missionHUD.missionCounter.text = $"{mission.currentAmount}/{mission.requiredAmount}";
+                    }
+                    else missionHUD.missionCounter.gameObject.SetActive(false);
                 }
             }
             else if (trackedSideQuest.state == QuestState.Completed)
@@ -113,5 +169,5 @@ public class BB_QuestHUD : MonoBehaviour
             sideQuestTitle.text = "";
             sideQuestDescription.text = "";
         }
-    }
+    }*/
 }

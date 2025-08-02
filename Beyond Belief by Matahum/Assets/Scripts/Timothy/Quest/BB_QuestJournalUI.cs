@@ -1,13 +1,22 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
+public enum QuestScrollView
+{
+    all,
+    main,
+    side
+}
+
 public class BB_QuestJournalUI : MonoBehaviour
 {
     public static BB_QuestJournalUI instance;
+
+    public QuestScrollView questContentScrollView;
 
     [Header("Quest Button Manager")]
     public BB_Quest_ButtonManager buttonManager;
@@ -18,16 +27,24 @@ public class BB_QuestJournalUI : MonoBehaviour
     [Header("Side Quest Category")]
     public Transform SideQuestSelectionScrollContent;
 
+    /*[Header("All Quest Category")]
+    public Transform allQuestSelectionScrollContent;*/
+
+    [Header("Completed Quest Category")]
+    public Transform completedQuestSelectionScrollContent;
+
     [Header("Quest Group Template")]
     public GameObject questGroupTemplate;
     public Button questTitleTemplate;
 
     [Header("Quest Details")]
     public TextMeshProUGUI questDetailsQuestTitle;
+    public GameObject questDetailsScrollViewContent;
     public TextMeshProUGUI questDetailsBodyText;
     public TextMeshProUGUI questRewardText;
     public Transform questRewardList;
     public GameObject questRewardGroupTemplate;
+    public BB_QuestMissionTemplate questMissionTemplate;
 
     [Header("Quest Selected Indicator")] 
     public Sprite defaultSprite;
@@ -52,32 +69,92 @@ public class BB_QuestJournalUI : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void OnOpenJournal(Transform questPanel) //This will auto select the first Quest when opening either the Journal, or switching between quest panels
+    private void Start()
     {
-        Transform questList = questPanel
-            .GetComponentsInChildren<Transform>()
-            .FirstOrDefault(t => t.name == "Quest List");
+        BB_QuestManager.Instance.OnQuestUpdate += () => ShowQuestDetails(currentSelectedQuest);
+        BB_QuestManager.Instance.OnQuestUpdate += HandleQuestUpdate;
+    }
 
-        if (questList == null || questList.childCount == 0)
+    public void OnOpenJournal(params Transform[] questPanels)
+    {
+        List<Transform> allQuestLists = new List<Transform>();
+
+        // Collect ALL "Quest List" transforms under both panels
+        for (int i = 0; i < questPanels.Length; i++)
+        {
+            foreach (var list in questPanels[i].GetComponentsInChildren<Transform>(true))
+            {
+                if (list.name == "Quest List")
+                    allQuestLists.Add(list);
+            }
+        }
+        
+        if (allQuestLists.Count == 0)
         {
             currentSelectedQuest = null;
             ClearDetails();
             ChangeTrackerButtonDisplay(currentSelectedQuest);
+            return;
+        }
+
+        // Find the button of the tracked quest
+        Button trackedButton = null;
+        foreach (Transform questList in allQuestLists)
+        {
+            trackedButton = FindTrackedQuestButton(questList);
+            if (trackedButton != null)
+                break;
+        }
+
+        // If found, invoke it. Otherwise, fallback to first available quest button.
+        if (trackedButton != null)
+        {
+            trackedButton.onClick.Invoke();
         }
         else
         {
-            Button questButton = questList.GetChild(0).GetComponent<Button>();
-            if (questButton != null)
+            foreach (Transform questList in allQuestLists)
             {
-                questButton.onClick.Invoke();
+                if (questList.childCount > 0)
+                {
+                    Button fallbackButton = questList.GetChild(0).GetComponent<Button>();
+                    if (fallbackButton != null)
+                    {
+                        fallbackButton.onClick.Invoke();
+                        break;
+                    }
+                }
             }
-        }     
+        }
+    }
+
+    private Button FindTrackedQuestButton(Transform questList)
+    {
+        if (questList == null) return null;
+
+        foreach (Transform child in questList)
+        {
+            BB_QuestMetaData meta = child.GetComponent<BB_QuestMetaData>();
+            if (meta != null)
+            {
+                BB_Quest matchingQuest = BB_QuestManager.Instance.allQuests
+                    .FirstOrDefault(q => q.questTitle == child.name);
+
+                if (matchingQuest != null && matchingQuest.isBeingTracked)
+                {
+                    return child.GetComponent<Button>();
+                }
+            }
+        }
+
+        return null;
     }
 
     public void AddQuestToJournal(BB_Quest quest)
     {
         // Determine panel and content holder based on quest type
         Transform parentScroll = quest.questType == BB_QuestType.Main ? mainQuestSelectionScrollContent : SideQuestSelectionScrollContent;
+        //Transform parentScroll = allQuestSelectionScrollContent;
 
         string actKey = $"{quest.questType}_{quest.actNumber}";
 
@@ -120,6 +197,8 @@ public class BB_QuestJournalUI : MonoBehaviour
             OnQuestButtonClicked(quest, capturedButton, capturedImage);
         });
 
+        var meta = newQuestButton.gameObject.AddComponent<BB_QuestMetaData>();
+        meta.questType = quest.questType;
 
         // Add onClick to set inactive Quest List if it hasnt set up yet
         Button actButton = actGroupContainer.Find(quest.actNumber).GetComponent<Button>();
@@ -128,7 +207,6 @@ public class BB_QuestJournalUI : MonoBehaviour
             actButton.onClick.AddListener(() => ToggleActNumberGroup(questList.gameObject));
             initializedActButtons.Add(actKey);
         }
-
     }
 
     private void OnQuestButtonClicked(BB_Quest quest, Button clickedButton, Image clickedImage)
@@ -154,6 +232,31 @@ public class BB_QuestJournalUI : MonoBehaviour
 
         questDetailsQuestTitle.text = quest.questTitle;
 
+        //Delete old Mission Details
+        foreach (Transform child in questDetailsScrollViewContent.transform)
+        {
+            BB_QuestMissionTemplate missionTemplate = child.GetComponent<BB_QuestMissionTemplate>();
+            if (missionTemplate != null)
+            {
+                Destroy(missionTemplate.gameObject);
+            }
+        }
+
+        //Populate new Mission Details
+        foreach (BB_Mission missions in quest.missions)
+        {
+            BB_QuestMissionTemplate missionHUD = Instantiate(questMissionTemplate, questDetailsScrollViewContent.transform);
+            missionHUD.missionDescription.text = $"{missions.whatMustBeDone}";
+            if (missions.hasCounter)
+            {
+                missionHUD.missionCounter.gameObject.SetActive(true);
+                missionHUD.missionCounter.text = $"{missions.currentAmount}/{missions.requiredAmount}";
+            }
+            else missionHUD.missionCounter.gameObject.SetActive(false);
+        }
+
+        questDetailsBodyText.transform.SetAsLastSibling();
+
         if (quest.questJournalDescription != null)
         {
             switch (quest.state)
@@ -172,7 +275,7 @@ public class BB_QuestJournalUI : MonoBehaviour
                     if (quest.questJournalDescription.Length > 2 && !string.IsNullOrEmpty(quest.questJournalDescription[2]))
                         questDetailsBodyText.text = quest.questJournalDescription[2];
                     break;
-            }
+            }      
         }
 
         questRewardText.text = "";
@@ -190,22 +293,28 @@ public class BB_QuestJournalUI : MonoBehaviour
             rewardObj.SetActive(true);
 
             BB_QuestRewardUIGroup rewardUI = rewardObj.GetComponent<BB_QuestRewardUIGroup>();
+            rewardUI.backgroundImage.sprite = reward.RewardBackground();
             rewardUI.rewardIcon.sprite = reward.RewardIcon();
-            rewardUI.rewardName.text = reward.RewardName();
+            rewardUI.rewardName.text = $"{reward.RewardQuantity().ToString()}  {reward.RewardName()}";
             rewardUI.rewardQuantity.text = reward.RewardQuantity().ToString();
-
-            Debug.Log("Theres a reward");
         }
-
-
         ChangeTrackerButtonDisplay(quest);
     }
 
     public void ClearDetails()
     {
-        questDetailsQuestTitle.text = "You have no quest yet";
-        questDetailsBodyText.text = "";
+        questDetailsQuestTitle.text = "No Quest Selected";
+        questDetailsBodyText.text = "You have not selected a quest";
         questRewardText.text = "";
+
+        foreach (Transform child in questDetailsScrollViewContent.transform)
+        {
+            BB_QuestMissionTemplate missionTemplate = child.GetComponent<BB_QuestMissionTemplate>();
+            if (missionTemplate != null)
+            {
+                Destroy(missionTemplate.gameObject);
+            }
+        }
 
         foreach (Transform child in questRewardList)
             Destroy(child.gameObject);
@@ -217,10 +326,10 @@ public class BB_QuestJournalUI : MonoBehaviour
         isObjectActive.gameObject.SetActive(!isActive);
     }
 
-    public void ChangeSiblingArrangement()
+    public void ChangeSiblingArrangement(BB_Quest quest)
     {
         // Get the list container for the current quest
-        string actKey = $"{currentSelectedQuest.questType}_{currentSelectedQuest.actNumber}";
+        string actKey = $"{quest.questType}_{quest.actNumber}";
         if (!actGroups.TryGetValue(actKey, out Transform actGroupContainer))
             return;
 
@@ -229,13 +338,13 @@ public class BB_QuestJournalUI : MonoBehaviour
 
         foreach (Transform child in questList)
         {
-            if (child.name == currentSelectedQuest.questTitle)
+            if (child.name == quest.questTitle)
             {
-                if (currentSelectedQuest.state == QuestState.Claimed)
+                if (quest.state == QuestState.Claimed)
                 {
                     child.SetAsLastSibling(); // move claimed quests to the bottom
                 }
-                else if (currentSelectedQuest.isBeingTracked)
+                else if (quest.isBeingTracked)
                 {
                     child.SetAsFirstSibling(); // move tracked quests to the top
                 }
@@ -244,24 +353,176 @@ public class BB_QuestJournalUI : MonoBehaviour
         }
     }
 
+    public void TrackQuest(BB_Quest selectedQuest)
+    {
+        BB_Quest trackingQuest;
+
+        if (selectedQuest != null)
+            trackingQuest = selectedQuest;
+        else
+            trackingQuest = currentSelectedQuest;
+
+
+        BB_QuestHUD.instance.trackedQuest = trackingQuest;
+
+        foreach (BB_Quest quest in BB_QuestManager.Instance.activeMainQuests)
+            quest.isBeingTracked = false;
+
+        foreach (BB_Quest quest in BB_QuestManager.Instance.activeSideQuests)
+            quest.isBeingTracked = false;
+
+
+        trackingQuest.isBeingTracked = true;
+        ChangeTrackerButtonDisplay(trackingQuest);
+        ChangeSiblingArrangement(trackingQuest);
+        BB_QuestHUD.instance.UpdateUI();
+    }
+
+    public void UnTrackQuest(BB_Quest selectedQuest)
+    {
+        BB_Quest trackingQuest;
+
+        if (selectedQuest != null)
+            trackingQuest = selectedQuest;
+        else
+            trackingQuest = currentSelectedQuest;
+
+        BB_QuestHUD.instance.trackedQuest = null;
+
+        trackingQuest.isBeingTracked = false;
+        ChangeTrackerButtonDisplay(trackingQuest);
+        BB_QuestHUD.instance.UpdateUI();
+    }
+
     public void ChangeTrackerButtonDisplay(BB_Quest quest)
     {
-        if (quest == null || quest.state == QuestState.Claimed)
+        // Hide claim button by default
+        buttonManager.claimRewardsButton.gameObject.SetActive(false);
+
+        // If null, completed, or claimed → disable track/untrack, maybe show claim
+        if (quest == null || quest.state == QuestState.Completed || quest.state == QuestState.Claimed)
         {
             buttonManager.questTrackButton.gameObject.SetActive(false);
             buttonManager.questUntrackButton.gameObject.SetActive(false);
+
+            if (quest != null && quest.state == QuestState.Completed)
+                buttonManager.claimRewardsButton.gameObject.SetActive(true);
+
             return;
         }
 
-        if (quest.isBeingTracked)
+        // Toggle track/untrack
+        buttonManager.questTrackButton.gameObject.SetActive(!quest.isBeingTracked);
+        buttonManager.questUntrackButton.gameObject.SetActive(quest.isBeingTracked);
+
+    }
+
+    private void HandleQuestUpdate()
+    {
+        foreach (BB_Quest quest in BB_QuestManager.Instance.allQuests)
         {
-            buttonManager.questTrackButton.gameObject.SetActive(false);
-            buttonManager.questUntrackButton.gameObject.SetActive(true);
-        }
-        else
-        {
-            buttonManager.questTrackButton.gameObject.SetActive(true);
-            buttonManager.questUntrackButton.gameObject.SetActive(false);
+            if (quest.state == QuestState.Claimed && !IsInCompletedPanel(quest))
+            {
+                MoveQuestToCompletedPanel(quest);
+            }
         }
     }
+
+    private void MoveQuestToCompletedPanel(BB_Quest quest)
+    {
+        string actKey = $"{quest.questType}_{quest.actNumber}";
+
+        // Try to get the Act Group in main or side quests
+        if (!actGroups.TryGetValue(actKey, out Transform actGroup)) return;
+
+        Transform questList = actGroup.Find("Quest List");
+        Transform buttonToMove = null;
+
+        // Find the quest button to move
+        foreach (Transform child in questList)
+        {
+            if (child.name == quest.questTitle)
+            {
+                buttonToMove = child;
+                break;
+            }
+        }
+
+        if (buttonToMove != null)
+        {
+            bool willBeEmpty = (questList.childCount == 1);
+            buttonToMove.SetParent(null);
+
+            if (willBeEmpty)
+            {
+                Destroy(actGroup.gameObject);
+                actGroups.Remove(actKey);
+            }
+
+            // === Handle Completed Quest Act Group ===
+
+            Transform completedActGroup = null;
+            Transform completedQuestList = null;
+
+            // Check for an existing act group by inspecting the Act Number text
+            foreach (Transform group in completedQuestSelectionScrollContent)
+            {
+                var actText = group.Find("Act Number")?.GetComponentInChildren<TextMeshProUGUI>();
+                if (actText != null && actText.text == quest.actNumber)
+                {
+                    completedActGroup = group;
+                    completedQuestList = group.Find("Quest List");
+                    break;
+                }
+            }
+
+            // If no existing group, create a new one
+            if (completedActGroup == null)
+            {
+                GameObject newGroup = Instantiate(questGroupTemplate, completedQuestSelectionScrollContent);
+                newGroup.SetActive(true);
+
+                var actNumberText = newGroup.transform.Find("Act Number")?.GetComponentInChildren<TextMeshProUGUI>();
+                if (actNumberText != null)
+                {
+                    actNumberText.text = quest.actNumber;
+                }
+
+                completedActGroup = newGroup.transform;
+                completedQuestList = completedActGroup.Find("Quest List");
+                // Make the Act group button clickable (for toggling quest list)
+                Button actButton = completedActGroup.Find("Act Number")?.GetComponent<Button>();
+                if (actButton != null)
+                {
+                    actButton.onClick.AddListener(() => ToggleActNumberGroup(completedQuestList.gameObject));
+                }
+            }
+
+
+            // Move the button to the completed group's quest list
+            buttonToMove.SetParent(completedQuestList, false);
+        }
+
+        OnOpenJournal(mainQuestSelectionScrollContent, SideQuestSelectionScrollContent);
+
+        if (currentSelectedQuest == quest)
+        {
+            ClearDetails();
+        }
+    }
+
+
+
+
+
+    private bool IsInCompletedPanel(BB_Quest quest)
+    {
+        foreach (Transform child in completedQuestSelectionScrollContent)
+        {
+            if (child.name == quest.questTitle)
+                return true;
+        }
+        return false;
+    }
+
 }

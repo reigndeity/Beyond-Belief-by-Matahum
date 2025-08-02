@@ -19,19 +19,21 @@ MonoBehaviour:
   - Test for on going Quest
   - Test for on completion Quest
   - Test for on Reward Claimed
-  questHudDescription: This is the Quest HUD Description
+  questHudDescription: Go to shit
   questHudWhereToClaimQueDescription: Go to your mom to report what happened
   questType: 0
-  state: 2
+  state: 1
   missions:
   - whatMustBeDone: Destroy GameObject
     targetID: testMission
+    hasCounter: 1
     requiredAmount: 5
-    currentAmount: 5
-  - whatMustBeDone: Destroy the other GameObject
+    currentAmount: 0
+  - whatMustBeDone: Go find Tupas
     targetID: anotherTestMission
-    requiredAmount: 5
-    currentAmount: 5
+    hasCounter: 0
+    requiredAmount: 1
+    currentAmount: 0
   rewards:
   - {fileID: 11400000, guid: 9b56dd6f8cf7ec349bb224f12bc87230, type: 2}
   - {fileID: 11400000, guid: 31b0ab4b496c76a43811a782ce88f796, type: 2}

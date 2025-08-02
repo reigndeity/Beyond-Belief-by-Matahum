@@ -61,14 +61,15 @@ public class BB_ArchiveUI : MonoBehaviour
         {
             var localObj = obj;
             GameObject slotGO = Instantiate(archiveSlotPrefab, parent);
-            Button archiveBtn = slotGO.GetComponent<Button>();
-            archiveBtn.onClick.AddListener(() => ShowDetails(localObj));
-
+            
             BB_ArchiveUITemplate slotUI = slotGO.GetComponent<BB_ArchiveUITemplate>();
             if (slotUI != null)
             {
                 slotUI.Setup(localObj, undiscoveredImage);
             }
+
+            Button archiveBtn = slotGO.GetComponent<Button>();
+            archiveBtn.onClick.AddListener(() => ShowDetails(localObj, slotUI));
 
             archiveList.Add(slotGO);
         }
@@ -84,7 +85,7 @@ public class BB_ArchiveUI : MonoBehaviour
         }
     }
 
-    public void ShowDetails(BB_ArchiveSO archiveSO)
+    public void ShowDetails(BB_ArchiveSO archiveSO, BB_ArchiveUITemplate uiTemplate)
     {
         if (!archiveSO.isDiscovered)
         {
@@ -97,10 +98,16 @@ public class BB_ArchiveUI : MonoBehaviour
             archiveTitleName.text = archiveSO.archiveName;
             archiveImage.sprite = archiveSO.archiveImage;
             archiveDetailText.text = archiveSO.archiveDescription;
+
+            if (!archiveSO.isViewed)
+            {
+                archiveSO.isViewed = true;
+                uiTemplate.newDiscoverySprite.SetActive(false);
+            }
         }
     }
 
-    private void RefreshArchiveDisplay()
+    private void RefreshArchiveDisplay(BB_ArchiveSO ignoreThis)
     {
         foreach (var slotGO in archiveList)
         {

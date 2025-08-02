@@ -34,7 +34,8 @@ public class BB_NotifyQuestProgress : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(targetID))
         {
-            BB_QuestManager.Instance?.UpdateMissionProgress(targetID, 1);
+            if(BB_QuestManager.Instance != null)
+                BB_QuestManager.Instance?.UpdateMissionProgress(targetID, 1);
         }
     }
 }
