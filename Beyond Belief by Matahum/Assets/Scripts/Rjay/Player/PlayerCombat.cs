@@ -243,4 +243,15 @@ public class PlayerCombat : MonoBehaviour
             Gizmos.DrawRay(transform.position, rightRayDirection * detectionRadius);
     #endif
     }
+
+    public void ForceStopCombat()
+    {
+        isAttacking = false;
+        canMoveDuringAttack = true;
+        ResetAttackCombo();
+        HideWeapon();
+        HideAttackSlash();
+        HideWeaponParticle();
+    }
+
 }

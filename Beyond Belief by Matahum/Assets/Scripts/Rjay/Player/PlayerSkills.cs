@@ -129,4 +129,18 @@ public class PlayerSkills : MonoBehaviour
         m_playerCombat.HideWeapon();
         m_playerCombat.ShowWeaponParticle();
     }
+
+    public void ForceStopSkills()
+    {
+        if (isUsingNormalSkill)
+        {
+            EndNormalSkill(); // your existing cleanup function
+        }
+
+        if (isUsingUltimateSkill)
+        {
+            EndUltimateSkill(); // your existing cleanup function
+        }
+    }
+
 }

@@ -373,4 +373,20 @@ public class PlayerMovement : MonoBehaviour
         dashVFX.gameObject.SetActive(false);
     }
     public bool IsAboutToJump() => isJumpStarting;
+
+
+    public void ForceStop()
+    {
+        MoveDirection = Vector3.zero;
+        isSprinting = false;
+        isJumping = false;
+        isJumpStarting = false;
+        dashTimeRemaining = 0f;
+        isDashing = false;
+        verticalVelocity = -2f;
+
+        StopSprintTrail();
+    }
+
+
 }

@@ -1,4 +1,4 @@
-using UnityEngine;
+ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -429,4 +429,19 @@ public class PlayerAnimator : MonoBehaviour
 
         return 0.2f;
     }
+    public void ForceIdleState()
+    {
+        StopAllCoroutines(); // Cancel all active anim coroutines
+        isHit = false;
+
+        // Reset internal state tracking
+        idleCycleCoroutine = null;
+        stopAnimationCoroutine = null;
+        isInIdleCycle = false;
+        isPlayingStopAnimation = false;
+
+        // Immediately play idle
+        ChangeAnimationState("player_idle_1");
+    }
+
 }

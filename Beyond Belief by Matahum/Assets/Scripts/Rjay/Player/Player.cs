@@ -126,6 +126,40 @@ public class Player : MonoBehaviour, IDamageable
             suppressInputUntilNextFrame = false;
     }
 
+    #region PLAYER BEHAVIOR
+    public void ForceIdleOverride()
+    {
+        suppressInputUntilNextFrame = true;
+
+        m_playerMovement.ForceStop();
+        m_playerCombat.ForceStopCombat();
+        m_playerSkills.ForceStopSkills();
+        m_playerAnimator.ForceIdleState();
+
+        // If in mid-air, apply gravity until grounded
+        if (!GetComponent<CharacterController>().isGrounded)
+        {
+            StartCoroutine(ApplyGravityUntilGrounded());
+        }
+
+        Debug.Log("🧍 ForceIdleOverride: Player forcibly reset to idle.");
+    }
+
+
+    private IEnumerator ApplyGravityUntilGrounded()
+    {
+        while (!GetComponent<CharacterController>().isGrounded)
+        {
+            m_playerMovement.ApplyGravityStep(); // Your built-in gravity application
+            yield return null;
+        }
+
+        m_playerAnimator.ChangeAnimationState("player_idle_1"); // ensure idle once landed
+    }
+
+    #endregion
+
+
     #region DAMAGE / HEAL FUNCTIONS
     public void TakeDamage(float damage)
     {
