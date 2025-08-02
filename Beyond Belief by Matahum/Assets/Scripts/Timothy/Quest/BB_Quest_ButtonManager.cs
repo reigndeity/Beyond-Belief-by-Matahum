@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BB_Quest_ButtonManager : MonoBehaviour
 {
@@ -11,18 +12,32 @@ public class BB_Quest_ButtonManager : MonoBehaviour
     public Button openJournalButton;
 
     [Header("Main Quest Button and Panel")]
+    public TextMeshProUGUI mainQuestTextDivider;
     public GameObject mainQuestPanel;
     public Transform mainQuestScrollView;
     public Button mainQuestButton;
 
     [Header("Side Quest Button and Panel")]
+    public TextMeshProUGUI sideQuestTextDivider;
     public GameObject sideQuestPanel;
     public Transform sideQuestScrollView;
     public Button sideQuestButton;
 
+    [Header("All Quest Button and Panel")]
+    public Button allQuestButton;
+    public TextMeshProUGUI questTitleText;
+
+    [Header("Completed Quest BUtton and Panel")]
+    public GameObject completedQuestPanel;
+    public Transform completedQuestScrollView;
+    public Button completedQuestButton;
+
     [Header("Exit Quest Journal")]
     public Button questTrackButton;
     public Button questUntrackButton;
+
+    [Header("Claim Rewards")]
+    public Button claimRewardsButton;
 
     [Header("Exit Quest Journal")]
     public Button exitButton;
@@ -32,9 +47,12 @@ public class BB_Quest_ButtonManager : MonoBehaviour
         openJournalButton.onClick.AddListener(OpenJournal);
         mainQuestButton.onClick.AddListener(OpenMainQuest);
         sideQuestButton.onClick.AddListener(OpenSideQuest);
+        allQuestButton.onClick.AddListener(OpenAllQuest);
+        completedQuestButton.onClick.AddListener(OpenCompletedQuest);
         questTrackButton.onClick.AddListener(TrackQuest);
         questUntrackButton.onClick.AddListener(UnTrackQuest);
-
+        claimRewardsButton.onClick.AddListener(ClaimRewards);
+        exitButton.onClick.AddListener(ExitJournal);
     }
     #region Open Journal
     public void OpenJournal()
@@ -42,9 +60,11 @@ public class BB_Quest_ButtonManager : MonoBehaviour
         questJournal.SetActive(true);
         questHud.SetActive(false);
 
-        mainQuestPanel.SetActive(true);
-        sideQuestPanel.SetActive(false);
-        BB_QuestJournalUI.instance.OnOpenJournal(mainQuestScrollView);
+        //mainQuestPanel.SetActive(true);
+        //sideQuestPanel.SetActive(false);
+        //BB_QuestJournalUI.instance.OnOpenJournal(mainQuestScrollView);
+
+        OpenAllQuest();
     }
     #endregion
     #region Quest Category
@@ -52,49 +72,73 @@ public class BB_Quest_ButtonManager : MonoBehaviour
     {
         mainQuestPanel.SetActive(true);
         sideQuestPanel.SetActive(false);
+        completedQuestPanel.SetActive(false);
+
+        mainQuestTextDivider.gameObject.SetActive(false);
+        sideQuestTextDivider.gameObject.SetActive(false);
+
         BB_QuestJournalUI.instance.OnOpenJournal(mainQuestScrollView);
+        /*BB_QuestJournalUI.instance.FilterQuests(QuestScrollView.main);
+        BB_QuestJournalUI.instance.OnOpenJournal(allQuestScrollView);*/
+        questTitleText.text = "Main Quests";
     }
     public void OpenSideQuest()
     {
         mainQuestPanel.SetActive(false);
         sideQuestPanel.SetActive(true);
+        completedQuestPanel.SetActive(false);
+
+        mainQuestTextDivider.gameObject.SetActive(false);
+        sideQuestTextDivider.gameObject.SetActive(false);
+
         BB_QuestJournalUI.instance.OnOpenJournal(sideQuestScrollView);
+        /*BB_QuestJournalUI.instance.FilterQuests(QuestScrollView.side);
+        BB_QuestJournalUI.instance.OnOpenJournal(allQuestScrollView);*/
+        questTitleText.text = "Side Quests";
+    }
+
+    public void OpenAllQuest()
+    {
+        mainQuestPanel.SetActive(true);
+        sideQuestPanel.SetActive(true);
+        completedQuestPanel.SetActive(false);
+
+        mainQuestTextDivider.gameObject.SetActive(true);
+        sideQuestTextDivider.gameObject.SetActive(true);
+
+        //BB_QuestJournalUI.instance.FilterQuests(QuestScrollView.all);
+        BB_QuestJournalUI.instance.OnOpenJournal(mainQuestScrollView, sideQuestScrollView);
+        questTitleText.text = "All Quests";
+    }
+
+    public void OpenCompletedQuest()
+    {
+        mainQuestPanel.SetActive(false);
+        sideQuestPanel.SetActive(false);
+        completedQuestPanel.SetActive(true);
+
+        mainQuestTextDivider.gameObject.SetActive(false);
+        sideQuestTextDivider.gameObject.SetActive(false);
+
+        BB_QuestJournalUI.instance.OnOpenJournal(completedQuestScrollView);
+        questTitleText.text = "Completed Quests";
     }
     #endregion
     #region Tracker
     public void TrackQuest()
     {
-        if (BB_QuestJournalUI.instance.currentSelectedQuest.questType == BB_QuestType.Main)
-        {
-            BB_QuestHUD.instance.trackedMainQuest = BB_QuestJournalUI.instance.currentSelectedQuest;
-
-            foreach (BB_Quest quest in BB_QuestManager.Instance.activeMainQuests)
-                quest.isBeingTracked = false;
-        }
-        else
-        {
-            BB_QuestHUD.instance.trackedSideQuest = BB_QuestJournalUI.instance.currentSelectedQuest;
-
-            foreach (BB_Quest quest in BB_QuestManager.Instance.activeSideQuests)
-                quest.isBeingTracked = false;
-        }
-
-        BB_QuestJournalUI.instance.currentSelectedQuest.isBeingTracked = true;
-        BB_QuestJournalUI.instance.ChangeTrackerButtonDisplay(BB_QuestJournalUI.instance.currentSelectedQuest);
-        BB_QuestJournalUI.instance.ChangeSiblingArrangement();
-        BB_QuestHUD.instance.UpdateUI();
+        BB_QuestJournalUI.instance.TrackQuest(BB_QuestJournalUI.instance.currentSelectedQuest);
     }
 
     public void UnTrackQuest()
     {
-        if (BB_QuestJournalUI.instance.currentSelectedQuest.questType == BB_QuestType.Main)
-            BB_QuestHUD.instance.trackedMainQuest = null;
-        else
-            BB_QuestHUD.instance.trackedSideQuest = null;
-
-        BB_QuestJournalUI.instance.currentSelectedQuest.isBeingTracked = false;
-        BB_QuestJournalUI.instance.ChangeTrackerButtonDisplay(BB_QuestJournalUI.instance.currentSelectedQuest);
-        BB_QuestHUD.instance.UpdateUI();
+        BB_QuestJournalUI.instance.UnTrackQuest(BB_QuestJournalUI.instance.currentSelectedQuest);
+    }
+    #endregion
+    #region Claim Rewards
+    public void ClaimRewards()
+    {
+        BB_QuestManager.Instance.ClaimRewards(BB_QuestJournalUI.instance.currentSelectedQuest);
     }
     #endregion
     #region Exit Journal

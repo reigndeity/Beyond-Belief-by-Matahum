@@ -53,6 +53,9 @@ public class BB_QuestManager : MonoBehaviour
 
         OrganizeAcceptedQuests();
         BB_QuestJournalUI.instance.AddQuestToJournal(quest);
+
+        if (BB_QuestHUD.instance.trackedQuest == null)
+            BB_QuestJournalUI.instance.TrackQuest(quest);
     }
 
     public void AcceptQuestByID(string questID)
@@ -65,7 +68,7 @@ public class BB_QuestManager : MonoBehaviour
     public Dictionary<BB_QuestType, Dictionary<string, List<BB_Quest>>> groupedQuests
            = new Dictionary<BB_QuestType, Dictionary<string, List<BB_Quest>>>();
 
-    public void OrganizeAcceptedQuests()
+    private void OrganizeAcceptedQuests()
     {
         groupedQuests.Clear();
 
@@ -148,7 +151,7 @@ public class BB_QuestManager : MonoBehaviour
             }
 
             quest.state = QuestState.Claimed;
-
+            BB_QuestHUD.instance.trackedQuest = null;
             OnQuestUpdate?.Invoke();
         }
     }

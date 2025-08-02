@@ -55,6 +55,11 @@ public class BB_ArchiveUI : MonoBehaviour
         AddArchiveSlots(BB_ArchiveManager.instance.plantList, plantsScrollContent);
     }
 
+    public void OnOpenArchives(Transform scrollView)
+    {
+
+    }
+
     private void AddArchiveSlots(List<BB_ArchiveSO> archiveListSource, Transform parent)
     {
         foreach (var obj in archiveListSource)

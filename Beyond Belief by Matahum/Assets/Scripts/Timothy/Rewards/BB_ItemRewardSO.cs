@@ -5,6 +5,7 @@ public class BB_ItemRewardSO : BB_RewardSO
 {
     public R_ItemData item;
     public int rewardQuantity;
+    public Sprite rewardBackground;
 
     public override void GiveReward()
     {
@@ -14,7 +15,7 @@ public class BB_ItemRewardSO : BB_RewardSO
         inventory.AddItem(item, RewardQuantity());
         inventoryUI?.RefreshUI();
     }
-
+    public override Sprite RewardBackground() => rewardBackground;
     public override Sprite RewardIcon() => item.itemIcon;
     public override string RewardName() => item.itemName;
     public override int RewardQuantity() => rewardQuantity;

@@ -14,19 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questID: testQuest3
   questTitle: Testing for different Act
-  actNumber: Act 2
+  actNumber: Bangkaw Favors
   questJournalDescription:
   - random bullshit on going
   - random bullshit on completion
   - random bullshit on claiming
   questHudDescription: basta HUD description
   questHudWhereToClaimQueDescription: punta ka kahit saan
-  questType: 0
+  questType: 1
   state: 1
   missions:
   - whatMustBeDone: bahala na
     targetID: destroyShit
+    hasCounter: 1
     requiredAmount: 3
     currentAmount: 0
   rewards: []
-  isBeingTracked: 1
+  isBeingTracked: 0

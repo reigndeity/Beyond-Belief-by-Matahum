@@ -23,7 +23,7 @@ public class BB_ArchiveUITemplate : MonoBehaviour
         if (linkedArchiveSO.isDiscovered)
         {
             nameText.text = linkedArchiveSO.archiveName;
-            iconImage.sprite = linkedArchiveSO.archiveImage;
+            iconImage.sprite = linkedArchiveSO.archiveIcon;
         }
         else
         {

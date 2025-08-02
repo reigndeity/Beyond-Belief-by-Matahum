@@ -28,6 +28,7 @@ public class BB_ArchiveTracker : MonoBehaviour
         {
             BB_ArchiveManager.instance.UpdateArchive(archiveID);
             hasBeenDiscovered = true;
+            Debug.Log(archiveID + " has been discovered");
         }
     }
 }
