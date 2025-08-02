@@ -6,6 +6,7 @@ public class BB_ArchiveTracker : MonoBehaviour
     private bool hasBeenDiscovered = false;
     public Camera detectionCamera; // assign this to your player camera
     public float checkInterval = 0.3f;
+    public float detectionRange = 30f; // Maximum range in units
 
     private void Start()
     {
@@ -19,16 +20,34 @@ public class BB_ArchiveTracker : MonoBehaviour
     {
         if (hasBeenDiscovered || detectionCamera == null) return;
 
+        float distance = Vector3.Distance(detectionCamera.transform.position, transform.position);
+        if (distance > detectionRange) return;
+
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(detectionCamera);
         Collider col = GetComponent<Collider>();
-
         if (col == null) return;
 
-        if (GeometryUtility.TestPlanesAABB(planes, col.bounds))
+        if (!GeometryUtility.TestPlanesAABB(planes, col.bounds)) return;
+
+        // Line of sight check
+        Vector3 dirToObject = (col.bounds.center - detectionCamera.transform.position).normalized;
+        Ray ray = new Ray(detectionCamera.transform.position, dirToObject);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, detectionRange))
         {
-            BB_ArchiveManager.instance.UpdateArchive(archiveID);
-            hasBeenDiscovered = true;
-            Debug.Log(archiveID + " has been discovered");
+            if (hit.collider == col)
+            {
+                BB_ArchiveManager.instance.UpdateArchive(archiveID);
+                hasBeenDiscovered = true;
+            }
         }
     }
+
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
+    }
+
 }

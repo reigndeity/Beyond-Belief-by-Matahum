@@ -15,7 +15,7 @@ public class BB_ArchiveManager : MonoBehaviour
     public List<BB_ArchiveSO> wildlifeList = new List<BB_ArchiveSO>();
     public List<BB_ArchiveSO> plantList = new List<BB_ArchiveSO>();
 
-    public event Action OnArchiveUpdate;
+    public event Action<BB_ArchiveSO> OnArchiveUpdate;
 
     private void Awake()
     {
@@ -71,10 +71,11 @@ public class BB_ArchiveManager : MonoBehaviour
 
     public void CheckArchive(BB_ArchiveSO archiveObj, string archiveID)
     {
-        if (archiveObj.archiveName == archiveID)
+        if (archiveObj.archiveName == archiveID && !archiveObj.isDiscovered)
         {
             archiveObj.isDiscovered = true;
-            OnArchiveUpdate?.Invoke();
+            OnArchiveUpdate?.Invoke(archiveObj);
+            Debug.Log(archiveObj.archiveName + " has been discovered (visible and unobstructed)");
         }
     }
 

@@ -19,4 +19,5 @@ public class BB_ArchiveSO : ScriptableObject
     public ArchiveType archiveType;
 
     public bool isDiscovered;
+    public bool isViewed;
 }

@@ -9,6 +9,7 @@ public class BB_ArchiveUITemplate : MonoBehaviour
     public BB_ArchiveSO linkedArchiveSO;
 
     public Sprite undiscoveredSprite;
+    public GameObject newDiscoverySprite;
     public void Setup(BB_ArchiveSO archiveSO, Sprite defaultUndiscoveredSprite)
     {
         linkedArchiveSO = archiveSO;
@@ -24,6 +25,9 @@ public class BB_ArchiveUITemplate : MonoBehaviour
         {
             nameText.text = linkedArchiveSO.archiveName;
             iconImage.sprite = linkedArchiveSO.archiveIcon;
+
+            newDiscoverySprite.SetActive(!linkedArchiveSO.isViewed);
+
         }
         else
         {

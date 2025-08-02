@@ -96,7 +96,6 @@ public class BB_Quest_ButtonManager : MonoBehaviour
         BB_QuestJournalUI.instance.OnOpenJournal(allQuestScrollView);*/
         questTitleText.text = "Side Quests";
     }
-
     public void OpenAllQuest()
     {
         mainQuestPanel.SetActive(true);
