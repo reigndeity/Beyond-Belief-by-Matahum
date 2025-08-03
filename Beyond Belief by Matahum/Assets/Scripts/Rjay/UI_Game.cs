@@ -7,7 +7,6 @@ public class UI_Game : MonoBehaviour
 {
     [SerializeField] private R_InventoryUI r_inventoryUI;
     [SerializeField] private R_CharacterDetailsPanel m_characterDetailsPanel;
-
     
     [Header("UI Game Behavior")]
     private bool isUIHidden = false;

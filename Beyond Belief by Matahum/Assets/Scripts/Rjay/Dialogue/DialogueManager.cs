@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
@@ -23,6 +24,7 @@ public class DialogueManager : MonoBehaviour
     public KeyCode fastForwardKey = KeyCode.Mouse0;
 
     private DialogueSequence currentSequence;
+    private List<DialogueLine> flattenedLines = new List<DialogueLine>();
     private int currentIndex;
     private bool isPlaying;
     private bool textFullyRevealed;
@@ -32,8 +34,7 @@ public class DialogueManager : MonoBehaviour
     public UnityEvent onDialogueStart;
     public UnityEvent onDialogueEnd;
 
-    [HideInInspector] public bool isDialoguePlaying = false; // exposed for player to check
-
+    [HideInInspector] public bool isDialoguePlaying = false;
 
     void Awake()
     {
@@ -63,9 +64,16 @@ public class DialogueManager : MonoBehaviour
         if (sequence == null) return;
 
         currentSequence = sequence;
+        flattenedLines.Clear();
         currentIndex = -1;
         isPlaying = true;
         isDialoguePlaying = true;
+
+        // Flatten groups into one linear list
+        foreach (var group in currentSequence.groups)
+        {
+            flattenedLines.AddRange(group.lines);
+        }
 
         dialoguePanel.SetActive(true);
         onDialogueStart?.Invoke();
@@ -76,13 +84,13 @@ public class DialogueManager : MonoBehaviour
     {
         currentIndex++;
 
-        if (currentIndex >= currentSequence.lines.Length)
+        if (currentIndex >= flattenedLines.Count)
         {
             EndDialogue();
             return;
         }
 
-        DialogueLine line = currentSequence.lines[currentIndex];
+        DialogueLine line = flattenedLines[currentIndex];
 
         // Check condition
         if (!IsConditionMet(line))
@@ -119,7 +127,7 @@ public class DialogueManager : MonoBehaviour
             StopCoroutine(typewriterRoutine);
         }
 
-        dialogueText.text = currentSequence.lines[currentIndex].dialogueText;
+        dialogueText.text = flattenedLines[currentIndex].dialogueText;
         textFullyRevealed = true;
     }
 
@@ -144,10 +152,9 @@ public class DialogueManager : MonoBehaviour
     {
         isPlaying = false;
         isDialoguePlaying = false;
-        
+
         dialoguePanel.SetActive(false);
         currentSequence = null;
-        
 
         onDialogueEnd?.Invoke();
         FindFirstObjectByType<Player>().suppressInputUntilNextFrame = true;
