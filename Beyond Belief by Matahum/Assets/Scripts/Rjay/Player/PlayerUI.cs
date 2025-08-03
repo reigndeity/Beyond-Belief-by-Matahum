@@ -23,7 +23,6 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private PlayerStaminaCanvas m_playerStaminaCanvas;
     private float lastStaminaUseTime;
     private bool isStaminaVisible = false;
-    [SerializeField] private Image dashFill;
 
     [Header("Normal Skill UI Properties")]
     [SerializeField] private Image normalSkillBackground;
@@ -104,7 +103,6 @@ public class PlayerUI : MonoBehaviour
     void UIDashCooldownUpdate()
     {
         float dashPercent = 1f - (m_playerMovement.GetDashCooldownRemaining() / m_playerMovement.dashCooldown);
-        dashFill.fillAmount = dashPercent;
     }
 
     void UINormalSkillCooldownUpdate()

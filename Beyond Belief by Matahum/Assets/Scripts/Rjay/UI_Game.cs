@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,11 +47,27 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Button teleportButton;
     public static event Action OnCloseTeleportPanel;
 
+    [Header("UI Animation")]
+    [SerializeField] GameObject topUIObj;
+    [SerializeField] GameObject bottomUIObj;
+    [SerializeField] private float fadeDuration = 0.2f;
+    [SerializeField] private float uiMoveDuration = 0.25f;
+    [SerializeField] private float hideYOffset = 350;
+    Vector3 topOriginalPos;
+    Vector3 bottomOriginalPos;
+    private CanvasGroup topCanvasGroup;
+    private CanvasGroup bottomCanvasGroup;
+
     void Awake()
     {
         // r_inventoryUI = FindFirstObjectByType<R_InventoryUI>();
         // m_characterDetailsPanel = FindFirstObjectByType<R_CharacterDetailsPanel>();
         // m_pamanaPanel = FindFirstObjectByType<R_PamanaPanel>();
+
+        topOriginalPos = topUIObj.transform.localPosition;
+        bottomOriginalPos = bottomUIObj.transform.localPosition;
+        topCanvasGroup = topUIObj.GetComponent<CanvasGroup>();
+        bottomCanvasGroup = bottomUIObj.GetComponent<CanvasGroup>();
     }
     void Start()
     {
@@ -81,6 +98,7 @@ public class UI_Game : MonoBehaviour
         closeQuestButton.onClick.AddListener(OnClickCloseQuestJournal);
     }
 
+    #region MAP TELEPORT
     public void OnClickCloseTeleportPanel()
     {
         teleportPanel.SetActive(false);
@@ -90,7 +108,7 @@ public class UI_Game : MonoBehaviour
     {
         MapTeleportManager.instance.TeleportPlayerToSelected();
     }
-
+    #endregion
     #region INVENTORY
     public void OnClickOpenInventory()
     {
@@ -179,5 +197,84 @@ public class UI_Game : MonoBehaviour
     {
         questPanel.SetActive(false);
     }
+    #endregion
+
+    #region UI ANIMATION
+    public void HideUI()
+    {
+        StopAllCoroutines();
+
+        StartCoroutine(AnimateUI_Movement(topUIObj, topOriginalPos, topOriginalPos + Vector3.up * hideYOffset));
+        StartCoroutine(AnimateUI_Movement(bottomUIObj, bottomOriginalPos, bottomOriginalPos + Vector3.down * hideYOffset));
+
+        StartCoroutine(AnimateUI_Fade(topCanvasGroup, topCanvasGroup.alpha, 0f));
+        StartCoroutine(AnimateUI_Fade(bottomCanvasGroup, bottomCanvasGroup.alpha, 0f));
+    }
+
+    public void ShowUI()
+    {
+        StopAllCoroutines();
+
+        StartCoroutine(AnimateUI_Movement(topUIObj, topUIObj.transform.localPosition, topOriginalPos));
+        StartCoroutine(AnimateUI_Movement(bottomUIObj, bottomUIObj.transform.localPosition, bottomOriginalPos));
+
+        StartCoroutine(AnimateUI_Fade(topCanvasGroup, topCanvasGroup.alpha, 1f));
+        StartCoroutine(AnimateUI_Fade(bottomCanvasGroup, bottomCanvasGroup.alpha, 1f));
+    }
+
+    private IEnumerator AnimateUI_Movement(GameObject uiObj, Vector3 fromPos, Vector3 toPos)
+    {
+        float overshootDistance = 10f;
+        float halfDuration = uiMoveDuration * 0.5f;
+
+        Vector3 moveDir = (toPos - fromPos).normalized;
+        Vector3 overshootPos = toPos + moveDir * overshootDistance;
+
+        // Phase 1: move to overshoot
+        float elapsed1 = 0f;
+        while (elapsed1 < halfDuration)
+        {
+            elapsed1 += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed1 / halfDuration);
+            float smoothed = Mathf.SmoothStep(0, 1, t);
+
+            uiObj.transform.localPosition = Vector3.Lerp(fromPos, overshootPos, smoothed);
+            yield return null;
+        }
+
+        // Phase 2: move to target
+        float elapsed2 = 0f;
+        while (elapsed2 < halfDuration)
+        {
+            elapsed2 += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed2 / halfDuration);
+            float smoothed = Mathf.SmoothStep(0, 1, t);
+
+            uiObj.transform.localPosition = Vector3.Lerp(overshootPos, toPos, smoothed);
+            yield return null;
+        }
+
+        uiObj.transform.localPosition = toPos;
+    }
+    private IEnumerator AnimateUI_Fade(CanvasGroup canvasGroup, float fromAlpha, float toAlpha)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / fadeDuration);
+            float smoothed = Mathf.SmoothStep(0, 1, t);
+
+            canvasGroup.alpha = Mathf.Lerp(fromAlpha, toAlpha, smoothed);
+            yield return null;
+        }
+
+        canvasGroup.alpha = toAlpha;
+        canvasGroup.interactable = (toAlpha >= 1f);
+        canvasGroup.blocksRaycasts = (toAlpha >= 1f);
+    }
+
+
     #endregion
 }
