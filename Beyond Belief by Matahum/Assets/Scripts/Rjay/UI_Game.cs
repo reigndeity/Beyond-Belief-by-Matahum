@@ -7,7 +7,11 @@ public class UI_Game : MonoBehaviour
 {
     [SerializeField] private R_InventoryUI r_inventoryUI;
     [SerializeField] private R_CharacterDetailsPanel m_characterDetailsPanel;
+
     
+    [Header("UI Game Behavior")]
+    private bool isUIHidden = false;
+
     
     [Header("Inventory Properties")]
     [SerializeField] Button inventoryButton; // Overall Inventory (No Equipment)
@@ -37,9 +41,9 @@ public class UI_Game : MonoBehaviour
     [SerializeField] private R_PamanaPanel m_pamanaPanel;
 
     [Header("Quest Journal Properties")]
+    [SerializeField] private BB_Quest_ButtonManager m_questButtonManager;
     [SerializeField] Button questButton;
     [SerializeField] Button closeQuestButton;
-    [SerializeField] GameObject questPanel;
 
     [Header("Full Screen Map Properties")]
     [SerializeField] GameObject teleportPanel;
@@ -109,14 +113,19 @@ public class UI_Game : MonoBehaviour
         MapTeleportManager.instance.TeleportPlayerToSelected();
     }
     #endregion
+    
     #region INVENTORY
     public void OnClickOpenInventory()
     {
         inventoryPanel.SetActive(true);
+        HideUI();
+        PauseGame();
     }
     public void OnClickCloseInventory()
     {
         inventoryPanel.SetActive(false);
+        ShowUI();
+        ResumeGame();
     }
     public void OnClickConsumableFilter()
     {
@@ -149,15 +158,19 @@ public class UI_Game : MonoBehaviour
         Debug.Log("Currently in Raw Ingredients");
     }
     #endregion
-
+    
     #region CHARACTER DETAILS
     public void OnClickOpenCharacterDetails()
     {
         characterDetailPanel.SetActive(true);
+        HideUI();
+        PauseGame();
     }
     public void OnClickCloseCharacterDetails()
     {
         characterDetailPanel.SetActive(false);
+        ShowUI();
+        ResumeGame();
     }
     public void OnClickAttributesTab()
     {
@@ -188,14 +201,19 @@ public class UI_Game : MonoBehaviour
         m_pamanaPanel.OnClick_EquipSlot_Salamangkero();
     }
     #endregion
+    
     #region QUEST JOURNAL
     public void OnClickOpenQuestJournal()
     {
-        questPanel.SetActive(true);
+        m_questButtonManager.OpenJournal();
+        HideUI();
+        PauseGame();
     }
     public void OnClickCloseQuestJournal()
     {
-        questPanel.SetActive(false);
+        m_questButtonManager.ExitJournal();
+        ShowUI();
+        ResumeGame();
     }
     #endregion
 
@@ -210,7 +228,6 @@ public class UI_Game : MonoBehaviour
         StartCoroutine(AnimateUI_Fade(topCanvasGroup, topCanvasGroup.alpha, 0f));
         StartCoroutine(AnimateUI_Fade(bottomCanvasGroup, bottomCanvasGroup.alpha, 0f));
     }
-
     public void ShowUI()
     {
         StopAllCoroutines();
@@ -221,7 +238,6 @@ public class UI_Game : MonoBehaviour
         StartCoroutine(AnimateUI_Fade(topCanvasGroup, topCanvasGroup.alpha, 1f));
         StartCoroutine(AnimateUI_Fade(bottomCanvasGroup, bottomCanvasGroup.alpha, 1f));
     }
-
     private IEnumerator AnimateUI_Movement(GameObject uiObj, Vector3 fromPos, Vector3 toPos)
     {
         float overshootDistance = 10f;
@@ -274,7 +290,22 @@ public class UI_Game : MonoBehaviour
         canvasGroup.interactable = (toAlpha >= 1f);
         canvasGroup.blocksRaycasts = (toAlpha >= 1f);
     }
+    #endregion
+    
+    #region GAME BEHAVIOR
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+    }
 
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+    }
 
+    public bool IsGamePaused()
+    {
+        return Time.timeScale == 0f;
+    }
     #endregion
 }

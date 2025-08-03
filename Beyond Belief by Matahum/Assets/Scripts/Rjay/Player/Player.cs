@@ -54,6 +54,7 @@ public class Player : MonoBehaviour, IDamageable
 
     void Update()
     {   
+        
         // Player Camera
         m_playerCamera.HandleMouseLock();
         if (Cursor.lockState == CursorLockMode.Locked)

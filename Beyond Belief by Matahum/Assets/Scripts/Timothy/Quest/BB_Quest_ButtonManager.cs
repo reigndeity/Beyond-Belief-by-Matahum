@@ -8,9 +8,6 @@ public class BB_Quest_ButtonManager : MonoBehaviour
     public GameObject questJournal;
     public GameObject questHud;
 
-    [Header("Open Journal")]
-    public Button openJournalButton;
-
     [Header("Main Quest Button and Panel")]
     public TextMeshProUGUI mainQuestTextDivider;
     public GameObject mainQuestPanel;
@@ -39,12 +36,9 @@ public class BB_Quest_ButtonManager : MonoBehaviour
     [Header("Claim Rewards")]
     public Button claimRewardsButton;
 
-    [Header("Exit Quest Journal")]
-    public Button exitButton;
 
     private void Start()
     {
-        openJournalButton.onClick.AddListener(OpenJournal);
         mainQuestButton.onClick.AddListener(OpenMainQuest);
         sideQuestButton.onClick.AddListener(OpenSideQuest);
         allQuestButton.onClick.AddListener(OpenAllQuest);
@@ -52,7 +46,6 @@ public class BB_Quest_ButtonManager : MonoBehaviour
         questTrackButton.onClick.AddListener(TrackQuest);
         questUntrackButton.onClick.AddListener(UnTrackQuest);
         claimRewardsButton.onClick.AddListener(ClaimRewards);
-        exitButton.onClick.AddListener(ExitJournal);
     }
     #region Open Journal
     public void OpenJournal()
