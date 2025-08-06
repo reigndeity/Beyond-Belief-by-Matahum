@@ -46,6 +46,10 @@ public class R_InventoryTester : MonoBehaviour
         {
             R_AgimatSpawnerUtility.SpawnRandomAgimatFromPool(agimatTemplates, inventory, inventoryUI, simulatedPlayerLevel, agimatVisualConfig);
         }
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            BB_QuestManager.Instance.AcceptQuestByID("Q0_Question");
+        }
     }
 
     private int GetTotalAmount(R_ItemData item)

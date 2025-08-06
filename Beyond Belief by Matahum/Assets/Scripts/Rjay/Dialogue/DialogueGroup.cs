@@ -3,6 +3,8 @@ using UnityEngine;
 [System.Serializable]
 public class DialogueGroup
 {
-    public string groupName; // e.g., "Act 1", "After Talking to Francis", etc.
+    [Tooltip("State where these lines will be shown (e.g. 'Default', 'TalkedToFrancis')")]
+    public string dialogueState;
+
     public DialogueLine[] lines;
 }

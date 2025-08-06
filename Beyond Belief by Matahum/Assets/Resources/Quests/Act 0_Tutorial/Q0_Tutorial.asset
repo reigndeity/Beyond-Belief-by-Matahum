@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a962021d732214296807c0b79bcfcf, type: 3}
+  m_Name: Q0_Tutorial
+  m_EditorClassIdentifier: 
+  questID: Q0_Question
+  questTitle: What's your question sir?
+  actNumber: ACT 0
+  questJournalDescription:
+  - An odd cube claims to be the son of the CUBE. People say this cube is crazy but
+    no one can really verify. It is up to you now to go and check.
+  questHudDescription: 
+  questType: 0
+  state: 0
+  missions:
+  - whatMustBeDone: Find and Talk to Cubeboloy
+    targetID: Q0_Cubeboloy
+    hasCounter: 0
+    requiredAmount: 1
+    currentAmount: 0
+  rewards: []
+  isBeingTracked: 0

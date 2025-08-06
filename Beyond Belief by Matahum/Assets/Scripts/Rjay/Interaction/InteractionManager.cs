@@ -97,6 +97,7 @@ public class InteractionManager : MonoBehaviour
     void HandleInteraction()
     {
         if (interactablesInView.Count == 0) return;
+        
         if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialoguePlaying()) return;
 
         var selected = interactablesInView[currentSelection];
