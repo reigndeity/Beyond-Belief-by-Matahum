@@ -1,8 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
 
 public class BB_ArchiveUI : MonoBehaviour
 {
@@ -119,5 +120,8 @@ public class BB_ArchiveUI : MonoBehaviour
         }
     }
 
-
+    public IEnumerator HighlightCategory()
+    {
+        yield return new WaitForSeconds(10);
+    }
 }
