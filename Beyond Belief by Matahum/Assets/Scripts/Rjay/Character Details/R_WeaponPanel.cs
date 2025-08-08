@@ -5,7 +5,7 @@ using UnityEngine;
 public class R_WeaponPanel : MonoBehaviour
 {
     private Player m_player;
-    private PlayerStats m_playerStats;
+    [SerializeField] private PlayerStats m_playerStats;
     [SerializeField] private TextMeshProUGUI weaponAtkTxt;
     [SerializeField] private TextMeshProUGUI weaponLevel;
     [SerializeField] private Image weaponFill; // xp

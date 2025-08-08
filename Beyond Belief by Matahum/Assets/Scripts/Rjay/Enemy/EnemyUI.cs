@@ -27,6 +27,9 @@ public class EnemyUI : MonoBehaviour
     [SerializeField] private AnimationCurve alertEaseCurve; // optional
     private Coroutine alertRoutine;
 
+    [Header("Enemy Level Display")]
+    [SerializeField] TextMeshProUGUI levelTxt;
+
     void Start()
     {
         m_enemyStats = GetComponent<EnemyStats>();
@@ -34,6 +37,8 @@ public class EnemyUI : MonoBehaviour
 
         alertCanvasGroup = alertObj.GetComponent<CanvasGroup>();
         healthBarCanvasGroup = healthBarRoot.GetComponent<CanvasGroup>();
+        
+        UpdateLevel();
     }
 
     void Update()
@@ -101,6 +106,14 @@ public class EnemyUI : MonoBehaviour
     }
 
     #endregion
+
+    #region LEVEL PROPERTIES
+    private void UpdateLevel()
+    {
+        levelTxt.text = $"Lv. {m_enemyStats.e_level}";
+    }
+    #endregion
+
     #region ALERT/SURPRISED PROPERTIES
     public void ShowAlert()
     {
