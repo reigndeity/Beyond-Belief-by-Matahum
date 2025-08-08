@@ -17,6 +17,11 @@ public class R_InventoryItem
         {
             runtimeID = System.Guid.NewGuid().ToString();
         }
+        if (data != null && !data.isStackable)
+        {
+            if (string.IsNullOrEmpty(runtimeID))
+                runtimeID = System.Guid.NewGuid().ToString();
+        }
     }
 
     public bool IsStackable => itemData != null && itemData.isStackable;
