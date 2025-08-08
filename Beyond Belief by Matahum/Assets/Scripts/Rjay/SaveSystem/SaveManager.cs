@@ -92,4 +92,66 @@ public class SaveManager : MonoBehaviour
         public string activeScene;
         public List<SystemEntry> systems;
     }
+
+    // --- Add this helper inside SaveManager ---
+    static void UpsertSystemEntry(List<SystemEntry> list, string id, string json)
+    {
+        for (int i = 0; i < list.Count; i++)
+            if (list[i].id == id) { list[i].json = json; return; }
+        list.Add(new SystemEntry { id = id, json = json });
+    }
+
+    // --- Add this method: save only selected systems (or all if none passed) ---
+    public async System.Threading.Tasks.Task SaveSystemsAsync(string slot, bool updateScene = false, params string[] ids)
+    {
+        if (IsBusy) return; IsBusy = true;
+        try
+        {
+            var selected = new System.Collections.Generic.HashSet<string>(ids ?? System.Array.Empty<string>());
+            bool saveAll = selected.Count == 0;
+
+            var dir = System.IO.Path.Combine(SavesRoot, slot);
+            System.IO.Directory.CreateDirectory(dir);
+            var path = System.IO.Path.Combine(dir, "save.json");
+            var tmp  = System.IO.Path.Combine(dir, "save.tmp");
+            var bak  = System.IO.Path.Combine(dir, "save.bak");
+
+            // Load existing payload if doing a partial update; otherwise start fresh
+            SavePayload payload = new SavePayload { activeScene = null, systems = new System.Collections.Generic.List<SystemEntry>() };
+            if (!saveAll && System.IO.File.Exists(path))
+            {
+                var existingJson = await System.IO.File.ReadAllTextAsync(path);
+                payload = JsonUtility.FromJson<SavePayload>(existingJson) ?? payload;
+            }
+
+            // Update scene name only when saving Transform (or if explicitly asked)
+            if (saveAll || updateScene || selected.Contains("Player.Transform"))
+                payload.activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+
+            // Collect entries to write
+            foreach (var s in _saveables)
+            {
+                if (saveAll || selected.Contains(s.SaveId))
+                {
+                    var json = s.CaptureJson();
+                    if (payload.systems == null) payload.systems = new System.Collections.Generic.List<SystemEntry>();
+                    UpsertSystemEntry(payload.systems, s.SaveId, json);
+                }
+            }
+
+            // Atomic write
+            var outJson = JsonUtility.ToJson(payload, true);
+            await System.IO.File.WriteAllTextAsync(tmp, outJson);
+            if (System.IO.File.Exists(path)) { System.IO.File.Copy(path, bak, true); System.IO.File.Delete(path); }
+            System.IO.File.Move(tmp, path);
+        }
+        finally { IsBusy = false; }
+    }
+
+    #region ACCESSIBLE SAVE FUNCTIONS
+    public void SavePlayerTransform(string slot)  { _ = SaveSystemsAsync(slot, updateScene: true,  "Player.Transform"); }
+    public void SavePlayerStats(string slot)      { _ = SaveSystemsAsync(slot, updateScene: false, "Player.Stats"); }
+    public void SavePlayerInventory(string slot)  { _ = SaveSystemsAsync(slot, updateScene: false, "Inventory.Main"); }
+    public void SavePlayerEquipment(string slot)  { _ = SaveSystemsAsync(slot, updateScene: false, "Equipment.Main"); }
+    #endregion
 }

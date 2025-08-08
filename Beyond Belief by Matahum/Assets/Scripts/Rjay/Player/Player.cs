@@ -123,7 +123,10 @@ public class Player : MonoBehaviour, IDamageable
         }
         if (Input.GetKeyDown(KeyCode.J))
         {
-            GainXP(500);
+            GainXP(5000);
+        }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
             GainWeaponXP(500);
         }
 

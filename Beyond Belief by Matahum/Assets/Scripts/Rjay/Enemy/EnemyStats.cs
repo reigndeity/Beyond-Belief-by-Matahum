@@ -3,8 +3,8 @@ using UnityEngine;
 public class EnemyStats : MonoBehaviour
 {
     [Header("Base Enemy Stats")]
-    public float e_baseMaxHealth = 100f;
-    public int e_baseAttack = 10;
+    public float e_baseMaxHealth = 73f;
+    public int e_baseAttack = 46;
     public float e_baseDefense = 5f;
     public float e_baseCriticalRate = 5f;       // In percent
     public float e_baseCriticalDamage = 50f;    // In percent
