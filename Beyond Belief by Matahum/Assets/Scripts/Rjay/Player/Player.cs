@@ -164,7 +164,8 @@ public class Player : MonoBehaviour, IDamageable
     #region DAMAGE / HEAL FUNCTIONS
     public void TakeDamage(float damage)
     {
-        m_playerAnimator.GetHit();
+        if (m_playerSkills.isUsingUltimateSkill) return;
+        
         bool isCriticalHit = Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
         float damageReduction = m_playerStats.p_defense * 0.66f; // Defense Scaling
         float reducedDamage = damage - damageReduction; // Damage after Defense
@@ -190,6 +191,8 @@ public class Player : MonoBehaviour, IDamageable
         {
             Debug.Log("Player is dead.");
         }
+        if (m_playerSkills.isUsingNormalSkill) return;
+        m_playerAnimator.GetHit();
     }
     public void Heal(float amount)
     {
