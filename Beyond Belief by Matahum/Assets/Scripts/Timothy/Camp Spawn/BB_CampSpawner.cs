@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class BB_CampSpawner : MonoBehaviour
 {
@@ -8,20 +9,24 @@ public class BB_CampSpawner : MonoBehaviour
     [Tooltip("Calculation: baseStats * (multiplier * (playerStats.currentLevel / 10))")]
     public float enemyStatsMultiplier;
     public float spawnInterval;
-    public int maxSpawnCount;
-    public GameObject[] enemiesToSpawn;
+    public List<EnemyCount> enemiesToSpawn = new List<EnemyCount>();
 
-    public List<EnemyStats> enemyList = new List<EnemyStats>();
+    private List<EnemyStats> enemyList = new List<EnemyStats>();
     private SphereCollider spawnArea;
     private bool spawningInProgress = false;
 
     private void Start()
     {
         playerStats = FindFirstObjectByType<PlayerStats>();
-        spawnArea = GetComponent<SphereCollider>();
+        spawnArea = GetComponent<SphereCollider>();      
 
         InvokeRepeating("StayWithinBoundaries", 0f, 1f);
         InvokeRepeating("StartSpawning", 0f, 1f);
+    }
+
+    public void RemoveEnemyInList(EnemyStats enemyStats)
+    {
+        enemyList.Remove(enemyStats);
     }
 
     public void StartSpawning()
@@ -48,33 +53,35 @@ public class BB_CampSpawner : MonoBehaviour
             }
         }
     }
-
     IEnumerator SpawnUnits()
     {
         spawningInProgress = true;
+
         yield return new WaitForSeconds(spawnInterval);
 
-        int spawnCount = Mathf.Min(maxSpawnCount - enemyList.Count, enemiesToSpawn.Length);
-
-        for (int i = 0; i < maxSpawnCount; i++)
+        foreach (var enemy in enemiesToSpawn)
         {
-            GameObject enemyGO = Instantiate(enemiesToSpawn[i % enemiesToSpawn.Length], 
-                GetRandomPositionInRadius(transform.TransformPoint(spawnArea.center), spawnArea.radius), 
-                Quaternion.identity, 
-                transform);
-
-            EnemyStats enemyStats = enemyGO.GetComponent<EnemyStats>();
-            UpdateEnemyStats(enemyStats, enemyStatsMultiplier);
-
-            if (enemyGO.GetComponent<BB_SpawnNotifier>() == null)
+            for (int i = 0; i < enemy.count; i++)
             {
-                BB_SpawnNotifier notifier = enemyGO.AddComponent<BB_SpawnNotifier>();
-                notifier.spawner = this;
-                notifier.enemyStats = enemyStats;
+                GameObject enemyGO = Instantiate(enemy.enemyPrefab,
+                    GetRandomPositionInRadius(transform.TransformPoint(spawnArea.center), spawnArea.radius),
+                    Quaternion.identity,
+                    transform);
+
+                EnemyStats enemyStats = enemyGO.GetComponent<EnemyStats>();
+                UpdateEnemyStats(enemyStats, enemyStatsMultiplier);
+
+                if (enemyGO.GetComponent<BB_SpawnNotifier>() == null)
+                {
+                    BB_SpawnNotifier notifier = enemyGO.AddComponent<BB_SpawnNotifier>();
+                    notifier.spawner = this;
+                    notifier.enemyStats = enemyStats;
+                }
+
+                enemyList.Add(enemyStats);
             }
-            
-            enemyList.Add(enemyStats);
         }
+  
         spawningInProgress = false;
     }
 
@@ -82,15 +89,18 @@ public class BB_CampSpawner : MonoBehaviour
     {
         enemyStats.e_level = Mathf.Max(1, playerStats.currentLevel / 10);
         float enemyLevel = Mathf.Max(1f, multiplier * enemyStats.e_level);
-
-        enemyStats.e_baseMaxHealth = Mathf.RoundToInt(enemyStats.e_baseMaxHealth * enemyLevel);
-        enemyStats.e_baseDefense = Mathf.RoundToInt(enemyStats.e_baseDefense * enemyLevel);
-        enemyStats.e_baseAttack = Mathf.RoundToInt(enemyStats.e_baseAttack * enemyLevel);
     }
 
     Vector3 GetRandomPositionInRadius(Vector3 center, float radius)
     {
-        Vector2 randomCircle = Random.insideUnitCircle * radius;
+        Vector2 randomCircle = UnityEngine.Random.insideUnitCircle * radius;
         return new Vector3(center.x + randomCircle.x, center.y, center.z + randomCircle.y);
     }
+}
+
+[Serializable]
+public class EnemyCount
+{
+    public GameObject enemyPrefab;
+    public int count;
 }

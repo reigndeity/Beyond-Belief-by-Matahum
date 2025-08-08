@@ -6,6 +6,6 @@ public class BB_SpawnNotifier : MonoBehaviour
     public EnemyStats enemyStats;
     private void OnDestroy()
     {
-        spawner.enemyList.Remove(enemyStats);
+        spawner.RemoveEnemyInList(enemyStats);
     }
 }
