@@ -2,33 +2,45 @@ using UnityEngine;
 
 public class EnemyStats : MonoBehaviour
 {
-    [Header("Base Enemy Stats")]
-    public float e_baseMaxHealth = 100f;
-    public int e_baseAttack = 10;
-    public float e_baseDefense = 5f;
-    public float e_baseCriticalRate = 5f;       // In percent
-    public float e_baseCriticalDamage = 50f;    // In percent
-    public float e_level = 1;
+    [Header("Definition & Level")]
+    public EnemyDefinition definition;
+    [Range(1, 50)] public int e_level = 1;
 
     [Header("Computed Enemy Stats")]
     public float e_currentHealth;
     public float e_maxHealth;
-    public int e_attack;
+    public float e_attack;
     public float e_defense;
-    public float e_criticalRate;
-    public float e_criticalDamage;
+    public float e_criticalRate;    // %
+    public float e_criticalDamage;  // %
 
-    void Start()
-    {
-        RecalculateStats();
-    }
+    void Start() { RecalculateStats(); }
+
     public void RecalculateStats()
     {
-        e_maxHealth = e_baseMaxHealth;
-        e_attack = e_baseAttack;
-        e_defense = e_baseDefense;
-        e_criticalRate = e_baseCriticalRate;
-        e_criticalDamage = e_baseCriticalDamage;
-        e_currentHealth = e_maxHealth;
+        if (definition != null)
+        {
+            e_maxHealth      = StatGrowthUtil.Eval(definition.hpL1,  definition.hpL50,  e_level, definition.curvePowHP,  definition.growthMode);
+            e_attack         = StatGrowthUtil.Eval(definition.atkL1, definition.atkL50, e_level, definition.curvePowATK, definition.growthMode);
+            e_defense        = StatGrowthUtil.Eval(definition.defL1, definition.defL50, e_level, definition.curvePowDEF, definition.growthMode);
+            e_criticalRate   = definition.critRate;
+            e_criticalDamage = definition.critDamage;
+        }
+        // else: keep serialized values if no definition assigned (non-breaking fallback)
+
+        e_currentHealth = Mathf.Clamp(e_currentHealth <= 0 ? e_maxHealth : e_currentHealth, 0f, e_maxHealth);
+    }
+
+    public void SetLevel(int newLevel)
+    {
+        e_level = Mathf.Clamp(newLevel, 1, 50);
+        RecalculateStats();
+    }
+
+    /// <summary>Returns true if the enemy died.</summary>
+    public bool ApplyDamage(float amount)
+    {
+        e_currentHealth = Mathf.Clamp(e_currentHealth - amount, 0f, e_maxHealth);
+        return e_currentHealth <= 0f;
     }
 }

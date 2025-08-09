@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 public enum PlayerState 
 {
@@ -119,7 +120,13 @@ public class Player : MonoBehaviour, IDamageable
         if (Input.GetKeyDown(KeyCode.H))
         {
             TakeDamage(50);
-            GainXP(500);
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            GainXP(5000);
+        }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
             GainWeaponXP(500);
         }
 

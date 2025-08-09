@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public enum R_ItemType
 {
@@ -42,6 +43,8 @@ public enum R_ItemRarity
 [CreateAssetMenu(menuName = "Inventory/Item Data", fileName = "New Item")]
 public class R_ItemData : ScriptableObject
 {
+    [SerializeField] private string itemId;       // immutable ID used for saving
+    public string ItemId => itemId;
     public string itemName;
     public Sprite itemIcon;
     public Sprite itemBackdropIcon;
@@ -76,4 +79,13 @@ public class R_ItemData : ScriptableObject
     public R_ConsumableEffect consumableEffect; // Logic-only
     public R_UpgradeMaterialType upgradeMaterialType;
     public int xpValue;
+
+    #if UNITY_EDITOR
+    private void OnValidate()
+    {
+        // Assign once; never change after you ship content or you’ll break old saves.
+        if (string.IsNullOrEmpty(itemId))
+            itemId = Guid.NewGuid().ToString("N");
+    }
+    #endif
 }

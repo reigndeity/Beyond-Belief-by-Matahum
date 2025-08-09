@@ -48,6 +48,9 @@ public class PlayerMovement : MonoBehaviour
     public float staminaDrainRate = 15f;
     public float staminaRegenRate = 10f;
     public bool isSprinting = false;
+    public float CurrentStamina { get => currentStamina; set => currentStamina = value; }
+    public float MaxStamina     { get => maxStamina;     set => maxStamina     = value; }
+
 
     [Header("Stamina Delay")]
     public float staminaRegenDelay = 2f;

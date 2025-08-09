@@ -23,7 +23,7 @@ public class R_InventoryTester : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time >= nextPressTime && Input.GetKeyDown(KeyCode.T))
+        if (Time.time >= nextPressTime && Input.GetKeyDown(KeyCode.I))
         {
             if (inventory != null && testItem != null)
             {

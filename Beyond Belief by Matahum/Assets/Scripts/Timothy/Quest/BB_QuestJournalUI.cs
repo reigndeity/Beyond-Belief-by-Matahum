@@ -27,9 +27,6 @@ public class BB_QuestJournalUI : MonoBehaviour
     [Header("Side Quest Category")]
     public Transform SideQuestSelectionScrollContent;
 
-    /*[Header("All Quest Category")]
-    public Transform allQuestSelectionScrollContent;*/
-
     [Header("Completed Quest Category")]
     public Transform completedQuestSelectionScrollContent;
 
@@ -292,11 +289,11 @@ public class BB_QuestJournalUI : MonoBehaviour
             GameObject rewardObj = Instantiate(questRewardGroupTemplate, questRewardList);
             rewardObj.SetActive(true);
 
-            BB_QuestRewardUIGroup rewardUI = rewardObj.GetComponent<BB_QuestRewardUIGroup>();
+            BB_IconUIGroup rewardUI = rewardObj.GetComponent<BB_IconUIGroup>();
             rewardUI.backgroundImage.sprite = reward.RewardBackground();
-            rewardUI.rewardIcon.sprite = reward.RewardIcon();
-            rewardUI.rewardName.text = $"{reward.RewardQuantity().ToString()}  {reward.RewardName()}";
-            rewardUI.rewardQuantity.text = reward.RewardQuantity().ToString();
+            rewardUI.icon.sprite = reward.RewardIcon();
+            rewardUI.name.text = $"{reward.RewardQuantity().ToString()}  {reward.RewardName()}";
+            rewardUI.quantity.text = reward.RewardQuantity().ToString();
         }
         ChangeTrackerButtonDisplay(quest);
     }
