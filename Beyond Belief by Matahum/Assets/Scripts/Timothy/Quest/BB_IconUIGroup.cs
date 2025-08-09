@@ -8,7 +8,7 @@ public class BB_IconUIGroup : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public Image backgroundImage;
     public Image icon;
     public TextMeshProUGUI quantity;
-    public TextMeshProUGUI name;
+    public TextMeshProUGUI iconName;
     public GameObject captionPanel;
     public TextMeshProUGUI captionPanelQuantity;
 

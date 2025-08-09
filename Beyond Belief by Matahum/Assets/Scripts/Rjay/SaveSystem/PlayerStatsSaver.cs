@@ -25,6 +25,10 @@ public class PlayerStatsSaver : MonoBehaviour, ISaveable
         public int atk;
         public float def, critRate, critDmg;
         public float staminaCurrent, staminaMax;
+
+        // NEW: weapon persistence
+        public int weaponLevel;
+        public int weaponXP;
     }
 
     public string CaptureJson()
@@ -43,9 +47,13 @@ public class PlayerStatsSaver : MonoBehaviour, ISaveable
             critDmg  = stats.p_criticalDamage,
 
             staminaCurrent = movement ? movement.CurrentStamina : 0f,
-            staminaMax     = movement ? movement.MaxStamina     : 0f
+            staminaMax     = movement ? movement.MaxStamina     : 0f,
+
+            // NEW
+            weaponLevel = stats.weaponLevel,
+            weaponXP    = stats.weaponXP
         };
-        return JsonUtility.ToJson(dto);
+        return JsonUtility.ToJson(dto, false);
     }
 
     public void RestoreFromJson(string json)
@@ -71,6 +79,13 @@ public class PlayerStatsSaver : MonoBehaviour, ISaveable
             movement.CurrentStamina = Mathf.Clamp(dto.staminaCurrent, 0f, dto.staminaMax);
         }
 
+        // NEW: restore weapon fields
+        stats.weaponLevel = dto.weaponLevel;
+        stats.weaponXP    = dto.weaponXP;
+
+        // Notify any UI/listeners you already wired
         stats.NotifyXPChanged();
+        // If you have a stats/damage recalc method, call it here (optional):
+        // stats.RecalculateStats();
     }
 }

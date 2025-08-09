@@ -2,19 +2,20 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
+    public static PlayerCamera Instance { get; private set; }
     [Header("References")]
     public Transform playerTarget;
 
     [Header("Rotation Settings")]
-    public float mouseSensitivity = 100f;
-    public float rotationSmoothTime = 0.05f;
+    public float mouseSensitivity = 50;
+    public float rotationSmoothTime = 0.02f;
     public float pitchMin = -30f;
-    public float pitchMax = 80f;
+    public float pitchMax = 60;
 
     [Header("Zoom Settings")]
     public float minDistance = 2f;
-    public float maxDistance = 8f;
-    public float zoomSpeed = 5f;
+    public float maxDistance = 4.5f;
+    public float zoomSpeed = 2f;
 
     [Header("Camera Collision")]
     public LayerMask collisionLayers;
@@ -22,7 +23,7 @@ public class PlayerCamera : MonoBehaviour
     public float cameraRadius = 0.3f;
 
     [Header("Follow Settings")]
-    public float followSmoothSpeed = 10f;
+    public float followSmoothSpeed = 100f;
 
     private float yaw;
     private float pitch;
@@ -44,6 +45,30 @@ public class PlayerCamera : MonoBehaviour
 
     // Cursor toggle
     private bool isCursorVisible = false;
+
+    // Toggles
+    [SerializeField] private bool rotationEnabled = true;
+    [SerializeField] private bool zoomEnabled = true;
+
+    // Rotation API
+    public void EnableRotation()  => rotationEnabled = true;
+    public void DisableRotation() => rotationEnabled = false;
+    public bool IsRotationEnabled => rotationEnabled;
+
+    // Zoom API
+    public void EnableZoom()  => zoomEnabled = true;
+    public void DisableZoom() => zoomEnabled = false;
+    public bool IsZoomEnabled => zoomEnabled;
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
 
     void Start()
     {
@@ -99,10 +124,12 @@ public class PlayerCamera : MonoBehaviour
 
     public void HandleRotation()
     {
+        if (!rotationEnabled) return;   // ← guard here
+
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
-        yaw += mouseX * mouseSensitivity * Time.deltaTime;
+        yaw   += mouseX * mouseSensitivity * Time.deltaTime;
         pitch -= mouseY * mouseSensitivity * Time.deltaTime;
 
         pitch = Mathf.Clamp(pitch, pitchMin, pitchMax);
@@ -110,9 +137,8 @@ public class PlayerCamera : MonoBehaviour
 
     public void HandleZoom()
     {
-        // 🛡 Prevent zooming if interacting
-        if (InteractionManager.IsUsingScrollInput)
-            return;
+        if (!zoomEnabled) return;                       // ← guard here
+        if (InteractionManager.IsUsingScrollInput) return;
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0f)
@@ -121,6 +147,7 @@ public class PlayerCamera : MonoBehaviour
             desiredDistance = Mathf.Clamp(desiredDistance, minDistance, maxDistance);
         }
     }
+
 
     public void HandleMouseLock()
     {
@@ -162,4 +189,38 @@ public class PlayerCamera : MonoBehaviour
             shakeOffset = Vector3.zero;
         }
     }
+
+    public void LockCamera()
+    {
+        DisableRotation();
+        DisableZoom();
+    }
+    public void UnlockCamera()
+    {
+        EnableRotation();
+        EnableZoom();
+    }
+
+    public void AdjustCamera()
+    {
+        CameraAdjust(3.5f, 25f, instant: false);
+    }
+    public void CameraAdjust(float targetDistance, float targetPitch, bool instant = false)
+    {
+        if (playerTarget == null) return;
+        desiredDistance = Mathf.Clamp(targetDistance, minDistance, maxDistance);
+        yaw   = playerTarget.eulerAngles.y;
+        pitch = Mathf.Clamp(targetPitch, pitchMin, pitchMax);
+
+        if (instant)
+        {
+            currentRotation = new Vector3(pitch, yaw, 0f);
+            rotationSmoothVelocity = Vector3.zero;
+            transform.rotation = Quaternion.Euler(currentRotation);
+
+            currentDistance = desiredDistance;
+            distanceSmoothVelocity = 0f;
+        }
+}
+
 }

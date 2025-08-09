@@ -44,6 +44,11 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Button questButton;
     [SerializeField] Button closeQuestButton;
 
+    [Header("Archive Properties")]
+    [SerializeField] private BB_Archive_ButtonManager m_archiveButtonManager;
+    [SerializeField] Button archiveButton;
+    [SerializeField] Button closeArchiveButton;
+
     [Header("Full Screen Map Properties")]
     [SerializeField] GameObject teleportPanel;
     [SerializeField] Button closeTeleportPanelButton;
@@ -99,6 +104,9 @@ public class UI_Game : MonoBehaviour
 
         questButton.onClick.AddListener(OnClickOpenQuestJournal);
         closeQuestButton.onClick.AddListener(OnClickCloseQuestJournal);
+
+        archiveButton.onClick.AddListener(OnClickOpenArchive);
+        closeArchiveButton.onClick.AddListener(OnClickCloseArchive);
     }
 
     #region MAP TELEPORT
@@ -211,6 +219,21 @@ public class UI_Game : MonoBehaviour
     public void OnClickCloseQuestJournal()
     {
         m_questButtonManager.ExitJournal();
+        ShowUI();
+        ResumeGame();
+    }
+    #endregion
+
+    #region ARCHIVE
+    private void OnClickOpenArchive()
+    {
+        m_archiveButtonManager.OnOpenArchives();
+        HideUI();
+        PauseGame();
+    }
+    private void OnClickCloseArchive()
+    {
+        m_archiveButtonManager.ExitArchives();
         ShowUI();
         ResumeGame();
     }

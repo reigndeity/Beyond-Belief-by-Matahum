@@ -292,7 +292,7 @@ public class BB_QuestJournalUI : MonoBehaviour
             BB_IconUIGroup rewardUI = rewardObj.GetComponent<BB_IconUIGroup>();
             rewardUI.backgroundImage.sprite = reward.RewardBackground();
             rewardUI.icon.sprite = reward.RewardIcon();
-            rewardUI.name.text = $"{reward.RewardQuantity().ToString()}  {reward.RewardName()}";
+            rewardUI.iconName.text = $"{reward.RewardQuantity().ToString()}  {reward.RewardName()}";
             rewardUI.quantity.text = reward.RewardQuantity().ToString();
         }
         ChangeTrackerButtonDisplay(quest);

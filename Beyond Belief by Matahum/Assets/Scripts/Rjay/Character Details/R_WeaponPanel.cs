@@ -10,15 +10,19 @@ public class R_WeaponPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI weaponLevel;
     [SerializeField] private Image weaponFill; // xp
 
-    void OnEnable()
-    {
-        UpdateWeaponPanel();
-    }
-    void Start()
+
+    void Awake()
     {
         m_player = FindFirstObjectByType<Player>();
         m_playerStats = FindFirstObjectByType<PlayerStats>();
-        
+    }
+    void Start()
+    {
+        UpdateWeaponPanel();
+    }
+        void OnEnable()
+    {
+        UpdateWeaponPanel();
     }
     public void UpdateWeaponPanel()
     {
