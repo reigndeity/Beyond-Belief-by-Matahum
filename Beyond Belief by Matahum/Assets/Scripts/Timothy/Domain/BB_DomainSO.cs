@@ -34,6 +34,7 @@ public class BB_DomainSO : ScriptableObject
         {
             int newQuantity = Mathf.RoundToInt(levelMultiplier * reward.baseQuantity);
             reward.SetQuantity(newQuantity);
+            Debug.Log($"Set up reward quantity of {reward.RewardName()} to {reward.RewardQuantity()}");
         }
     }
 }

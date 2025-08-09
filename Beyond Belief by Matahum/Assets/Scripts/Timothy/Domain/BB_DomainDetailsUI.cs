@@ -18,12 +18,14 @@ public class BB_DomainDetailsUI : MonoBehaviour
     public Transform creatureHolder;
     public Transform rewardHolder;
     public BB_IconUIGroup iconUIGroup;
+    private bool isButtonSetUp = false;
 
-    [Header("Quest Selected Indicator")]
+    [Header("Domain Selected Indicator")]
     public Sprite defaultSprite;
     public Sprite selectedSprite; // Assign this manually or load it
     private Button currentlySelectedButton;
     private Image currentlySelectedImage;
+
 
     void Awake()
     {
@@ -36,23 +38,27 @@ public class BB_DomainDetailsUI : MonoBehaviour
 
     public void OnOpenDomainDetails()
     {
-        for (int i = 0; i < domainSelectionHolder.childCount; i++)
+        if (!isButtonSetUp)
         {
-            BB_DomainSelectionTemplate domainSelectionTemplate = domainSelectionHolder.GetChild(i).GetComponent<BB_DomainSelectionTemplate>();
-            domainSelectionTemplate.domainTitle.text = BB_DomainManager.instance.selectedDomain.domainName;
+            for (int i = 0; i < domainSelectionHolder.childCount; i++)
+            {
+                BB_DomainSelectionTemplate domainSelectionTemplate = domainSelectionHolder.GetChild(i).GetComponent<BB_DomainSelectionTemplate>();
+                domainSelectionTemplate.domainTitle.text = BB_DomainManager.instance.selectedDomain.domainName;
 
-            Button domainBtn = domainSelectionHolder.GetChild(i).GetComponent<Button>();
-            Image domainImg = domainBtn.GetComponent<Image>();
+                Button domainBtn = domainSelectionHolder.GetChild(i).GetComponent<Button>();
+                Image domainImg = domainBtn.GetComponent<Image>();
 
-            domainBtn.onClick.AddListener(() => OnDomainButtonClicked(BB_DomainManager.instance.selectedDomain, domainBtn, domainImg, i + 1));
+                int level = i + 1;
+                domainBtn.onClick.AddListener(() => OnDomainButtonClicked(BB_DomainManager.instance.selectedDomain, domainBtn, domainImg, level));
+            }
         }
+        isButtonSetUp = true;
 
         Button firstDomainBtn = domainSelectionHolder.GetChild(0).GetComponent<Button>();
         firstDomainBtn.onClick.Invoke();    
     }
     private void OnDomainButtonClicked(BB_DomainSO domain, Button clickedButton, Image clickedImage, int level)
     {
-        int domainLevel = level;
         // Reset previous button to default sprite
         if (currentlySelectedImage != null)
         {
@@ -65,7 +71,7 @@ public class BB_DomainDetailsUI : MonoBehaviour
         currentlySelectedImage.sprite = selectedSprite;
 
         // Show quest details
-        ShowDomainDetails(domain, domainLevel);
+        ShowDomainDetails(domain, level);
     }
     public void ShowDomainDetails(BB_DomainSO domain, int level)
     {
@@ -131,7 +137,7 @@ public class BB_DomainDetailsUI : MonoBehaviour
             // Create icon UI
             BB_IconUIGroup icon = Instantiate(iconUIGroup, rewardHolder);
 
-            icon.iconName.text = BB_DomainManager.instance.selectedDomain.name;
+            icon.iconName.text = rewards.RewardName();
             icon.icon.sprite =  rewards.RewardIcon();
             icon.quantity.text = rewards.RewardQuantity().ToString();
         }
