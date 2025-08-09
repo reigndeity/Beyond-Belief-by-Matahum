@@ -12,6 +12,11 @@ public class InteractionManager : MonoBehaviour
     public Transform rayOrigin;
     public Transform promptParent;
     public GameObject promptPrefab;
+    [Header("Prompt Behavior")]
+    [SerializeField] private CanvasGroup promptCanvasGroup; // assign the root of your prompt UI
+    [SerializeField] private float promptFadeDuration = 0.15f;
+    [SerializeField] private float promptReenableDelay = 2f; // your requested delay
+    private Coroutine promptFadeCo;
 
     [Header("Manual Scrolling Settings")]
     [SerializeField] private RectTransform promptContainer;  // The thing we move up/down
