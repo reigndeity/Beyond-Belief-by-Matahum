@@ -5,7 +5,6 @@ public class BB_Archive_ButtonManager : MonoBehaviour
 {
     [Header("Archive UI")]
     public GameObject archiveUI;
-    public Button openArchiveButton;
 
     [Header("Archive Category Button")]
     public BB_ArchivesCategoryButtonPopUp archivePopUp;
@@ -20,17 +19,12 @@ public class BB_Archive_ButtonManager : MonoBehaviour
     public GameObject wildlifePanel;
     public GameObject plantPanel;
 
-    [Header("Exit Button")]
-    public Button exitButton;
-
     private void Start()
     {
-        openArchiveButton.onClick.AddListener(OnOpenArchives);
         creatureCategoryButton.onClick.AddListener(OnOpenCreatureCategory);
         locationCategoryButton.onClick.AddListener(OnOpenLocationCategory);
         wildlifeCategoryButton.onClick.AddListener(OnOpenWildlifeCategory);
         plantCategoryButton.onClick.AddListener(OnOpenPlantCategory);
-        exitButton.onClick.AddListener(ExitArchives);
     }
 
     #region Open Archives
