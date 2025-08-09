@@ -6,7 +6,7 @@ using UnityEngine.VFX;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
-    private CharacterController m_characterController;
+    public CharacterController m_characterController;
     private PlayerInput m_playerInput;
     private PlayerCombat m_playerCombat;
     private PlayerAnimator m_playerAnimator;
@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     public float gravity = -9.81f;
     public float fallMultiplier = 2f;
     public float riseMultiplier = 1.2f;
-    private float verticalVelocity = 0f;
+    public float verticalVelocity = 0f;
 
     [Header("Landing Settings")]
     public float landingVelocityThreshold = -2f;

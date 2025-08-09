@@ -7,6 +7,8 @@ public class UI_Game : MonoBehaviour
 {
     [SerializeField] private R_InventoryUI r_inventoryUI;
     [SerializeField] private R_CharacterDetailsPanel m_characterDetailsPanel;
+    [SerializeField] private Player m_player;
+    [SerializeField] private PlayerMovement m_playerMovement;
     
     [Header("UI Game Behavior")]
     private bool isUIHidden = false;
@@ -318,11 +320,20 @@ public class UI_Game : MonoBehaviour
     public void PauseGame()
     {
         Time.timeScale = 0f;
+        
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1f;
+        if (m_player.currentState == PlayerState.FALLING && m_playerMovement.verticalVelocity <= -2)
+        {
+            m_player.ForceIdleOverride();
+        }
+        else
+        {
+            return;
+        }
     }
 
     public bool IsGamePaused()

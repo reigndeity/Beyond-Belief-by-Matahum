@@ -285,7 +285,7 @@ public class Player : MonoBehaviour, IDamageable
 
     public bool IsDead() => isDead;
 
-    void HandleGrassInteraction() => Shader.SetGlobalVector("_Player", transform.position + Vector3.up * 0.1f);
+    void HandleGrassInteraction() => Shader.SetGlobalVector("_Player", transform.position + Vector3.up * 0.5f);
     #endregion
 
     #region PAMANA EQUIPMENT

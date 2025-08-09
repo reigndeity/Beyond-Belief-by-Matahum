@@ -26832,7 +26832,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 9.999939}
+  m_AnchoredPosition: {x: 0, y: 9.999878}
   m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &995174152
@@ -81396,6 +81396,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   r_inventoryUI: {fileID: 345592970}
   m_characterDetailsPanel: {fileID: 1323698556}
+  m_player: {fileID: 5373521251738816405}
+  m_playerMovement: {fileID: 5373521251738816399}
   inventoryButton: {fileID: 1853372601}
   inventoryPanel: {fileID: 345592968}
   closeInventoryButton: {fileID: 2700135}
@@ -108320,6 +108322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177e4fb4dc4056d4d8075d09449d5905, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_characterController: {fileID: 0}
   walkSpeed: 2
   jogSpeed: 5
   sprintSpeed: 8
@@ -108332,6 +108335,7 @@ MonoBehaviour:
   gravity: -9.81
   fallMultiplier: 2
   riseMultiplier: 2
+  verticalVelocity: 0
   landingVelocityThreshold: -5
   maxStamina: 100
   currentStamina: 0
@@ -108944,7 +108948,7 @@ MonoBehaviour:
   AnimationFloorLevel: 0.001
   _Editor_Foldout_Setup_LegsList: 1
   _Editor_EnsureCount: 0
-  _Editor_OnValidateTrigger: 1
+  _Editor_OnValidateTrigger: 0
   _EditorAllowAutoUpdateFeetParams: 1
   _EditorCategory: 0
   _EditorSetupCategory: 0
@@ -113407,7 +113411,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4073947097819658262}
   - component: {fileID: 4214882310053028993}
-  - component: {fileID: 7029047458251650478}
   m_Layer: 0
   m_Name: __WholeBody.001
   m_TagString: Untagged
@@ -113415,24 +113418,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &7029047458251650478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7029047458251650477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9358706f1eb4ab143975bd31a0b08142, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skinnedMeshRenderer: {fileID: 4214882310053028993}
-  blinkShapeName: Blink
-  blinkIntervalMin: 3
-  blinkIntervalMax: 6
-  blinkSpeed: 10
-  closedTime: 0.1
 --- !u!1 &7034598339932450737
 GameObject:
   m_ObjectHideFlags: 0
