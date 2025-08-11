@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class PlayerMinimap : MonoBehaviour
 {
+    public static PlayerMinimap instance;
     private PlayerInput m_playerInput;
     [Header("Projected View Rotation Settings")]
     [SerializeField] Transform cameraTransform;
@@ -31,6 +32,17 @@ public class PlayerMinimap : MonoBehaviour
     public UnityEvent OnFullscreenMapOpen;
     public UnityEvent OnFullscreenMapClose;
 
+    void Awake()
+    {
+        if (instance != this && instance != null)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
     void Start()
     {
         m_playerInput = GetComponentInParent<PlayerInput>();

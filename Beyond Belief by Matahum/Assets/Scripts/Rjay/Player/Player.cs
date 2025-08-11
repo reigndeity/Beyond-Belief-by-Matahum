@@ -55,6 +55,7 @@ public class Player : MonoBehaviour, IDamageable
 
     void Update()
     {   
+        if (UI_TransitionController.instance.isTeleporting) return;
         
         // Player Camera
         m_playerCamera.HandleMouseLock();

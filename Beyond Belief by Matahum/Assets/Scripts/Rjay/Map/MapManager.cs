@@ -32,8 +32,11 @@ public class MapManager : MonoBehaviour
     [Header("Map Fog")]
     [SerializeField] MinimapFog minimapFog;
 
-    // NEW: Persisted list of revealed area IDs
+    // Persisted list of revealed area IDs
     [SerializeField] private List<string> revealedAreaIds = new List<string>();
+
+    [Header("Transitions")]
+    [SerializeField] UI_TransitionController transition;  // assign in Inspector (Fade + Loading)
 
     [System.Serializable]
     public class MapArea
@@ -105,8 +108,7 @@ public class MapManager : MonoBehaviour
 
     void Start()
     {
-        // In case revealedAreaIds got loaded by ES3AutoSave or set externally before Start,
-        // sync the visual fog to match the list.
+        // If revealedAreaIds was loaded before Start, sync visuals now.
         SyncRevealVisuals();
     }
 
@@ -172,27 +174,35 @@ public class MapManager : MonoBehaviour
 
     public void TeleportPlayerToSelected()
     {
-        if (currentTeleporter != null && playerTransform != null)
+        if (currentTeleporter == null || playerTransform == null) return;
+
+        // Block if locked
+        var interactable = currentTeleporter.GetComponent<TeleportInteractable>();
+        if (interactable != null && !interactable.IsUnlocked())
         {
-            // Safety — prevent teleport if still locked
-            var interactable = currentTeleporter.GetComponent<TeleportInteractable>();
-            if (interactable != null && !interactable.IsUnlocked())
+            Debug.Log("Teleport is locked — cannot teleport.");
+            return;
+        }
+
+        // 👇 Capture what we need BEFORE we close the map (which clears currentTeleporter)
+        var teleporterRef = currentTeleporter;
+        Vector3 targetPos = (teleporterRef.teleportTarget != null)
+            ? teleporterRef.teleportTarget.position
+            : teleporterRef.transform.position;
+        targetPos.y = playerTransform.position.y;
+
+        // Same-scene: fade + move using captured target
+        if (transition != null)
+        {
+            StartCoroutine(transition.TeleportTransition(() =>
             {
-                Debug.Log("Teleport is locked — cannot teleport.");
-                return;
-            }
-
-            Vector3 targetPos = (currentTeleporter.teleportTarget != null)
-                ? currentTeleporter.teleportTarget.position
-                : currentTeleporter.transform.position;
-
-            // Maintain player Y height to avoid clipping into terrain
-            targetPos.y = playerTransform.position.y;
-
+                playerTransform.position = targetPos;
+            }));
+        }
+        else
+        {
+            // Fallback: instant move
             playerTransform.position = targetPos;
-
-            HideSelection();
-            teleporterPanel.SetActive(false);
         }
     }
 
@@ -249,7 +259,7 @@ public class MapManager : MonoBehaviour
             RevealArea(id);
     }
 
-    // --------- NEW: persistence helpers ---------
+    // --------- persistence helpers ---------
 
     /// <summary>Reveals all areas already in the revealedAreaIds list.</summary>
     public void SyncRevealVisuals()
