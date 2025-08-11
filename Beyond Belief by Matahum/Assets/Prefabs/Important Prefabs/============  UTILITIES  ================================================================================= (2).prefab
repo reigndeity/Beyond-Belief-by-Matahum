@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &634318524463376769
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3310434376230819774}
+  m_Layer: 0
+  m_Name: ============  UTILITIES  =================================================================================
+    (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3310434376230819774
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634318524463376769}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 105.678375, y: 89.24752, z: 723.3736}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3810339668078620088}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8338800888051268141
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3810339668078620088}
+  - component: {fileID: 5484870467574589341}
+  m_Layer: 0
+  m_Name: UI GAME
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3810339668078620088
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8338800888051268141}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1566.1238, y: 748.9399, z: -700.3064}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3310434376230819774}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5484870467574589341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8338800888051268141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34f6d24e311240248938b685b92a93c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  r_inventoryUI: {fileID: 0}
+  m_characterDetailsPanel: {fileID: 0}
+  m_player: {fileID: 0}
+  m_playerMovement: {fileID: 0}
+  inventoryButton: {fileID: 0}
+  inventoryPanel: {fileID: 0}
+  closeInventoryButton: {fileID: 0}
+  consumablesFilterButton: {fileID: 0}
+  questItemsFilterButton: {fileID: 0}
+  pamanaFilterButton: {fileID: 0}
+  agimatFilterButton: {fileID: 0}
+  upgradeMaterialsFilterButton: {fileID: 0}
+  rawIngredientsFilterButton: {fileID: 0}
+  characterDetailsButton: {fileID: 0}
+  characterDetailPanel: {fileID: 0}
+  closeCharacterDetailsButton: {fileID: 0}
+  attributesTabButton: {fileID: 0}
+  weaponTabButton: {fileID: 0}
+  agimatTabButton: {fileID: 0}
+  pamanaTabButton: {fileID: 0}
+  diwataSlotButton: {fileID: 0}
+  lihimSlotButton: {fileID: 0}
+  salamangkeroSlotButton: {fileID: 0}
+  m_pamanaPanel: {fileID: 0}
+  m_questButtonManager: {fileID: 0}
+  questButton: {fileID: 0}
+  closeQuestButton: {fileID: 0}
+  m_archiveButtonManager: {fileID: 0}
+  archiveButton: {fileID: 0}
+  closeArchiveButton: {fileID: 0}
+  teleportPanel: {fileID: 0}
+  closeTeleportPanelButton: {fileID: 0}
+  teleportButton: {fileID: 0}
+  topUIObj: {fileID: 0}
+  bottomUIObj: {fileID: 0}
+  fadeDuration: 0.2
+  uiMoveDuration: 0.25
+  hideYOffset: 350

@@ -115,11 +115,11 @@ public class UI_Game : MonoBehaviour
     public void OnClickCloseTeleportPanel()
     {
         teleportPanel.SetActive(false);
-        MapTeleportManager.instance.HideSelection();
+        MapManager.instance.HideSelection();
     }
     public void OnClickTeleport()
     {
-        MapTeleportManager.instance.TeleportPlayerToSelected();
+        MapManager.instance.TeleportPlayerToSelected();
     }
     #endregion
     

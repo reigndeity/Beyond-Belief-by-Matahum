@@ -14,7 +14,9 @@ GameObject:
   - component: {fileID: 1871382713947943909}
   - component: {fileID: 2277581066784469587}
   - component: {fileID: 1914245157839943736}
-  m_Layer: 0
+  - component: {fileID: 3974763808085038186}
+  - component: {fileID: 4590154971792579371}
+  m_Layer: 11
   m_Name: Teleport Waypoint
   m_TagString: Teleporter
   m_Icon: {fileID: 0}
@@ -125,12 +127,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f709c7dd788d4e4a9177a93761ce7c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemSprite: {fileID: 21300000, guid: 38273549d4915b641a77c99c0a8b7777, type: 3}
+  itemSprite: {fileID: 1422445364, guid: 9eb61d06ae4f33f4e81b1a0f5ac52ca3, type: 3}
   spriteColor: {r: 1, g: 1, b: 1, a: 1}
   flipInX: 0
   flipInY: 0
   raycastTarget: 1
-  sizeOnMinimap: {x: 8, y: 0, z: 8}
+  sizeOnMinimap: {x: 162, y: 0, z: 100}
   sizeOnHighlight: 20
   orderInLayer: 1
   particlesHighlightMode: 0
@@ -155,6 +157,45 @@ MonoBehaviour:
   location: Sample Location
   description: Sample Description
   teleportTarget: {fileID: 1603431717610531886}
+--- !u!114 &3974763808085038186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6531306624091163980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13bf5cb31611fa046b53dc3b2794a02a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactName: Interactable Item
+  icon: {fileID: 1422445364, guid: 9eb61d06ae4f33f4e81b1a0f5ac52ca3, type: 3}
+  interactKey: 102
+  isInRange: 0
+  isSacredStatue: 0
+  revealAreaIds: []
+  isUnlocked: 0
+  lockedPromptIcon: {fileID: 1422445364, guid: 9eb61d06ae4f33f4e81b1a0f5ac52ca3, type: 3}
+  unlockedPromptIcon: {fileID: 729233517, guid: 9eb61d06ae4f33f4e81b1a0f5ac52ca3, type: 3}
+  minimapItem: {fileID: 2277581066784469587}
+  lockedMinimapSprite: {fileID: 1422445364, guid: 9eb61d06ae4f33f4e81b1a0f5ac52ca3, type: 3}
+  unlockedMinimapSprite: {fileID: 729233517, guid: 9eb61d06ae4f33f4e81b1a0f5ac52ca3, type: 3}
+  unlockLabel: Unlock Waypoint
+  teleportLabel: Teleport
+--- !u!114 &4590154971792579371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6531306624091163980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14ec87d2c1db42c48a5fc9356d8aa89f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guid: 481a82f6d27e4a15940a0ea6ae238722
 --- !u!1 &8496117454724035659
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +221,7 @@ Transform:
   m_GameObject: {fileID: 8496117454724035659}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

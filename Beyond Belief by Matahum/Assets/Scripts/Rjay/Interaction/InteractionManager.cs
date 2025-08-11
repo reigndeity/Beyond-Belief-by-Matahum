@@ -12,6 +12,7 @@ public class InteractionManager : MonoBehaviour
     public Transform rayOrigin;
     public Transform promptParent;
     public GameObject promptPrefab;
+
     [Header("Prompt Behavior")]
     [SerializeField] private CanvasGroup promptCanvasGroup; // assign the root of your prompt UI
     [SerializeField] private float promptFadeDuration = 0.15f;
@@ -102,7 +103,7 @@ public class InteractionManager : MonoBehaviour
     void HandleInteraction()
     {
         if (interactablesInView.Count == 0) return;
-        
+
         if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialoguePlaying()) return;
 
         var selected = interactablesInView[currentSelection];
@@ -158,5 +159,51 @@ public class InteractionManager : MonoBehaviour
 
     public bool HasInteractables() => interactablesInView.Count > 0;
 
-    
+    // ========================
+    // 🚀 NEW: UI Refresh Hooks
+    // ========================
+
+    /// <summary>
+    /// Call this when a specific Interactable changes its label/state.
+    /// If it's still in range (in the list), only that prompt is rebuilt.
+    /// </summary>
+    public void RefreshActivePrompt(Interactable changed)
+    {
+        if (changed == null) return;
+
+        int idx = interactablesInView.IndexOf(changed);
+        if (idx >= 0 && idx < promptParent.childCount)
+        {
+            // Re-setup just this one prompt to pull the latest interactName, key, etc.
+            var promptUI = promptParent.GetChild(idx).GetComponent<InteractionPromptUI>();
+            if (promptUI != null)
+            {
+                promptUI.Setup(changed, idx == currentSelection);
+                return; // done, no need to rebuild all
+            }
+        }
+
+        // If not found (list changed silently), rebuild all
+        RefreshAllPrompts();
+    }
+
+    /// <summary>
+    /// Rebuilds the entire prompt list UI from the current interactablesInView.
+    /// Keeps the currentSelection index and scroll position logic intact.
+    /// </summary>
+    public void RefreshAllPrompts()
+    {
+        UpdatePromptUI();
+        RefreshPromptHighlights();
+        SnapToVisibleRange();
+    }
+
+    /// <summary>
+    /// Convenience alias: call from interactables.
+    /// Tries single-item refresh first; falls back to full rebuild.
+    /// </summary>
+    public void NotifyInteractableChanged(Interactable changed)
+    {
+        RefreshActivePrompt(changed);
+    }
 }
