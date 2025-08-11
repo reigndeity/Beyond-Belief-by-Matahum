@@ -219,7 +219,7 @@ public class BB_DomainManager : MonoBehaviour
         }
     }
 
-    public void ClaimPanel(BB_DomainSO domain)
+    public async void ClaimPanel(BB_DomainSO domain)
     {
         claimRewardPanel.SetActive(true);
 
@@ -237,7 +237,7 @@ public class BB_DomainManager : MonoBehaviour
             iconRect.localScale = new Vector2(2f, 2f);
         }
 
-
+        await SaveManager.Instance.SaveSystemsAsync("slot_01", false, "Equipment.Main", "Inventory.Main", "Player.Stats");
     }
 
     public void ClaimRewards(BB_DomainSO domain)

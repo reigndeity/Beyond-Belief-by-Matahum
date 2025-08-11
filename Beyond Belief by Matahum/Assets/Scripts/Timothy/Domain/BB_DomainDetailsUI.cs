@@ -80,8 +80,6 @@ public class BB_DomainDetailsUI : MonoBehaviour
         domainBodyText.text = domain.domainDescription;
         if(applyMutliplier == true ) domain.levelMultiplier = level;
 
-        Debug.Log($"{domain.levelMultiplier}");
-
         //Remove creature icons
         foreach (Transform child in creatureHolder)
         {

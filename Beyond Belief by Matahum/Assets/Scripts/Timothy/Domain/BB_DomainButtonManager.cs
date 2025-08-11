@@ -66,12 +66,12 @@ public class BB_DomainButtonManager : MonoBehaviour
         BB_DomainManager.instance.selectedDomain = null;
 
         SceneManager.sceneLoaded += OnMainSceneLoaded; // subscribe to event
-        SceneManager.LoadScene("Tim New World Test");
+        SceneManager.LoadScene("Tim New World Tester");
     }
 
     private void OnMainSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Tim New World Test")
+        if (scene.name == "Tim New World Tester")
         {
             BB_DomainManager.instance.SpawnToDomainEntrance();
             SceneManager.sceneLoaded -= OnMainSceneLoaded; // unsubscribe so it doesn’t run every time
