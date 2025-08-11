@@ -4,6 +4,7 @@ public class BB_StartDomainInteractable : Interactable
 {
     public override void OnInteract()
     {
+        BB_DomainManager.instance.domainArea = this.gameObject;
         BB_DomainManager.instance.StartDomain();
         Destroy(gameObject);
     }

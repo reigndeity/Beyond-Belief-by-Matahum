@@ -3,6 +3,7 @@ using BlazeAISpace;
 using System.Collections;
 using UnityEngine.AI;
 using FIMSpace.FProceduralAnimation;
+using System;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
@@ -15,6 +16,8 @@ public class Enemy : MonoBehaviour, IDamageable
     private NavMeshAgent m_navMeshAgent;
     private LegsAnimator m_legsAnimator;
     private EnemyAttack m_enemyAttack;
+
+    public event Action OnDeath;
 
     void Awake()
     {
@@ -39,7 +42,7 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         GetHit();
 
-        bool isCriticalHit = Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
+        bool isCriticalHit = UnityEngine.Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
         float damageReduction = m_enemyStats.e_defense * 0.66f; // Defense Scaling
         float reducedDamage = damage - damageReduction;
         if (isCriticalHit)
@@ -181,6 +184,8 @@ public class Enemy : MonoBehaviour, IDamageable
     public bool IsDead() => isDead;
     IEnumerator Dying()
     {
+        OnDeath.Invoke();
+
         isDead = true;
         gameObject.layer = LayerMask.NameToLayer("Default");
         HideCanvas();
