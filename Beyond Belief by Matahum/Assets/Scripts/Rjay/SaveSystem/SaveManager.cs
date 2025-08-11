@@ -195,5 +195,8 @@ public class SaveManager : MonoBehaviour
     #endregion
     #region ACCESSIBLE LOAD FUNCTIONS
     public void LoadPlayerTransform(string slot)  { _ = LoadSystemsAsync(slot, updateScene: true,  "Player.Transform"); }
+    public void LoadPlayerStats(string slot)  { _ = LoadSystemsAsync(slot, updateScene: false,  "Player.Stats"); }
+    public void LoadPlayerInventory(string slot)  { _ = LoadSystemsAsync(slot, updateScene: false, "Inventory.Main"); }
+    public void LoadPlayerEquipment(string slot)  { _ = LoadSystemsAsync(slot, updateScene: false, "Equipment.Main"); }
     #endregion
 }
