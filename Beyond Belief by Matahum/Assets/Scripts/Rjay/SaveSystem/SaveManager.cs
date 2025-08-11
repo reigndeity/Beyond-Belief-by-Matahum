@@ -102,7 +102,7 @@ public class SaveManager : MonoBehaviour
     }
 
     // --- Add this method: save only selected systems (or all if none passed) ---
-    public async System.Threading.Tasks.Task SaveSystemsAsync(string slot, bool updateScene = false, params string[] ids)
+    public async Task SaveSystemsAsync(string slot, bool updateScene = false, params string[] ids)
     {
         if (IsBusy) return; IsBusy = true;
         try
@@ -147,11 +147,53 @@ public class SaveManager : MonoBehaviour
         }
         finally { IsBusy = false; }
     }
+    // --- Add this method inside SaveManager ---
+    public async Task LoadSystemsAsync(string slot, bool updateScene = false, params string[] ids)
+    {
+        if (IsBusy) return; 
+        IsBusy = true;
+        try
+        {
+            var path = Path.Combine(SavesRoot, slot, "save.json");
+            if (!File.Exists(path)) return;
+
+            var json = await File.ReadAllTextAsync(path);
+            var payload = JsonUtility.FromJson<SavePayload>(json);
+
+            // scene swap if needed
+            if ((updateScene || ids.Contains("Player.Transform")) &&
+                !string.IsNullOrEmpty(payload.activeScene) &&
+                payload.activeScene != SceneManager.GetActiveScene().name)
+            {
+                var op = SceneManager.LoadSceneAsync(payload.activeScene);
+                while (!op.isDone) await Task.Yield();
+                await Task.Yield(); // let savers register
+            }
+
+            var map = payload.systems?.ToDictionary(e => e.id, e => e.json) 
+                    ?? new Dictionary<string, string>();
+
+            foreach (var s in _saveables)
+            {
+                if (ids.Length == 0 || ids.Contains(s.SaveId))
+                {
+                    if (map.TryGetValue(s.SaveId, out var jsonStr))
+                        s.RestoreFromJson(jsonStr);
+                }
+            }
+        }
+        finally { IsBusy = false; }
+    }
+
+
 
     #region ACCESSIBLE SAVE FUNCTIONS
     public void SavePlayerTransform(string slot)  { _ = SaveSystemsAsync(slot, updateScene: true,  "Player.Transform"); }
     public void SavePlayerStats(string slot)      { _ = SaveSystemsAsync(slot, updateScene: false, "Player.Stats"); }
     public void SavePlayerInventory(string slot)  { _ = SaveSystemsAsync(slot, updateScene: false, "Inventory.Main"); }
     public void SavePlayerEquipment(string slot)  { _ = SaveSystemsAsync(slot, updateScene: false, "Equipment.Main"); }
+    #endregion
+    #region ACCESSIBLE LOAD FUNCTIONS
+    public void LoadPlayerTransform(string slot)  { _ = LoadSystemsAsync(slot, updateScene: true,  "Player.Transform"); }
     #endregion
 }

@@ -63,124 +63,6 @@ MonoBehaviour:
   followRotationOf: 0
   customGameObjectToFollowRotation: {fileID: 0}
   movementsSmoothing: 14
---- !u!1 &116448288050173848
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7820755837878974822}
-  - component: {fileID: 8903585644076382470}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7820755837878974822
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 116448288050173848}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 660, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8903585644076382470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 116448288050173848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: b4a9df3c37c88c946aee5d00df71ee39, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &312848411870790134
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3033397692093866999}
-  - component: {fileID: 2664413286323377564}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3033397692093866999
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 312848411870790134}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 240, y: 0, z: 60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2664413286323377564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 312848411870790134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 986999f6b5dea674bb3023c3c67f889a, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
 --- !u!1 &315642124062516637
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: c494b8213ef51fe49bb2131c73b4a313, type: 3}
+  _textureResultOfScan: {fileID: 2800000, guid: 74036fb1cebcaa34d864b7dd25844e3e, type: 3}
   scanHeight: 40
   scanArea: 6
   scanResolution: 2
@@ -240,7 +122,7 @@ MonoBehaviour:
   colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
   gameObjectsToIgnore:
   - {fileID: 0}
---- !u!1 &436666897929396247
+--- !u!1 &893773888027705659
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -248,8 +130,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 287367392652051656}
-  - component: {fileID: 264603629724567459}
+  - component: {fileID: 3679642623194684839}
+  - component: {fileID: 7575792880307497978}
   m_Layer: 0
   m_Name: Scanner
   m_TagString: Untagged
@@ -257,35 +139,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &287367392652051656
+--- !u!4 &3679642623194684839
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 436666897929396247}
+  m_GameObject: {fileID: 893773888027705659}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 180, y: 0, z: 60}
+  m_LocalPosition: {x: -120, y: 0, z: -120}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 670262006739115442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &264603629724567459
+--- !u!114 &7575792880307497978
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 436666897929396247}
+  m_GameObject: {fileID: 893773888027705659}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 3a456dde92815984795a9b600e5ee6d4, type: 3}
+  _textureResultOfScan: {fileID: 2800000, guid: 78e75d2322660d248a32f21483ead7a0, type: 3}
   scanHeight: 40
   scanArea: 6
   scanResolution: 2
@@ -299,7 +181,7 @@ MonoBehaviour:
   colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
   gameObjectsToIgnore:
   - {fileID: 0}
---- !u!1 &640515149467663602
+--- !u!1 &1005810174503142989
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -307,8 +189,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7383012790304216694}
-  - component: {fileID: 450781705814471300}
+  - component: {fileID: 2101440425602590553}
+  - component: {fileID: 4844322487405597222}
   m_Layer: 0
   m_Name: Scanner
   m_TagString: Untagged
@@ -316,35 +198,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7383012790304216694
+--- !u!4 &2101440425602590553
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 640515149467663602}
+  m_GameObject: {fileID: 1005810174503142989}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 120, y: 0, z: 60}
+  m_LocalPosition: {x: 60, y: 0, z: -120}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 670262006739115442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &450781705814471300
+--- !u!114 &4844322487405597222
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 640515149467663602}
+  m_GameObject: {fileID: 1005810174503142989}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 6be85cbb4992c2145bdf8c5a75b88dae, type: 3}
+  _textureResultOfScan: {fileID: 2800000, guid: 5697a593fdcd5374ab9b9b6c7d744e62, type: 3}
   scanHeight: 40
   scanArea: 6
   scanResolution: 2
@@ -358,7 +240,7 @@ MonoBehaviour:
   colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
   gameObjectsToIgnore:
   - {fileID: 0}
---- !u!1 &771463727428365556
+--- !u!1 &2036266464048915377
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -366,8 +248,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1702437171515936733}
-  - component: {fileID: 4677425609498184170}
+  - component: {fileID: 7632077771097851698}
+  - component: {fileID: 5913524341784514134}
   m_Layer: 0
   m_Name: Scanner
   m_TagString: Untagged
@@ -375,389 +257,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1702437171515936733
+--- !u!4 &7632077771097851698
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 771463727428365556}
+  m_GameObject: {fileID: 2036266464048915377}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -60, y: 0, z: -180}
+  m_LocalPosition: {x: 60, y: 0, z: -180}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 670262006739115442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4677425609498184170
+--- !u!114 &5913524341784514134
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 771463727428365556}
+  m_GameObject: {fileID: 2036266464048915377}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 5e2558d1eb251c040b74266b4332fed7, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &1219748319086028488
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3556369260143220593}
-  - component: {fileID: 1384655364154067711}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3556369260143220593
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1219748319086028488}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 420, y: 0, z: 60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1384655364154067711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1219748319086028488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 8d7814d3a1f5b2547a0269c616c913a8, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &1644585286266920215
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6643531138818696397}
-  - component: {fileID: 3221677696120863983}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6643531138818696397
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1644585286266920215}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 60, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3221677696120863983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1644585286266920215}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 961b860d54eafa84fb3892254cc091ef, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &1901191396654477716
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9019640654386090209}
-  - component: {fileID: 2246680253392686953}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9019640654386090209
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1901191396654477716}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 180, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2246680253392686953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1901191396654477716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 304aadce95773e74c9b362df84d559eb, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &1903232762043198262
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 121939422043228780}
-  - component: {fileID: 5232845066770198307}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &121939422043228780
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1903232762043198262}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -180, y: 0, z: 120}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5232845066770198307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1903232762043198262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 1362a5681aaf1e747b4c095a323bf3e1, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &2023963262376436989
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6723829443140915145}
-  - component: {fileID: 4105596639890754826}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6723829443140915145
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2023963262376436989}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 420, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4105596639890754826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2023963262376436989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 565a86028c7b77445a67ab9bbb8a8fb9, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &2049103074981273696
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3777025489299503793}
-  - component: {fileID: 2757740652411906635}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3777025489299503793
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049103074981273696}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 480, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2757740652411906635
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049103074981273696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 8e0d6c3741d512f41996936769ca9fec, type: 3}
+  _textureResultOfScan: {fileID: 2800000, guid: 3f670e68842ed6e45abb419909c7092a, type: 3}
   scanHeight: 40
   scanArea: 6
   scanResolution: 2
@@ -1792,7 +1320,7 @@ MonoBehaviour:
   localInertiaProperty: 0
   windInfluenceProperty: 0
   blendWeightProperty: 0
---- !u!1 &2254249120004591459
+--- !u!1 &2310622567382668404
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1800,8 +1328,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1722882774866098686}
-  - component: {fileID: 3676937123976653953}
+  - component: {fileID: 2659368804101835404}
+  - component: {fileID: 8673410281977525305}
   m_Layer: 0
   m_Name: Scanner
   m_TagString: Untagged
@@ -1809,35 +1337,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1722882774866098686
+--- !u!4 &2659368804101835404
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2254249120004591459}
+  m_GameObject: {fileID: 2310622567382668404}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 480, y: 0, z: 60}
+  m_LocalPosition: {x: -60, y: 0, z: -180}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 670262006739115442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3676937123976653953
+--- !u!114 &8673410281977525305
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2254249120004591459}
+  m_GameObject: {fileID: 2310622567382668404}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: d359720403a1298458b5708e898f7d41, type: 3}
+  _textureResultOfScan: {fileID: 2800000, guid: 512c57d1e296aef4c8a6dec231722f78, type: 3}
   scanHeight: 40
   scanArea: 6
   scanResolution: 2
@@ -1851,7 +1379,7 @@ MonoBehaviour:
   colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
   gameObjectsToIgnore:
   - {fileID: 0}
---- !u!1 &2369187444336658781
+--- !u!1 &2540668877821313990
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1859,8 +1387,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 65218931315723341}
-  - component: {fileID: 7576898958760524653}
+  - component: {fileID: 1447468107894918649}
+  - component: {fileID: 800720540573559168}
   m_Layer: 0
   m_Name: Scanner
   m_TagString: Untagged
@@ -1868,35 +1396,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &65218931315723341
+--- !u!4 &1447468107894918649
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2369187444336658781}
+  m_GameObject: {fileID: 2540668877821313990}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -60, y: 0, z: 120}
+  m_LocalPosition: {x: -60, y: 0, z: -120}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 670262006739115442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7576898958760524653
+--- !u!114 &800720540573559168
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2369187444336658781}
+  m_GameObject: {fileID: 2540668877821313990}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: a5bf1d8b3648dee408585e08ba179c8d, type: 3}
+  _textureResultOfScan: {fileID: 2800000, guid: d4152d8a0c4fb2646a3d86d14dcd1c98, type: 3}
   scanHeight: 40
   scanArea: 6
   scanResolution: 2
@@ -1910,7 +1438,7 @@ MonoBehaviour:
   colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
   gameObjectsToIgnore:
   - {fileID: 0}
---- !u!1 &2662795436521796225
+--- !u!1 &2550226691637555829
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1918,8 +1446,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8733750679378543348}
-  - component: {fileID: 3813453874387967422}
+  - component: {fileID: 6172127151606716462}
+  - component: {fileID: 7972520795175344087}
   m_Layer: 0
   m_Name: Scanner
   m_TagString: Untagged
@@ -1927,13 +1455,131 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8733750679378543348
+--- !u!4 &6172127151606716462
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2662795436521796225}
+  m_GameObject: {fileID: 2550226691637555829}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 60, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 670262006739115442}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7972520795175344087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2550226691637555829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentTab: 1
+  _textureResultOfScan: {fileID: 2800000, guid: caf713c4d10aa444987aff75f7183820, type: 3}
+  scanHeight: 40
+  scanArea: 6
+  scanResolution: 2
+  imageProcessing: 0
+  referenceVolume: {fileID: 0}
+  skipShadowInCapture: 0
+  skipFogInCapture: 0
+  skipGlowInCapture: 0
+  skipColorGradingInCapture: 0
+  skipTonemappingInCapture: 0
+  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
+  gameObjectsToIgnore:
+  - {fileID: 0}
+--- !u!1 &2557158898203146385
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9214862626683243896}
+  - component: {fileID: 5192907336041149462}
+  m_Layer: 0
+  m_Name: Scanner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9214862626683243896
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2557158898203146385}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 60, y: 0, z: -60}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 670262006739115442}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5192907336041149462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2557158898203146385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentTab: 1
+  _textureResultOfScan: {fileID: 2800000, guid: 782bcb3e0359d294ea5ba96f6fcd6375, type: 3}
+  scanHeight: 40
+  scanArea: 6
+  scanResolution: 2
+  imageProcessing: 0
+  referenceVolume: {fileID: 0}
+  skipShadowInCapture: 0
+  skipFogInCapture: 0
+  skipGlowInCapture: 0
+  skipColorGradingInCapture: 0
+  skipTonemappingInCapture: 0
+  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
+  gameObjectsToIgnore:
+  - {fileID: 0}
+--- !u!1 &2834795474276795815
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2847831168155227805}
+  - component: {fileID: 8709928320944867688}
+  m_Layer: 0
+  m_Name: Scanner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2847831168155227805
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2834795474276795815}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -60, y: 0, z: 0}
@@ -1942,20 +1588,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 670262006739115442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3813453874387967422
+--- !u!114 &8709928320944867688
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2662795436521796225}
+  m_GameObject: {fileID: 2834795474276795815}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 815bc800c5c849d4096d2992f037c5cc, type: 3}
+  _textureResultOfScan: {fileID: 2800000, guid: f94b5b5461c20cb4b863554bd55e9e4a, type: 3}
   scanHeight: 40
   scanArea: 6
   scanResolution: 2
@@ -1969,7 +1615,7 @@ MonoBehaviour:
   colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
   gameObjectsToIgnore:
   - {fileID: 0}
---- !u!1 &2784954566654342163
+--- !u!1 &2937790177391775673
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1977,8 +1623,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2660654381834728879}
-  - component: {fileID: 6107644075729632074}
+  - component: {fileID: 8655069000910454381}
+  - component: {fileID: 6341943642152713434}
   m_Layer: 0
   m_Name: Scanner
   m_TagString: Untagged
@@ -1986,35 +1632,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2660654381834728879
+--- !u!4 &8655069000910454381
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2784954566654342163}
+  m_GameObject: {fileID: 2937790177391775673}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 360, y: 0, z: 0}
+  m_LocalPosition: {x: -120, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 670262006739115442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6107644075729632074
+--- !u!114 &6341943642152713434
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2784954566654342163}
+  m_GameObject: {fileID: 2937790177391775673}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 1c86031fbf5ae4046a24a9791a90b383, type: 3}
+  _textureResultOfScan: {fileID: 2800000, guid: 9731b74d56f6c6b48aa8f81579e51643, type: 3}
   scanHeight: 40
   scanArea: 6
   scanResolution: 2
@@ -2028,7 +1674,7 @@ MonoBehaviour:
   colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
   gameObjectsToIgnore:
   - {fileID: 0}
---- !u!1 &2804175547687058114
+--- !u!1 &3331658552190148585
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2036,8 +1682,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2817431120859778415}
-  - component: {fileID: 2635693867996450017}
+  - component: {fileID: 2592631291087711922}
+  - component: {fileID: 1136931450202830823}
   m_Layer: 0
   m_Name: Scanner
   m_TagString: Untagged
@@ -2045,131 +1691,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2817431120859778415
+--- !u!4 &2592631291087711922
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2804175547687058114}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -120, y: 0, z: -60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2635693867996450017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2804175547687058114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: ef410b1eeb7996649a2cfc093b9a1cc9, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &2876012845418675085
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3727621284280275945}
-  - component: {fileID: 1964691644614398}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3727621284280275945
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2876012845418675085}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 600, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1964691644614398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2876012845418675085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 3e775cb988f4e4341bccb7e42da980af, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &3016662919213475728
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1191932550929572643}
-  - component: {fileID: 4992336669369617310}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1191932550929572643
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3016662919213475728}
+  m_GameObject: {fileID: 3331658552190148585}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -60, y: 0, z: -60}
@@ -2178,20 +1706,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 670262006739115442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4992336669369617310
+--- !u!114 &1136931450202830823
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3016662919213475728}
+  m_GameObject: {fileID: 3331658552190148585}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: cbc820a5c2eaf7141b17ca62e5fb3e9f, type: 3}
+  _textureResultOfScan: {fileID: 2800000, guid: 9615896b448cb6e44a391952c88e8127, type: 3}
   scanHeight: 40
   scanArea: 6
   scanResolution: 2
@@ -2254,7 +1782,7 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 5dd67e9a2ba1ac4498f41c7c43827254, type: 2}
---- !u!1 &3778520333722668393
+--- !u!1 &3797844692857474676
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2262,8 +1790,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7673290482628763242}
-  - component: {fileID: 4016269637906923119}
+  - component: {fileID: 2917174553233107586}
+  - component: {fileID: 8096514102649672764}
   m_Layer: 0
   m_Name: Scanner
   m_TagString: Untagged
@@ -2271,153 +1799,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7673290482628763242
+--- !u!4 &2917174553233107586
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3778520333722668393}
+  m_GameObject: {fileID: 3797844692857474676}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 600, y: 0, z: 60}
+  m_LocalPosition: {x: -120, y: 0, z: -60}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 670262006739115442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4016269637906923119
+--- !u!114 &8096514102649672764
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3778520333722668393}
+  m_GameObject: {fileID: 3797844692857474676}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 029e4d61b96da0945ad8d243d58824a4, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &3889472950680875387
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 138392409388670517}
-  - component: {fileID: 2728683740594462606}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &138392409388670517
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3889472950680875387}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 120, y: 0, z: -60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2728683740594462606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3889472950680875387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 03cfa030d24fbfc48a7fc878cbccc90e, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &3951342984823755323
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3878489620113881992}
-  - component: {fileID: 4489450125994230242}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3878489620113881992
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3951342984823755323}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -120, y: 0, z: -120}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4489450125994230242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3951342984823755323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 188cd1adbce66bd4f94b60c2056471aa, type: 3}
+  _textureResultOfScan: {fileID: 2800000, guid: 496a082c0ef698b4a927d58a37741726, type: 3}
   scanHeight: 40
   scanArea: 6
   scanResolution: 2
@@ -2468,7 +1878,7 @@ Transform:
   - {fileID: 8798456713095867893}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4029716834518036515
+--- !u!1 &4309875202949122038
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2476,8 +1886,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3106657133287049354}
-  - component: {fileID: 2362705939575714394}
+  - component: {fileID: 1981261343439677851}
+  - component: {fileID: 1396170204574230346}
   m_Layer: 0
   m_Name: Scanner
   m_TagString: Untagged
@@ -2485,35 +1895,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3106657133287049354
+--- !u!4 &1981261343439677851
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4029716834518036515}
+  m_GameObject: {fileID: 4309875202949122038}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 60, y: 0, z: -180}
+  m_LocalPosition: {x: -120, y: 0, z: -180}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 670262006739115442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2362705939575714394
+--- !u!114 &1396170204574230346
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4029716834518036515}
+  m_GameObject: {fileID: 4309875202949122038}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 705ca1c6df30d1645bfa0b5a2c70d02d, type: 3}
+  _textureResultOfScan: {fileID: 2800000, guid: e37d144534e3f4f4bba71089a0bfe22f, type: 3}
   scanHeight: 40
   scanArea: 6
   scanResolution: 2
@@ -2606,7 +2016,7 @@ MonoBehaviour:
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
   m_ScrollDeltaPerTick: 6
---- !u!1 &4621934831828831482
+--- !u!1 &6530542910369486149
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2614,8 +2024,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6869407055185168577}
-  - component: {fileID: 5679357742867888826}
+  - component: {fileID: 142009643918162985}
+  - component: {fileID: 2281138939330526090}
   m_Layer: 0
   m_Name: Scanner
   m_TagString: Untagged
@@ -2623,780 +2033,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6869407055185168577
+--- !u!4 &142009643918162985
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4621934831828831482}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 540, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5679357742867888826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4621934831828831482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 1573537ad564e7a4e9d95bf7f0f9803f, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &4880074247322610842
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1469307815611210083}
-  - component: {fileID: 6921260531279984559}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1469307815611210083
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4880074247322610842}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -180, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6921260531279984559
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4880074247322610842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 6548db7ce7375c84da833412af3af35a, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &4885621379912627373
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6694096711833638385}
-  - component: {fileID: 3613306421350865534}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6694096711833638385
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4885621379912627373}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -60, y: 0, z: 60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3613306421350865534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4885621379912627373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 67c6ca1488e4c3143b13e242b147bf6e, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &4923962503250581738
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2375500389616382343}
-  - component: {fileID: 6428538309795699980}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2375500389616382343
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4923962503250581738}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -180, y: 0, z: -120}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6428538309795699980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4923962503250581738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: b0851b056470a7843b03607b1d82d59d, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &4927393864003386252
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2513813820023883592}
-  - component: {fileID: 8439810667143740966}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2513813820023883592
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4927393864003386252}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 120, y: 0, z: 120}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8439810667143740966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4927393864003386252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 3133c02233520ac48badd4562fd30ff8, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &5085606589407685666
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6992846693764055437}
-  - component: {fileID: 8501435091656355405}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6992846693764055437
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5085606589407685666}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 180, y: 0, z: 120}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8501435091656355405
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5085606589407685666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 227832d1b5be9f1408c9b28595d2a4c4, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &5371224571368150898
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8408213929081445934}
-  - component: {fileID: 1123024223749818899}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8408213929081445934
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5371224571368150898}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -120, y: 0, z: 120}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1123024223749818899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5371224571368150898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 808fb63995f91f146aab00be74911263, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &5410064144736399777
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3336238255664901568}
-  - component: {fileID: 1891778140668445410}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3336238255664901568
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5410064144736399777}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 360, y: 0, z: 60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1891778140668445410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5410064144736399777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 4295af6be4aa0414590e82379432b6bd, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &5508231731985523802
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 921299185767832264}
-  - component: {fileID: 3379047283202101995}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &921299185767832264
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5508231731985523802}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -120, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3379047283202101995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5508231731985523802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 5cbe8094dc2ea4745ab365b3cf918f63, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &5803357122183084588
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5742731450503522518}
-  - component: {fileID: 7996688651564450780}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5742731450503522518
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5803357122183084588}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -120, y: 0, z: -180}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7996688651564450780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5803357122183084588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: dd846ac1b4dbc6848bab31c8993b023e, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &5814927770304656267
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 367360787559271731}
-  - component: {fileID: 6393842829176148698}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &367360787559271731
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5814927770304656267}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -180, y: 0, z: 60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6393842829176148698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5814927770304656267}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 7209972a57c1f0e47981c46ca44f1339, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &5850453664637062650
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5108129761529423593}
-  - component: {fileID: 7533723622306616718}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5108129761529423593
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5850453664637062650}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -120, y: 0, z: 60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7533723622306616718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5850453664637062650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: df67050902e1bbc4a843510c7d8b63d4, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &6010148556097130457
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5747567968688700261}
-  - component: {fileID: 707562484565611376}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5747567968688700261
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6010148556097130457}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 120}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &707562484565611376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6010148556097130457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 9fd0c59350f82e544aca2cf8615c42e8, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &6116629314836572336
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6512911588611457148}
-  - component: {fileID: 9014776125616331428}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6512911588611457148
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6116629314836572336}
+  m_GameObject: {fileID: 6530542910369486149}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -60}
@@ -3405,610 +2048,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 670262006739115442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9014776125616331428
+--- !u!114 &2281138939330526090
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6116629314836572336}
+  m_GameObject: {fileID: 6530542910369486149}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: c2c1ce2202ec2084b8fec08dc91f8491, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &6371811890466249680
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4526891345897757336}
-  - component: {fileID: 6922918413210252567}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4526891345897757336
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6371811890466249680}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -180}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6922918413210252567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6371811890466249680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: e4e8405e39aee2b4bae96e418045f18f, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &6583837791576893665
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6145320281693739902}
-  - component: {fileID: 955238721686990183}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6145320281693739902
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6583837791576893665}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 60, y: 0, z: -120}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &955238721686990183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6583837791576893665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 9c7dd0bac7981094cb8f27439d3abf02, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &6975773382663234241
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3220320683185279212}
-  - component: {fileID: 7432113240256942034}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3220320683185279212
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6975773382663234241}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 60, y: 0, z: 120}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7432113240256942034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6975773382663234241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: b91a25a0fda5463429810573885a9aa5, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &7109410412609341675
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8254503610015706774}
-  - component: {fileID: 4554316708847691191}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8254503610015706774
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7109410412609341675}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 240, y: 0, z: 120}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4554316708847691191
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7109410412609341675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 351302b1ad599734084bc5ce1acbaedd, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &7158407838851010126
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8847215636157453582}
-  - component: {fileID: 4740310491479733583}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8847215636157453582
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7158407838851010126}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 540, y: 0, z: 60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4740310491479733583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7158407838851010126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: e14f0bba1ffc722448588983f4139fb6, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &7453629225601172893
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6219283339322079449}
-  - component: {fileID: 1602569975362963153}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6219283339322079449
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7453629225601172893}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 240, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1602569975362963153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7453629225601172893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 6485d3ee75e702348a680c4ef94fcbe0, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &7705079083900325766
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 254760013983162424}
-  - component: {fileID: 980914508213473606}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &254760013983162424
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7705079083900325766}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 120, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &980914508213473606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7705079083900325766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: c1202cb7ead3c7a45aca12c7cb86f5c0, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &7729746134618859543
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9205674559965020706}
-  - component: {fileID: 6308337721779575306}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9205674559965020706
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7729746134618859543}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6308337721779575306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7729746134618859543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 46decd3c656b9f64aa388f0623fd3070, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &7981138585885618248
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8826663672692701615}
-  - component: {fileID: 4688956503568912130}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8826663672692701615
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7981138585885618248}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -180, y: 0, z: -180}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4688956503568912130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7981138585885618248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: c5f6e7a15f39bbe48a40a338eb1eb0fa, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &8069045329826362987
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5593364227573856034}
-  - component: {fileID: 8982855447576875775}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5593364227573856034
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8069045329826362987}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 300, y: 0, z: 60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8982855447576875775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8069045329826362987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 2ca125ca58a271747818098446cb4aed, type: 3}
+  _textureResultOfScan: {fileID: 2800000, guid: 008f9c3b43a76414b82ae7bfe908f55c, type: 3}
   scanHeight: 40
   scanArea: 6
   scanResolution: 2
@@ -4052,63 +2105,24 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 627416452509091545}
-  - {fileID: 6643531138818696397}
-  - {fileID: 254760013983162424}
-  - {fileID: 9019640654386090209}
-  - {fileID: 6219283339322079449}
-  - {fileID: 1793634385682139387}
-  - {fileID: 2660654381834728879}
-  - {fileID: 6723829443140915145}
-  - {fileID: 3777025489299503793}
-  - {fileID: 6869407055185168577}
-  - {fileID: 3727621284280275945}
-  - {fileID: 7820755837878974822}
-  - {fileID: 6613316541455536812}
-  - {fileID: 7673290482628763242}
-  - {fileID: 8847215636157453582}
-  - {fileID: 1722882774866098686}
-  - {fileID: 3556369260143220593}
-  - {fileID: 3336238255664901568}
-  - {fileID: 5593364227573856034}
-  - {fileID: 3033397692093866999}
-  - {fileID: 287367392652051656}
-  - {fileID: 7383012790304216694}
-  - {fileID: 2225964798062965434}
-  - {fileID: 9205674559965020706}
-  - {fileID: 5747567968688700261}
-  - {fileID: 3220320683185279212}
-  - {fileID: 2513813820023883592}
-  - {fileID: 6992846693764055437}
-  - {fileID: 8254503610015706774}
-  - {fileID: 8733750679378543348}
-  - {fileID: 6694096711833638385}
-  - {fileID: 65218931315723341}
-  - {fileID: 8408213929081445934}
-  - {fileID: 5108129761529423593}
-  - {fileID: 921299185767832264}
-  - {fileID: 2817431120859778415}
-  - {fileID: 1191932550929572643}
-  - {fileID: 6512911588611457148}
-  - {fileID: 5900212685135526159}
-  - {fileID: 138392409388670517}
-  - {fileID: 2987473468964598213}
-  - {fileID: 6145320281693739902}
-  - {fileID: 270207680397414321}
-  - {fileID: 5864253259420942587}
-  - {fileID: 3878489620113881992}
-  - {fileID: 5742731450503522518}
-  - {fileID: 1702437171515936733}
-  - {fileID: 4526891345897757336}
-  - {fileID: 3106657133287049354}
-  - {fileID: 8826663672692701615}
-  - {fileID: 2375500389616382343}
-  - {fileID: 4135077022472646713}
-  - {fileID: 1469307815611210083}
-  - {fileID: 367360787559271731}
-  - {fileID: 121939422043228780}
+  - {fileID: 6172127151606716462}
+  - {fileID: 9214862626683243896}
+  - {fileID: 2101440425602590553}
+  - {fileID: 7632077771097851698}
+  - {fileID: 8320685987993776213}
+  - {fileID: 2659368804101835404}
+  - {fileID: 1981261343439677851}
+  - {fileID: 3679642623194684839}
+  - {fileID: 2917174553233107586}
+  - {fileID: 8655069000910454381}
+  - {fileID: 2847831168155227805}
+  - {fileID: 2592631291087711922}
+  - {fileID: 1447468107894918649}
+  - {fileID: 7960299972394761216}
+  - {fileID: 142009643918162985}
   m_Father: {fileID: 5158031798462519736}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8213755296055819002
+--- !u!1 &9082503552010708385
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4116,8 +2130,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1793634385682139387}
-  - component: {fileID: 7390956302423253403}
+  - component: {fileID: 7960299972394761216}
+  - component: {fileID: 7082774290628054837}
   m_Layer: 0
   m_Name: Scanner
   m_TagString: Untagged
@@ -4125,190 +2139,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1793634385682139387
+--- !u!4 &7960299972394761216
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8213755296055819002}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 300, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7390956302423253403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8213755296055819002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 92f56864447f0374390d06b89cfba84e, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &8588594538498071104
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5900212685135526159}
-  - component: {fileID: 6703894658891992791}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5900212685135526159
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8588594538498071104}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 60, y: 0, z: -60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6703894658891992791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8588594538498071104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 907ac8dfc6081da4386027c53b1ced70, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &8608831738740154235
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4135077022472646713}
-  - component: {fileID: 81081210520110454}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4135077022472646713
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8608831738740154235}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -180, y: 0, z: -60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &81081210520110454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8608831738740154235}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 203b077917b0c694f9b38534f40fadcc, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &8683319484007247189
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 270207680397414321}
-  - component: {fileID: 6273544850412688447}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &270207680397414321
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8683319484007247189}
+  m_GameObject: {fileID: 9082503552010708385}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -120}
@@ -4317,20 +2154,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 670262006739115442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6273544850412688447
+--- !u!114 &7082774290628054837
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8683319484007247189}
+  m_GameObject: {fileID: 9082503552010708385}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: bc16b1ef53403c94eaeeba56300aaace, type: 3}
+  _textureResultOfScan: {fileID: 2800000, guid: 794a45a90227a6f4d95fc6a1924e489d, type: 3}
   scanHeight: 40
   scanArea: 6
   scanResolution: 2
@@ -4344,7 +2181,7 @@ MonoBehaviour:
   colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
   gameObjectsToIgnore:
   - {fileID: 0}
---- !u!1 &8856920842234538634
+--- !u!1 &9175099650272268426
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4352,8 +2189,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2987473468964598213}
-  - component: {fileID: 548700673025637081}
+  - component: {fileID: 8320685987993776213}
+  - component: {fileID: 7096423171276676547}
   m_Layer: 0
   m_Name: Scanner
   m_TagString: Untagged
@@ -4361,212 +2198,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2987473468964598213
+--- !u!4 &8320685987993776213
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8856920842234538634}
+  m_GameObject: {fileID: 9175099650272268426}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 120, y: 0, z: -120}
+  m_LocalPosition: {x: 0, y: 0, z: -180}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 670262006739115442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &548700673025637081
+--- !u!114 &7096423171276676547
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8856920842234538634}
+  m_GameObject: {fileID: 9175099650272268426}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 37ac4df22d7f4f443b2f24223e25256f, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &9022630701045151527
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2225964798062965434}
-  - component: {fileID: 7240343250679591732}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2225964798062965434
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9022630701045151527}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 60, y: 0, z: 60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7240343250679591732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9022630701045151527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: 4de36e486071e5e448b10c6ce296ab25, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &9073657209465045114
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6613316541455536812}
-  - component: {fileID: 1550502481859444560}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6613316541455536812
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9073657209465045114}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 660, y: 0, z: 60}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1550502481859444560
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9073657209465045114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: f32ecb559d6461344ad754006cc1da4e, type: 3}
-  scanHeight: 40
-  scanArea: 6
-  scanResolution: 2
-  imageProcessing: 0
-  referenceVolume: {fileID: 0}
-  skipShadowInCapture: 0
-  skipFogInCapture: 0
-  skipGlowInCapture: 0
-  skipColorGradingInCapture: 0
-  skipTonemappingInCapture: 0
-  colorOfScanInGame: {r: 1, g: 1, b: 1, a: 1}
-  gameObjectsToIgnore:
-  - {fileID: 0}
---- !u!1 &9175064415932493349
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5864253259420942587}
-  - component: {fileID: 3223910191488350216}
-  m_Layer: 0
-  m_Name: Scanner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5864253259420942587
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9175064415932493349}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -60, y: 0, z: -120}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 670262006739115442}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3223910191488350216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9175064415932493349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c23b4d5c5c80a4b996c7075f452c8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTab: 1
-  _textureResultOfScan: {fileID: 2800000, guid: ba70058c4c6db6c4f865c6249de9cb5f, type: 3}
+  _textureResultOfScan: {fileID: 2800000, guid: c2ac6db3cf1bdac4a84cc9f3f9bffd97, type: 3}
   scanHeight: 40
   scanArea: 6
   scanResolution: 2

@@ -105,7 +105,7 @@ public class SceneAutoSaveController : MonoBehaviour
             await SaveManager.Instance.LoadAsync("Slot_01");
         }
     }
-
+    #region ACCESSIBLE FUNCTIONS
     public async void SaveAll()
     {
         SaveSceneNow();
@@ -116,4 +116,5 @@ public class SceneAutoSaveController : MonoBehaviour
         LoadSceneNow();
         await SaveManager.Instance.LoadAsync("Slot_01");
     }
+    #endregion
 }
