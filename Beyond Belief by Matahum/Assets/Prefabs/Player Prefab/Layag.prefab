@@ -2834,6 +2834,36 @@ MonoBehaviour:
   zClampRange: {x: -500, y: 500}
   smoothPanDuration: 0.5
   targetZoomFOV: 65
+  OnFullscreenMapOpen:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UI_Game, Assembly-CSharp
+        m_MethodName: HideUI
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnFullscreenMapClose:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UI_Game, Assembly-CSharp
+        m_MethodName: ShowUI
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4067311269392707195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24841,7 +24871,7 @@ MonoBehaviour:
   baseTransform: {fileID: 3165272219158913927}
   Hips: {fileID: 8995659411907578749}
   ScaleReferenceMode: 3
-  finalScaleReference: 0.74747056
+  finalScaleReference: 0.74747515
   finalScaleReferenceSqrt: 0.561277
   customScaleReferenceValue: 0.5
   DelayedInitialization: 0

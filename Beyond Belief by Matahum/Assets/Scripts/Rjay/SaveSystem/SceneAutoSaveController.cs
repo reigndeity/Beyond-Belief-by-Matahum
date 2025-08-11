@@ -105,4 +105,15 @@ public class SceneAutoSaveController : MonoBehaviour
             await SaveManager.Instance.LoadAsync("Slot_01");
         }
     }
+
+    public async void SaveAll()
+    {
+        SaveSceneNow();
+        await SaveManager.Instance.SaveAsync("Slot_01");
+    }
+    public async void LoadAll()
+    {
+        LoadSceneNow();
+        await SaveManager.Instance.LoadAsync("Slot_01");
+    }
 }

@@ -83,7 +83,7 @@ public class UI_TransitionController : MonoBehaviour
     }
 
 
-    IEnumerator Fade(float from, float to, float duration)
+    public IEnumerator Fade(float from, float to, float duration)
     {
         if (!fadeGroup)
             yield break;
