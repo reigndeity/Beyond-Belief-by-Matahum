@@ -18,12 +18,10 @@ MonoBehaviour:
   enemySets:
   - enemyList:
     - enemyToSpawn: {fileID: 7577076651516667552, guid: 697dc390005082149822f4170e56fa4f, type: 3}
-      howManyToSpawn: 3
-    - enemyToSpawn: {fileID: 7577076651516667552, guid: 697dc390005082149822f4170e56fa4f, type: 3}
-      howManyToSpawn: 5
+      howManyToSpawn: 1
     delayBeforeNextWave: 0
   spawnMode: 1
   rewards:
   - {fileID: 11400000, guid: 9b56dd6f8cf7ec349bb224f12bc87230, type: 2}
-  levelMultipler: 1
-  totalTime: 300
+  levelMultiplier: 4
+  totalTime: 15

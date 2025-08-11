@@ -18,8 +18,9 @@ public class BB_DomainDetailsUI : MonoBehaviour
     public Transform creatureHolder;
     public Transform rewardHolder;
     public BB_IconUIGroup iconUIGroup;
+    private bool isDomainButtonsSetUp = false;
 
-    [Header("Quest Selected Indicator")]
+    [Header("Domain Selected Indicator")]
     public Sprite defaultSprite;
     public Sprite selectedSprite; // Assign this manually or load it
     private Button currentlySelectedButton;
@@ -34,25 +35,30 @@ public class BB_DomainDetailsUI : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void OnOpenDomainDetails()
+    public void OnOpenDomainDetails(bool applyMultiplier = false)
     {
-        for (int i = 0; i < domainSelectionHolder.childCount; i++)
+        if (!isDomainButtonsSetUp)
         {
-            BB_DomainSelectionTemplate domainSelectionTemplate = domainSelectionHolder.GetChild(i).GetComponent<BB_DomainSelectionTemplate>();
-            domainSelectionTemplate.domainTitle.text = BB_DomainManager.instance.selectedDomain.domainName;
+            for (int i = 0; i < domainSelectionHolder.childCount; i++)
+            {
+                BB_DomainSelectionTemplate domainSelectionTemplate = domainSelectionHolder.GetChild(i).GetComponent<BB_DomainSelectionTemplate>();
+                domainSelectionTemplate.domainTitle.text = BB_DomainManager.instance.selectedDomain.domainName;
 
-            Button domainBtn = domainSelectionHolder.GetChild(i).GetComponent<Button>();
-            Image domainImg = domainBtn.GetComponent<Image>();
+                Button domainBtn = domainSelectionHolder.GetChild(i).GetComponent<Button>();
+                Image domainImg = domainBtn.GetComponent<Image>();
 
-            domainBtn.onClick.AddListener(() => OnDomainButtonClicked(BB_DomainManager.instance.selectedDomain, domainBtn, domainImg, i + 1));
+                int level = i + 1;
+                domainBtn.onClick.AddListener(() => OnDomainButtonClicked(BB_DomainManager.instance.selectedDomain, domainBtn, domainImg, level, applyMultiplier));
+            }
+            isDomainButtonsSetUp = true;
         }
+        
 
         Button firstDomainBtn = domainSelectionHolder.GetChild(0).GetComponent<Button>();
         firstDomainBtn.onClick.Invoke();    
     }
-    private void OnDomainButtonClicked(BB_DomainSO domain, Button clickedButton, Image clickedImage, int level)
+    private void OnDomainButtonClicked(BB_DomainSO domain, Button clickedButton, Image clickedImage, int level, bool applyMultiplier = false)
     {
-        int domainLevel = level;
         // Reset previous button to default sprite
         if (currentlySelectedImage != null)
         {
@@ -65,15 +71,14 @@ public class BB_DomainDetailsUI : MonoBehaviour
         currentlySelectedImage.sprite = selectedSprite;
 
         // Show quest details
-        ShowDomainDetails(domain, domainLevel);
+        ShowDomainDetails(domain, level, applyMultiplier);
     }
-    public void ShowDomainDetails(BB_DomainSO domain, int level)
+    public void ShowDomainDetails(BB_DomainSO domain, int level, bool applyMutliplier = false)
     {
         domainImage.sprite = domain.domainImage;
         domainTitleText.text = domain.domainName;
         domainBodyText.text = domain.domainDescription;
-        domain.levelMultiplier = level;
-        domain.UpdateRewardsMultiplier();
+        if(applyMutliplier == true ) domain.levelMultiplier = level;
 
         Debug.Log($"{domain.levelMultiplier}");
 
@@ -120,20 +125,22 @@ public class BB_DomainDetailsUI : MonoBehaviour
             // Create icon UI
             BB_IconUIGroup icon = Instantiate(iconUIGroup, creatureHolder);
 
-            icon.iconName.text = enemyPrefab.name;
+            icon.iconName.text = $"{icon.quantity} {enemyPrefab.name}";
             //icon.icon.sprite =  Enemy.enemyIcon;
             icon.quantity.text = totalCount.ToString();
         }
 
         // Populate Reward Icons
-        foreach (BB_RewardSO rewards in domain.rewards)
+        foreach (BB_RewardSO rewards in domain.GetRewardsWithMultiplier())
         {
             // Create icon UI
-            BB_IconUIGroup icon = Instantiate(iconUIGroup, rewardHolder);
+            BB_IconUIGroup rewardUI = Instantiate(iconUIGroup, rewardHolder);
+            rewardUI.gameObject.SetActive(true);
 
-            icon.iconName.text = BB_DomainManager.instance.selectedDomain.name;
-            icon.icon.sprite =  rewards.RewardIcon();
-            icon.quantity.text = rewards.RewardQuantity().ToString();
+            rewardUI.backgroundImage.sprite = rewards.RewardBackground();
+            rewardUI.icon.sprite = rewards.RewardIcon();
+            rewardUI.iconName.text = $"{rewards.RewardQuantity().ToString()}  {rewards.RewardName()}";
+            rewardUI.quantity.text = rewards.RewardQuantity().ToString();
         }
 
     }

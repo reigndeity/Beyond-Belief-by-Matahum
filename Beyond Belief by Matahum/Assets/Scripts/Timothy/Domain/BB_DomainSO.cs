@@ -23,19 +23,26 @@ public class BB_DomainSO : ScriptableObject
 
     [Header("Rewards")]
     public List<BB_RewardSO> rewards = new List<BB_RewardSO>();
-    public float levelMultiplier = 1f;
+    public int levelMultiplier = 1;
 
     [Header("Timers")]
     public float totalTime = 300f; // total time to complete the domain
 
-    public void UpdateRewardsMultiplier()
+    public List<BB_RewardSO> GetRewardsWithMultiplier()
     {
+        List<BB_RewardSO> clonedRewards = new List<BB_RewardSO>();
+
         foreach (BB_RewardSO reward in rewards)
         {
-            int newQuantity = Mathf.RoundToInt(levelMultiplier * reward.baseQuantity);
-            reward.SetQuantity(newQuantity);
+            // Create a runtime copy
+            BB_RewardSO rewardInstance = Instantiate(reward);
+            rewardInstance.SetMultiplier(levelMultiplier);
+            clonedRewards.Add(rewardInstance);
         }
+
+        return clonedRewards;
     }
+
 }
 
 [Serializable]

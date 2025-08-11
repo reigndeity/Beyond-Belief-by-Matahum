@@ -2,20 +2,22 @@ using UnityEngine;
 
 public abstract class BB_RewardSO : ScriptableObject, BB_IReward
 {
-    [Header("Reward Info")]
-    public int baseQuantity = 1; // Starting quantity before scaling
+    public int baseQuantity;
+    [HideInInspector] public int multiplier = 1;
 
-    private int currentQuantity; // Mutable quantity
-    public void SetQuantity(int quantity)
+    public Sprite rewardBackground;
+    public Sprite rewardIcon;
+    public string rewardName;
+    public void SetMultiplier(int modifiedMultiplier)
     {
-        currentQuantity = quantity;
+        multiplier = modifiedMultiplier;
     }
     public abstract void GiveReward();
-    public abstract Sprite RewardBackground();
-    public abstract Sprite RewardIcon();
-    public abstract string RewardName();
+    public virtual Sprite RewardBackground() => rewardBackground;
+    public virtual Sprite RewardIcon() => rewardIcon;
+    public virtual string RewardName() => rewardName;
     public virtual int RewardQuantity()
     {
-        return currentQuantity;
+        return Mathf.RoundToInt(baseQuantity * multiplier);
     }
 }

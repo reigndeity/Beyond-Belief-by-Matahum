@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
+using System.Linq;
+using Unity.VisualScripting;
 
 public class BB_DomainManager : MonoBehaviour
 {
@@ -11,16 +14,32 @@ public class BB_DomainManager : MonoBehaviour
     [HideInInspector]public BB_DomainSO selectedDomain;
     private List<BB_DomainSO> domainList = new List<BB_DomainSO>();
     private int currentSetIndex = 0;
+    public GameObject domainArea;
+    [HideInInspector] public bool isDomainComplete = false;
+    public Vector3 spawnPoint;
+    public Quaternion spawnRotation;
 
     [Header("UI References")]
     public BB_IconUIGroup iconGroupTemplate;
     public GameObject domainCompletePopUp;
 
     [Header("Timers")]
+    public TextMeshProUGUI timerText;
     private float totalTimer;
 
+    [Header("Defeated Properties")]
+    public GameObject defeatedPanel;
+
     [Header("Active Enemies")]
-    public List<EnemyStats> enemyList = new List<EnemyStats>();
+    public List<Enemy> enemyList = new List<Enemy>();
+    public Transform enemyHolder;
+
+    [Header("Chest")]
+    [HideInInspector]public GameObject chestObj;
+
+    [Header("Claim Reward Properties")]
+    public GameObject claimRewardPanel;
+    public Transform rewardHolder;
 
     private void Awake()
     {
@@ -36,6 +55,13 @@ public class BB_DomainManager : MonoBehaviour
         }
     }
 
+    public void SpawnToDomainEntrance()
+    {
+        Player player = FindFirstObjectByType<Player>();
+        player.transform.position = spawnPoint;
+        player.transform.rotation = spawnRotation;
+    }
+
     public void EnterDomain()
     {
         SceneManager.LoadScene("Balete Tree Domain");
@@ -44,8 +70,32 @@ public class BB_DomainManager : MonoBehaviour
     public void StartDomain()
     {
         totalTimer = selectedDomain.totalTime;
+        timerText.gameObject.SetActive(true); // Show timer
+        StartCoroutine(TimerRoutine());
         StartCoroutine(DomainRoutine());
     }
+
+    private IEnumerator TimerRoutine()
+    {
+        while (totalTimer > 0 && !isDomainComplete)
+        {
+            totalTimer -= Time.deltaTime;
+            if (totalTimer < 0) totalTimer = 0;
+
+            // Format time as MM:SS
+            int minutes = Mathf.FloorToInt(totalTimer / 60f);
+            int seconds = Mathf.FloorToInt(totalTimer % 60f);
+            timerText.text = $"{minutes:00}:{seconds:00}";
+
+            yield return null; // wait 1 frame
+        }
+
+        // Optional: handle time-up behavior
+        Debug.Log("Time's up!");
+
+        Defeat();
+    }
+
 
     private IEnumerator DomainRoutine()
     {
@@ -76,11 +126,10 @@ public class BB_DomainManager : MonoBehaviour
         {
             for (int i = 0; i < enemyData.howManyToSpawn; i++)
             {
-                EnemyStats enemy = Instantiate(enemyData.enemyToSpawn, GetRandomSpawnPosition(), Quaternion.identity, transform).GetComponent<EnemyStats>();
+                Enemy enemy = Instantiate(enemyData.enemyToSpawn, GetRandomSpawnPosition(), Quaternion.identity, enemyHolder).GetComponent<Enemy>();
                 enemyList.Add(enemy);
 
-                BB_DomainEnemyDeathHandler deathHandler = enemy.gameObject.AddComponent<BB_DomainEnemyDeathHandler>();
-                deathHandler.onDeath += () => StartCoroutine(DomainCompletion(enemy));
+                enemy.OnDeath += () => StartCoroutine(DomainCompletion(enemy));
             }
         }
     }
@@ -90,12 +139,33 @@ public class BB_DomainManager : MonoBehaviour
         return transform.position + new Vector3(Random.Range(-10f, 10f), 2, Random.Range(-10f, 10f));
     }
 
-    private IEnumerator DomainCompletion(EnemyStats enemy)
+    private void OnDrawGizmosSelected()
     {
+        if (domainArea == null) return;
+
+        // Make the gizmo red and slightly transparent
+        Gizmos.color = new Color(1f, 0f, 0f, 0.25f);
+
+        // Draw a filled sphere for visualization (radius = 10 to match Random.Range(-10, 10))
+        Gizmos.DrawSphere(domainArea.transform.position + new Vector3(0f, 2f, 0f), 10f);
+
+        // Optionally draw a wireframe so edges are clearer
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(domainArea.transform.position + new Vector3(0f, 2f, 0f), 10f);
+    }
+
+
+
+    private IEnumerator DomainCompletion(Enemy enemy)
+    {
+        Debug.Log("Namatay");
         enemyList.Remove(enemy); // <-- BUG FIX: This should be before checking count
 
         if (enemyList.Count == 0)
         {
+            SpawnChest();
+            isDomainComplete = true;
+
             domainCompletePopUp.SetActive(true);
             CanvasGroup canvasGroup = domainCompletePopUp.GetComponent<CanvasGroup>();
             canvasGroup.alpha = 0f;
@@ -126,27 +196,56 @@ public class BB_DomainManager : MonoBehaviour
         }
     }
 
-    public void ClaimPanel(BB_DomainSO domain, GameObject completionPanel, Transform rewardsHolder)
+    public void Defeat()
     {
-        completionPanel.SetActive(true);
+        //Stop movement of all enemies and player
 
-        foreach (BB_RewardSO rewards in domain.rewards)
+
+    }
+
+    void SpawnChest()
+    {
+        // This will search ALL objects in the scene, even inactive ones
+        BB_DomainClaimRewardsInteractable chest = Resources.FindObjectsOfTypeAll<BB_DomainClaimRewardsInteractable>()
+            .FirstOrDefault(obj => obj.gameObject.scene.isLoaded);
+
+        if (chest != null)
         {
-            BB_IconUIGroup icon = Instantiate(iconGroupTemplate, rewardsHolder);
-            icon.iconName.text = selectedDomain.name;
-            icon.icon.sprite = rewards.RewardIcon();
-            icon.quantity.text = rewards.RewardQuantity().ToString();
+            chest.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("Chest object not found in scene.");
+        }
+    }
 
-            RectTransform iconRect = icon.gameObject.GetComponent<RectTransform>();
+    public void ClaimPanel(BB_DomainSO domain)
+    {
+        claimRewardPanel.SetActive(true);
+
+        foreach (BB_RewardSO rewards in domain.GetRewardsWithMultiplier())
+        {
+            BB_IconUIGroup rewardUI = Instantiate(iconGroupTemplate, rewardHolder);
+            rewardUI.gameObject.SetActive(true);
+
+            rewardUI.backgroundImage.sprite = rewards.RewardBackground();
+            rewardUI.icon.sprite = rewards.RewardIcon();
+            rewardUI.iconName.text = $"{rewards.RewardQuantity().ToString()}  {rewards.RewardName()}";
+            rewardUI.quantity.text = rewards.RewardQuantity().ToString();
+
+            RectTransform iconRect = rewardUI.gameObject.GetComponent<RectTransform>();
             iconRect.localScale = new Vector2(2f, 2f);
         }
+
+
     }
 
     public void ClaimRewards(BB_DomainSO domain)
     {
-        foreach (var reward in domain.rewards)
+        foreach (var reward in domain.GetRewardsWithMultiplier())
         {
             reward.GiveReward();
+            Debug.Log($"Received {reward.RewardQuantity()} {reward.RewardName()}");
         }
     }
 }
