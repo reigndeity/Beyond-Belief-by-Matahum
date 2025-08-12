@@ -10,8 +10,11 @@ public class BB_DomainEntranceInteractable : Interactable
 
     public override void OnInteract()
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        PlayerCamera playerCam = FindFirstObjectByType<PlayerCamera>();
+        playerCam.SetCursorVisibility(true);
+
+        BB_DomainManager.instance.spawnPoint = spawnPoint.transform.position;
+        BB_DomainManager.instance.spawnRotation = spawnPoint.transform.rotation;
 
         UI_Game uiGame = FindFirstObjectByType<UI_Game>(FindObjectsInactive.Include);
         uiGame.PauseGame();

@@ -60,13 +60,15 @@ public class BB_DomainManager : MonoBehaviour
     }
     public void SpawnToOpenWorldDomainEntrance()
     {
-        SceneAutoSaveController autoSave = FindFirstObjectByType<SceneAutoSaveController>(FindObjectsInactive.Include);
-        autoSave.LoadAll();
+        Player player = FindFirstObjectByType<Player>();
+        player.transform.position = spawnPoint;
+        player.transform.rotation = spawnRotation;
     }
 
     public void EnterDomain()
     {
-        SceneManager.LoadScene("Balete Tree Domain");
+        //SceneManager.LoadScene("Balete Tree Domain");
+        Loader.Load(4);
     }
 
     public void StartDomain()
@@ -141,78 +143,30 @@ public class BB_DomainManager : MonoBehaviour
             }
         }
     }
-    private IEnumerator DomainCompletion(Enemy enemy)
-    {
-        Debug.Log("Namatay");
-        enemyList.Remove(enemy); // <-- BUG FIX: This should be before checking count
-
-        if (enemyList.Count == 0)
-        {
-            SpawnChest();
-            isDomainComplete = true;
-
-            domainCompletePopUp.SetActive(true);
-            CanvasGroup canvasGroup = domainCompletePopUp.GetComponent<CanvasGroup>();
-            canvasGroup.alpha = 0f;
-
-            float duration = 1f;
-            float timer = 0f;
-
-            // Fade in
-            while (timer < duration)
-            {
-                timer += Time.unscaledDeltaTime;
-                canvasGroup.alpha = Mathf.Clamp01(timer / duration);
-                yield return null;
-            }
-
-            yield return new WaitForSecondsRealtime(3f);
-
-            // Fade out
-            timer = 0f;
-            while (timer < duration)
-            {
-                timer += Time.unscaledDeltaTime;
-                canvasGroup.alpha = 1f - Mathf.Clamp01(timer / duration);
-                yield return null;
-            }
-
-            domainCompletePopUp.SetActive(false);
-        }
-    }
     private Vector3 GetRandomSpawnPosition()
     {
         return transform.position + new Vector3(Random.Range(-10f, 10f), 2, Random.Range(-10f, 10f));
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        if (domainArea == null) return;
-
-        // Make the gizmo red and slightly transparent
-        Gizmos.color = new Color(1f, 0f, 0f, 0.25f);
-
-        // Draw a filled sphere for visualization (radius = 10 to match Random.Range(-10, 10))
-        Gizmos.DrawSphere(domainArea.transform.position + new Vector3(0f, 2f, 0f), 10f);
-
-        // Optionally draw a wireframe so edges are clearer
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(domainArea.transform.position + new Vector3(0f, 2f, 0f), 10f);
-    }
     #endregion
     #region DEFEATED
     public void Defeat()
     {
         isDefeated = true;
+
         UI_Game uiGame = FindFirstObjectByType<UI_Game>(FindObjectsInactive.Include);
         uiGame.PauseGame();
 
         StartCoroutine(DefeatPanel());
+
+        SaveSystemManager();
     }
 
     IEnumerator DefeatPanel()
     {
         // Gradually Show Panel
+        UI_Game uiGame = FindFirstObjectByType<UI_Game>(FindObjectsInactive.Include);
+        
         defeatedPanel.SetActive(true);
         CanvasGroup canvasGroup = defeatedPanel.GetComponent<CanvasGroup>();
         canvasGroup.alpha = 0f;
@@ -234,7 +188,10 @@ public class BB_DomainManager : MonoBehaviour
         // Wait without being affected by timeScale
         yield return new WaitForSecondsRealtime(1f);
 
+        timerText.gameObject.SetActive(false);
+
         // Gradually Show Button
+        uiGame.HideUI();
         timer = 0f;
         while (timer < duration)
         {
@@ -243,30 +200,75 @@ public class BB_DomainManager : MonoBehaviour
             yield return null;
         }
 
-        Cursor.visible = true;
+        PlayerCamera playerCam = FindFirstObjectByType<PlayerCamera>();
+        playerCam.SetCursorVisibility(true);
     }
     #endregion
     #region CLAIM REWARDS
-    void SpawnChest()
-    {
-        // This will search ALL objects in the scene, even inactive ones
-        BB_DomainClaimRewardsInteractable chest = Resources.FindObjectsOfTypeAll<BB_DomainClaimRewardsInteractable>()
-            .FirstOrDefault(obj => obj.gameObject.scene.isLoaded);
 
-        if (chest != null)
+    private IEnumerator DomainCompletion(Enemy enemy)
+    {
+        Debug.Log("Namatay");
+        enemyList.Remove(enemy); // <-- BUG FIX: This should be before checking count
+
+        if (enemyList.Count == 0)
         {
-            chest.gameObject.SetActive(true);
-        }
-        else
-        {
-            Debug.LogWarning("Chest object not found in scene.");
+            UI_Game uiGame = FindFirstObjectByType<UI_Game>(FindObjectsInactive.Include);
+
+            isDomainComplete = true;
+
+            domainCompletePopUp.SetActive(true);
+            CanvasGroup domainCompleteCanvasGroup = domainCompletePopUp.GetComponent<CanvasGroup>();
+            domainCompleteCanvasGroup.alpha = 0f;
+
+            float duration = 1f;
+            float timer = 0f;
+
+            // Fade in Domain Complete Pop Up
+            while (timer < duration)
+            {
+                timer += Time.unscaledDeltaTime;
+                domainCompleteCanvasGroup.alpha = Mathf.Clamp01(timer / duration);
+                yield return null;
+            }
+
+            yield return new WaitForSecondsRealtime(1f);
+
+            // Fade out Domain Complete Pop Up
+            timer = 0f;
+            while (timer < duration)
+            {
+                timer += Time.unscaledDeltaTime;
+                domainCompleteCanvasGroup.alpha = 1f - Mathf.Clamp01(timer / duration);
+                yield return null;
+            }
+
+            domainCompletePopUp.SetActive(false);
+            timerText.gameObject.SetActive(false);
+            claimRewardPanel.SetActive(true);
+            uiGame.HideUI();
+            uiGame.PauseGame();
+
+            PlayerCamera playerCam = FindFirstObjectByType<PlayerCamera>();
+            playerCam.SetCursorVisibility(true);
+
+            ClaimPanel(selectedDomain);
+            CanvasGroup claimRewardCanvasGroup = claimRewardPanel.GetComponent<CanvasGroup>();
+            claimRewardCanvasGroup.alpha = 0f;
+
+            timer = 0f;
+
+            // Fade in Claim Rewards
+            while (timer < duration)
+            {
+                timer += Time.unscaledDeltaTime;
+                claimRewardCanvasGroup.alpha = Mathf.Clamp01(timer / duration);
+                yield return null;
+            }
         }
     }
-    public async void ClaimPanel(BB_DomainSO domain)
+    public void ClaimPanel(BB_DomainSO domain)
     {
-        claimRewardPanel.SetActive(true);
-        Cursor.visible = true;
-
         foreach (Transform child in rewardHolder)
         {
             BB_IconUIGroup iconUIGroup = child.GetComponent<BB_IconUIGroup>();
@@ -288,7 +290,10 @@ public class BB_DomainManager : MonoBehaviour
             iconRect.localScale = new Vector2(2f, 2f);
         }
 
-        await SaveManager.Instance.SaveSystemsAsync("slot_01", false, "Equipment.Main", "Inventory.Main", "Player.Stats"); 
+        SaveSystemManager();
+
+        PlayerCamera playerCam = FindFirstObjectByType<PlayerCamera>();
+        playerCam.SetCursorVisibility(true);
     }
 
     public void ClaimRewards(BB_DomainSO domain)
@@ -300,4 +305,9 @@ public class BB_DomainManager : MonoBehaviour
         }
     }
     #endregion
+
+    async void SaveSystemManager()
+    {
+        await SaveManager.Instance.SaveSystemsAsync("slot_01", false, "Equipment.Main", "Inventory.Main", "Player.Stats");
+    }
 }

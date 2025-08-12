@@ -221,6 +221,22 @@ public class PlayerCamera : MonoBehaviour
             currentDistance = desiredDistance;
             distanceSmoothVelocity = 0f;
         }
-}
+    }
+
+    public void SetCursorVisibility(bool visible)
+    {
+        isCursorVisible = visible;
+
+        if (isCursorVisible)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+    }
 
 }

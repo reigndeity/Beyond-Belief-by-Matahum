@@ -63,8 +63,7 @@ public class BB_DomainButtonManager : MonoBehaviour
 
     public void OpenDomainDetails()//When interacting with a domain entrance in OpenWorldScene
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        HandleMouseVisibility(true);
 
         domainDetailsPanel.SetActive(true);
         BB_DomainDetailsUI.instance.OnOpenDomainDetails(true);
@@ -75,38 +74,57 @@ public class BB_DomainButtonManager : MonoBehaviour
 
         UI_Game uiGame = FindFirstObjectByType<UI_Game>(FindObjectsInactive.Include);
         uiGame.ResumeGame();
+
+        HandleMouseVisibility(false);
     }
 
+    #region EXITING DOMAIN
     public void ExitDomain()
     {
+        UI_Game uI_Game = FindFirstObjectByType<UI_Game>(FindObjectsInactive.Include);
+        if (uI_Game != null) uI_Game.ResumeGame();
+
         domainScenePanel.SetActive(false);
         BB_DomainManager.instance.ResetDomain();
         BB_DomainManager.instance.selectedDomain = null;   
 
         SceneManager.sceneLoaded += OnMainSceneLoaded; // subscribe to event
-        SceneManager.LoadScene("Tim New World Tester");
+        //SceneManager.LoadScene("Tim New World Tester");
+        Loader.Load(3);
     }
 
     private void OnMainSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "Tim New World Tester")
-        {       
-            BB_DomainManager.instance.SpawnToOpenWorldDomainEntrance();
+        {
+            Invoke(nameof(SpawnToOpenWorldWrapping),1.6f);
+
             SceneManager.sceneLoaded -= OnMainSceneLoaded; // unsubscribe so it doesn’t run every time   
         }
     }
 
+    void SpawnToOpenWorldWrapping()
+    {
+        BB_DomainManager.instance.SpawnToOpenWorldDomainEntrance();
+    }
+
+    #endregion
+
     public void StayInDomain()//When choosing to stay at the domain
     {
         leaveConfirmationPanel.SetActive(false);
+        HandleMouseVisibility(false);
     }
 
     public void ClaimRewards()//Claiming of rewards in domain
-    {
-        UI_Game uI_Game = FindFirstObjectByType<UI_Game>(FindObjectsInactive.Include);
-        if (uI_Game != null) uI_Game.ResumeGame();
-
+    { 
         BB_DomainManager.instance.ClaimRewards(BB_DomainManager.instance.selectedDomain);
         ExitDomain();
+    }
+
+    public void HandleMouseVisibility(bool isVisible)
+    {
+        PlayerCamera playerCam = FindFirstObjectByType<PlayerCamera>();
+        playerCam.SetCursorVisibility(isVisible);
     }
 }

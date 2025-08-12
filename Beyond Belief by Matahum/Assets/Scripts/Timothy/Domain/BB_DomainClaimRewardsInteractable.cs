@@ -4,8 +4,8 @@ public class BB_DomainClaimRewardsInteractable : Interactable
 {
     public override void OnInteract()
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        PlayerCamera playerCam = FindFirstObjectByType<PlayerCamera>();
+        playerCam.SetCursorVisibility(true);
 
         BB_DomainManager.instance.ClaimPanel(BB_DomainManager.instance.selectedDomain);
 
