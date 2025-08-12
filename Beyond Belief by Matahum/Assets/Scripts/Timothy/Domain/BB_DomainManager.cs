@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class BB_DomainManager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class BB_DomainManager : MonoBehaviour
     private int currentSetIndex = 0;
     public GameObject domainArea;
     [HideInInspector] public bool isDomainComplete = false;
+
     public Vector3 spawnPoint;
     public Quaternion spawnRotation;
 
@@ -29,6 +31,8 @@ public class BB_DomainManager : MonoBehaviour
 
     [Header("Defeated Properties")]
     public GameObject defeatedPanel;
+    public Button defeatedButton;
+    public bool isDefeated;
 
     [Header("Active Enemies")]
     public List<Enemy> enemyList = new List<Enemy>();
@@ -54,12 +58,10 @@ public class BB_DomainManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    public void SpawnToDomainEntrance()
+    public void SpawnToOpenWorldDomainEntrance()
     {
-        Player player = FindFirstObjectByType<Player>();
-        player.transform.position = spawnPoint;
-        player.transform.rotation = spawnRotation;
+        SceneAutoSaveController autoSave = FindFirstObjectByType<SceneAutoSaveController>(FindObjectsInactive.Include);
+        autoSave.LoadAll();
     }
 
     public void EnterDomain()
@@ -69,12 +71,21 @@ public class BB_DomainManager : MonoBehaviour
 
     public void StartDomain()
     {
+        isDomainComplete = false;
         totalTimer = selectedDomain.totalTime;
         timerText.gameObject.SetActive(true); // Show timer
         StartCoroutine(TimerRoutine());
         StartCoroutine(DomainRoutine());
     }
-
+    public void ResetDomain()
+    {
+        defeatedPanel.SetActive(false);
+        timerText.gameObject.SetActive(false);
+        claimRewardPanel.gameObject.SetActive(false);
+        currentSetIndex = 0;
+        isDefeated = false;
+    }
+    #region DOMAIN ROUTINE
     private IEnumerator TimerRoutine()
     {
         while (totalTimer > 0 && !isDomainComplete)
@@ -89,14 +100,11 @@ public class BB_DomainManager : MonoBehaviour
 
             yield return null; // wait 1 frame
         }
-
-        // Optional: handle time-up behavior
-        Debug.Log("Time's up!");
-
-        Defeat();
+        if (!isDefeated && !isDomainComplete && totalTimer <= 0f)
+        {
+            Defeat();
+        }
     }
-
-
     private IEnumerator DomainRoutine()
     {
         while (currentSetIndex < selectedDomain.enemySets.Count) // <-- POTENTIAL BUG: enemySets might not exist, check your SO script
@@ -116,10 +124,7 @@ public class BB_DomainManager : MonoBehaviour
 
             currentSetIndex++;
         }
-
-        Debug.Log("Domain completed!");
     }
-
     private void SpawnEnemySet(BB_EnemySet set)
     {
         foreach (var enemyData in set.enemyList)
@@ -127,35 +132,15 @@ public class BB_DomainManager : MonoBehaviour
             for (int i = 0; i < enemyData.howManyToSpawn; i++)
             {
                 Enemy enemy = Instantiate(enemyData.enemyToSpawn, GetRandomSpawnPosition(), Quaternion.identity, enemyHolder).GetComponent<Enemy>();
+                /*EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
+                enemyStats.SetLevel(10 * selectedDomain.levelMultiplier);*/ //Remove Comment when testing enemy levels. its working though
+
                 enemyList.Add(enemy);
 
                 enemy.OnDeath += () => StartCoroutine(DomainCompletion(enemy));
             }
         }
     }
-
-    private Vector3 GetRandomSpawnPosition()
-    {
-        return transform.position + new Vector3(Random.Range(-10f, 10f), 2, Random.Range(-10f, 10f));
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (domainArea == null) return;
-
-        // Make the gizmo red and slightly transparent
-        Gizmos.color = new Color(1f, 0f, 0f, 0.25f);
-
-        // Draw a filled sphere for visualization (radius = 10 to match Random.Range(-10, 10))
-        Gizmos.DrawSphere(domainArea.transform.position + new Vector3(0f, 2f, 0f), 10f);
-
-        // Optionally draw a wireframe so edges are clearer
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(domainArea.transform.position + new Vector3(0f, 2f, 0f), 10f);
-    }
-
-
-
     private IEnumerator DomainCompletion(Enemy enemy)
     {
         Debug.Log("Namatay");
@@ -176,18 +161,18 @@ public class BB_DomainManager : MonoBehaviour
             // Fade in
             while (timer < duration)
             {
-                timer += Time.deltaTime;
+                timer += Time.unscaledDeltaTime;
                 canvasGroup.alpha = Mathf.Clamp01(timer / duration);
                 yield return null;
             }
 
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSecondsRealtime(3f);
 
             // Fade out
             timer = 0f;
             while (timer < duration)
             {
-                timer += Time.deltaTime;
+                timer += Time.unscaledDeltaTime;
                 canvasGroup.alpha = 1f - Mathf.Clamp01(timer / duration);
                 yield return null;
             }
@@ -195,14 +180,73 @@ public class BB_DomainManager : MonoBehaviour
             domainCompletePopUp.SetActive(false);
         }
     }
-
-    public void Defeat()
+    private Vector3 GetRandomSpawnPosition()
     {
-        //Stop movement of all enemies and player
-
-
+        return transform.position + new Vector3(Random.Range(-10f, 10f), 2, Random.Range(-10f, 10f));
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        if (domainArea == null) return;
+
+        // Make the gizmo red and slightly transparent
+        Gizmos.color = new Color(1f, 0f, 0f, 0.25f);
+
+        // Draw a filled sphere for visualization (radius = 10 to match Random.Range(-10, 10))
+        Gizmos.DrawSphere(domainArea.transform.position + new Vector3(0f, 2f, 0f), 10f);
+
+        // Optionally draw a wireframe so edges are clearer
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(domainArea.transform.position + new Vector3(0f, 2f, 0f), 10f);
+    }
+    #endregion
+    #region DEFEATED
+    public void Defeat()
+    {
+        isDefeated = true;
+        UI_Game uiGame = FindFirstObjectByType<UI_Game>(FindObjectsInactive.Include);
+        uiGame.PauseGame();
+
+        StartCoroutine(DefeatPanel());
+    }
+
+    IEnumerator DefeatPanel()
+    {
+        // Gradually Show Panel
+        defeatedPanel.SetActive(true);
+        CanvasGroup canvasGroup = defeatedPanel.GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 0f;
+
+        CanvasGroup btnCanvasGroup = defeatedButton.GetComponent<CanvasGroup>();
+        btnCanvasGroup.alpha = 0f;
+
+        float duration = 1f;
+        float timer = 0f;
+
+        // Fade in (unscaled time)
+        while (timer < duration)
+        {
+            timer += Time.unscaledDeltaTime;
+            canvasGroup.alpha = Mathf.Clamp01(timer / duration);
+            yield return null;
+        }
+
+        // Wait without being affected by timeScale
+        yield return new WaitForSecondsRealtime(1f);
+
+        // Gradually Show Button
+        timer = 0f;
+        while (timer < duration)
+        {
+            timer += Time.unscaledDeltaTime;
+            btnCanvasGroup.alpha = Mathf.Clamp01(timer / duration);
+            yield return null;
+        }
+
+        Cursor.visible = true;
+    }
+    #endregion
+    #region CLAIM REWARDS
     void SpawnChest()
     {
         // This will search ALL objects in the scene, even inactive ones
@@ -218,10 +262,17 @@ public class BB_DomainManager : MonoBehaviour
             Debug.LogWarning("Chest object not found in scene.");
         }
     }
-
     public async void ClaimPanel(BB_DomainSO domain)
     {
         claimRewardPanel.SetActive(true);
+        Cursor.visible = true;
+
+        foreach (Transform child in rewardHolder)
+        {
+            BB_IconUIGroup iconUIGroup = child.GetComponent<BB_IconUIGroup>();
+            if (iconUIGroup != null)
+                Destroy(iconUIGroup.gameObject);
+        }
 
         foreach (BB_RewardSO rewards in domain.GetRewardsWithMultiplier())
         {
@@ -237,7 +288,7 @@ public class BB_DomainManager : MonoBehaviour
             iconRect.localScale = new Vector2(2f, 2f);
         }
 
-        await SaveManager.Instance.SaveSystemsAsync("slot_01", false, "Equipment.Main", "Inventory.Main", "Player.Stats");
+        await SaveManager.Instance.SaveSystemsAsync("slot_01", false, "Equipment.Main", "Inventory.Main", "Player.Stats"); 
     }
 
     public void ClaimRewards(BB_DomainSO domain)
@@ -248,4 +299,5 @@ public class BB_DomainManager : MonoBehaviour
             Debug.Log($"Received {reward.RewardQuantity()} {reward.RewardName()}");
         }
     }
+    #endregion
 }

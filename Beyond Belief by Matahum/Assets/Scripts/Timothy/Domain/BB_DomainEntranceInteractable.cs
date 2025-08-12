@@ -10,8 +10,11 @@ public class BB_DomainEntranceInteractable : Interactable
 
     public override void OnInteract()
     {
-        BB_DomainManager.instance.spawnPoint = spawnPoint.position;
-        BB_DomainManager.instance.spawnRotation = spawnPoint.rotation;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        UI_Game uiGame = FindFirstObjectByType<UI_Game>(FindObjectsInactive.Include);
+        uiGame.PauseGame();
 
         BB_DomainManager.instance.selectedDomain = domainSO;
         BB_DomainButtonManager.instance.OpenDomainDetails();

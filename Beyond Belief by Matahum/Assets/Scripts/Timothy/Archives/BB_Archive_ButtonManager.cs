@@ -82,6 +82,7 @@ public class BB_Archive_ButtonManager : MonoBehaviour
     public void ExitArchives()
     {
         archiveUI.SetActive(false);
+        OnOpenCreatureCategory();
     }
     #endregion
 }

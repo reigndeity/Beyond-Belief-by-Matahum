@@ -43,6 +43,11 @@ public class PlayerAnimator : MonoBehaviour
         PlayerMovement.OnDashStarted += HandleDashAnimation;
     }
 
+    void OnDisable()
+    {
+        PlayerMovement.OnDashStarted -= HandleDashAnimation;
+    }
+
     void Start()
     {
         m_playerMovement = GetComponent<PlayerMovement>();

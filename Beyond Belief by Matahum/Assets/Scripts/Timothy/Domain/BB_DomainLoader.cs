@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class BB_Loader : MonoBehaviour
+public class BB_DomainLoader : MonoBehaviour
 {
     private async void Start()
     {

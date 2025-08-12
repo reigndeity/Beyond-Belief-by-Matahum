@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -44,26 +45,43 @@ public class BB_DomainButtonManager : MonoBehaviour
         defeated_LeaveDomainButton.onClick.AddListener(ExitDomain);
     }
     public void EnterDomain() //When pressing Enter Domain in domain details in OpenWorldScene
+    {        
+        StartCoroutine(DelayedEnterDomain());
+    }
+    IEnumerator DelayedEnterDomain()
     {
         ExitDomainDetails();
         domainScenePanel.SetActive(true);
+
+        SceneAutoSaveController autoSave = FindFirstObjectByType<SceneAutoSaveController>(FindObjectsInactive.Include);
+        autoSave.SaveAll();
+
+        yield return null; // delay in seconds
+
         BB_DomainManager.instance.EnterDomain();
     }
 
     public void OpenDomainDetails()//When interacting with a domain entrance in OpenWorldScene
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         domainDetailsPanel.SetActive(true);
         BB_DomainDetailsUI.instance.OnOpenDomainDetails(true);
     }
     public void ExitDomainDetails()//When exiting a domain details in OpenWorldScene
     {
         domainDetailsPanel.SetActive(false);
+
+        UI_Game uiGame = FindFirstObjectByType<UI_Game>(FindObjectsInactive.Include);
+        uiGame.ResumeGame();
     }
 
     public void ExitDomain()
     {
         domainScenePanel.SetActive(false);
-        BB_DomainManager.instance.selectedDomain = null;
+        BB_DomainManager.instance.ResetDomain();
+        BB_DomainManager.instance.selectedDomain = null;   
 
         SceneManager.sceneLoaded += OnMainSceneLoaded; // subscribe to event
         SceneManager.LoadScene("Tim New World Tester");
@@ -72,9 +90,9 @@ public class BB_DomainButtonManager : MonoBehaviour
     private void OnMainSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "Tim New World Tester")
-        {
-            BB_DomainManager.instance.SpawnToDomainEntrance();
-            SceneManager.sceneLoaded -= OnMainSceneLoaded; // unsubscribe so it doesn’t run every time
+        {       
+            BB_DomainManager.instance.SpawnToOpenWorldDomainEntrance();
+            SceneManager.sceneLoaded -= OnMainSceneLoaded; // unsubscribe so it doesn’t run every time   
         }
     }
 
@@ -85,6 +103,9 @@ public class BB_DomainButtonManager : MonoBehaviour
 
     public void ClaimRewards()//Claiming of rewards in domain
     {
+        UI_Game uI_Game = FindFirstObjectByType<UI_Game>(FindObjectsInactive.Include);
+        if (uI_Game != null) uI_Game.ResumeGame();
+
         BB_DomainManager.instance.ClaimRewards(BB_DomainManager.instance.selectedDomain);
         ExitDomain();
     }
