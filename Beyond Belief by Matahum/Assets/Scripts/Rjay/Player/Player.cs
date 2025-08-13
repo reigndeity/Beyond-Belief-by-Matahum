@@ -186,12 +186,16 @@ public class Player : MonoBehaviour, IDamageable
         m_playerStats.p_currentHealth -= finalDamage; // Final Damage
         m_playerStats.p_currentHealth = Mathf.Clamp(m_playerStats.p_currentHealth, 0f, m_playerStats.p_maxHealth); // Health cannot go below 0
 
+        Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f),Random.Range(0f, 0.25f),Random.Range(0f, 0.25f));
         if (isCriticalHit) // Damage Pop Up Here
         {
+            DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.red);
             Debug.Log($"💥 CRITICAL HIT! Player took {finalDamage} damage. Current Health: {m_playerStats.p_currentHealth}");
         }
         else
         {
+            
+            DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.white);
             Debug.Log($"Player took {finalDamage} damage. Current Health: {m_playerStats.p_currentHealth}");
         }
 

@@ -1,9 +1,9 @@
 using UnityEngine;
 using BlazeAISpace;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.AI;
 using FIMSpace.FProceduralAnimation;
-using System;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour, IDamageable
     private LegsAnimator m_legsAnimator;
     private EnemyAttack m_enemyAttack;
 
-    public event Action OnDeath;
+    public event System.Action OnDeath;
 
     void Awake()
     {
@@ -53,11 +53,18 @@ public class Enemy : MonoBehaviour, IDamageable
         // NEW: centralize health changes in EnemyStats
         bool died = m_enemyStats.ApplyDamage(finalDamage);
 
+        Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f),Random.Range(0f, 0.25f),Random.Range(0f, 0.25f));
         if (isCriticalHit)
+        {
+            DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.red);
             Debug.Log($"💥 CRITICAL HIT! Enemy took {finalDamage} damage. Current Health: {m_enemyStats.e_currentHealth}");
+        }
         else
+        {
+            DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.white);
             Debug.Log($"Enemy took {finalDamage} damage. Current Health: {m_enemyStats.e_currentHealth}");
-
+        }
+            
         if (died) Death();
     }
 

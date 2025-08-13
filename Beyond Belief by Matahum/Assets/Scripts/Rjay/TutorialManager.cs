@@ -19,18 +19,9 @@ public class TutorialManager : MonoBehaviour
         } 
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha6)) FinishTutorial();
-    }
+
     void StartTutorial()
     {
         BB_QuestManager.Instance.AcceptQuestByID("A0_Q0_InitialTalk");
     }
-
-    void FinishTutorial()
-    {
-        BB_QuestManager.Instance.UpdateMissionProgress("A0_Q0_TupasHouse", 1);
-    }
-
 }

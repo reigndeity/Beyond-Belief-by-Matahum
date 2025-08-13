@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider))]
 public class NPC : Interactable
 {
+    private BlazeAI m_blazeAI;
     [Header("Dialogue")]
     [Tooltip("The dialogue sequence to play for this NPC.")]
     public DialogueSequence dialogueSequence;
@@ -28,8 +30,7 @@ public class NPC : Interactable
 
     [Header("Events")]
     public UnityEvent onDialogueStart;
-    public UnityEvent onDialogueEnd;   // You can wire this up from DialogueManager callbacks if you expose them.
-
+    public UnityEvent onDialogueEnd;
 
     [Header("Animation States")]
     private Animator m_animator;
@@ -43,13 +44,12 @@ public class NPC : Interactable
     public string wave;
     public string curious;
     public string curiousToIdle;
-    
-
 
 
     void Awake()
     {
         m_stateHolder = GetComponent<DialogueStateHolder>();
+        m_blazeAI = GetComponent<BlazeAI>();
         faceTransform = transform;
     }
 
@@ -58,11 +58,6 @@ public class NPC : Interactable
         // Try to cache player reference for facing (optional).
         var playerGO = GameObject.FindGameObjectWithTag("Player");
         if (playerGO) _player = playerGO.transform;
-    }
-
-    void Update()
-    {
-        HandleGrassInteraction();
     }
 
     public override void OnInteract()
@@ -127,5 +122,15 @@ public class NPC : Interactable
         currentAnimationState = newAnimationState;
     }
 
-    void HandleGrassInteraction() => Shader.SetGlobalVector("_Player", transform.position + Vector3.up * 0.5f);
+    public void DialogueStart()
+    {
+        FacePlayer();
+        m_blazeAI.StayIdle();
+        m_blazeAI.IgnoreMoveToLocation();
+    }
+    public void DialogueEnd()
+    {
+        m_blazeAI.IgnoreStayIdle();
+    }
+    
 }

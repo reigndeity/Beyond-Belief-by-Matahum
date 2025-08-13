@@ -7,6 +7,7 @@ public class DialogueQuestLinker : MonoBehaviour
 
     [Header("All NPCs Dialogue State Holders")]
     public DialogueStateHolder tupas;
+    public DialogueStateHolder bakal;
 
     void Update()
     {
@@ -23,6 +24,7 @@ public class DialogueQuestLinker : MonoBehaviour
             {
                 case "A0_Q0_InitialTalk":
                     tupas.SetDialogueState("A0_Q0_InitialTalk");
+                    bakal.SetDialogueState("A0_Q0_InitialTalk");
                     break;
 
                 // Add more as needed
