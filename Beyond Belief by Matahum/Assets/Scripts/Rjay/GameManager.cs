@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        StartCoroutine(LoadPlayer());
+        //StartCoroutine(LoadPlayer());
     }
     IEnumerator LoadPlayer()
     {

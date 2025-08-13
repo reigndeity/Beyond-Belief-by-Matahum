@@ -19,7 +19,7 @@ public class LookAtTarget : MonoBehaviour
     }
     void Start()
     {
-        DisableLooking();
+        //DisableLooking();
     }
     void Update()
     {

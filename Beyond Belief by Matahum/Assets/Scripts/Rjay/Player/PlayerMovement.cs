@@ -6,6 +6,7 @@ using UnityEngine.VFX;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
+    private LookAtTarget m_lookAtTarget;
     public CharacterController m_characterController;
     private PlayerInput m_playerInput;
     private PlayerCombat m_playerCombat;
@@ -102,6 +103,8 @@ public class PlayerMovement : MonoBehaviour
         m_playerAnimator = GetComponent<PlayerAnimator>();
         currentStamina = maxStamina;
         currentMoveSpeed = jogSpeed;
+
+        m_lookAtTarget = GetComponent<LookAtTarget>();
     }
 
     public void HandleMovement()
@@ -192,10 +195,9 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(m_playerInput.jumpKey) &&
-            m_characterController.isGrounded &&
-            jumpCooldownTimer <= 0f)
+        if (Input.GetKeyDown(m_playerInput.jumpKey) && m_characterController.isGrounded &&jumpCooldownTimer <= 0f)
         {
+            m_lookAtTarget.DisableLooking();
             if (jumpStartDelay > 0f)
             {
                 isJumpStarting = true;
@@ -221,6 +223,7 @@ public class PlayerMovement : MonoBehaviour
         {
             verticalVelocity = -2f;
             isJumping = false;
+            m_lookAtTarget.EnableLooking();
         }
     }
 
