@@ -37,7 +37,7 @@ public class BB_DomainManager : MonoBehaviour
 
     [Header("Active Enemies")]
     public List<Enemy> enemyList = new List<Enemy>();
-    public BB_EnemyHolderWrapper enemyHolder;
+    [HideInInspector] public BB_EnemyHolderWrapper enemyHolder;
 
     [Header("Chest")]
     [HideInInspector]public GameObject chestObj;

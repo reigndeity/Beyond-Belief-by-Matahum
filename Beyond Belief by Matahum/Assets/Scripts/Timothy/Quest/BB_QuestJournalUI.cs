@@ -68,7 +68,7 @@ public class BB_QuestJournalUI : MonoBehaviour
 
     private void Start()
     {
-        BB_QuestManager.Instance.OnQuestUpdate += () => ShowQuestDetails(currentSelectedQuest);
+        //BB_QuestManager.Instance.OnQuestUpdate += () => ShowQuestDetails(currentSelectedQuest);
         BB_QuestManager.Instance.OnQuestUpdate += HandleQuestUpdate;
     }
 
@@ -498,6 +498,7 @@ public class BB_QuestJournalUI : MonoBehaviour
 
             // Move the button to the completed group's quest list
             buttonToMove.SetParent(completedQuestList, false);
+            buttonToMove.GetComponent<RectTransform>().localScale = Vector3.one;
         }
 
         OnOpenJournal(mainQuestSelectionScrollContent, SideQuestSelectionScrollContent);
@@ -507,11 +508,6 @@ public class BB_QuestJournalUI : MonoBehaviour
             ClearDetails();
         }
     }
-
-
-
-
-
     private bool IsInCompletedPanel(BB_Quest quest)
     {
         foreach (Transform child in completedQuestSelectionScrollContent)

@@ -131,6 +131,7 @@ public class BB_Quest_ButtonManager : MonoBehaviour
     public void ClaimRewards()
     {
         BB_QuestManager.Instance.ClaimRewards(BB_QuestJournalUI.instance.currentSelectedQuest);
+        claimRewardsButton.gameObject.SetActive(false);
     }
     #endregion
     #region Exit Journal

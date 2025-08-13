@@ -37,22 +37,22 @@ public class BB_DomainDetailsUI : MonoBehaviour
 
     public void OnOpenDomainDetails(bool applyMultiplier = false)
     {
-        if (!isDomainButtonsSetUp)
+
+        for (int i = 0; i < domainSelectionHolder.childCount; i++)
         {
-            for (int i = 0; i < domainSelectionHolder.childCount; i++)
+            BB_DomainSelectionTemplate domainSelectionTemplate = domainSelectionHolder.GetChild(i).GetComponent<BB_DomainSelectionTemplate>();
+            domainSelectionTemplate.domainTitle.text = BB_DomainManager.instance.selectedDomain.domainName;
+
+            Button domainBtn = domainSelectionHolder.GetChild(i).GetComponent<Button>();
+            Image domainImg = domainBtn.GetComponent<Image>();
+
+            if (!isDomainButtonsSetUp)
             {
-                BB_DomainSelectionTemplate domainSelectionTemplate = domainSelectionHolder.GetChild(i).GetComponent<BB_DomainSelectionTemplate>();
-                domainSelectionTemplate.domainTitle.text = BB_DomainManager.instance.selectedDomain.domainName;
-
-                Button domainBtn = domainSelectionHolder.GetChild(i).GetComponent<Button>();
-                Image domainImg = domainBtn.GetComponent<Image>();
-
                 int level = i + 1;
                 domainBtn.onClick.AddListener(() => OnDomainButtonClicked(BB_DomainManager.instance.selectedDomain, domainBtn, domainImg, level, applyMultiplier));
             }
-            isDomainButtonsSetUp = true;
         }
-        
+        isDomainButtonsSetUp = true;
 
         Button firstDomainBtn = domainSelectionHolder.GetChild(0).GetComponent<Button>();
         firstDomainBtn.onClick.Invoke();    
