@@ -123,7 +123,7 @@ public class BB_DomainDetailsUI : MonoBehaviour
             // Create icon UI
             BB_IconUIGroup icon = Instantiate(iconUIGroup, creatureHolder);
 
-            icon.iconName.text = $"{icon.quantity} {enemyPrefab.name}";
+            icon.iconName.text = $"{totalCount} {enemyPrefab.name}";
             //icon.icon.sprite =  Enemy.enemyIcon;
             icon.quantity.text = totalCount.ToString();
         }

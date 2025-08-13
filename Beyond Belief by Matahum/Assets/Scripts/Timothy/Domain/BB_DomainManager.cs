@@ -14,10 +14,11 @@ public class BB_DomainManager : MonoBehaviour
     [Header("Domain Settings")]
     [HideInInspector]public BB_DomainSO selectedDomain;
     private List<BB_DomainSO> domainList = new List<BB_DomainSO>();
-    private int currentSetIndex = 0;
-    public GameObject domainArea;
+    public int currentSetIndex = 0;
     [HideInInspector] public bool isDomainComplete = false;
+    public bool hasFinishedSpawning = false;
 
+    [Header("Going to OpenWorld from Domain")]
     public Vector3 spawnPoint;
     public Quaternion spawnRotation;
 
@@ -36,7 +37,7 @@ public class BB_DomainManager : MonoBehaviour
 
     [Header("Active Enemies")]
     public List<Enemy> enemyList = new List<Enemy>();
-    public Transform enemyHolder;
+    public BB_EnemyHolderWrapper enemyHolder;
 
     [Header("Chest")]
     [HideInInspector]public GameObject chestObj;
@@ -73,20 +74,27 @@ public class BB_DomainManager : MonoBehaviour
 
     public void StartDomain()
     {
+        StopAllCoroutines(); // Prevent old stuck routines
+        enemyList.Clear();   // Clear leftover enemies
+        currentSetIndex = 0; // Always reset before starting
         isDomainComplete = false;
+        hasFinishedSpawning = false;
         totalTimer = selectedDomain.totalTime;
-        timerText.gameObject.SetActive(true); // Show timer
+        timerText.gameObject.SetActive(true);
         StartCoroutine(TimerRoutine());
         StartCoroutine(DomainRoutine());
     }
     public void ResetDomain()
     {
+        StopAllCoroutines();
+        enemyList.Clear();
+        currentSetIndex = 0;
         defeatedPanel.SetActive(false);
         timerText.gameObject.SetActive(false);
         claimRewardPanel.gameObject.SetActive(false);
-        currentSetIndex = 0;
         isDefeated = false;
     }
+
     #region DOMAIN ROUTINE
     private IEnumerator TimerRoutine()
     {
@@ -109,7 +117,10 @@ public class BB_DomainManager : MonoBehaviour
     }
     private IEnumerator DomainRoutine()
     {
-        while (currentSetIndex < selectedDomain.enemySets.Count) // <-- POTENTIAL BUG: enemySets might not exist, check your SO script
+        hasFinishedSpawning = false; // Reset at start
+        currentSetIndex = 0;
+
+        while (currentSetIndex < selectedDomain.enemySets.Count)
         {
             var set = selectedDomain.enemySets[currentSetIndex];
 
@@ -121,19 +132,35 @@ public class BB_DomainManager : MonoBehaviour
             }
             else if (selectedDomain.spawnMode == DomainSpawnMode.ClearBased)
             {
-                yield return new WaitUntil(() => enemyList.Count == 0);
+                // If this was the last wave in ClearBased mode, set the flag
+                if (currentSetIndex == selectedDomain.enemySets.Count - 1)
+                {
+                    hasFinishedSpawning = true;
+                    Debug.Log("ClearBased domain finished spawning all enemy sets!");
+                }
+
+                // Wait until player clears this wave
+                yield return new WaitUntil(() => enemyList.Count == 0);     
             }
 
             currentSetIndex++;
         }
+
+        // If not ClearBased, TimeBased mode will set the flag after loop ends
+        if (selectedDomain.spawnMode == DomainSpawnMode.TimeBased)
+        {
+            hasFinishedSpawning = true;
+            Debug.Log("TimeBased domain finished spawning all enemy sets!");
+        }
     }
     private void SpawnEnemySet(BB_EnemySet set)
     {
+        enemyHolder = FindFirstObjectByType<BB_EnemyHolderWrapper>();
         foreach (var enemyData in set.enemyList)
         {
             for (int i = 0; i < enemyData.howManyToSpawn; i++)
             {
-                Enemy enemy = Instantiate(enemyData.enemyToSpawn, GetRandomSpawnPosition(), Quaternion.identity, enemyHolder).GetComponent<Enemy>();
+                Enemy enemy = Instantiate(enemyData.enemyToSpawn, GetRandomSpawnPosition(), Quaternion.identity, enemyHolder.transform).GetComponent<Enemy>();
                 /*EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
                 enemyStats.SetLevel(10 * selectedDomain.levelMultiplier);*/ //Remove Comment when testing enemy levels. its working though
 
@@ -158,8 +185,6 @@ public class BB_DomainManager : MonoBehaviour
         uiGame.PauseGame();
 
         StartCoroutine(DefeatPanel());
-
-        SaveSystemManager();
     }
 
     IEnumerator DefeatPanel()
@@ -211,7 +236,7 @@ public class BB_DomainManager : MonoBehaviour
         Debug.Log("Namatay");
         enemyList.Remove(enemy); // <-- BUG FIX: This should be before checking count
 
-        if (enemyList.Count == 0)
+        if (enemyList.Count == 0 && hasFinishedSpawning == true)
         {
             UI_Game uiGame = FindFirstObjectByType<UI_Game>(FindObjectsInactive.Include);
 
