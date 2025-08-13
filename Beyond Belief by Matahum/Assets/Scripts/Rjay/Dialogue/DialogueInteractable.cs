@@ -6,18 +6,21 @@ public class DialogueInteractable : Interactable
     public DialogueSequence dialogueSequence;
     public bool disableAfterPlay = false;
 
-    private bool dialogueStarted = false;
+    private DialogueStateHolder m_stateHolder;
+
+    void Awake()
+    {
+        m_stateHolder = GetComponent<DialogueStateHolder>();
+    }
 
     public override void OnInteract()
     {
         if (DialogueManager.Instance == null || dialogueSequence == null)
             return;
 
-        var stateHolder = GetComponent<DialogueStateHolder>();
-        DialogueManager.Instance.StartDialogue(dialogueSequence, stateHolder);
+        DialogueManager.Instance.StartDialogue(dialogueSequence, m_stateHolder);
 
         if (disableAfterPlay)
             gameObject.SetActive(false);
     }
-
 }

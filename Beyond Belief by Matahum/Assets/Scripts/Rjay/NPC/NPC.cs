@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,11 +6,9 @@ using UnityEngine.Events;
 public class NPC : Interactable
 {
     private BlazeAI m_blazeAI;
-    [Header("Dialogue")]
-    [Tooltip("The dialogue sequence to play for this NPC.")]
-    public DialogueSequence dialogueSequence;
 
-    [Tooltip("If true, disables the NPC GameObject immediately after starting dialogue (one-shot).")]
+    [Header("Dialogue")]
+    public DialogueSequence dialogueSequence;
     public bool disableAfterPlay = false;
 
     private DialogueStateHolder m_stateHolder;
@@ -21,12 +17,10 @@ public class NPC : Interactable
     public Transform faceTransform;
     public float rotationSpeed = 5f;
     private Coroutine faceRoutine;
-    private Transform _player; // optional, for facing
+    private Transform _player;
     private bool _hasStartedOnce;
 
-    [Tooltip("If true, prevent interaction while a dialogue is already playing.")]
     public bool blockWhileDialoguePlays = true;
-
 
     [Header("Events")]
     public UnityEvent onDialogueStart;
@@ -35,27 +29,18 @@ public class NPC : Interactable
     [Header("Animation States")]
     private Animator m_animator;
     private string currentAnimationState;
-    public string idle_1;
-    public string idle_2;
-    public string idle_3;
-    public string smile;
-    public string closedEyesSmile;
-    public string angry;
-    public string wave;
-    public string curious;
-    public string curiousToIdle;
-
+    public string idle_1, idle_2, idle_3, smile, closedEyesSmile, angry, wave, curious, curiousToIdle;
 
     void Awake()
     {
         m_stateHolder = GetComponent<DialogueStateHolder>();
+        m_animator = GetComponent<Animator>();
         m_blazeAI = GetComponent<BlazeAI>();
         faceTransform = transform;
     }
 
     void Start()
     {
-        // Try to cache player reference for facing (optional).
         var playerGO = GameObject.FindGameObjectWithTag("Player");
         if (playerGO) _player = playerGO.transform;
     }
@@ -70,6 +55,9 @@ public class NPC : Interactable
 
         onDialogueStart?.Invoke();
         DialogueManager.Instance.StartDialogue(dialogueSequence, m_stateHolder);
+
+        // Make sure we only listen once
+        DialogueManager.Instance.onDialogueEnd.RemoveListener(NotifyDialogueEnded);
         DialogueManager.Instance.onDialogueEnd.AddListener(NotifyDialogueEnded);
 
         if (disableAfterPlay)
@@ -87,7 +75,6 @@ public class NPC : Interactable
         onDialogueEnd?.Invoke();
     }
 
-    // Convenience API if you need to swap sequences at runtime
     public void SetDialogue(DialogueSequence seq) => dialogueSequence = seq;
     public void SetDisableAfterPlay(bool value) => disableAfterPlay = value;
 
@@ -117,9 +104,16 @@ public class NPC : Interactable
 
     public void ChangeAnimationState(string newAnimationState)
     {
-        if (currentAnimationState == newAnimationState) return;
-        m_animator.CrossFade(newAnimationState, 0.2f);
-        currentAnimationState = newAnimationState;
+        StartCoroutine(ForceAnimationNextFrame(newAnimationState));
+    }
+
+    private IEnumerator ForceAnimationNextFrame(string anim)
+    {
+        yield return null; // wait 1 frame so BlazeAI finishes
+        Debug.Log("Changed animation to: " + anim);
+        if (currentAnimationState == anim) yield break;
+        m_animator.CrossFade(anim, 0.2f);
+        currentAnimationState = anim;
     }
 
     public void DialogueStart()
@@ -127,10 +121,13 @@ public class NPC : Interactable
         FacePlayer();
         m_blazeAI.StayIdle();
         m_blazeAI.IgnoreMoveToLocation();
+        m_blazeAI.CloseLastBehaviour();
+       
     }
+
     public void DialogueEnd()
     {
         m_blazeAI.IgnoreStayIdle();
+        m_blazeAI.ChangeState("normal");
     }
-    
 }

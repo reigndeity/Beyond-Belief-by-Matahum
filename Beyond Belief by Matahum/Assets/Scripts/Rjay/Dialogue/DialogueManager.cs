@@ -86,13 +86,16 @@ public class DialogueManager : MonoBehaviour
 
         if (activeStateHolder != null)
         {
-            activeStateHolder.ApplyQueuedState();  // ✅ Use queued state
             debugCurrentDialogueState = activeStateHolder.currentState;
+
+            // ✅ Trigger enter event for the current state so animations or events play
+            activeStateHolder.TriggerStateEnter(activeStateHolder.currentState);
         }
 
         foreach (var group in currentSequence.groups)
         {
-            if (group.dialogueState == (activeStateHolder != null ? activeStateHolder.currentState : "Default") || string.IsNullOrEmpty(group.dialogueState))
+            if (group.dialogueState == (activeStateHolder != null ? activeStateHolder.currentState : "Default") 
+                || string.IsNullOrEmpty(group.dialogueState))
             {
                 flattenedLines.AddRange(group.lines);
             }
@@ -102,6 +105,8 @@ public class DialogueManager : MonoBehaviour
         onDialogueStart?.Invoke();
         ShowNextLine();
     }
+
+
 
     private void ShowNextLine()
     {
@@ -208,21 +213,33 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
-        isPlaying = false;
-        isDialoguePlaying = false;
-
-        dialoguePanel.SetActive(false);
-        currentSequence = null;
-
         if (activeStateHolder != null)
         {
+            // 🔹 Exit event for the old state
+            activeStateHolder.TriggerStateExit(activeStateHolder.currentState);
+
+            // 🔹 Apply the queued state change now
+            string oldState = activeStateHolder.currentState;
             activeStateHolder.ApplyQueuedState();
+
+            // 🔹 Enter event for the new state (if changed)
+            if (activeStateHolder.currentState != oldState)
+            {
+                activeStateHolder.TriggerStateEnter(activeStateHolder.currentState);
+            }
+
             debugCurrentDialogueState = activeStateHolder.currentState;
         }
+
+        isPlaying = false;
+        isDialoguePlaying = false;
+        dialoguePanel.SetActive(false);
+        currentSequence = null;
 
         onDialogueEnd?.Invoke();
         FindFirstObjectByType<Player>().suppressInputUntilNextFrame = true;
     }
+
 
     public void SetDialogueState(string newState)
     {
