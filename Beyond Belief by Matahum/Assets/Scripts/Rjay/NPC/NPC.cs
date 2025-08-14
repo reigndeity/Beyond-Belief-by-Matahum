@@ -6,57 +6,48 @@ using UnityEngine.Events;
 public class NPC : Interactable
 {
     private BlazeAI m_blazeAI;
+    private DialogueStateHolder m_stateHolder;
+    private Animator m_animator;
+    private Transform _player;
 
     [Header("Dialogue")]
     public DialogueSequence dialogueSequence;
     public bool disableAfterPlay = false;
-
-    private DialogueStateHolder m_stateHolder;
+    public bool blockWhileDialoguePlays = true;
 
     [Header("Behavior")]
     public Transform faceTransform;
     public float rotationSpeed = 5f;
     private Coroutine faceRoutine;
-    private Transform _player;
-    private bool _hasStartedOnce;
-
-    public bool blockWhileDialoguePlays = true;
 
     [Header("Events")]
     public UnityEvent onDialogueStart;
     public UnityEvent onDialogueEnd;
 
     [Header("Animation States")]
-    private Animator m_animator;
+    public string idle_1;
+    public string idle_2, idle_3, smile, closedEyesSmile, angry, wave, curious, curiousToIdle;
     private string currentAnimationState;
-    public string idle_1, idle_2, idle_3, smile, closedEyesSmile, angry, wave, curious, curiousToIdle;
 
-    void Awake()
+    private void Awake()
     {
         m_stateHolder = GetComponent<DialogueStateHolder>();
-        m_animator = GetComponent<Animator>();
         m_blazeAI = GetComponent<BlazeAI>();
+        m_animator = GetComponent<Animator>();
         faceTransform = transform;
-    }
 
-    void Start()
-    {
         var playerGO = GameObject.FindGameObjectWithTag("Player");
         if (playerGO) _player = playerGO.transform;
     }
 
     public override void OnInteract()
     {
-        if (DialogueManager.Instance == null || dialogueSequence == null)
-            return;
-
-        if (blockWhileDialoguePlays && DialogueManager.Instance.IsDialoguePlaying())
-            return;
+        if (!DialogueManager.Instance || !dialogueSequence) return;
+        if (blockWhileDialoguePlays && DialogueManager.Instance.IsDialoguePlaying()) return;
 
         onDialogueStart?.Invoke();
-        DialogueManager.Instance.StartDialogue(dialogueSequence, m_stateHolder);
 
-        // Make sure we only listen once
+        DialogueManager.Instance.StartDialogue(dialogueSequence, m_stateHolder);
         DialogueManager.Instance.onDialogueEnd.RemoveListener(NotifyDialogueEnded);
         DialogueManager.Instance.onDialogueEnd.AddListener(NotifyDialogueEnded);
 
@@ -65,31 +56,24 @@ public class NPC : Interactable
             gameObject.SetActive(false);
             return;
         }
-
-        _hasStartedOnce = true;
     }
 
-    public void NotifyDialogueEnded()
+    private void NotifyDialogueEnded()
     {
         DialogueManager.Instance.onDialogueEnd.RemoveListener(NotifyDialogueEnded);
         onDialogueEnd?.Invoke();
     }
 
-    public void SetDialogue(DialogueSequence seq) => dialogueSequence = seq;
-    public void SetDisableAfterPlay(bool value) => disableAfterPlay = value;
-
     public void FacePlayer()
     {
+        if (!_player) return;
         if (faceRoutine != null) StopCoroutine(faceRoutine);
         faceRoutine = StartCoroutine(FacePlayerRoutine());
     }
 
-    IEnumerator FacePlayerRoutine()
+    private IEnumerator FacePlayerRoutine()
     {
-        GameObject target = GameObject.FindGameObjectWithTag("Player");
-        if (target == null) yield break;
-
-        Vector3 direction = target.transform.position - transform.position;
+        Vector3 direction = _player.position - transform.position;
         direction.y = 0;
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
@@ -104,30 +88,55 @@ public class NPC : Interactable
 
     public void ChangeAnimationState(string newAnimationState)
     {
-        StartCoroutine(ForceAnimationNextFrame(newAnimationState));
+        m_animator.CrossFade(newAnimationState, 0.2f);
+        currentAnimationState = newAnimationState;
     }
 
-    private IEnumerator ForceAnimationNextFrame(string anim)
+    public string GetAnimationByAlias(string alias)
     {
-        yield return null; // wait 1 frame so BlazeAI finishes
-        Debug.Log("Changed animation to: " + anim);
-        if (currentAnimationState == anim) yield break;
-        m_animator.CrossFade(anim, 0.2f);
-        currentAnimationState = anim;
+        if (string.IsNullOrWhiteSpace(alias))
+            return string.Empty;
+
+        switch (alias.ToLower())
+        {
+            case "idle_1": return idle_1;
+            case "idle_2": return idle_2;
+            case "idle_3": return idle_3;
+            case "smile": return smile;
+            case "closedeyessmile": return closedEyesSmile;
+            case "angry": return angry;
+            case "wave": return wave;
+            case "curious": return curious;
+            case "curioustoidle": return curiousToIdle;
+            default: return alias; // if not in list, assume it's the animator state name
+        }
     }
 
     public void DialogueStart()
     {
         FacePlayer();
+
         m_blazeAI.StayIdle();
         m_blazeAI.IgnoreMoveToLocation();
-        m_blazeAI.CloseLastBehaviour();
-       
+
+        if (!string.IsNullOrEmpty(idle_1))
+        {
+            ChangeAnimationState(idle_1);
+        }
     }
 
     public void DialogueEnd()
     {
+        StartCoroutine(EndDialogueRoutine());
+    }
+
+    private IEnumerator EndDialogueRoutine()
+    {
+        if (!string.IsNullOrEmpty(idle_1))
+        {
+            ChangeAnimationState(idle_1);
+        }
+        yield return new WaitForSeconds(1f);
         m_blazeAI.IgnoreStayIdle();
-        m_blazeAI.ChangeState("normal");
     }
 }
