@@ -39,8 +39,14 @@ public class DoorInteractable : Interactable
 
     public override void OnInteract()
     {
-        // Your Interactable handles input/range; this just toggles. :contentReference[oaicite:0]{index=0}
+        // respect cooldown from Interactable
+        if (useInteractCooldown && IsOnCooldown()) return;
+
+        // block if door can't be interacted with
         if (doorPivot == null || isMoving) return;
+
+        // start cooldown
+        TriggerCooldown();
 
         ToggleDoor();
 
@@ -66,7 +72,7 @@ public class DoorInteractable : Interactable
         }
     }
 
-    System.Collections.IEnumerator AutoCloseAfter(float delay)
+    IEnumerator AutoCloseAfter(float delay)
     {
         yield return new WaitForSeconds(delay);
         if (isOpen && !isMoving) ToggleDoor();
@@ -84,7 +90,6 @@ public class DoorInteractable : Interactable
                 break;
 
             float step = Mathf.Sign(delta) * speedDegPerSec * Time.deltaTime;
-            // clamp step so we don't overshoot
             if (Mathf.Abs(step) > Mathf.Abs(delta)) step = delta;
 
             doorPivot.localRotation = Quaternion.Euler(0f, currentY + step, 0f);

@@ -272,4 +272,9 @@ public class DialogueManager : MonoBehaviour
     }
 
     public bool IsDialoguePlaying() => isPlaying;
+    public void ForceEndDialogue()
+    {
+        if (!isPlaying) return;
+        EndDialogue();
+    }
 }
