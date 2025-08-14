@@ -5,8 +5,9 @@ public class BB_NotifyQuestProgress : MonoBehaviour
     public string targetID; // Must match a mission's targetID in the quest
 
     [Header("When to notify")]
-    public bool notifyOnDestroy = true;
+    public bool notifyOnDestroy = false;
     public bool notifyOnCollect = false; // For items
+    public bool notifyOnTrigger = false;
 
     private void OnDestroy()
     {
@@ -28,6 +29,13 @@ public class BB_NotifyQuestProgress : MonoBehaviour
     public void OnInteract()
     {
         NotifyQuestProgress();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+            if (notifyOnTrigger)
+                NotifyQuestProgress();
     }
 
     private void NotifyQuestProgress()
