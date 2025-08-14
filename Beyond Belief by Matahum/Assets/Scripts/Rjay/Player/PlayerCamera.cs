@@ -60,6 +60,8 @@ public class PlayerCamera : MonoBehaviour
     public void DisableZoom() => zoomEnabled = false;
     public bool IsZoomEnabled => zoomEnabled;
 
+    private bool isCameraLocked = false;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -81,9 +83,10 @@ public class PlayerCamera : MonoBehaviour
         pitch = angles.x;
     }
 
-    void LateUpdate()
+    void Update()
     {
         if (playerTarget == null) return;
+        if (isCameraLocked) return;
         Vector3 targetPosition = playerTarget.position;
 
         UpdateShake();
@@ -237,6 +240,17 @@ public class PlayerCamera : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+    }
+
+    
+    public void HardLockCamera()
+    {
+        isCameraLocked = true;
+    }
+
+    public void HardUnlockCamera()
+    {
+        isCameraLocked = false;
     }
 
 }

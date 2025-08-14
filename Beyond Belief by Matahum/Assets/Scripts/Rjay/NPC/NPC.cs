@@ -42,6 +42,9 @@ public class NPC : Interactable
 
     public override void OnInteract()
     {
+        // Skip if cooldown is active
+        if (useInteractCooldown && IsOnCooldown()) return;
+
         if (!DialogueManager.Instance || !dialogueSequence) return;
         if (blockWhileDialoguePlays && DialogueManager.Instance.IsDialoguePlaying()) return;
 
@@ -62,6 +65,9 @@ public class NPC : Interactable
     {
         DialogueManager.Instance.onDialogueEnd.RemoveListener(NotifyDialogueEnded);
         onDialogueEnd?.Invoke();
+
+        // ✅ Start cooldown AFTER dialogue ends
+        TriggerCooldown();
     }
 
     public void FacePlayer()
@@ -108,7 +114,7 @@ public class NPC : Interactable
             case "wave": return wave;
             case "curious": return curious;
             case "curioustoidle": return curiousToIdle;
-            default: return alias; // if not in list, assume it's the animator state name
+            default: return alias;
         }
     }
 
@@ -118,11 +124,15 @@ public class NPC : Interactable
 
         m_blazeAI.StayIdle();
         m_blazeAI.IgnoreMoveToLocation();
+        m_blazeAI.CloseLastBehaviour();
 
-        if (!string.IsNullOrEmpty(idle_1))
-        {
-            ChangeAnimationState(idle_1);
-        }
+        StartCoroutine(ForceIdleNextFrame());
+    }
+
+    private IEnumerator ForceIdleNextFrame()
+    {
+        yield return null;
+        ChangeAnimationState(GetAnimationByAlias("idle_1"));
     }
 
     public void DialogueEnd()
@@ -132,11 +142,8 @@ public class NPC : Interactable
 
     private IEnumerator EndDialogueRoutine()
     {
-        if (!string.IsNullOrEmpty(idle_1))
-        {
-            ChangeAnimationState(idle_1);
-        }
-        yield return new WaitForSeconds(1f);
+        ChangeAnimationState(GetAnimationByAlias("idle_1"));
+        yield return new WaitForSeconds(0.3f);
         m_blazeAI.IgnoreStayIdle();
     }
 }
