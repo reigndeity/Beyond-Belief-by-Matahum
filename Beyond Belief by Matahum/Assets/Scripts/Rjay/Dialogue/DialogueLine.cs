@@ -14,6 +14,9 @@ public class DialogueLine
 
     public bool isChoiceLine = false;
     public DialogueChoice[] choices;
+
+    [Header("Optional Animation")]
+    public string animationName; // Leave blank for default animation
 }
 
 [System.Serializable]

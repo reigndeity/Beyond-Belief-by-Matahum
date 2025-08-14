@@ -24,7 +24,7 @@ public class DoorInteractable : Interactable
     public AudioClip openSfx;
     public AudioClip closeSfx;
 
-    bool isOpen;
+    public bool isOpen;
     bool isMoving;
     float targetY;
     Coroutine moveCo;

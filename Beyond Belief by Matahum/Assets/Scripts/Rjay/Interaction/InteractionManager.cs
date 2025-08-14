@@ -44,7 +44,13 @@ public class InteractionManager : MonoBehaviour
         foreach (var hit in hits)
         {
             if (hit.TryGetComponent(out Interactable interactable))
+            {
+                // ✅ Skip if cooldown is active
+                if (interactable.useInteractCooldown && interactable.IsOnCooldown())
+                    continue;
+
                 detected.Add(interactable);
+            }
         }
 
         // Check if the list changed
@@ -78,6 +84,7 @@ public class InteractionManager : MonoBehaviour
         HandleScrollInput();
         HandleInteraction();
     }
+
 
     void HandleScrollInput()
     {

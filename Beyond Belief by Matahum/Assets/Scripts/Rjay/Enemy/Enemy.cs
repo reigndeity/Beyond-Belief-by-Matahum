@@ -191,8 +191,6 @@ public class Enemy : MonoBehaviour, IDamageable
     public bool IsDead() => isDead;
     IEnumerator Dying()
     {
-        OnDeath.Invoke();
-
         isDead = true;
         gameObject.layer = LayerMask.NameToLayer("Default");
         HideCanvas();
@@ -200,6 +198,7 @@ public class Enemy : MonoBehaviour, IDamageable
         EnableAllRagdollParts();
         m_blazeAI.Death();
         IgnorePlayerLayer();
+        OnDeath.Invoke();
         yield return new WaitForSeconds(0.5f);
     }
     #endregion

@@ -119,18 +119,34 @@ public class DialogueManager : MonoBehaviour
             currentIndex++;
             DialogueLine line = flattenedLines[currentIndex];
 
-            if (true)
+            // 🔹 Animation Handling — only for active NPCs
+            if (activeStateHolder != null)
             {
-                speakerNameText.text = line.speakerName;
-                PlayVoiceClip(line.voiceClip);
-
-                if (typewriterRoutine != null) StopCoroutine(typewriterRoutine);
-                typewriterRoutine = StartCoroutine(TypeText(line.dialogueText, line));
-                return;
+                NPC npc = activeStateHolder.GetComponent<NPC>();
+                if (npc != null)
+                {
+                    if (!string.IsNullOrEmpty(line.animationName))
+                    {
+                        // ✅ Resolve alias to actual state name
+                        string resolvedAnim = npc.GetAnimationByAlias(line.animationName);
+                        npc.ChangeAnimationState(resolvedAnim);
+                    }
+                    else
+                    {
+                        npc.ChangeAnimationState(npc.GetAnimationByAlias("idle_1"));
+                    }
+                }
             }
+
+            speakerNameText.text = line.speakerName;
+            PlayVoiceClip(line.voiceClip);
+
+            if (typewriterRoutine != null) StopCoroutine(typewriterRoutine);
+            typewriterRoutine = StartCoroutine(TypeText(line.dialogueText, line));
+            return;
         }
 
-        EndDialogue();  // ✅ Only ends if no valid lines remain
+        EndDialogue(); // ✅ Only ends if no valid lines remain
     }
 
     private IEnumerator TypeText(string text, DialogueLine line)
