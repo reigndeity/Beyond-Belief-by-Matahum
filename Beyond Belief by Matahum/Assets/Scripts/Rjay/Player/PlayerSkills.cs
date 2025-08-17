@@ -57,6 +57,8 @@ public class PlayerSkills : MonoBehaviour
 
     void ActivateNormalSkill()
     {
+        if (!TutorialManager.instance.tutorial_canNormalSkill) return;
+
         isUsingNormalSkill = true;
         m_playerAnimator.ChangeAnimationState("player_normalSkill");
         normalSkillTimer = normalSkillCooldown;
@@ -68,6 +70,8 @@ public class PlayerSkills : MonoBehaviour
 
     void ActivateUltimateSkill()
     {
+        if (!TutorialManager.instance.tutorial_canUltimateSkill) return;
+
         isUsingUltimateSkill = true;
         m_playerAnimator.ChangeAnimationState("player_ultimateSkill");
         weaponAnimator.SetTrigger("isUltimate");

@@ -76,7 +76,7 @@ public class Player : MonoBehaviour, IDamageable
         m_playerMinimap.HandleMapToggle();
         m_playerMinimap.ZoomControl();
         
-        if (!m_playerMinimap.IsMapOpen() && !DialogueManager.Instance.isDialoguePlaying)
+        if (!isLocked && !m_playerMinimap.IsMapOpen() && !DialogueManager.Instance.isDialoguePlaying)
         {
             m_playerMovement.HandleMovement();
             m_playerMovement.HandleDash();
@@ -85,6 +85,7 @@ public class Player : MonoBehaviour, IDamageable
             m_playerSkills.HandleSkills();
             HandleGrassInteraction();
         }
+
 
         float currentSpeed = m_playerMovement.Speed;
         m_playerAnimator.lastFrameSpeed = currentSpeed;
@@ -164,6 +165,22 @@ public class Player : MonoBehaviour, IDamageable
         }
 
         m_playerAnimator.ChangeAnimationState("player_idle_1"); // ensure idle once landed
+    }
+    private bool isLocked = false;
+    public void SetPlayerLocked(bool locked)
+    {
+        isLocked = locked;
+
+        if (isLocked)
+        {
+            // Immediately stop any current actions
+            m_playerMovement.ForceStop();
+            m_playerCombat.ForceStopCombat();
+            m_playerSkills.ForceStopSkills();
+            m_playerAnimator.ForceIdleState();
+        }
+
+        Debug.Log($"🔒 Player locked: {isLocked}");
     }
 
     #endregion

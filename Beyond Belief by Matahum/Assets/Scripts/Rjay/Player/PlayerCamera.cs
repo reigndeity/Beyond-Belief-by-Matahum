@@ -127,6 +127,7 @@ public class PlayerCamera : MonoBehaviour
 
     public void HandleRotation()
     {
+        if (!TutorialManager.instance.tutorial_canCameraDirection) return;
         if (!rotationEnabled) return;   // ← guard here
 
         float mouseX = Input.GetAxis("Mouse X");
@@ -140,6 +141,7 @@ public class PlayerCamera : MonoBehaviour
 
     public void HandleZoom()
     {
+        if (!TutorialManager.instance.tutorial_canCameraZoom) return;
         if (!zoomEnabled) return;                       // ← guard here
         if (InteractionManager.IsUsingScrollInput) return;
 
