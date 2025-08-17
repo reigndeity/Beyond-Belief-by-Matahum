@@ -79,6 +79,7 @@ public class R_ItemData : ScriptableObject
     public R_ConsumableEffect consumableEffect; // Logic-only
     public R_UpgradeMaterialType upgradeMaterialType;
     public int xpValue;
+    public int itemCost;
 
     #if UNITY_EDITOR
     private void OnValidate()

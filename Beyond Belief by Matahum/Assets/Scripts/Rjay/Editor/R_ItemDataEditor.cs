@@ -28,6 +28,7 @@ public class R_ItemDataEditor : Editor
     private SerializedProperty consumableEffectProp;
     private SerializedProperty upgradeMaterialTypeProp;
     private SerializedProperty xpValueProp;
+    private SerializedProperty itemCostProp;
 
     private void OnEnable()
     {
@@ -53,6 +54,7 @@ public class R_ItemDataEditor : Editor
         consumableEffectProp = serializedObject.FindProperty("consumableEffect");
         upgradeMaterialTypeProp = serializedObject.FindProperty("upgradeMaterialType");
         xpValueProp = serializedObject.FindProperty("xpValue");
+        itemCostProp = serializedObject.FindProperty("itemCost");
     }
 
     public override void OnInspectorGUI()
@@ -122,6 +124,11 @@ public class R_ItemDataEditor : Editor
         {
             EditorGUILayout.PropertyField(upgradeMaterialTypeProp);
             EditorGUILayout.PropertyField(xpValueProp);
+        }
+        
+        if (data.itemType == R_ItemType.Consumable || data.itemType == R_ItemType.UpgradeMaterial)
+        {
+            EditorGUILayout.PropertyField(itemCostProp);
         }
 
         serializedObject.ApplyModifiedProperties();
