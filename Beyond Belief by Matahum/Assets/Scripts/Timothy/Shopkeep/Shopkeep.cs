@@ -251,10 +251,6 @@ public class Shopkeep : MonoBehaviour
             buying_itemQuantity = nextQuantity;
             UpdateBuyingCost();
         }
-        else
-        {
-            ShowCantBuyPanel("Not enough gold to add more.");
-        }
     }
 
     public void MinusAmount()
