@@ -252,7 +252,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovementMode()
     {
-        if (Input.GetKeyDown(m_playerInput.toggleKey))
+        if (TutorialManager.instance.tutorial_canMovementToggle && Input.GetKeyDown(m_playerInput.toggleKey))
         {
             isWalking = !isWalking;
         }
@@ -269,26 +269,34 @@ public class PlayerMovement : MonoBehaviour
 
         if (!isDashing)
         {
-            if (isTryingToSprint && canSprint && m_characterController.isGrounded)
-            {
-                isSprinting = true;
-                currentMoveSpeed = sprintSpeed;
-                currentStamina -= staminaDrainRate * Time.deltaTime;
-                currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
-                staminaRegenTimer = staminaRegenDelay;
-            }
-            else
+            if (!TutorialManager.instance.tutorial_canSprintAndDash)
             {
                 isSprinting = false;
                 currentMoveSpeed = isWalking ? walkSpeed : jogSpeed;
-
-                if (staminaRegenTimer > 0f)
-                    staminaRegenTimer -= Time.deltaTime;
-
-                if (staminaRegenTimer <= 0f && !isHoldingSprint && currentStamina < maxStamina)
+            }
+            else
+            {
+                if (isTryingToSprint && canSprint && m_characterController.isGrounded)
                 {
-                    currentStamina += staminaRegenRate * Time.deltaTime;
+                    isSprinting = true;
+                    currentMoveSpeed = sprintSpeed;
+                    currentStamina -= staminaDrainRate * Time.deltaTime;
                     currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
+                    staminaRegenTimer = staminaRegenDelay;
+                }
+                else
+                {
+                    isSprinting = false;
+                    currentMoveSpeed = isWalking ? walkSpeed : jogSpeed;
+
+                    if (staminaRegenTimer > 0f)
+                        staminaRegenTimer -= Time.deltaTime;
+
+                    if (staminaRegenTimer <= 0f && !isHoldingSprint && currentStamina < maxStamina)
+                    {
+                        currentStamina += staminaRegenRate * Time.deltaTime;
+                        currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
+                    }
                 }
             }
         }
@@ -303,6 +311,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void HandleDash()
     {
+        if (!TutorialManager.instance.tutorial_canSprintAndDash) return;
         if (GetComponent<PlayerSkills>().isUsingNormalSkill || GetComponent<PlayerSkills>().isUsingUltimateSkill)
             return;
         
@@ -394,5 +403,10 @@ public class PlayerMovement : MonoBehaviour
         StopSprintTrail();
     }
 
+    public void ToggleWalk()
+    {
+        isWalking = !isWalking;
+        currentMoveSpeed = isWalking ? walkSpeed : jogSpeed;
+    }
 
 }

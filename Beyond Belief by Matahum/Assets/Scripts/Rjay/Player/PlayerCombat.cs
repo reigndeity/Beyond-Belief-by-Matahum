@@ -46,6 +46,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void HandleAttack()
     {
+        if (!TutorialManager.instance.tutorial_canAttack) return;
         if (UIUtility.IsPointerOverUI()) return;
         if (GetComponent<Player>().suppressInputUntilNextFrame) return;
         if (!m_playerMovement.GetComponent<CharacterController>().isGrounded) return;

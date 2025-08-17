@@ -48,6 +48,9 @@ public class TeleportInteractable : Interactable
 
     public override void OnInteract()
     {
+        if (useInteractCooldown && IsOnCooldown()) return;
+        if (useInteractCooldown) TriggerCooldown();
+        
         if (!isUnlocked)
         {
             Unlock();
