@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class PlayerSkills : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class PlayerSkills : MonoBehaviour
     public float ultimateSkillCooldown = 10f;
     private float ultimateSkillTimer = 0f;
     public bool isUsingUltimateSkill = false;
+    [SerializeField] GameObject ultimateCharge;
 
     void Start()
     {
@@ -117,6 +119,7 @@ public class PlayerSkills : MonoBehaviour
         m_playerCombat.ShowWeapon();
         
         StartCoroutine(UltimateBlade());
+        StartUltimateSkillVFX();
     }
 
     IEnumerator UltimateBlade()
@@ -132,7 +135,17 @@ public class PlayerSkills : MonoBehaviour
         isUsingUltimateSkill = false;
         m_playerCombat.HideWeapon();
         m_playerCombat.ShowWeaponParticle();
+        EndUltimateSkillVFX();
     }
+
+    public void StartUltimateSkillVFX()
+    {
+        ultimateCharge.SetActive(true);
+    }
+    public void EndUltimateSkillVFX()
+    {
+        ultimateCharge.SetActive(false);
+    } 
 
     public void ForceStopSkills()
     {
