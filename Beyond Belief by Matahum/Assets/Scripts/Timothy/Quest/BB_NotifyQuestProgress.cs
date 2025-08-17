@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BB_NotifyQuestProgress : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class BB_NotifyQuestProgress : MonoBehaviour
     public bool notifyOnDestroy = false;
     public bool notifyOnCollect = false; // For items
     public bool notifyOnTrigger = false;
+
+    [Header("Events")]
+    public UnityEvent onQuestProgressNotified;
 
     private void OnDestroy()
     {
@@ -42,8 +46,11 @@ public class BB_NotifyQuestProgress : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(targetID))
         {
-            if(BB_QuestManager.Instance != null)
-                BB_QuestManager.Instance?.UpdateMissionProgress(targetID, 1);
+            if (BB_QuestManager.Instance != null)
+                BB_QuestManager.Instance.UpdateMissionProgress(targetID, 1);
         }
+
+        // Invoke UnityEvent
+        onQuestProgressNotified?.Invoke();
     }
 }

@@ -75,7 +75,11 @@ public class TutorialManager : MonoBehaviour
         if (!isTutorialDone)
         {
             StartTutorial();
-        } 
+        }
+        else
+        {
+            cutsceneBakalNPC.SetActive(false);
+        }
     }
     void Update()
     {

@@ -13,26 +13,23 @@ MonoBehaviour:
   m_Name: Tupas Sequence
   m_EditorClassIdentifier: 
   groups:
-  - dialogueState: A0_Q0_InitialTalk
+  - dialogueState: A0_Q1_FindAndTalkToTupas
     lines:
     - speakerName: Tupas
-      dialogueText: Hello there!
+      dialogueText: Oh hello! Do you feel much better now?
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: Yes
+        dialogueState: 
+      animationName: idle_1
+  - dialogueState: A0_Q1_FindAndTalkToTupasYes
+    lines:
+    - speakerName: Tupas
+      dialogueText: That's great!
       voiceClip: {fileID: 0}
       skippable: 1
       isChoiceLine: 0
       choices: []
       animationName: idle_1
-    - speakerName: Tupas
-      dialogueText: I see you're awake now.
-      voiceClip: {fileID: 0}
-      skippable: 1
-      isChoiceLine: 0
-      choices: []
-      animationName: 
-    - speakerName: Tupas
-      dialogueText: I can't have you being gay.
-      voiceClip: {fileID: 0}
-      skippable: 1
-      isChoiceLine: 0
-      choices: []
-      animationName: 
