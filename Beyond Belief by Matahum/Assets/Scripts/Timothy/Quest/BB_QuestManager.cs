@@ -95,6 +95,11 @@ public class BB_QuestManager : MonoBehaviour
         }
     }
 
+    public void UpdateMissionProgressOnce(string targetID)
+    {
+        UpdateMissionProgress(targetID, 1);
+    }
+
     public void UpdateMissionProgress(string targetID, int amount = 1)
     {
         foreach (var quest in activeMainQuests)

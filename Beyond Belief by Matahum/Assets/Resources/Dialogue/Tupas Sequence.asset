@@ -22,9 +22,9 @@ MonoBehaviour:
       isChoiceLine: 1
       choices:
       - choiceText: Yes
-        dialogueState: 
+        dialogueState: A0_Q1_FindAndTalkToTupas_Yes
       animationName: idle_1
-  - dialogueState: A0_Q1_FindAndTalkToTupasYes
+  - dialogueState: A0_Q1_FindAndTalkToTupas_Yes
     lines:
     - speakerName: Tupas
       dialogueText: That's great!
@@ -33,3 +33,81 @@ MonoBehaviour:
       isChoiceLine: 0
       choices: []
       animationName: idle_1
+    - speakerName: Tupas
+      dialogueText: You been passed out for the past few days.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: idle_1
+    - speakerName: Tupas
+      dialogueText: You been passed out for the past few days.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: idle_1
+    - speakerName: Tupas
+      dialogueText: I've been trying to look for ways to send you back to your world.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: idle_1
+    - speakerName: Tupas
+      dialogueText: I know of some ways, but it requires a lot of your involvment.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: curious
+    - speakerName: Tupas
+      dialogueText: And I can't have you running around not knowing how to defend
+        yourself.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: idle_1
+    - speakerName: Tupas
+      dialogueText: Here is a sword. It will aid in your journey.
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: Thanks I guess....
+        dialogueState: A0_Q1_FindAndTalkToTupas_ThanksIGuess
+      animationName: idle_1
+  - dialogueState: A0_Q1_FindAndTalkToTupas_ThanksIGuess
+    lines:
+    - speakerName: Tupas
+      dialogueText: Look for Bangkaw. He's the best fighter in this village. Ask
+        him to teach you how to use it.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: Tell him I sent you.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+  - dialogueState: A0_Q2_FindAndTalkToBangkaw
+    lines:
+    - speakerName: Tupas
+      dialogueText: Have you talked to Bangkaw yet?
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: If not, he's the one in the <color=brown>brown</color> outfit.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
