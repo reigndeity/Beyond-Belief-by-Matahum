@@ -222,7 +222,7 @@ public class Shopkeep : MonoBehaviour
     {
         int currentStock = PlayerPrefs.GetInt($"{selectedItemData.itemName}_ShopStock", 100);
 
-        if (playerStats.currentGoldCoins < 10) // should be playerStats.currentGoldCoins < selectedItemData.itemCost
+        if (playerStats.currentGoldCoins < selectedItemData.itemCost) 
         {
             ShowCantBuyPanel("Not enough gold");
             return;
@@ -244,7 +244,7 @@ public class Shopkeep : MonoBehaviour
     public void AddAmount()
     {
         int nextQuantity = buying_itemQuantity + 1;
-        int nextTotalCost = 10 * nextQuantity; // should be selectedItemData.itemCost * nextQuantity
+        int nextTotalCost = selectedItemData.itemCost * nextQuantity;
 
         if (nextTotalCost <= playerStats.currentGoldCoins)
         {
@@ -264,7 +264,7 @@ public class Shopkeep : MonoBehaviour
 
     public void BuyItem()
     {
-        int totalCost = 10 * buying_itemQuantity; // should be selectedItemData.itemCost * buying_itemQuantity
+        int totalCost = selectedItemData.itemCost * buying_itemQuantity;
 
         playerStats.currentGoldCoins -= totalCost;
         inventory.AddItem(selectedItemData, buying_itemQuantity);
@@ -286,7 +286,7 @@ public class Shopkeep : MonoBehaviour
 
     private void UpdateBuyingCost()
     {
-        buying_totalAmountCost = 10 * buying_itemQuantity; // should be selectedItemData.itemCost * buying_itemQuantity
+        buying_totalAmountCost = selectedItemData.itemCost * buying_itemQuantity;
         confirmation_itemQuantityText.text = buying_itemQuantity.ToString();
         confirmation_totalAmountCostText.text = buying_totalAmountCost.ToString();
     }

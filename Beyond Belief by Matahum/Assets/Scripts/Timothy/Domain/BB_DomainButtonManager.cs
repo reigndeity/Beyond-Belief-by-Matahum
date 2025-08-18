@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class BB_DomainButtonManager : MonoBehaviour
 {
@@ -116,15 +117,18 @@ public class BB_DomainButtonManager : MonoBehaviour
         HandleMouseVisibility(false);
     }
 
+
     public void ClaimRewards()//Claiming of rewards in domain
     { 
         BB_DomainManager.instance.ClaimRewards(BB_DomainManager.instance.selectedDomain);
         ExitDomain();
     }
 
+    #region MOUSE VISIBILITY
     public void HandleMouseVisibility(bool isVisible)
     {
         PlayerCamera playerCam = FindFirstObjectByType<PlayerCamera>();
         playerCam.SetCursorVisibility(isVisible);
     }
+    #endregion
 }
