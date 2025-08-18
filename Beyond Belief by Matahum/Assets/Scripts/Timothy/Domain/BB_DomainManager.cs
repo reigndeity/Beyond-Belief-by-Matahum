@@ -6,6 +6,7 @@ using TMPro;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class BB_DomainManager : MonoBehaviour
 {
@@ -161,8 +162,8 @@ public class BB_DomainManager : MonoBehaviour
             for (int i = 0; i < enemyData.howManyToSpawn; i++)
             {
                 Enemy enemy = Instantiate(enemyData.enemyToSpawn, GetRandomSpawnPosition(), Quaternion.identity, enemyHolder.transform).GetComponent<Enemy>();
-                /*EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
-                enemyStats.SetLevel(10 * selectedDomain.levelMultiplier);*/ //Remove Comment when testing enemy levels. its working though
+                EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
+                enemyStats.SetLevel(10 * selectedDomain.levelMultiplier); //Remove Comment when testing enemy levels. its working though
 
                 enemyList.Add(enemy);
 
@@ -301,7 +302,9 @@ public class BB_DomainManager : MonoBehaviour
                 Destroy(iconUIGroup.gameObject);
         }
 
-        foreach (BB_RewardSO rewards in domain.GetRewardsWithMultiplier())
+        int rewardArrayIndex = RewardArrayIndex(domain, domain.levelMultiplier);
+
+        foreach (BB_RewardSO rewards in domain.rewards[rewardArrayIndex].rewards)
         {
             BB_IconUIGroup rewardUI = Instantiate(iconGroupTemplate, rewardHolder);
             rewardUI.gameObject.SetActive(true);
@@ -323,11 +326,42 @@ public class BB_DomainManager : MonoBehaviour
 
     public void ClaimRewards(BB_DomainSO domain)
     {
-        foreach (var reward in domain.GetRewardsWithMultiplier())
+        int rewardArrayIndex = RewardArrayIndex(domain, domain.levelMultiplier);
+
+        foreach (var reward in domain.rewards[rewardArrayIndex].rewards)
         {
             reward.GiveReward();
             Debug.Log($"Received {reward.RewardQuantity()} {reward.RewardName()}");
         }
+
+        if (!domain.isDomainClearedForQuest)
+        {
+            domain.levelAccessIndex++;
+            domain.isDomainClearedForQuest = true;
+        }
+        else if (domain.levelAccessIndex == BB_DomainDetailsUI.instance.levelAccessIndex)
+        {
+            if (domain.levelAccessIndex < 5)
+            {
+                Debug.Log("Increase Index Level");
+                domain.levelAccessIndex++;
+            }
+        }
+        
+        BB_QuestManager.Instance?.UpdateMissionProgress(domain.questTargetID, 1);
+    }
+
+    public int RewardArrayIndex(BB_DomainSO domain, int rewardArrayIndex)
+    {      
+        if (domain.levelMultiplier == 1)
+        {
+            if (!domain.isDomainClearedForQuest)    
+                rewardArrayIndex = 0;          
+            else rewardArrayIndex = 1;
+        }
+        else rewardArrayIndex = domain.levelMultiplier;
+
+        return rewardArrayIndex;
     }
     #endregion
 
