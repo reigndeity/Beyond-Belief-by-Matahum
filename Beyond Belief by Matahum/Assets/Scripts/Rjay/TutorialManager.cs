@@ -131,6 +131,7 @@ public class TutorialManager : MonoBehaviour
         tutorial_canJump = false;
         tutorial_canCameraDirection = false;
         tutorial_canCameraZoom = false;
+        tutorial_canAttack = false;
         tutorial_canSprintAndDash = false;
         tutorial_canNormalSkill = false;
         tutorial_canUltimateSkill = false;
