@@ -146,4 +146,6 @@ public class TutorialManager : MonoBehaviour
     public void AllowJump() => tutorial_canJump = true;
     public void AllowAttack() => tutorial_canAttack = true;
     public void AllowDash() => tutorial_canSprintAndDash = true;
+    public void AllowNormalSkill() => tutorial_canNormalSkill = true;
+    public void AllowUltimateSkill() => tutorial_canUltimateSkill = true;
 }

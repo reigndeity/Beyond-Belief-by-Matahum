@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 public class DialogueQuestLinker : MonoBehaviour
 {
@@ -9,8 +11,11 @@ public class DialogueQuestLinker : MonoBehaviour
     public DialogueStateHolder tupas;
     public DialogueStateHolder bakal;
     public DialogueStateHolder bangkaw;
+
     [Header("Act 0 Components")]
     [SerializeField] GameObject A0_Q0_InitialTalk_NQP;
+    [SerializeField] private Transform SwordTrainingDummies;
+    public TimelineAsset A0_Q3_BangkawTraning_P2_Cutscene;
 
     void Update()
     {
@@ -54,11 +59,20 @@ public class DialogueQuestLinker : MonoBehaviour
 
                     ApplyStates(tupas, bakal, bangkaw);
                     break;
+                case "A0_Q3_Bangkaw'sTraning_P2":
+                    bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraning_P2");
+                    ApplyStates(bangkaw);
+                    
+                    TutorialManager.instance.tutorial_canAttack = false;
+                    CutsceneManager.Instance.StartCutscene(A0_Q3_BangkawTraning_P2_Cutscene);
+                    break;
                 // Add more as needed
             }
         }
 
         Debug.Log("The Focus now is: " + currentQuestID);
+        
+        GeneralQuestProgressCheck();
     }
 
     private void ApplyStates(params DialogueStateHolder[] holders)
@@ -66,6 +80,16 @@ public class DialogueQuestLinker : MonoBehaviour
         foreach (var holder in holders)
         {
             holder?.ApplyQueuedStateSilently();
+        }
+    }
+
+    public void GeneralQuestProgressCheck()
+    {
+        if (SwordTrainingDummies.childCount == 0)
+        {
+            BB_QuestManager.Instance.ClaimRewardsByID("A0_Q3_Bangkaw'sTraning_P1");
+            BB_QuestManager.Instance.AcceptQuestByID("A0_Q3_Bangkaw'sTraning_P2");
+            SwordTrainingDummies.gameObject.SetActive(false);
         }
     }
 }

@@ -160,4 +160,17 @@ public class BB_QuestManager : MonoBehaviour
             OnQuestUpdate?.Invoke();
         }
     }
+
+    public void ClaimRewardsByID(string questID)
+    {
+        var quest = allQuests.Find(q => q.questID == questID);
+        if (quest != null)
+        {
+            ClaimRewards(quest);
+        }
+        else
+        {
+            Debug.LogWarning($"Quest with ID {questID} not found.");
+        }
+    }
 }
