@@ -27,6 +27,11 @@ public class CutsceneManager : MonoBehaviour
         Instance = this;
     }
 
+    public void StartCutscene(TimelineAsset timeline)
+    {
+        PlayCutscene(timeline, null);
+    }
+
     public void PlayCutscene(TimelineAsset timeline, System.Action onFinish = null)
     {
         if (isPlaying || timeline == null) return;

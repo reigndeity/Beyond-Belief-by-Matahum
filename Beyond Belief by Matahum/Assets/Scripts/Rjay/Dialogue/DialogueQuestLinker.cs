@@ -47,6 +47,13 @@ public class DialogueQuestLinker : MonoBehaviour
 
                     ApplyStates(tupas, bakal, bangkaw);
                     break;
+                case "A0_Q3_Bangkaw'sTraning_P1":
+                    tupas.SetDialogueState("Default");
+                    bakal.SetDialogueState("Default");
+                    bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraning_P1");
+
+                    ApplyStates(tupas, bakal, bangkaw);
+                    break;
                 // Add more as needed
             }
         }
