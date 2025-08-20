@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96f6ae9bcd23cb64780b824aeb56a38a, type: 3}
+  m_Name: Bangkaw Sequence
+  m_EditorClassIdentifier: 
+  groups:
+  - dialogueState: A0_Q1_FindAndTalkToTupas
+    lines:
+    - speakerName: Bangkaw
+      dialogueText: What..?
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Bangkaw
+      dialogueText: Is there something you need?
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Bangkaw
+      dialogueText: I have stuff to do.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+  - dialogueState: A0_Q2_FindAndTalkToBangkaw
+    lines:
+    - speakerName: Bangkaw
+      dialogueText: Tupas told you to ask me huh?
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: Yes
+        dialogueState: A0_Q2_FindAndTalkToBangkaw_Yes
+      animationName: 
+  - dialogueState: A0_Q2_FindAndTalkToBangkaw_Yes
+    lines:
+    - speakerName: Bangkaw
+      dialogueText: I see.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Bangkaw
+      dialogueText: This sword of his has protected this village multiple times.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Bangkaw
+      dialogueText: I can teach you how to use it.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+  - dialogueState: A0_Q3_Bangkaw'sTraining_P1
+    lines:
+    - speakerName: Bangkaw
+      dialogueText: Let's start with the basics.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Bangkaw
+      dialogueText: Pressing Left Click on the mouse allows you to attack and deal
+        damage to enemies.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Bangkaw
+      dialogueText: Pressing it in quick succession allows you to do a combo.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Bangkaw
+      dialogueText: Try attacking those dummies.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+  - dialogueState: A0_Q3_Bangkaw'sTraining_P2
+    lines:
+    - speakerName: Bangkaw
+      dialogueText: Woah. You're pretty strong huh?
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Bangkaw
+      dialogueText: Maybe I can teach you a skill.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Bangkaw
+      dialogueText: Try releasing a slash projectile to those dummies.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+  - dialogueState: A0_Q3_Bangkaw'sTraining_P3
+    lines:
+    - speakerName: Bangkaw
+      dialogueText: Are you even human?
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Bangkaw
+      dialogueText: Hahahaha!
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Bangkaw
+      dialogueText: Let's try a much more advance skill.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 

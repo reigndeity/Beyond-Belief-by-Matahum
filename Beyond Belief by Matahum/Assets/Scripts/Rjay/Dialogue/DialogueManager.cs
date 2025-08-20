@@ -45,6 +45,10 @@ public class DialogueManager : MonoBehaviour
     public UnityEvent onDialogueStart;
     public UnityEvent onDialogueEnd;
 
+    [Header("Line Events")]
+    public UnityEvent onLineStart;
+    public UnityEvent onLineFinish;
+
     [HideInInspector] public bool isDialoguePlaying = false;
 
     private DialogueStateHolder activeStateHolder;
@@ -59,7 +63,10 @@ public class DialogueManager : MonoBehaviour
     {
         if (!isPlaying) return;
 
-        if ((Input.GetKeyDown(continueKey) || Input.GetKeyDown(fastForwardKey)) && !waitingForChoice && !inputCooldown && flattenedLines[currentIndex].skippable)
+        if ((Input.GetKeyDown(continueKey) || Input.GetKeyDown(fastForwardKey)) && 
+            !waitingForChoice && 
+            !inputCooldown && 
+            flattenedLines[currentIndex].skippable)
         {
             if (!textFullyRevealed)
             {
@@ -87,7 +94,6 @@ public class DialogueManager : MonoBehaviour
         if (activeStateHolder != null)
         {
             debugCurrentDialogueState = activeStateHolder.currentState;
-
             // ✅ Trigger enter event for the current state so animations or events play
             activeStateHolder.TriggerStateEnter(activeStateHolder.currentState);
         }
@@ -105,8 +111,6 @@ public class DialogueManager : MonoBehaviour
         onDialogueStart?.Invoke();
         ShowNextLine();
     }
-
-
 
     private void ShowNextLine()
     {
@@ -127,7 +131,6 @@ public class DialogueManager : MonoBehaviour
                 {
                     if (!string.IsNullOrEmpty(line.animationName))
                     {
-                        // ✅ Resolve alias to actual state name
                         string resolvedAnim = npc.GetAnimationByAlias(line.animationName);
                         npc.ChangeAnimationState(resolvedAnim);
                     }
@@ -142,6 +145,8 @@ public class DialogueManager : MonoBehaviour
             PlayVoiceClip(line.voiceClip);
 
             if (typewriterRoutine != null) StopCoroutine(typewriterRoutine);
+
+            onLineStart?.Invoke();   // 🔹 Fire line start event
             typewriterRoutine = StartCoroutine(TypeText(line.dialogueText, line));
             return;
         }
@@ -161,6 +166,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         textFullyRevealed = true;
+        onLineFinish?.Invoke();   // 🔹 Fire line finish event
 
         if (line.isChoiceLine && line.choices != null && line.choices.Length > 0)
         {
@@ -177,6 +183,8 @@ public class DialogueManager : MonoBehaviour
 
         dialogueText.text = flattenedLines[currentIndex].dialogueText;
         textFullyRevealed = true;
+
+        onLineFinish?.Invoke();   // 🔹 Ensure finish event fires when skipped
         StartCoroutine(InputCooldownRoutine());
     }
 
@@ -224,21 +232,18 @@ public class DialogueManager : MonoBehaviour
             debugCurrentDialogueState = activeStateHolder.currentState;
         }
 
-        StartDialogue(currentSequence, activeStateHolder);  // ✅ No EndDialogue here
+        StartDialogue(currentSequence, activeStateHolder);
     }
 
     private void EndDialogue()
     {
         if (activeStateHolder != null)
         {
-            // 🔹 Exit event for the old state
             activeStateHolder.TriggerStateExit(activeStateHolder.currentState);
 
-            // 🔹 Apply the queued state change now
             string oldState = activeStateHolder.currentState;
             activeStateHolder.ApplyQueuedState();
 
-            // 🔹 Enter event for the new state (if changed)
             if (activeStateHolder.currentState != oldState)
             {
                 activeStateHolder.TriggerStateEnter(activeStateHolder.currentState);
@@ -256,7 +261,6 @@ public class DialogueManager : MonoBehaviour
         FindFirstObjectByType<Player>().suppressInputUntilNextFrame = true;
     }
 
-
     public void SetDialogueState(string newState)
     {
         if (activeStateHolder != null)
@@ -272,6 +276,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     public bool IsDialoguePlaying() => isPlaying;
+
     public void ForceEndDialogue()
     {
         if (!isPlaying) return;

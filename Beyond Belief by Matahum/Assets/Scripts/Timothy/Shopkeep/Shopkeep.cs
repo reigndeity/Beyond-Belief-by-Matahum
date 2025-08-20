@@ -12,7 +12,7 @@ public class Shopkeep : MonoBehaviour
     [Header("References")]
     private PlayerStats playerStats;
     private R_Inventory inventory;
-    private R_InventoryUI inventoryUI;
+    public R_InventoryUI inventoryUI;
     public GameObject shopkeeperUI;
 
     [Header("For Item Spawning")]
@@ -76,7 +76,7 @@ public class Shopkeep : MonoBehaviour
     {
         playerStats = FindFirstObjectByType<PlayerStats>();
         inventory = FindFirstObjectByType<R_Inventory>();
-        inventoryUI = inventoryUI = Resources.FindObjectsOfTypeAll<R_InventoryUI>().FirstOrDefault();
+        //inventoryUI = Resources.FindObjectsOfTypeAll<R_InventoryUI>().FirstOrDefault();
 
         LoadOrCreateRestockTime();
         
@@ -92,7 +92,7 @@ public class Shopkeep : MonoBehaviour
             shopItemGroupTemplate.itemData = item;
             shopItemGroupTemplate.itemImage.sprite = item.itemIcon;
             shopItemGroupTemplate.itemName.text = item.itemName;
-            shopItemGroupTemplate.itemCost.text = 10.ToString(); // placeholder cost
+            shopItemGroupTemplate.itemCost.text = item.itemCost.ToString();
 
             int currentStock = PlayerPrefs.GetInt($"{item.itemName}_ShopStock", 100);
             shopItemGroupTemplate.itemCurrentStock.text = $"{currentStock}/100";
@@ -208,12 +208,26 @@ public class Shopkeep : MonoBehaviour
         itemDetails.itemName.text = itemData.itemName;
         itemDetails.itemTypeText.text = itemData.itemType.ToString();
         itemDetails.itemDescriptionText.text += $"{itemData.description}";
-        itemDetails.itemCost.text = 10.ToString(); // should be itemData.itemCost
+        itemDetails.itemCost.text = itemData.itemCost.ToString(); // should be itemData.itemCost
         itemDetails.itemHeaderImage.sprite = itemData.inventoryHeaderImage;
         itemDetails.itemBackdropImage.sprite = itemData.inventoryBackdropImage;
-        ownedItemStock.text = $"Owned: 42069(temp)";
+        ownedItemStock.text = LookForOwnedItems(itemData);
 
         selectedItemData = itemData;
+    }
+
+    string LookForOwnedItems(R_ItemData itemData)
+    {
+        int itemQuantity = 0;
+        foreach (R_InventoryItem inventoryItem in inventory.items)
+        {
+            if (itemData == inventoryItem.itemData)
+            {
+                itemQuantity += inventoryItem.quantity;
+            }
+        }
+
+        return $"Owned: {itemQuantity}";
     }
     #endregion
 
@@ -222,7 +236,7 @@ public class Shopkeep : MonoBehaviour
     {
         int currentStock = PlayerPrefs.GetInt($"{selectedItemData.itemName}_ShopStock", 100);
 
-        if (playerStats.currentGoldCoins < 10) // should be playerStats.currentGoldCoins < selectedItemData.itemCost
+        if (playerStats.currentGoldCoins < selectedItemData.itemCost) 
         {
             ShowCantBuyPanel("Not enough gold");
             return;
@@ -244,7 +258,7 @@ public class Shopkeep : MonoBehaviour
     public void AddAmount()
     {
         int nextQuantity = buying_itemQuantity + 1;
-        int nextTotalCost = 10 * nextQuantity; // should be selectedItemData.itemCost * nextQuantity
+        int nextTotalCost = selectedItemData.itemCost * nextQuantity;
 
         if (nextTotalCost <= playerStats.currentGoldCoins)
         {
@@ -264,7 +278,7 @@ public class Shopkeep : MonoBehaviour
 
     public void BuyItem()
     {
-        int totalCost = 10 * buying_itemQuantity; // should be selectedItemData.itemCost * buying_itemQuantity
+        int totalCost = selectedItemData.itemCost * buying_itemQuantity;
 
         playerStats.currentGoldCoins -= totalCost;
         inventory.AddItem(selectedItemData, buying_itemQuantity);
@@ -277,6 +291,7 @@ public class Shopkeep : MonoBehaviour
 
         // ✅ Refresh shop UI stock numbers
         UpdateItemStock();
+        ownedItemStock.text = LookForOwnedItems(selectedItemData);
 
         // Update coin UI
         coinAmount.text = playerStats.currentGoldCoins.ToString();
@@ -286,7 +301,7 @@ public class Shopkeep : MonoBehaviour
 
     private void UpdateBuyingCost()
     {
-        buying_totalAmountCost = 10 * buying_itemQuantity; // should be selectedItemData.itemCost * buying_itemQuantity
+        buying_totalAmountCost = selectedItemData.itemCost * buying_itemQuantity;
         confirmation_itemQuantityText.text = buying_itemQuantity.ToString();
         confirmation_totalAmountCostText.text = buying_totalAmountCost.ToString();
     }

@@ -69,4 +69,15 @@ public class DialogueStateHolder : MonoBehaviour
             }
         }
     }
+
+    public void ApplyQueuedStateSilently()
+    {
+        if (!string.IsNullOrEmpty(queuedState))
+        {
+            previousState = currentState;
+            currentState = queuedState;
+            queuedState = null;
+            // no TriggerStateEnter or Exit
+        }
+    }
 }

@@ -20,7 +20,6 @@ public class PlayerUltimateSkill : MonoBehaviour
     void Start()
     {
         m_playerStats = FindFirstObjectByType<PlayerStats>();
-        Debug.Log("Script is on: ");
     }
     public void Initialize(float speed, float lifetime, Vector3 direction)
     {
