@@ -17,23 +17,32 @@ public class BB_DomainSO : ScriptableObject
     [TextArea(2, 3)]
     public string domainDescription;
 
-    [Header("Next Level Access Properties")]
-    public int levelAccessIndex = 0;
-
     [Header("Enemy Waves")]
     public List<BB_EnemySet> enemySets = new List<BB_EnemySet>();
     public DomainSpawnMode spawnMode = DomainSpawnMode.TimeBased;
 
     [Header("Rewards")]
-    public RewardSet[] rewards;
+    public List<BB_RewardSO> rewards = new List<BB_RewardSO>();
     public int levelMultiplier = 1;
 
     [Header("Timers")]
     public float totalTime = 300f; // total time to complete the domain
 
-    [Header("Quest Related Domain")]
-    public bool isDomainClearedForQuest = false;
-    public string questTargetID;    
+    public List<BB_RewardSO> GetRewardsWithMultiplier()
+    {
+        List<BB_RewardSO> clonedRewards = new List<BB_RewardSO>();
+
+        foreach (BB_RewardSO reward in rewards)
+        {
+            // Create a runtime copy
+            BB_RewardSO rewardInstance = Instantiate(reward);
+            rewardInstance.SetMultiplier(levelMultiplier);
+            clonedRewards.Add(rewardInstance);
+        }
+
+        return clonedRewards;
+    }
+
 }
 
 [Serializable]
@@ -50,10 +59,4 @@ public class BB_EnemySet
 
     [Tooltip("For TimeBased mode: Delay before this wave starts")]
     public float delayBeforeNextWave = 5f;
-}
-
-[Serializable]
-public class RewardSet
-{
-    public List<BB_RewardSO> rewards = new List<BB_RewardSO>();
 }

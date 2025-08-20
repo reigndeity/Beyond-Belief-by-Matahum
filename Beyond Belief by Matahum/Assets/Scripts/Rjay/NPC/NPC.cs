@@ -146,26 +146,4 @@ public class NPC : Interactable
         yield return new WaitForSeconds(0.3f);
         m_blazeAI.IgnoreStayIdle();
     }
-
-
-    /// <summary>
-    /// Plays dialogue during a cutscene and resumes Timeline when done.
-    /// </summary>
-    public void PlayDialogue()
-    {
-        if (CutsceneManager.Instance == null || DialogueManager.Instance == null) return;
-
-        if (dialogueSequence != null)
-        {
-            UnityAction resumeAction = null;
-            resumeAction = () =>
-            {
-                DialogueManager.Instance.onDialogueEnd.RemoveListener(resumeAction);
-                CutsceneManager.Instance.ResumeTimeline();
-            };
-
-            DialogueManager.Instance.onDialogueEnd.AddListener(resumeAction);
-            DialogueManager.Instance.StartDialogue(dialogueSequence, m_stateHolder);
-        }
-    }
 }

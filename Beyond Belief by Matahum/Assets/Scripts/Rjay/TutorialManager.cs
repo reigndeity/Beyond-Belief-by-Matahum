@@ -16,7 +16,7 @@ public class TutorialManager : MonoBehaviour
     public UI_CanvasGroup questButton;
     public UI_CanvasGroup minimap;
     public UI_CanvasGroup normalSkill;
-    public UI_CanvasGroup ultimateSkill;
+    public UI_CanvasGroup ultimatSkill;
     public UI_CanvasGroup agimatOne;
     public UI_CanvasGroup agimatTwo;
     public UI_CanvasGroup health;
@@ -112,7 +112,7 @@ public class TutorialManager : MonoBehaviour
         questButton.FadeOut(0);
         minimap.FadeOut(0);
         normalSkill.FadeOut(0);
-        ultimateSkill.FadeOut(0);
+        ultimatSkill.FadeOut(0);
         agimatOne.FadeOut(0);
         agimatTwo.FadeOut(0);   
         health.FadeOut(0);
@@ -131,7 +131,6 @@ public class TutorialManager : MonoBehaviour
         tutorial_canJump = false;
         tutorial_canCameraDirection = false;
         tutorial_canCameraZoom = false;
-        tutorial_canAttack = false;
         tutorial_canSprintAndDash = false;
         tutorial_canNormalSkill = false;
         tutorial_canUltimateSkill = false;
@@ -146,11 +145,4 @@ public class TutorialManager : MonoBehaviour
     public void AllowJump() => tutorial_canJump = true;
     public void AllowAttack() => tutorial_canAttack = true;
     public void AllowDash() => tutorial_canSprintAndDash = true;
-    public void AllowNormalSkill() => tutorial_canNormalSkill = true;
-    public void AllowUltimateSkill() => tutorial_canUltimateSkill = true;
-
-    public void ShowNormalSkill() => normalSkill.FadeIn(0.5f);
-    public void HideNormalSkill() => normalSkill.FadeOut(0.5f);
-    public void ShowUltimateSkill() => ultimateSkill.FadeIn(0.5f);
-    public void HideUltimateSkill() => ultimateSkill.FadeOut(0.5f);
 }

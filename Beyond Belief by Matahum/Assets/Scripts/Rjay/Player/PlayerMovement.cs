@@ -168,7 +168,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void HandleJump()
     {
-        if (!TutorialManager.instance.tutorial_canJump) return;
         if (GetComponent<Player>().suppressInputUntilNextFrame) return;
         if (GetComponent<PlayerSkills>().isUsingNormalSkill || GetComponent<PlayerSkills>().isUsingUltimateSkill)
             return;

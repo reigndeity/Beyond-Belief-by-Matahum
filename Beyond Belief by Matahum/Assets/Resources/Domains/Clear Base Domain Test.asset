@@ -15,7 +15,6 @@ MonoBehaviour:
   domainImage: {fileID: 3351748369286481944, guid: 4dffe6eab57ca4e4ba2f967307bd1c29, type: 3}
   domainName: Clear Base Domain
   domainDescription: You need to clear the wave of enemies for the next wave to start
-  levelAccessIndex: 0
   enemySets:
   - enemyList:
     - enemyToSpawn: {fileID: 7577076651516667552, guid: 697dc390005082149822f4170e56fa4f, type: 3}
@@ -27,18 +26,6 @@ MonoBehaviour:
     delayBeforeNextWave: 0
   spawnMode: 1
   rewards:
-  - rewards: []
-  - rewards:
-    - {fileID: 11400000, guid: 9b56dd6f8cf7ec349bb224f12bc87230, type: 2}
-  - rewards:
-    - {fileID: 11400000, guid: 9b56dd6f8cf7ec349bb224f12bc87230, type: 2}
-    - {fileID: 11400000, guid: 9b56dd6f8cf7ec349bb224f12bc87230, type: 2}
-  - rewards:
-    - {fileID: 11400000, guid: 31b0ab4b496c76a43811a782ce88f796, type: 2}
-  - rewards:
-    - {fileID: 11400000, guid: 31b0ab4b496c76a43811a782ce88f796, type: 2}
-    - {fileID: 11400000, guid: 31b0ab4b496c76a43811a782ce88f796, type: 2}
+  - {fileID: 11400000, guid: 9b56dd6f8cf7ec349bb224f12bc87230, type: 2}
   levelMultiplier: 1
   totalTime: 15
-  isDomainClearedForQuest: 0
-  questTargetID: 

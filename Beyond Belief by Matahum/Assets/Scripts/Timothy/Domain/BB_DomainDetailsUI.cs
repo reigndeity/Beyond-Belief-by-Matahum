@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using System.Net;
 
 public class BB_DomainDetailsUI : MonoBehaviour
 {
@@ -11,7 +10,6 @@ public class BB_DomainDetailsUI : MonoBehaviour
 
     [Header("Domain Selection")]
     public Transform domainSelectionHolder;
-    public int levelAccessIndex;
 
     [Header("Domain Details")]
     public Image domainImage;
@@ -37,8 +35,9 @@ public class BB_DomainDetailsUI : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void OnOpenDomainDetails(bool shouldApplyMultiplier = false)
+    public void OnOpenDomainDetails(bool applyMultiplier = false)
     {
+
         for (int i = 0; i < domainSelectionHolder.childCount; i++)
         {
             BB_DomainSelectionTemplate domainSelectionTemplate = domainSelectionHolder.GetChild(i).GetComponent<BB_DomainSelectionTemplate>();
@@ -47,49 +46,19 @@ public class BB_DomainDetailsUI : MonoBehaviour
             Button domainBtn = domainSelectionHolder.GetChild(i).GetComponent<Button>();
             Image domainImg = domainBtn.GetComponent<Image>();
 
-            int level = i;
-            if (level == 0) level = 1;
-
             if (!isDomainButtonsSetUp)
             {
-                domainBtn.onClick.AddListener(() => OnDomainButtonClicked(BB_DomainManager.instance.selectedDomain, domainBtn, domainImg, level, shouldApplyMultiplier));
-            }
-          
-            // Only unlock button if previous levels are cleared
-            if (level <= BB_DomainManager.instance.selectedDomain.levelAccessIndex)
-            {
-                domainBtn.gameObject.SetActive(true);
-                domainBtn.interactable = true;
-            }
-            else
-            {
-                domainBtn.gameObject.SetActive(true);
-                domainBtn.interactable = false;
+                int level = i + 1;
+                domainBtn.onClick.AddListener(() => OnDomainButtonClicked(BB_DomainManager.instance.selectedDomain, domainBtn, domainImg, level, applyMultiplier));
             }
         }
         isDomainButtonsSetUp = true;
 
-        // Toggle visibility depending on whether domain is cleared
-        if (!BB_DomainManager.instance.selectedDomain.isDomainClearedForQuest)        
-            for (int i = 0; i < domainSelectionHolder.childCount; i++)            
-                domainSelectionHolder.GetChild(i).gameObject.SetActive(i == 0);                   
-        else        
-            for (int i = 0; i < domainSelectionHolder.childCount; i++)
-            domainSelectionHolder.GetChild(i).gameObject.SetActive(i != 0);       
-
-        // Auto-click the first *active* button
-        for (int i = 0; i < domainSelectionHolder.childCount; i++)
-        {
-            if (domainSelectionHolder.GetChild(i).gameObject.activeSelf)
-            {
-                domainSelectionHolder.GetChild(i).GetComponent<Button>().onClick.Invoke();
-                break;
-            }
-        }
+        Button firstDomainBtn = domainSelectionHolder.GetChild(0).GetComponent<Button>();
+        firstDomainBtn.onClick.Invoke();    
     }
-    private void OnDomainButtonClicked(BB_DomainSO domain, Button clickedButton, Image clickedImage, int level, bool shouldApplyMultiplier = false)
+    private void OnDomainButtonClicked(BB_DomainSO domain, Button clickedButton, Image clickedImage, int level, bool applyMultiplier = false)
     {
-        levelAccessIndex = level;
         // Reset previous button to default sprite
         if (currentlySelectedImage != null)
         {
@@ -102,14 +71,14 @@ public class BB_DomainDetailsUI : MonoBehaviour
         currentlySelectedImage.sprite = selectedSprite;
 
         // Show quest details
-        ShowDomainDetails(domain, level, shouldApplyMultiplier);
+        ShowDomainDetails(domain, level, applyMultiplier);
     }
-    public void ShowDomainDetails(BB_DomainSO domain, int level, bool shouldApplyMultiplier = false)
+    public void ShowDomainDetails(BB_DomainSO domain, int level, bool applyMutliplier = false)
     {
         domainImage.sprite = domain.domainImage;
         domainTitleText.text = domain.domainName;
         domainBodyText.text = domain.domainDescription;
-        if(shouldApplyMultiplier == true ) domain.levelMultiplier = level;
+        if(applyMutliplier == true ) domain.levelMultiplier = level;
 
         //Remove creature icons
         foreach (Transform child in creatureHolder)
@@ -160,9 +129,7 @@ public class BB_DomainDetailsUI : MonoBehaviour
         }
 
         // Populate Reward Icons
-        int rewardArrayIndex = BB_DomainManager.instance.RewardArrayIndex(domain, domain.levelMultiplier);
-
-        foreach (BB_RewardSO rewards in domain.rewards[rewardArrayIndex].rewards)
+        foreach (BB_RewardSO rewards in domain.GetRewardsWithMultiplier())
         {
             // Create icon UI
             BB_IconUIGroup rewardUI = Instantiate(iconUIGroup, rewardHolder);
@@ -173,5 +140,7 @@ public class BB_DomainDetailsUI : MonoBehaviour
             rewardUI.iconName.text = $"{rewards.RewardQuantity().ToString()}  {rewards.RewardName()}";
             rewardUI.quantity.text = rewards.RewardQuantity().ToString();
         }
+
     }
+
 }
