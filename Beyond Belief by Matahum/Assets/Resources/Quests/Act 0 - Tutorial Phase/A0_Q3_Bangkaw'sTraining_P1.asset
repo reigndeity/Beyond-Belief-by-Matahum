@@ -10,22 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25a962021d732214296807c0b79bcfcf, type: 3}
-  m_Name: A0_Q3_Bangkaw'sTraning_P1
+  m_Name: A0_Q3_Bangkaw'sTraining_P1
   m_EditorClassIdentifier: 
-  questID: A0_Q3_Bangkaw'sTraning_P1
+  questID: A0_Q3_Bangkaw'sTraining_P1
   questTitle: Bangkaw's Sword Training
   actNumber: ACT 0
   questJournalDescription:
   - Behold, the greatest fighter in the village. As per Tupas' request, he teaches
     you how to use the sword that was given to you.
+  - Behold, the greatest fighter in the village. As per Tupas' request, he teaches
+    you how to use the sword that was given to you.
+  - Behold, the greatest fighter in the village. As per Tupas' request, he teaches
+    you how to use the sword that was given to you.
   questHudDescription: 
   questType: 0
-  state: 0
+  state: 3
   missions:
   - whatMustBeDone: Destroy the dummies
     targetID: A0_Q3_Dummy_P1
     hasCounter: 1
     requiredAmount: 3
-    currentAmount: 0
+    currentAmount: 3
   rewards: []
   isBeingTracked: 0

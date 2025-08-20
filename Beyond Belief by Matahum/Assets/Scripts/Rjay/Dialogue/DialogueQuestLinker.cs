@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -6,16 +7,24 @@ public class DialogueQuestLinker : MonoBehaviour
 {
     
     private string lastTrackedQuestID = "";
+    public bool isDelayAccept;
 
     [Header("All NPCs Dialogue State Holders")]
     public DialogueStateHolder tupas;
     public DialogueStateHolder bakal;
     public DialogueStateHolder bangkaw;
+    [Header("All NPCs Quest Tracker Icon")]
+    public UI_CanvasGroup tupasTracker;
+    public UI_CanvasGroup bakalTracker;
+    public UI_CanvasGroup bangkawTracker;
 
     [Header("Act 0 Components")]
     [SerializeField] GameObject A0_Q0_InitialTalk_NQP;
     [SerializeField] private Transform SwordTrainingDummies;
-    public TimelineAsset A0_Q3_BangkawTraning_P2_Cutscene;
+    public TimelineAsset A0_Q3_BangkawTraining_P2_Cutscene;
+    [SerializeField] private Transform normalSkillTrainingDummies;
+    public TimelineAsset A0_Q3_BangkawTraining_P3_Cutscene;
+    [SerializeField] private Transform ultimateSkillTrainingDummies;
 
     void Update()
     {
@@ -42,29 +51,40 @@ public class DialogueQuestLinker : MonoBehaviour
                     tupas.SetDialogueState("A0_Q1_FindAndTalkToTupas");
                     bakal.SetDialogueState("A0_Q1_FindAndTalkToTupas");
                     bangkaw.SetDialogueState("A0_Q1_FindAndTalkToTupas");
-
+                    tupasTracker.FadeIn(0.25f);
                     ApplyStates(tupas, bakal, bangkaw);
                     break;
                 case "A0_Q2_FindAndTalkToBangkaw":
                     tupas.SetDialogueState("A0_Q2_FindAndTalkToBangkaw");
                     bakal.SetDialogueState("Default");
                     bangkaw.SetDialogueState("A0_Q2_FindAndTalkToBangkaw");
-
+                    bangkawTracker.FadeIn(0.25f);
                     ApplyStates(tupas, bakal, bangkaw);
                     break;
-                case "A0_Q3_Bangkaw'sTraning_P1":
+                case "A0_Q3_Bangkaw'sTraining_P1":
                     tupas.SetDialogueState("Default");
                     bakal.SetDialogueState("Default");
-                    bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraning_P1");
+                    bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraining_P1");
 
                     ApplyStates(tupas, bakal, bangkaw);
                     break;
-                case "A0_Q3_Bangkaw'sTraning_P2":
-                    bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraning_P2");
+                case "A0_Q3_Bangkaw'sTraining_P2":
+                    bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraining_P2");
+
+                    ApplyStates(bangkaw);
+
+                    TutorialManager.instance.tutorial_canAttack = false;
+                    CutsceneManager.Instance.StartCutscene(A0_Q3_BangkawTraining_P2_Cutscene);
+                    break;
+                case "A0_Q3_Bangkaw'sTraining_P3":
+                    bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraining_P3");
+
                     ApplyStates(bangkaw);
                     
                     TutorialManager.instance.tutorial_canAttack = false;
-                    CutsceneManager.Instance.StartCutscene(A0_Q3_BangkawTraning_P2_Cutscene);
+                    TutorialManager.instance.tutorial_canNormalSkill = false;
+                    TutorialManager.instance.HideNormalSkill();
+                    CutsceneManager.Instance.StartCutscene(A0_Q3_BangkawTraining_P3_Cutscene);
                     break;
                 // Add more as needed
             }
@@ -87,9 +107,38 @@ public class DialogueQuestLinker : MonoBehaviour
     {
         if (SwordTrainingDummies.childCount == 0)
         {
-            BB_QuestManager.Instance.ClaimRewardsByID("A0_Q3_Bangkaw'sTraning_P1");
-            BB_QuestManager.Instance.AcceptQuestByID("A0_Q3_Bangkaw'sTraning_P2");
+            BB_QuestManager.Instance.ClaimRewardsByID("A0_Q3_Bangkaw'sTraining_P1");
             SwordTrainingDummies.gameObject.SetActive(false);
+            if (isDelayAccept == false)
+            {
+                StartCoroutine(DelayAcceptQuest("A0_Q3_Bangkaw'sTraining_P2"));
+            }
+            
         }
+        if (normalSkillTrainingDummies.childCount == 0)
+        {
+            isDelayAccept = false;
+            BB_QuestManager.Instance.ClaimRewardsByID("A0_Q3_Bangkaw'sTraining_P2");
+            normalSkillTrainingDummies.gameObject.SetActive(false);
+            if (isDelayAccept == false)
+            {
+                StartCoroutine(DelayAcceptQuest("A0_Q3_Bangkaw'sTraining_P3"));
+                Debug.Log("WORK");
+            }
+        }
+        if (ultimateSkillTrainingDummies.childCount == 0)
+        {
+            BB_QuestManager.Instance.ClaimRewardsByID("A0_Q3_Bangkaw'sTraining_P3");
+            //BB_QuestManager.Instance.AcceptQuestByID("A0_Q3_Bangkaw'sTraining_P4");
+            ultimateSkillTrainingDummies.gameObject.SetActive(false);
+        }
+    }
+
+    IEnumerator DelayAcceptQuest(string questID)
+    {
+        isDelayAccept = true;
+        yield return new WaitForSeconds(2f);
+        isDelayAccept = false;
+        BB_QuestManager.Instance.AcceptQuestByID(questID);
     }
 }
