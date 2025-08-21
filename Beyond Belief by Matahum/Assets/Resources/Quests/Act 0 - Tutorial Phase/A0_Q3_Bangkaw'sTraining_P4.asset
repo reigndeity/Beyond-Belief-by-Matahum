@@ -10,23 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25a962021d732214296807c0b79bcfcf, type: 3}
-  m_Name: A0_Q3_Bangkaw'sTraining_P3
+  m_Name: A0_Q3_Bangkaw'sTraining_P4
   m_EditorClassIdentifier: 
-  questID: A0_Q3_Bangkaw'sTraining_P3
-  questTitle: Bangkaw's Ultimate Skill Training
+  questID: A0_Q3_Bangkaw'sTraining_P4
+  questTitle: Bangkaw's Agility Training
   actNumber: ACT 0
   questJournalDescription:
-  - Bangkaw enjoys the sight of you successfully being able to learn a skill. Now,
-    he intends to push your limits and see if it's possible for you to try an even
-    stronger skill.
+  - After mastering the sword, Bangkaw then teaches you the importance of being swift
+    and agile.
   questHudDescription: 
   questType: 0
-  state: 3
+  state: 2
   missions:
-  - whatMustBeDone: Use your ultimate skill
-    targetID: A0_Q3_Dummy_P3
+  - whatMustBeDone: Use your dash
+    targetID: A0_Q3_DashCount
     hasCounter: 1
-    requiredAmount: 3
-    currentAmount: 3
+    requiredAmount: 5
+    currentAmount: 0
   rewards: []
   isBeingTracked: 1

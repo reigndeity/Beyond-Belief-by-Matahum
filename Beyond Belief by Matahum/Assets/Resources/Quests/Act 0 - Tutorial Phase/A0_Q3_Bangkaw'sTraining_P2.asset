@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: A0_Q3_Bangkaw'sTraining_P2
   m_EditorClassIdentifier: 
   questID: A0_Q3_Bangkaw'sTraining_P2
-  questTitle: Bangkaw's Skill Training
+  questTitle: Bangkaw's Normal Skill Training
   actNumber: ACT 0
   questJournalDescription:
   - Impressed of how well you can handle the sword, Bangkaw teaches you a more advance
@@ -24,7 +24,7 @@ MonoBehaviour:
     skill.
   questHudDescription: 
   questType: 0
-  state: 2
+  state: 3
   missions:
   - whatMustBeDone: Use your normal skill
     targetID: A0_Q3_Dummy_P2
@@ -32,4 +32,4 @@ MonoBehaviour:
     requiredAmount: 3
     currentAmount: 3
   rewards: []
-  isBeingTracked: 1
+  isBeingTracked: 0
