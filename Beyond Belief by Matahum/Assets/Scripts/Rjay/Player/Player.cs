@@ -84,6 +84,7 @@ public class Player : MonoBehaviour, IDamageable
             m_playerCombat.HandleAttack();
             m_playerSkills.HandleSkills();
             HandleGrassInteraction();
+            
         }
 
 

@@ -55,6 +55,7 @@ public class UI_Game : MonoBehaviour
     [SerializeField] GameObject teleportPanel;
     [SerializeField] Button closeTeleportPanelButton;
     [SerializeField] Button teleportButton;
+    [SerializeField] Button closeMapButton;
     public static event Action OnCloseTeleportPanel;
 
     [Header("UI Animation")]
@@ -83,6 +84,7 @@ public class UI_Game : MonoBehaviour
     {
         closeTeleportPanelButton.onClick.AddListener(OnClickCloseTeleportPanel);
         teleportButton.onClick.AddListener(OnClickTeleport);
+        closeMapButton.onClick.AddListener(OnClickCloseMapButton);
 
         inventoryButton.onClick.AddListener(OnClickOpenInventory);
         closeInventoryButton.onClick.AddListener(OnClickCloseInventory);
@@ -110,8 +112,18 @@ public class UI_Game : MonoBehaviour
         archiveButton.onClick.AddListener(OnClickOpenArchive);
         closeArchiveButton.onClick.AddListener(OnClickCloseArchive);
     }
-
-    #region MAP TELEPORT
+    void LateUpdate()
+    {
+        if (PlayerMinimap.instance.IsMapOpen())
+        {
+            closeMapButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            closeMapButton.gameObject.SetActive(false);
+        }   
+    }
+    #region MAP
     public void OnClickCloseTeleportPanel()
     {
         teleportPanel.SetActive(false);
@@ -121,8 +133,13 @@ public class UI_Game : MonoBehaviour
     {
         MapManager.instance.TeleportPlayerToSelected();
     }
+    public void OnClickCloseMapButton()
+    {
+        PlayerMinimap.instance.CloseMap();
+    }
     #endregion
     
+
     #region INVENTORY
     public void OnClickOpenInventory()
     {

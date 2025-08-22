@@ -110,6 +110,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     break;
                 case "A0_Q4_ReturnToTupas":
                     bangkaw.SetDialogueState("A0_Q4_ReturnToTupas");
+                    tupas.SetDialogueState("A0_Q4_ReturnToTupas");
                     ApplyStates(bangkaw);
 
                     TutorialManager.instance.tutorial_canAttack = true;

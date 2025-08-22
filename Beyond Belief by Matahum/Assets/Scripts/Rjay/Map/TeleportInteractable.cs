@@ -65,13 +65,8 @@ public class TeleportInteractable : Interactable
     {
         SetUnlocked(true);
 
-        if (isSacredStatue && MapManager.instance != null)
-        {
-            if (revealAreaIds != null && revealAreaIds.Length > 0)
-                MapManager.instance.RevealAreas(revealAreaIds);
-            else
-                Debug.LogWarning($"Sacred statue '{name}' has no revealAreaIds set.");
-        }
+        if (isSacredStatue)
+            StartCoroutine(UnlockSequence());
     }
 
     private void OpenFullscreenMap()
@@ -134,4 +129,15 @@ public class TeleportInteractable : Interactable
     public string GetGuid() => persistentGuid != null ? persistentGuid.Guid : null;
     public bool IsUnlocked() => isUnlocked;
     public void ForceUnlockSilent(bool value) => SetUnlocked(value); // for load (no extra reveal)
+
+    private IEnumerator UnlockSequence()
+    {
+        playerMinimap.OpenMapAndCenter();
+        yield return new WaitForSeconds(1f);
+        MapManager.instance.RevealAreas(revealAreaIds);
+
+        // Optional: wait before auto-closing
+        // yield return new WaitForSeconds(2f);
+        // playerMinimap.CloseFullScreenMap();
+    }
 }
