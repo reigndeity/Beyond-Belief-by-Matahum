@@ -25,6 +25,18 @@ public class DialogueQuestLinker : MonoBehaviour
     [SerializeField] private Transform normalSkillTrainingDummies;
     public TimelineAsset A0_Q3_BangkawTraining_P3_Cutscene;
     [SerializeField] private Transform ultimateSkillTrainingDummies;
+    public TimelineAsset A0_Q3_BangkawTraining_P4_Cutscene;
+    private int dashAmount;
+
+    void OnEnable()
+    {
+        PlayerMovement.OnDashStarted += DashCounter;
+    }
+
+    void OnDisable()
+    {
+        PlayerMovement.OnDashStarted -= DashCounter;
+    }
 
     void Update()
     {
@@ -86,6 +98,15 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.HideNormalSkill();
                     CutsceneManager.Instance.StartCutscene(A0_Q3_BangkawTraining_P3_Cutscene);
                     break;
+                case "A0_Q3_Bangkaw'sTraining_P4":
+                    bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraining_P4");
+
+                    ApplyStates(bangkaw);
+                    
+                    TutorialManager.instance.tutorial_canUltimateSkill = false;
+                    TutorialManager.instance.HideUltimateSkill();
+                    CutsceneManager.Instance.StartCutscene(A0_Q3_BangkawTraining_P4_Cutscene);
+                    break;
                 // Add more as needed
             }
         }
@@ -128,9 +149,13 @@ public class DialogueQuestLinker : MonoBehaviour
         }
         if (ultimateSkillTrainingDummies.childCount == 0)
         {
+            isDelayAccept = false;
             BB_QuestManager.Instance.ClaimRewardsByID("A0_Q3_Bangkaw'sTraining_P3");
-            //BB_QuestManager.Instance.AcceptQuestByID("A0_Q3_Bangkaw'sTraining_P4");
             ultimateSkillTrainingDummies.gameObject.SetActive(false);
+            if (isDelayAccept == false)
+            {
+                StartCoroutine(DelayAcceptQuest("A0_Q3_Bangkaw'sTraining_P4"));
+            }
         }
     }
 
@@ -140,5 +165,13 @@ public class DialogueQuestLinker : MonoBehaviour
         yield return new WaitForSeconds(2f);
         isDelayAccept = false;
         BB_QuestManager.Instance.AcceptQuestByID(questID);
+    }
+    public void DashCounter()
+    {
+        if (dashAmount < 5)
+        {
+            dashAmount++;
+            BB_QuestManager.Instance.UpdateMissionProgress("A0_Q3_DashCount", 1);
+        }
     }
 }
