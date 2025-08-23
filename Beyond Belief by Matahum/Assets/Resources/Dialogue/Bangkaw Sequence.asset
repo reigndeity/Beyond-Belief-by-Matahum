@@ -13,6 +13,22 @@ MonoBehaviour:
   m_Name: Bangkaw Sequence
   m_EditorClassIdentifier: 
   groups:
+  - dialogueState: Default
+    lines:
+    - speakerName: Bangkaw
+      dialogueText: Trust is not given.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Bangkaw
+      dialogueText: It is forged.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
   - dialogueState: A0_Q1_FindAndTalkToTupas
     lines:
     - speakerName: Bangkaw
@@ -191,7 +207,7 @@ MonoBehaviour:
       isChoiceLine: 0
       choices: []
       animationName: 
-  - dialogueState: A0_Q4_ReturnToTupas
+  - dialogueState: A0_Q4_TrainingWithBangkaw
     lines:
     - speakerName: Bangkaw
       dialogueText: NIcely done.
