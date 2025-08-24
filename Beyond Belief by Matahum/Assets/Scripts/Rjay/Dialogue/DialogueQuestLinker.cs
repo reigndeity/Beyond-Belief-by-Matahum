@@ -27,7 +27,7 @@ public class DialogueQuestLinker : MonoBehaviour
     [SerializeField] private Transform ultimateSkillTrainingDummies;
     public TimelineAsset A0_Q3_BangkawTraining_P4_Cutscene;
     private int dashAmount;
-    public TimelineAsset A0_Q4_ReturnToTupas_Cutscene;
+    public TimelineAsset A0_Q4_TrainingWithBangkaw_Cutscene;
 
     void OnEnable()
     {
@@ -59,6 +59,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     bakal.SetDialogueState("A0_Q0_InitialTalk");
                     ApplyStates(bakal);
                     A0_Q0_InitialTalk_NQP.SetActive(true);
+                    TutorialManager.instance.cutsceneTriggerOne.SetActive(true);
                     break;
                 case "A0_Q1_FindAndTalkToTupas":
                     tupas.SetDialogueState("A0_Q1_FindAndTalkToTupas");
@@ -108,17 +109,23 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.HideUltimateSkill();
                     CutsceneManager.Instance.StartCutscene(A0_Q3_BangkawTraining_P4_Cutscene);
                     break;
-                case "A0_Q4_ReturnToTupas":
-                    bangkaw.SetDialogueState("A0_Q4_ReturnToTupas");
-                    tupas.SetDialogueState("A0_Q4_ReturnToTupas");
+                case "A0_Q4_TrainingWithBangkaw":
+                    bangkaw.SetDialogueState("A0_Q4_TrainingWithBangkaw");
                     ApplyStates(bangkaw);
+                    CutsceneManager.Instance.StartCutscene(A0_Q4_TrainingWithBangkaw_Cutscene);
+                    break;
+                case "A0_Q5_ReturnToTupas":
+                    bangkaw.SetDialogueState("Default");
+                    tupas.SetDialogueState("A0_Q5_ReturnToTupas");
+                    tupasTracker.FadeIn(0.25f);
+                    ApplyStates(bangkaw,tupas);
 
                     TutorialManager.instance.tutorial_canAttack = true;
                     TutorialManager.instance.tutorial_canNormalSkill = true;
                     TutorialManager.instance.tutorial_canUltimateSkill = true;
                     TutorialManager.instance.ShowNormalSkill();
                     TutorialManager.instance.ShowUltimateSkill();
-                    CutsceneManager.Instance.StartCutscene(A0_Q4_ReturnToTupas_Cutscene);
+                    TutorialManager.instance.ShowHealth();
                     break;
                 // Add more as needed
             }
@@ -141,10 +148,10 @@ public class DialogueQuestLinker : MonoBehaviour
     {
         if (SwordTrainingDummies.childCount == 0)
         {
-            BB_QuestManager.Instance.ClaimRewardsByID("A0_Q3_Bangkaw'sTraining_P1");
             SwordTrainingDummies.gameObject.SetActive(false);
             if (isDelayAccept == false)
             {
+                StartCoroutine(DelayAcceptQuestReward("A0_Q3_Bangkaw'sTraining_P1"));
                 StartCoroutine(DelayAcceptQuest("A0_Q3_Bangkaw'sTraining_P2"));
             }
             
@@ -152,10 +159,10 @@ public class DialogueQuestLinker : MonoBehaviour
         if (normalSkillTrainingDummies.childCount == 0)
         {
             isDelayAccept = false;
-            BB_QuestManager.Instance.ClaimRewardsByID("A0_Q3_Bangkaw'sTraining_P2");
             normalSkillTrainingDummies.gameObject.SetActive(false);
             if (isDelayAccept == false)
             {
+                StartCoroutine(DelayAcceptQuestReward("A0_Q3_Bangkaw'sTraining_P2"));
                 StartCoroutine(DelayAcceptQuest("A0_Q3_Bangkaw'sTraining_P3"));
                 Debug.Log("WORK");
             }
@@ -163,20 +170,20 @@ public class DialogueQuestLinker : MonoBehaviour
         if (ultimateSkillTrainingDummies.childCount == 0)
         {
             isDelayAccept = false;
-            BB_QuestManager.Instance.ClaimRewardsByID("A0_Q3_Bangkaw'sTraining_P3");
             ultimateSkillTrainingDummies.gameObject.SetActive(false);
             if (isDelayAccept == false)
             {
+                StartCoroutine(DelayAcceptQuestReward("A0_Q3_Bangkaw'sTraining_P3"));
                 StartCoroutine(DelayAcceptQuest("A0_Q3_Bangkaw'sTraining_P4"));
             }
         }
         if (dashAmount == 5)
         {
             isDelayAccept = false;
-            BB_QuestManager.Instance.ClaimRewardsByID("A0_Q3_Bangkaw'sTraining_P4");
             if (isDelayAccept == false)
             {
-                StartCoroutine(DelayAcceptQuest("A0_Q4_ReturnToTupas"));
+                StartCoroutine(DelayAcceptQuestReward("A0_Q3_Bangkaw'sTraining_P4"));
+                StartCoroutine(DelayAcceptQuest("A0_Q4_TrainingWithBangkaw"));
             }
         }
     }
@@ -187,6 +194,14 @@ public class DialogueQuestLinker : MonoBehaviour
         yield return new WaitForSeconds(2f);
         isDelayAccept = false;
         BB_QuestManager.Instance.AcceptQuestByID(questID);
+    }
+    IEnumerator DelayAcceptQuestReward(string questID)
+    {
+        isDelayAccept = true;
+        yield return new WaitForSeconds(2f);
+        isDelayAccept = false;
+        BB_QuestManager.Instance.ClaimRewardsByID(questID);
+        
     }
     public void DashCounter()
     {

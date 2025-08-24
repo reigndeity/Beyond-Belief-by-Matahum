@@ -81,24 +81,6 @@ public class TutorialManager : MonoBehaviour
             cutsceneBakalNPC.SetActive(false);
         }
     }
-    void Update()
-    {
-        if (!isTutorialDone)
-        {
-            if (tupasHouseDoor.isOpen)
-            {
-                cutsceneTriggerOne.SetActive(true);
-            }
-            else
-            {
-                cutsceneTriggerOne.SetActive(false);
-            }
-        }
-        else
-        {
-            return;
-        }
-    }
 
     void StartTutorial()
     {
@@ -153,4 +135,8 @@ public class TutorialManager : MonoBehaviour
     public void HideNormalSkill() => normalSkill.FadeOut(0.5f);
     public void ShowUltimateSkill() => ultimateSkill.FadeIn(0.5f);
     public void HideUltimateSkill() => ultimateSkill.FadeOut(0.5f);
+    public void ShowHealth() => health.FadeIn(0.5f);
+
+    public void ShowMinimap() => minimap.FadeIn(0.5f);
+    public void HideMinimap() => minimap.FadeOut(0.5f);
 }
