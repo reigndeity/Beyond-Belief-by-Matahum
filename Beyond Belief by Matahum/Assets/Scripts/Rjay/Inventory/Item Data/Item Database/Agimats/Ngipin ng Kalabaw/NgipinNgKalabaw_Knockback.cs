@@ -6,16 +6,17 @@ public class NgipinNgKalabaw_Knockback : MonoBehaviour
     public float damage;
     public float knockbackDistance = 5f;   // adjustable distance
     public float knockbackDuration = 0.5f; // always 0.5s but adjustable if needed
+    public bool canDamage;
 
     private void OnTriggerEnter(Collider other)
     {
         Enemy enemy = other.GetComponent<Enemy>();
-        if (enemy != null)
+        if (enemy != null && canDamage)
         {
             enemy.TakeDamage(damage);
-
+            enemy.PushBackward(knockbackDistance);
             // Start knockback
-            StartCoroutine(KnockbackEnemy(enemy.transform));
+            //StartCoroutine(KnockbackEnemy(enemy.transform));
         }
     }
 

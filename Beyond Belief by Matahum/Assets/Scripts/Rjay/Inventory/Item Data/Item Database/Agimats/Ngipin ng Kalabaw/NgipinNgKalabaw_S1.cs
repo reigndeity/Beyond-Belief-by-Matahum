@@ -51,15 +51,16 @@ public class NgipinNgKalabawS1 : R_AgimatAbility
         Vector3 offset = new Vector3(0, 1, 0);
         // Spawn VFX on player
         GameObject vfxInstance = Instantiate(buffVFX, user.transform.position + offset, Quaternion.identity, user.transform);
-
-        vfxInstance.GetComponent<NgipinNgKalabaw_Knockback>().damage = user.GetComponent<PlayerStats>().p_attack / 2;
-
         vfxInstance.transform.localScale = Vector3.zero;
+
+        NgipinNgKalabaw_Knockback knockback = vfxInstance.GetComponent<NgipinNgKalabaw_Knockback>();
+        knockback.canDamage = true;
+        knockback.damage = user.GetComponent<PlayerStats>().p_attack / 2;
 
         Vector3 buffSize = new Vector3(2, 2, 2);
 
         float elapsed = 0f;
-        float scaleDuration = 0.5f;
+        float scaleDuration = 0.25f;
 
         // Scale in
         while (elapsed < scaleDuration)
@@ -70,6 +71,7 @@ public class NgipinNgKalabawS1 : R_AgimatAbility
             yield return null;
         }
 
+        knockback.canDamage = false;
         // Keep full size until buff duration ends (minus fade out time)
         yield return new WaitForSeconds(duration - scaleDuration * 2);
 
