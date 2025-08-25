@@ -1,4 +1,4 @@
- using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -30,6 +30,10 @@ public class PlayerAnimator : MonoBehaviour
     private float speedSampleInterval = 0.02f;
     private float speedSampleTimer = 0f;
     private float speedMemoryDuration = 0.1f;
+
+    // 👇 Air time tracking to prevent false land triggers
+    private float airTime = 0f;
+    private const float minFallTime = 0.1f;
 
     [Header("Hit Properties")]
     public bool isHit;
@@ -89,18 +93,27 @@ public class PlayerAnimator : MonoBehaviour
             return;
         }
 
-        if (!isGrounded && verticalVelocity < -1f && jumpState != JumpState.Falling)
+        if (!isGrounded)
         {
-            jumpState = JumpState.Falling;
-            ChangeAnimationState("player_falling");
-            return;
-        }
+            airTime += Time.deltaTime;
 
-        if (isGrounded && jumpState == JumpState.Falling)
+            if (verticalVelocity < -1f && jumpState != JumpState.Falling && airTime > minFallTime)
+            {
+                jumpState = JumpState.Falling;
+                ChangeAnimationState("player_falling");
+                return;
+            }
+        }
+        else
         {
-            jumpState = JumpState.Landing;
-            StartCoroutine(PlayLandAnimation());
-            return;
+            if (jumpState == JumpState.Falling)
+            {
+                jumpState = JumpState.Landing;
+                StartCoroutine(PlayLandAnimation());
+                return;
+            }
+
+            airTime = 0f; // reset when grounded
         }
 
         if (jumpState != JumpState.None ||
@@ -185,7 +198,6 @@ public class PlayerAnimator : MonoBehaviour
 
     private IEnumerator PlayStopAnimation(string animName)
     {
-
         isPlayingStopAnimation = true;
 
         float duration = GetAnimationLength(animName);
@@ -208,8 +220,15 @@ public class PlayerAnimator : MonoBehaviour
 
     private IEnumerator PlayLandAnimation()
     {
+        // Extra safeguard: only land if airtime was real
+        if (airTime < 0.15f)
+        {
+            jumpState = JumpState.None;
+            yield break;
+        }
+
         ChangeAnimationState("player_land");
-        recentSpeeds.Clear(); // clear buffer when landing
+        recentSpeeds.Clear();
 
         float duration = GetAnimationLength("player_land");
         float timer = 0f;
@@ -302,19 +321,16 @@ public class PlayerAnimator : MonoBehaviour
     private void HandleDashAnimation()
     {
         ChangeAnimationState("player_dash");
-        recentSpeeds.Clear(); // clear buffer on dash
+        recentSpeeds.Clear();
     }
 
     public void GetHit()
     {
         isHit = true;
         FaceClosestEnemy();
-        // Play random getHit animation
-        int hitIndex = Random.Range(1, 4); // 1 to 3
+        int hitIndex = Random.Range(1, 4);
         string hitAnim = $"player_getHit_{hitIndex}";
         ChangeAnimationState(hitAnim);
-
-        // Apply brief stun (e.g., can't move for 0.1s)
         StartCoroutine(ApplyHitStun(0.8f));
     }
     private IEnumerator ApplyHitStun(float duration)
@@ -377,9 +393,8 @@ public class PlayerAnimator : MonoBehaviour
             yield return null;
         }
 
-        transform.rotation = targetRotation; // snap to final rotation at end
+        transform.rotation = targetRotation;
     }
-
 
     public void ChangeAnimationState(string newAnimationState)
     {
@@ -436,17 +451,14 @@ public class PlayerAnimator : MonoBehaviour
     }
     public void ForceIdleState()
     {
-        StopAllCoroutines(); // Cancel all active anim coroutines
+        StopAllCoroutines();
         isHit = false;
 
-        // Reset internal state tracking
         idleCycleCoroutine = null;
         stopAnimationCoroutine = null;
         isInIdleCycle = false;
         isPlayingStopAnimation = false;
 
-        // Immediately play idle
         ChangeAnimationState("player_idle_1");
     }
-
 }
