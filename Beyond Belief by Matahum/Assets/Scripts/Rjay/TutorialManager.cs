@@ -41,6 +41,8 @@ public class TutorialManager : MonoBehaviour
     public bool tutorial_canOpenMap = true;
     public bool tutorial_canToggleMouse = true;
 
+    [Header("Other Variables")]
+    public bool tutorial_isFirstStatueInteract = true;
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -87,7 +89,7 @@ public class TutorialManager : MonoBehaviour
         PlayerCamera.Instance.HardLockCamera();
         BB_QuestManager.Instance.AcceptQuestByID("A0_Q0_InitialTalk");
 
-        // UI
+        // UI Visibility
         characterDetailsButton.FadeOut(0);
         inventoryButton.FadeOut(0);
         archiveButton.FadeOut(0);
@@ -98,6 +100,12 @@ public class TutorialManager : MonoBehaviour
         agimatOne.FadeOut(0);
         agimatTwo.FadeOut(0);   
         health.FadeOut(0);
+
+        // UI Active State
+        characterDetailsButton.gameObject.SetActive(false);
+        inventoryButton.gameObject.SetActive(false);
+        archiveButton.gameObject.SetActive(false);
+        
 
         // Tupas House
         tupasHouseStairs.SetActive(false);
@@ -120,6 +128,9 @@ public class TutorialManager : MonoBehaviour
         tutorial_canOpenMap = false;
         tutorial_canToggleMouse = false;
         playerMovement.ToggleWalk();  
+
+        // Other Variables
+        tutorial_isFirstStatueInteract = false;
     }
 
     public void AllowCameraDirection() => tutorial_canCameraDirection = true;
@@ -139,4 +150,7 @@ public class TutorialManager : MonoBehaviour
 
     public void ShowMinimap() => minimap.FadeIn(0.5f);
     public void HideMinimap() => minimap.FadeOut(0.5f);
+
+    public void AllowFirstStatueInteraction() => tutorial_isFirstStatueInteract = true;
+    public void AllowFullscreenMap() => tutorial_canOpenMap = true;
 }

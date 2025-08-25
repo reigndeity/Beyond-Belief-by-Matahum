@@ -1,4 +1,6 @@
 using System.Collections;
+using MTAssets.EasyMinimapSystem;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -8,6 +10,7 @@ public class DialogueQuestLinker : MonoBehaviour
     
     private string lastTrackedQuestID = "";
     public bool isDelayAccept;
+    [SerializeField] private UI_Game m_uiGame;
 
     [Header("All NPCs Dialogue State Holders")]
     public DialogueStateHolder tupas;
@@ -21,6 +24,7 @@ public class DialogueQuestLinker : MonoBehaviour
     [Header("Act 0 Components")]
     [SerializeField] GameObject A0_Q0_InitialTalk_NQP;
     [SerializeField] private Transform SwordTrainingDummies;
+    [SerializeField] Collider playerWeaponCollider;
     public TimelineAsset A0_Q3_BangkawTraining_P2_Cutscene;
     [SerializeField] private Transform normalSkillTrainingDummies;
     public TimelineAsset A0_Q3_BangkawTraining_P3_Cutscene;
@@ -28,6 +32,10 @@ public class DialogueQuestLinker : MonoBehaviour
     public TimelineAsset A0_Q3_BangkawTraining_P4_Cutscene;
     private int dashAmount;
     public TimelineAsset A0_Q4_TrainingWithBangkaw_Cutscene;
+    [SerializeField] private MinimapRenderer playerMinimapRenderer;
+    [SerializeField] private MinimapItem lewenriStatueMinimapItem;
+    [SerializeField] GameObject fullscreenMapPopUp;
+    
 
     void OnEnable()
     {
@@ -59,6 +67,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     bakal.SetDialogueState("A0_Q0_InitialTalk");
                     ApplyStates(bakal);
                     A0_Q0_InitialTalk_NQP.SetActive(true);
+
                     TutorialManager.instance.cutsceneTriggerOne.SetActive(true);
                     break;
                 case "A0_Q1_FindAndTalkToTupas":
@@ -79,12 +88,11 @@ public class DialogueQuestLinker : MonoBehaviour
                     tupas.SetDialogueState("Default");
                     bakal.SetDialogueState("Default");
                     bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraining_P1");
-
                     ApplyStates(tupas, bakal, bangkaw);
                     break;
                 case "A0_Q3_Bangkaw'sTraining_P2":
                     bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraining_P2");
-
+                    playerWeaponCollider.enabled = false;
                     ApplyStates(bangkaw);
 
                     TutorialManager.instance.tutorial_canAttack = false;
@@ -92,7 +100,6 @@ public class DialogueQuestLinker : MonoBehaviour
                     break;
                 case "A0_Q3_Bangkaw'sTraining_P3":
                     bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraining_P3");
-
                     ApplyStates(bangkaw);
                     
                     TutorialManager.instance.tutorial_canAttack = false;
@@ -102,7 +109,6 @@ public class DialogueQuestLinker : MonoBehaviour
                     break;
                 case "A0_Q3_Bangkaw'sTraining_P4":
                     bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraining_P4");
-
                     ApplyStates(bangkaw);
                     
                     TutorialManager.instance.tutorial_canUltimateSkill = false;
@@ -112,6 +118,7 @@ public class DialogueQuestLinker : MonoBehaviour
                 case "A0_Q4_TrainingWithBangkaw":
                     bangkaw.SetDialogueState("A0_Q4_TrainingWithBangkaw");
                     ApplyStates(bangkaw);
+
                     CutsceneManager.Instance.StartCutscene(A0_Q4_TrainingWithBangkaw_Cutscene);
                     break;
                 case "A0_Q5_ReturnToTupas":
@@ -126,6 +133,22 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.ShowNormalSkill();
                     TutorialManager.instance.ShowUltimateSkill();
                     TutorialManager.instance.ShowHealth();
+                    break;
+                case "A0_Q6_SacredStatue":
+                    tupas.SetDialogueState("A0_Q6_SacredStatue");
+                    ApplyStates(tupas);
+
+                    TutorialManager.instance.lewenriSacredStatue.gameObject.layer = LayerMask.NameToLayer("Teleporter");
+                    playerMinimapRenderer.AddMinimapItemToBeHighlighted((lewenriStatueMinimapItem));
+                    lewenriStatueMinimapItem.particlesHighlightMode = MinimapItem.ParticlesHighlightMode.WavesIncrease;
+                    m_uiGame.closeMapButton.onClick.AddListener(FirstStatueInteraction);
+                    break;
+                case "A0_Q7_KeepingTrack":
+                    tupas.SetDialogueState("A0_Q7_KeepingTrack");
+                    tupasTracker.FadeIn(0.25f);
+                    ApplyStates(tupas);
+
+                    m_uiGame.closeMapButton.onClick.RemoveListener(FirstStatueInteraction);
                     break;
                 // Add more as needed
             }
@@ -182,8 +205,20 @@ public class DialogueQuestLinker : MonoBehaviour
             isDelayAccept = false;
             if (isDelayAccept == false)
             {
+                dashAmount = 0;
                 StartCoroutine(DelayAcceptQuestReward("A0_Q3_Bangkaw'sTraining_P4"));
                 StartCoroutine(DelayAcceptQuest("A0_Q4_TrainingWithBangkaw"));
+            }
+        }
+        if (TutorialManager.instance.tutorial_isFirstStatueInteract == true) // This is set up in close fullscreen map button once
+        {
+            isDelayAccept = false;
+            if (isDelayAccept == false)
+            {
+                TutorialManager.instance.tutorial_isFirstStatueInteract = false;
+                BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q6_SacredStatue");
+                StartCoroutine(DelayAcceptQuestReward("A0_Q6_SacredStatue"));
+                StartCoroutine(DelayAcceptQuest("A0_Q7_KeepingTrack"));
             }
         }
     }
@@ -210,5 +245,12 @@ public class DialogueQuestLinker : MonoBehaviour
             dashAmount++;
             BB_QuestManager.Instance.UpdateMissionProgress("A0_Q3_DashCount", 1);
         }
+    }
+    public void FirstStatueInteraction()
+    {
+        TutorialManager.instance.AllowFirstStatueInteraction();
+        playerMinimapRenderer.RemoveMinimapItemOfHighlight((lewenriStatueMinimapItem));
+        lewenriStatueMinimapItem.particlesHighlightMode = MinimapItem.ParticlesHighlightMode.Disabled;
+        fullscreenMapPopUp.SetActive(true);
     }
 }

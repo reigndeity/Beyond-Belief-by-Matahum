@@ -66,6 +66,7 @@ public class PlayerMinimap : MonoBehaviour
 
     public void HandleMapToggle()
     {
+        if (TutorialManager.instance.tutorial_canOpenMap == false) return;
         if (Input.GetKeyDown(m_playerInput.mapKey))
         {
             bool open = !isMapOpen;

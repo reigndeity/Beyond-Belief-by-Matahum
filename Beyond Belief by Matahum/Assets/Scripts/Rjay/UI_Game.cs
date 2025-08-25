@@ -55,7 +55,7 @@ public class UI_Game : MonoBehaviour
     [SerializeField] GameObject teleportPanel;
     [SerializeField] Button closeTeleportPanelButton;
     [SerializeField] Button teleportButton;
-    [SerializeField] Button closeMapButton;
+    public Button closeMapButton;
     public static event Action OnCloseTeleportPanel;
 
     [Header("UI Animation")]

@@ -73,7 +73,7 @@ namespace MTAssets.EasyMinimapSystem
         [HideInInspector]
         public int orderInLayer = 0;
         [HideInInspector]
-        public ParticlesHighlightMode particlesHighlightMode = ParticlesHighlightMode.Disabled;
+        public ParticlesHighlightMode   particlesHighlightMode = ParticlesHighlightMode.Disabled;
         [HideInInspector]
         public Sprite particlesSprite = null;
         [HideInInspector]
