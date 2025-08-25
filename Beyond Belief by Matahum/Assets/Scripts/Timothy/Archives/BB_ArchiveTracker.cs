@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class BB_ArchiveTracker : MonoBehaviour
 {
-    public string archiveID;
+    public BB_ArchiveSO archiveData;
     private bool hasBeenDiscovered = false;
-    public Camera detectionCamera; // assign this to your player camera
+    private Camera detectionCamera; // assign this to your player camera
     public float checkInterval = 0.3f;
     public float detectionRange = 30f; // Maximum range in units
+    public CanvasGroup canvasGroup;
 
     private void Start()
     {
@@ -37,7 +38,7 @@ public class BB_ArchiveTracker : MonoBehaviour
         {
             if (hit.collider == col)
             {
-                BB_ArchiveManager.instance.UpdateArchive(archiveID);
+                BB_ArchiveManager.instance.UpdateArchive(archiveData);
                 hasBeenDiscovered = true;
             }
         }

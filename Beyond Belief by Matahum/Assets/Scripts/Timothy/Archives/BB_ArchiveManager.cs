@@ -54,24 +54,24 @@ public class BB_ArchiveManager : MonoBehaviour
         }
     }
 
-    public void UpdateArchive(string archiveID)
+    public void UpdateArchive(BB_ArchiveSO archiveData)
     {
         foreach (var obj in creatureList)       
-            CheckArchive(obj, archiveID);
+            CheckArchive(obj, archiveData);
 
         foreach (var obj in locationList)
-            CheckArchive(obj, archiveID);
+            CheckArchive(obj, archiveData);
 
         foreach (var obj in wildlifeList)
-            CheckArchive(obj, archiveID);
+            CheckArchive(obj, archiveData);
 
         foreach (var obj in plantList)
-            CheckArchive(obj, archiveID);
+            CheckArchive(obj, archiveData);
     }
 
-    public void CheckArchive(BB_ArchiveSO archiveObj, string archiveID)
+    public void CheckArchive(BB_ArchiveSO archiveObj, BB_ArchiveSO archiveData)
     {
-        if (archiveObj.archiveName == archiveID && !archiveObj.isDiscovered)
+        if (archiveObj == archiveData && !archiveObj.isDiscovered)
         {
             archiveObj.isDiscovered = true;
             OnArchiveUpdate?.Invoke(archiveObj);
