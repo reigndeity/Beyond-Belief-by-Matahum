@@ -153,4 +153,5 @@ public class TutorialManager : MonoBehaviour
 
     public void AllowFirstStatueInteraction() => tutorial_isFirstStatueInteract = true;
     public void AllowFullscreenMap() => tutorial_canOpenMap = true;
+    public void ShowQuestJournal() => questButton.FadeIn(0.5f);
 }

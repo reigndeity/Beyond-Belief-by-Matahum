@@ -38,6 +38,9 @@ public class MapManager : MonoBehaviour
     [Header("Transitions")]
     [SerializeField] UI_TransitionController transition;  // assign in Inspector (Fade + Loading)
 
+    [Header("Teleport Settings")]
+    [SerializeField] private float minTeleportDistance = 10f; // distance threshold to block teleport
+
     [System.Serializable]
     public class MapArea
     {
@@ -54,10 +57,6 @@ public class MapManager : MonoBehaviour
         [Header("Collected Points (auto-populated)")]
         public FogRevealPoint[] points;
 
-        /// <summary>
-        /// Collect all FogRevealPoints under areaRoot (including inactive children)
-        /// and ensure their minimapFog reference is set.
-        /// </summary>
         public void GatherPoints(MinimapFog fog)
         {
             if (areaRoot == null)
@@ -85,7 +84,6 @@ public class MapManager : MonoBehaviour
         instance = this;
         if (circleSelect) circleSelect.sizeOnMinimap = startSize;
 
-        // Auto-gather FogRevealPoints per area (no more manual dragging)
         if (areas != null)
         {
             foreach (var area in areas)
@@ -98,7 +96,6 @@ public class MapManager : MonoBehaviour
                 }
                 else if (area.points != null)
                 {
-                    // If not auto-gathering, still make sure fog reference is correct
                     foreach (var p in area.points)
                         if (p != null) p.minimapFog = minimapFog;
                 }
@@ -108,7 +105,6 @@ public class MapManager : MonoBehaviour
 
     void Start()
     {
-        // If revealedAreaIds was loaded before Start, sync visuals now.
         SyncRevealVisuals();
     }
 
@@ -123,7 +119,6 @@ public class MapManager : MonoBehaviour
         Debug.Log("MapManager: Gathered FogRevealPoints for all areas.");
     }
 
-    // Called by your minimap click handler
     public void OnClickInMinimapRendererArea(Vector3 worldClick, MinimapItem clickedItem)
     {
         if (clickedItem != null && clickedItem.CompareTag("Teleporter"))
@@ -144,20 +139,36 @@ public class MapManager : MonoBehaviour
         teleporterLocationTxt.text = teleporter.location;
         teleporterDescriptionTxt.text = teleporter.description;
 
-        // Disable button + change label if linked TeleportInteractable is locked
         bool canTeleport = true;
+        string buttonText = "Teleport";
+
         var interactable = teleporter.GetComponent<TeleportInteractable>();
         if (interactable != null && !interactable.IsUnlocked())
+        {
             canTeleport = false;
+            buttonText = "Locked";
+        }
+        else
+        {
+            // 👇 New check: already at teleporter
+            Vector3 playerPos = playerTransform.position;
+            Vector3 tpPos = (teleporter.teleportTarget != null ? teleporter.teleportTarget.position : teleporter.transform.position);
+            tpPos.y = playerPos.y;
+
+            if (Vector3.Distance(playerPos, tpPos) < minTeleportDistance)
+            {
+                canTeleport = false;
+                buttonText = "You are already nearby.";
+            }
+        }
 
         if (teleportButton != null)
         {
             teleportButton.interactable = canTeleport;
             if (teleportButtonLabel != null)
-                teleportButtonLabel.text = canTeleport ? "Teleport" : "Locked";
+                teleportButtonLabel.text = buttonText;
         }
 
-        // Selection ring
         if (circleSelect)
         {
             circleSelect.transform.position = worldPos + new Vector3(0f, 0f, zOffset);
@@ -176,7 +187,6 @@ public class MapManager : MonoBehaviour
     {
         if (currentTeleporter == null || playerTransform == null) return;
 
-        // Block if locked
         var interactable = currentTeleporter.GetComponent<TeleportInteractable>();
         if (interactable != null && !interactable.IsUnlocked())
         {
@@ -184,14 +194,19 @@ public class MapManager : MonoBehaviour
             return;
         }
 
-        // 👇 Capture what we need BEFORE we close the map (which clears currentTeleporter)
-        var teleporterRef = currentTeleporter;
-        Vector3 targetPos = (teleporterRef.teleportTarget != null)
-            ? teleporterRef.teleportTarget.position
-            : teleporterRef.transform.position;
-        targetPos.y = playerTransform.position.y;
+        // 👇 Block if player is already near
+        Vector3 tpPos = (currentTeleporter.teleportTarget != null ? currentTeleporter.teleportTarget.position : currentTeleporter.transform.position);
+        tpPos.y = playerTransform.position.y;
 
-        // Same-scene: fade + move using captured target
+        if (Vector3.Distance(playerTransform.position, tpPos) < minTeleportDistance)
+        {
+            Debug.Log("Player is already at this teleporter — teleport cancelled.");
+            return;
+        }
+
+        var teleporterRef = currentTeleporter;
+        Vector3 targetPos = tpPos;
+
         if (transition != null)
         {
             StartCoroutine(transition.TeleportTransition(() =>
@@ -201,7 +216,6 @@ public class MapManager : MonoBehaviour
         }
         else
         {
-            // Fallback: instant move
             playerTransform.position = targetPos;
         }
     }
@@ -238,7 +252,6 @@ public class MapManager : MonoBehaviour
             return;
         }
 
-        // Track persistence
         if (!revealedAreaIds.Contains(id))
             revealedAreaIds.Add(id);
 
@@ -246,7 +259,7 @@ public class MapManager : MonoBehaviour
         {
             if (p != null)
             {
-                p.minimapFog = minimapFog; // ensure fog ref is correct
+                p.minimapFog = minimapFog;
                 p.Reveal();
             }
         }
@@ -259,31 +272,22 @@ public class MapManager : MonoBehaviour
             RevealArea(id);
     }
 
-    // --------- persistence helpers ---------
-
-    /// <summary>Reveals all areas already in the revealedAreaIds list.</summary>
     public void SyncRevealVisuals()
     {
         if (revealedAreaIds == null || revealedAreaIds.Count == 0) return;
-
-        // Re-run reveal to ensure visuals match (Reveal() is effectively idempotent)
         foreach (var id in revealedAreaIds)
             RevealArea(id);
     }
 
-    /// <summary>Replace the revealed list (called by load) and apply visuals.</summary>
     public void SetRevealedAreas(List<string> ids)
     {
         revealedAreaIds = ids ?? new List<string>();
     }
 
-    /// <summary>Get a copy of revealed IDs for saving.</summary>
     public List<string> GetRevealedAreaIds()
     {
         return new List<string>(revealedAreaIds);
     }
-
-    // --------- UI Close Helper ---------
 
     public void CloseTeleporterUI()
     {

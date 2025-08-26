@@ -246,7 +246,7 @@ public class DialogueQuestLinker : MonoBehaviour
                 TutorialManager.instance.tutorial_isFirstStatueInteract = false;
                 BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q6_SacredStatue");
                 StartCoroutine(DelayAcceptQuestReward("A0_Q6_SacredStatue"));
-                StartCoroutine(DelayAcceptQuest("A0_Q7_KeepingTrack")); 
+                StartCoroutine(DelayAcceptQuest("A0_Q7_KeepingTrack"));
             }
         }
     }
@@ -281,6 +281,7 @@ public class DialogueQuestLinker : MonoBehaviour
         TutorialManager.instance.AllowFirstStatueInteraction();
         fullscreenMapPopUp.SetActive(true);
     }
+
 
 
 
