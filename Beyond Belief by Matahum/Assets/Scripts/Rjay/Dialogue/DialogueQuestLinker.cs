@@ -43,7 +43,6 @@ public class DialogueQuestLinker : MonoBehaviour
     private int dashAmount;
     public TimelineAsset A0_Q4_TrainingWithBangkaw_Cutscene;
     [SerializeField] private MinimapRenderer playerMinimapRenderer;
-    [SerializeField] private MinimapItem lewenriStatueMinimapItem;
     [SerializeField] GameObject fullscreenMapPopUp;
 
     void OnEnable()
@@ -171,8 +170,6 @@ public class DialogueQuestLinker : MonoBehaviour
                     AddActiveMarker(currentQuestID, tracked);
 
                     TutorialManager.instance.lewenriSacredStatue.gameObject.layer = LayerMask.NameToLayer("Teleporter");
-                    playerMinimapRenderer.AddMinimapItemToBeHighlighted(lewenriStatueMinimapItem);
-                    lewenriStatueMinimapItem.particlesHighlightMode = MinimapItem.ParticlesHighlightMode.WavesIncrease;
                     m_uiGame.closeMapButton.onClick.AddListener(FirstStatueInteraction);
                     break;
 
@@ -282,22 +279,12 @@ public class DialogueQuestLinker : MonoBehaviour
     public void FirstStatueInteraction()
     {
         TutorialManager.instance.AllowFirstStatueInteraction();
-        playerMinimapRenderer.RemoveMinimapItemOfHighlight(lewenriStatueMinimapItem);
-        lewenriStatueMinimapItem.particlesHighlightMode = MinimapItem.ParticlesHighlightMode.Disabled;
         fullscreenMapPopUp.SetActive(true);
     }
 
-    private Transform GetQuestTargetTransform(string questID)
-    {
-        switch (questID)
-        {
-            case "A0_Q1_FindAndTalkToTupas": return tupas.transform;
-            case "A0_Q2_FindAndTalkToBangkaw": return bangkaw.transform;
-            case "A0_Q5_ReturnToTupas": return tupas.transform;
-            case "A0_Q6_SacredStatue": return TutorialManager.instance.lewenriSacredStatue.transform;
-        }
-        return null;
-    }
+
+
+    #region NAVIGATION FUNCTIONS
     public void RemoveActiveMarker()
     {
         if (activeMarker != null)
@@ -308,6 +295,11 @@ public class DialogueQuestLinker : MonoBehaviour
     }
     public void AddActiveMarker(string currentQuestID, BB_Quest tracked, Vector3? customOffset = null)
     {
+        if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialoguePlaying())
+        {
+            Debug.Log("Cannot spawn marker while in dialogue!");
+            return;
+        }
         if (Time.time - lastMarkerTime < markerCooldown)
         {
             Debug.Log("Quest marker is on cooldown!");
@@ -341,7 +333,17 @@ public class DialogueQuestLinker : MonoBehaviour
             );
         }
     }
+    private Transform GetQuestTargetTransform(string questID)
+    {
+        switch (questID)
+        {
+            case "A0_Q1_FindAndTalkToTupas": return tupas.transform;
+            case "A0_Q2_FindAndTalkToBangkaw": return bangkaw.transform;
+            case "A0_Q5_ReturnToTupas": return tupas.transform;
+            case "A0_Q6_SacredStatue": return TutorialManager.instance.lewenriSacredStatue.transform;
+        }
+        return null;
+    }
+    #endregion
 
-
-    
 }
