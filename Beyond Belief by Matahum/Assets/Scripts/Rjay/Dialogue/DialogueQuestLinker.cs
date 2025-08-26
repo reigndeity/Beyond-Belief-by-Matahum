@@ -1,25 +1,35 @@
 using System.Collections;
 using MTAssets.EasyMinimapSystem;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
 public class DialogueQuestLinker : MonoBehaviour
 {
-    
     private string lastTrackedQuestID = "";
     public bool isDelayAccept;
     [SerializeField] private UI_Game m_uiGame;
+    private PlayerInput m_playerInput;
 
     [Header("All NPCs Dialogue State Holders")]
     public DialogueStateHolder tupas;
     public DialogueStateHolder bakal;
     public DialogueStateHolder bangkaw;
+
     [Header("All NPCs Quest Tracker Icon")]
     public UI_CanvasGroup tupasTracker;
     public UI_CanvasGroup bakalTracker;
     public UI_CanvasGroup bangkawTracker;
+
+    [Header("Quest Marker")]
+    [SerializeField] private QuestMarker markerPrefab;       // Prefab of quest marker (UI only)
+    [SerializeField] private Transform uiMarkerParent;       // Parent under PlayerHUD UI
+    private QuestMarker activeMarker;                        // Currently active marker
+    [SerializeField] private Sprite mainQuestSprite;
+    [SerializeField] private Sprite sideQuestSprite;
+    [Header("Marker Cooldown")]
+    [SerializeField] private float markerCooldown = 5f; // seconds
+    private float lastMarkerTime = -999f;
 
     [Header("Act 0 Components")]
     [SerializeField] GameObject A0_Q0_InitialTalk_NQP;
@@ -35,7 +45,6 @@ public class DialogueQuestLinker : MonoBehaviour
     [SerializeField] private MinimapRenderer playerMinimapRenderer;
     [SerializeField] private MinimapItem lewenriStatueMinimapItem;
     [SerializeField] GameObject fullscreenMapPopUp;
-    
 
     void OnEnable()
     {
@@ -47,6 +56,11 @@ public class DialogueQuestLinker : MonoBehaviour
         PlayerMovement.OnDashStarted -= DashCounter;
     }
 
+    void Awake()
+    {
+        m_playerInput = FindFirstObjectByType<PlayerInput>();
+    }
+
     void Update()
     {
         var tracked = BB_QuestHUD.instance?.trackedQuest;
@@ -54,6 +68,17 @@ public class DialogueQuestLinker : MonoBehaviour
 
         string currentQuestID = tracked.questID;
 
+        // ==============================
+        // Press V → Spawn / Replace quest marker
+        // ==============================
+        if (Input.GetKeyDown(m_playerInput.questGuideKey))
+        {
+            AddActiveMarker(currentQuestID, tracked);
+        }
+
+        // ==============================
+        // Quest tracking state changes
+        // ==============================
         if (currentQuestID != lastTrackedQuestID)
         {
             lastTrackedQuestID = currentQuestID;
@@ -67,29 +92,31 @@ public class DialogueQuestLinker : MonoBehaviour
                     bakal.SetDialogueState("A0_Q0_InitialTalk");
                     ApplyStates(bakal);
                     A0_Q0_InitialTalk_NQP.SetActive(true);
-
                     TutorialManager.instance.cutsceneTriggerOne.SetActive(true);
                     break;
+
                 case "A0_Q1_FindAndTalkToTupas":
                     tupas.SetDialogueState("A0_Q1_FindAndTalkToTupas");
                     bakal.SetDialogueState("A0_Q1_FindAndTalkToTupas");
                     bangkaw.SetDialogueState("A0_Q1_FindAndTalkToTupas");
-                    tupasTracker.FadeIn(0.25f);
                     ApplyStates(tupas, bakal, bangkaw);
                     break;
+
                 case "A0_Q2_FindAndTalkToBangkaw":
                     tupas.SetDialogueState("A0_Q2_FindAndTalkToBangkaw");
                     bakal.SetDialogueState("Default");
                     bangkaw.SetDialogueState("A0_Q2_FindAndTalkToBangkaw");
-                    bangkawTracker.FadeIn(0.25f);
+                    AddActiveMarker(currentQuestID, tracked);
                     ApplyStates(tupas, bakal, bangkaw);
                     break;
+
                 case "A0_Q3_Bangkaw'sTraining_P1":
                     tupas.SetDialogueState("Default");
                     bakal.SetDialogueState("Default");
                     bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraining_P1");
                     ApplyStates(tupas, bakal, bangkaw);
                     break;
+
                 case "A0_Q3_Bangkaw'sTraining_P2":
                     bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraining_P2");
                     playerWeaponCollider.enabled = false;
@@ -98,34 +125,37 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.tutorial_canAttack = false;
                     CutsceneManager.Instance.StartCutscene(A0_Q3_BangkawTraining_P2_Cutscene);
                     break;
+
                 case "A0_Q3_Bangkaw'sTraining_P3":
                     bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraining_P3");
                     ApplyStates(bangkaw);
-                    
+
                     TutorialManager.instance.tutorial_canAttack = false;
                     TutorialManager.instance.tutorial_canNormalSkill = false;
                     TutorialManager.instance.HideNormalSkill();
                     CutsceneManager.Instance.StartCutscene(A0_Q3_BangkawTraining_P3_Cutscene);
                     break;
+
                 case "A0_Q3_Bangkaw'sTraining_P4":
                     bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraining_P4");
                     ApplyStates(bangkaw);
-                    
+
                     TutorialManager.instance.tutorial_canUltimateSkill = false;
                     TutorialManager.instance.HideUltimateSkill();
                     CutsceneManager.Instance.StartCutscene(A0_Q3_BangkawTraining_P4_Cutscene);
                     break;
+
                 case "A0_Q4_TrainingWithBangkaw":
                     bangkaw.SetDialogueState("A0_Q4_TrainingWithBangkaw");
                     ApplyStates(bangkaw);
-
                     CutsceneManager.Instance.StartCutscene(A0_Q4_TrainingWithBangkaw_Cutscene);
                     break;
+
                 case "A0_Q5_ReturnToTupas":
                     bangkaw.SetDialogueState("Default");
                     tupas.SetDialogueState("A0_Q5_ReturnToTupas");
-                    tupasTracker.FadeIn(0.25f);
-                    ApplyStates(bangkaw,tupas);
+                    AddActiveMarker(currentQuestID, tracked);
+                    ApplyStates(bangkaw, tupas);
 
                     TutorialManager.instance.tutorial_canAttack = true;
                     TutorialManager.instance.tutorial_canNormalSkill = true;
@@ -134,37 +164,35 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.ShowUltimateSkill();
                     TutorialManager.instance.ShowHealth();
                     break;
+
                 case "A0_Q6_SacredStatue":
                     tupas.SetDialogueState("A0_Q6_SacredStatue");
                     ApplyStates(tupas);
+                    AddActiveMarker(currentQuestID, tracked);
 
                     TutorialManager.instance.lewenriSacredStatue.gameObject.layer = LayerMask.NameToLayer("Teleporter");
-                    playerMinimapRenderer.AddMinimapItemToBeHighlighted((lewenriStatueMinimapItem));
+                    playerMinimapRenderer.AddMinimapItemToBeHighlighted(lewenriStatueMinimapItem);
                     lewenriStatueMinimapItem.particlesHighlightMode = MinimapItem.ParticlesHighlightMode.WavesIncrease;
                     m_uiGame.closeMapButton.onClick.AddListener(FirstStatueInteraction);
                     break;
+
                 case "A0_Q7_KeepingTrack":
                     tupas.SetDialogueState("A0_Q7_KeepingTrack");
                     tupasTracker.FadeIn(0.25f);
                     ApplyStates(tupas);
-
                     m_uiGame.closeMapButton.onClick.RemoveListener(FirstStatueInteraction);
                     break;
-                // Add more as needed
             }
         }
 
         Debug.Log("The Focus now is: " + currentQuestID);
-        
         GeneralQuestProgressCheck();
     }
 
     private void ApplyStates(params DialogueStateHolder[] holders)
     {
         foreach (var holder in holders)
-        {
             holder?.ApplyQueuedStateSilently();
-        }
     }
 
     public void GeneralQuestProgressCheck()
@@ -172,53 +200,56 @@ public class DialogueQuestLinker : MonoBehaviour
         if (SwordTrainingDummies.childCount == 0)
         {
             SwordTrainingDummies.gameObject.SetActive(false);
-            if (isDelayAccept == false)
+            if (!isDelayAccept)
             {
                 StartCoroutine(DelayAcceptQuestReward("A0_Q3_Bangkaw'sTraining_P1"));
                 StartCoroutine(DelayAcceptQuest("A0_Q3_Bangkaw'sTraining_P2"));
             }
-            
         }
+
         if (normalSkillTrainingDummies.childCount == 0)
         {
             isDelayAccept = false;
             normalSkillTrainingDummies.gameObject.SetActive(false);
-            if (isDelayAccept == false)
+            if (!isDelayAccept)
             {
                 StartCoroutine(DelayAcceptQuestReward("A0_Q3_Bangkaw'sTraining_P2"));
                 StartCoroutine(DelayAcceptQuest("A0_Q3_Bangkaw'sTraining_P3"));
-                Debug.Log("WORK");
             }
         }
+
         if (ultimateSkillTrainingDummies.childCount == 0)
         {
             isDelayAccept = false;
             ultimateSkillTrainingDummies.gameObject.SetActive(false);
-            if (isDelayAccept == false)
+            if (!isDelayAccept)
             {
                 StartCoroutine(DelayAcceptQuestReward("A0_Q3_Bangkaw'sTraining_P3"));
                 StartCoroutine(DelayAcceptQuest("A0_Q3_Bangkaw'sTraining_P4"));
             }
         }
+
         if (dashAmount == 5)
         {
             isDelayAccept = false;
-            if (isDelayAccept == false)
+            if (!isDelayAccept)
             {
                 dashAmount = 0;
                 StartCoroutine(DelayAcceptQuestReward("A0_Q3_Bangkaw'sTraining_P4"));
                 StartCoroutine(DelayAcceptQuest("A0_Q4_TrainingWithBangkaw"));
             }
         }
-        if (TutorialManager.instance.tutorial_isFirstStatueInteract == true) // This is set up in close fullscreen map button once
+
+        if (TutorialManager.instance.tutorial_isFirstStatueInteract == true)
         {
             isDelayAccept = false;
-            if (isDelayAccept == false)
+            if (!isDelayAccept)
             {
+                RemoveActiveMarker();
                 TutorialManager.instance.tutorial_isFirstStatueInteract = false;
                 BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q6_SacredStatue");
                 StartCoroutine(DelayAcceptQuestReward("A0_Q6_SacredStatue"));
-                StartCoroutine(DelayAcceptQuest("A0_Q7_KeepingTrack"));
+                StartCoroutine(DelayAcceptQuest("A0_Q7_KeepingTrack")); 
             }
         }
     }
@@ -230,14 +261,15 @@ public class DialogueQuestLinker : MonoBehaviour
         isDelayAccept = false;
         BB_QuestManager.Instance.AcceptQuestByID(questID);
     }
+
     IEnumerator DelayAcceptQuestReward(string questID)
     {
         isDelayAccept = true;
         yield return new WaitForSeconds(2f);
         isDelayAccept = false;
         BB_QuestManager.Instance.ClaimRewardsByID(questID);
-        
     }
+
     public void DashCounter()
     {
         if (dashAmount < 5)
@@ -246,11 +278,70 @@ public class DialogueQuestLinker : MonoBehaviour
             BB_QuestManager.Instance.UpdateMissionProgress("A0_Q3_DashCount", 1);
         }
     }
+
     public void FirstStatueInteraction()
     {
         TutorialManager.instance.AllowFirstStatueInteraction();
-        playerMinimapRenderer.RemoveMinimapItemOfHighlight((lewenriStatueMinimapItem));
+        playerMinimapRenderer.RemoveMinimapItemOfHighlight(lewenriStatueMinimapItem);
         lewenriStatueMinimapItem.particlesHighlightMode = MinimapItem.ParticlesHighlightMode.Disabled;
         fullscreenMapPopUp.SetActive(true);
     }
+
+    private Transform GetQuestTargetTransform(string questID)
+    {
+        switch (questID)
+        {
+            case "A0_Q1_FindAndTalkToTupas": return tupas.transform;
+            case "A0_Q2_FindAndTalkToBangkaw": return bangkaw.transform;
+            case "A0_Q5_ReturnToTupas": return tupas.transform;
+            case "A0_Q6_SacredStatue": return TutorialManager.instance.lewenriSacredStatue.transform;
+        }
+        return null;
+    }
+    public void RemoveActiveMarker()
+    {
+        if (activeMarker != null)
+        {
+            activeMarker.FadeOutAndDestroyMarker();
+            activeMarker = null;
+        }
+    }
+    public void AddActiveMarker(string currentQuestID, BB_Quest tracked, Vector3? customOffset = null)
+    {
+        if (Time.time - lastMarkerTime < markerCooldown)
+        {
+            Debug.Log("Quest marker is on cooldown!");
+            return;
+        }
+
+        lastMarkerTime = Time.time;
+        Debug.Log("Spawn Quest Marker");
+
+        if (activeMarker != null)
+        {
+            activeMarker.FadeOutAndDestroyMarker();
+            activeMarker = null;
+        }
+
+        Transform questTarget = GetQuestTargetTransform(currentQuestID);
+        if (questTarget != null)
+        {
+            activeMarker = Instantiate(markerPrefab, uiMarkerParent);
+            activeMarker.target = questTarget;
+            activeMarker.mainCamera = Camera.main;
+
+            // ✅ If custom offset is provided, override it
+            if (customOffset.HasValue)
+                activeMarker.SetOffset(customOffset.Value);
+
+            activeMarker.SetQuestType(
+                tracked.questType == BB_QuestType.Main,
+                mainQuestSprite,
+                sideQuestSprite
+            );
+        }
+    }
+
+
+    
 }
