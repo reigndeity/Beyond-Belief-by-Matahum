@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 [CreateAssetMenu(menuName = "Nuno/Nuno Abilities/Rock Bullet")]
 public class RockBullet_NunoAbility : Nuno_Ability
 {
