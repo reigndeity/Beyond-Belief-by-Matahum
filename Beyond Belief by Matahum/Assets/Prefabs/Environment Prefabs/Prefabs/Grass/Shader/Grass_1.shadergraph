@@ -748,8 +748,8 @@
     "m_ObjectId": "2c4c0745651a4541a2e67f23474763f4",
     "m_Title": "Shadow",
     "m_Position": {
-        "x": -513.0,
-        "y": 1221.0001220703125
+        "x": -512.9999389648438,
+        "y": 1221.0
     }
 }
 
@@ -1120,6 +1120,9 @@
     },
     "m_Slots": [
         {
+            "m_Id": "e5b5e099891248918330391c945e5de2"
+        },
+        {
             "m_Id": "ad131004ffa84f479bda5b21e68537a9"
         },
         {
@@ -1141,8 +1144,12 @@
         "m_SerializableColors": []
     },
     "m_SerializedSubGraph": "{\n    \"subGraph\": {\n        \"fileID\": -5475051401550479605,\n        \"guid\": \"37c4109047d9b0649a1cd50bb70c1f4c\",\n        \"type\": 3\n    }\n}",
-    "m_PropertyGuids": [],
-    "m_PropertyIds": [],
+    "m_PropertyGuids": [
+        "4c14d496-b2e5-42c8-ab13-d42a6deee8f0"
+    ],
+    "m_PropertyIds": [
+        -723477579
+    ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
 }
@@ -1757,7 +1764,7 @@
     "m_Title": "Color",
     "m_Position": {
         "x": -467.0,
-        "y": 324.9999694824219
+        "y": 324.99993896484377
     }
 }
 
@@ -1824,9 +1831,9 @@
     "m_Value": {
         "serializedVersion": "2",
         "key0": {
-            "r": 0.013481279835104943,
-            "g": 0.03285093978047371,
-            "b": 0.013481279835104943,
+            "r": 0.09887764602899552,
+            "g": 0.19811320304870606,
+            "b": 0.04765930399298668,
             "a": 1.0
         },
         "key1": {
@@ -2338,6 +2345,31 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "e5b5e099891248918330391c945e5de2",
+    "m_Id": -723477579,
+    "m_DisplayName": "ShadowColor",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_ShadowColor",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_Labels": []
 }
 
 {
