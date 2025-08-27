@@ -1,5 +1,6 @@
 using System.Collections;
 using MTAssets.EasyMinimapSystem;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -105,8 +106,9 @@ public class DialogueQuestLinker : MonoBehaviour
                     tupas.SetDialogueState("A0_Q2_FindAndTalkToBangkaw");
                     bakal.SetDialogueState("Default");
                     bangkaw.SetDialogueState("A0_Q2_FindAndTalkToBangkaw");
-                    AddActiveMarker(currentQuestID, tracked);
                     ApplyStates(tupas, bakal, bangkaw);
+                    AddActiveMarker(currentQuestID, tracked);
+        
                     break;
 
                 case "A0_Q3_Bangkaw'sTraining_P1":
@@ -175,10 +177,15 @@ public class DialogueQuestLinker : MonoBehaviour
 
                 case "A0_Q7_KeepingTrack":
                     tupas.SetDialogueState("A0_Q7_KeepingTrack");
-                    tupasTracker.FadeIn(0.25f);
                     ApplyStates(tupas);
+                    AddActiveMarker(currentQuestID, tracked);
                     m_uiGame.closeMapButton.onClick.RemoveListener(FirstStatueInteraction);
                     break;
+                case "A0_Q8_QuestJournal":
+                    tupas.SetDialogueState("A0_Q8_QuestJournal");
+                    ApplyStates(tupas);
+                    m_uiGame.questButton.onClick.AddListener(TutorialManager.instance.EnableQuestJournalTutorial);
+                break;
             }
         }
 
@@ -342,6 +349,7 @@ public class DialogueQuestLinker : MonoBehaviour
             case "A0_Q2_FindAndTalkToBangkaw": return bangkaw.transform;
             case "A0_Q5_ReturnToTupas": return tupas.transform;
             case "A0_Q6_SacredStatue": return TutorialManager.instance.lewenriSacredStatue.transform;
+            case "A0_Q7_KeepingTrack": return tupas.transform;
         }
         return null;
     }

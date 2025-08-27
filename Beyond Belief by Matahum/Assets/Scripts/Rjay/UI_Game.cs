@@ -43,7 +43,7 @@ public class UI_Game : MonoBehaviour
 
     [Header("Quest Journal Properties")]
     [SerializeField] private BB_Quest_ButtonManager m_questButtonManager;
-    [SerializeField] Button questButton;
+    public Button questButton;
     [SerializeField] Button closeQuestButton;
 
     [Header("Archive Properties")]
