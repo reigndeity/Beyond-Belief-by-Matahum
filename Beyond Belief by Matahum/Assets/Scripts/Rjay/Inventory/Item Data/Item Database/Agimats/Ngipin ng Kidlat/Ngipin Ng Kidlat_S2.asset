@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f6ec032551f4b24a8f423bb0ef37b9f, type: 3}
+  m_Name: Ngipin Ng Kidlat_S2
+  m_EditorClassIdentifier: 
+  abilityName: Storm Strike
+  abilityIcon: {fileID: -226154239, guid: 554dd1935cb004248bd50a061572e19d, type: 3}
+  passiveTriggerDelay: 1
+  isPassive: 0
+  baseCooldown: 12
+  searchRadius: 10
+  strikeRadius: 1.5
+  lightningVFXPrefab: {fileID: 107252, guid: 3e100548a3e90784fae77aa9963a8d25, type: 3}
+  vfxYOffset: 0.25
+  cachedDamagePercent: 0
