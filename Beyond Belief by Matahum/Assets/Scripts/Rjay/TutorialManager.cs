@@ -204,19 +204,18 @@ public class TutorialManager : MonoBehaviour
     {
         switch(currentQuestJournalTutorial)
         {
-            case 1:
+            case 0:
                 m_uiGame.questButton.onClick.RemoveListener(TutorialManager.instance.EnableQuestJournalTutorial);
                 questJournalTextTutorial.text = "Here you can see your main quests and your side quest";
                 questButtonFiltersTH.enabled = false;
                 questSelectionPanelTH.enabled = true;
-                
                 break;
-            case 2:
+            case 1:
                 questJournalTextTutorial.text = "You can also see the quest details here";
                 questSelectionPanelTH.enabled = false;
                 questDetailsPanelTH.enabled = true;
                 break;
-            case 3:
+            case 2:
                 BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q8_QuestJournal");
                 nextJournalTutorialCanvasGroup.FadeOut(0.25f);
                 nextJournalTutorialTH.enabled = false;
@@ -231,7 +230,7 @@ public class TutorialManager : MonoBehaviour
                 claimQuestButtonTH.enabled = true;
                 claimQuestButton.onClick.AddListener(QuestJournalTutorial);
                 break;
-            case 4:
+            case 3:
                 questJournalTextTutorial.text = "Now click on this button to resume your journey";
                 mainQuestViewportTH.enabled = false;
                 claimQuestButtonTH.enabled = false;
@@ -240,11 +239,12 @@ public class TutorialManager : MonoBehaviour
                 closeQuestJournalButtonTH.enabled = true;
                 closeQuestButton.onClick.AddListener(QuestJournalTutorial);
                 break;
-            case 5:
+            case 4:
                 closeQuestJournalButtonTH.enabled = false;
                 closeQuestButton.onClick.RemoveListener(QuestJournalTutorial);
                 questJournalTutorial.SetActive(false);
                 tutorialFadeImage.enabled = false;
+                BB_QuestManager.Instance.AcceptQuestByID("A0_Q9_OneMoreThing");
                 break;
         }
         currentQuestJournalTutorial++;

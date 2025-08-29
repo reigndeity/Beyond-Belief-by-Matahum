@@ -185,7 +185,19 @@ public class DialogueQuestLinker : MonoBehaviour
                     tupas.SetDialogueState("A0_Q8_QuestJournal");
                     ApplyStates(tupas);
                     m_uiGame.questButton.onClick.AddListener(TutorialManager.instance.EnableQuestJournalTutorial);
-                break;
+                    break;
+                case "A0_Q9_OneMoreThing":
+                    tupas.SetDialogueState("A0_Q9_OneMoreThing");
+                    ApplyStates(tupas);
+                    AddActiveMarker(currentQuestID, tracked);
+                    break;
+                case "A0_Q10_ReturnToBangkaw":
+                    tupas.SetDialogueState("A0_Q10_ReturnToBangkaw");
+                    bangkaw.SetDialogueState("A0_Q10_ReturnToBangkaw");
+                    ApplyStates(tupas, bangkaw);
+                    AddActiveMarker(currentQuestID, tracked);
+                    break;
+
             }
         }
 
@@ -193,6 +205,8 @@ public class DialogueQuestLinker : MonoBehaviour
         GeneralQuestProgressCheck();
     }
 
+
+    #region QUEST FUNCTIONS
     private void ApplyStates(params DialogueStateHolder[] holders)
     {
         foreach (var holder in holders)
@@ -288,9 +302,7 @@ public class DialogueQuestLinker : MonoBehaviour
         TutorialManager.instance.AllowFirstStatueInteraction();
         fullscreenMapPopUp.SetActive(true);
     }
-
-
-
+    #endregion
 
     #region NAVIGATION FUNCTIONS
     public void RemoveActiveMarker()
@@ -350,6 +362,8 @@ public class DialogueQuestLinker : MonoBehaviour
             case "A0_Q5_ReturnToTupas": return tupas.transform;
             case "A0_Q6_SacredStatue": return TutorialManager.instance.lewenriSacredStatue.transform;
             case "A0_Q7_KeepingTrack": return tupas.transform;
+            case "A0_Q9_OneMoreThing": return tupas.transform;
+            case "A0_Q10_ReturnToBangkaw" : return bangkaw.transform;
         }
         return null;
     }
