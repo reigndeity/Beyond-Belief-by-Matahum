@@ -6,7 +6,7 @@ public static class PlayerStatGrowthTable
     private const int MAX_LEVEL = 50;
 
     // Endpoints (Level 1 → Level 50) — from your spec
-    private const float HP_L1 = 911.79f, HP_L50 = 5766.03f;
+    private const float HP_L1 = 200f, HP_L50 = 5766.03f; //hplevel original 911.79
     private const float ATK_L1 = 17.81f, ATK_L50 = 112.62f;
     private const float DEF_L1 = 57.23f, DEF_L50 = 361.88f;
 

@@ -112,6 +112,8 @@ public class PlayerMovement : MonoBehaviour
         if (GetComponent<PlayerSkills>().isUsingNormalSkill || GetComponent<PlayerSkills>().isUsingUltimateSkill)
             return;
         
+        if (m_playerAnimator.isHit) return;
+        
         HandleMovementMode();
 
         Vector2 input = m_playerInput.GetMovementInput();
@@ -172,6 +174,7 @@ public class PlayerMovement : MonoBehaviour
         if (GetComponent<Player>().suppressInputUntilNextFrame) return;
         if (GetComponent<PlayerSkills>().isUsingNormalSkill || GetComponent<PlayerSkills>().isUsingUltimateSkill)
             return;
+        if (m_playerAnimator.isHit) return;
         if (m_playerCombat.IsAttacking() && !m_playerCombat.CanMoveDuringAttack())
             return;
         
