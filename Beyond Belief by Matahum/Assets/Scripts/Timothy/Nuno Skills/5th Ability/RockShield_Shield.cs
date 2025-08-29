@@ -22,7 +22,7 @@ public class RockShield_Shield : MonoBehaviour, IDamageable
         {
             gameObject.SetActive(false);
             shieldHealth = 0f;
-            shieldHolder.OnShieldDestroyed(this);
+            shieldHolder.OnShieldDestroyed();
         }
     }
 }

@@ -11,11 +11,11 @@ public class RockShield_ShieldHolder : MonoBehaviour
     public float orbitRadius = 2f;
     public float rotationSpeed = 30f;
 
-    private int currentActiveShields = 0;
+    //public int currentActiveShields = 0;
 
     void Update()
     {
-        if (currentActiveShields > 0)
+        if (IsAllShieldDestroyed() == false)
         {
             transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
         }
@@ -23,7 +23,7 @@ public class RockShield_ShieldHolder : MonoBehaviour
 
     public void ResetShield()
     {
-        currentActiveShields = 0;
+        //currentActiveShields = 0;
 
         for (int i = 0; i < shieldPrefab.Length; i++)
         {
@@ -40,22 +40,36 @@ public class RockShield_ShieldHolder : MonoBehaviour
                 shield.Init(this, shieldHealth);
             }
 
-            if (shield.gameObject.activeSelf) currentActiveShields++;
+            //if (shield.gameObject.activeSelf) currentActiveShields++;
         }
 
-        invulnerableShield.SetActive(currentActiveShields > 0); // only invulnerable if shields exist
+        invulnerableShield.SetActive(!IsAllShieldDestroyed()); // only invulnerable if shields exist
     }
 
-    public void OnShieldDestroyed(RockShield_Shield shield)
+    public void OnShieldDestroyed(/*RockShield_Shield shield*/)
     {
-        currentActiveShields--;
+        //currentActiveShields--;
 
-        if (currentActiveShields <= 0)
+        if (IsAllShieldDestroyed() == true)
         {
             invulnerableShield.SetActive(false);
             Debug.Log("All shields destroyed → Boss vulnerable!");
         }
     }
 
-    public bool IsAllShieldDestroyed() => currentActiveShields <= 0;
+    public bool IsAllShieldDestroyed()
+    {
+        int isDestroyedShield = 0;
+
+        for (int i = 0; i < shieldPrefab.Length; i++)
+        {
+            var shield = shieldPrefab[i];
+
+            if (!shield.gameObject.activeSelf) // only restore missing shields
+            {
+                isDestroyedShield++;
+            }
+        }
+        return isDestroyedShield == maxShields;
+    }
 }
