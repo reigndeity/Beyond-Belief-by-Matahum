@@ -85,7 +85,7 @@ public class Nuno : MonoBehaviour, IDamageable
     IEnumerator Dying()
     {
         isDead = true;
-        OnDeath.Invoke();
+        OnDeath?.Invoke();
         yield return new WaitForSeconds(0.5f);
     }
     #endregion
