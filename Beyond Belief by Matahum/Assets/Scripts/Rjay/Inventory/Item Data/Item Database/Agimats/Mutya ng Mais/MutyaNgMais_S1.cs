@@ -5,9 +5,12 @@ public class MutyaNgMais_S1 : R_AgimatAbility
 {
     [HideInInspector] public float cachedHealPercent;
 
+    [Header("Visual Effect")]
+    [SerializeField] private GameObject healVFXPrefab;
+    [SerializeField] private float vfxYOffset = 0f;
+
     public override string GetDescription(R_ItemRarity rarity)
     {
-        // ✅ Cache the random result once
         if (cachedHealPercent == 0f)
             cachedHealPercent = GetRandomHealPercent(rarity);
 
@@ -17,12 +20,27 @@ public class MutyaNgMais_S1 : R_AgimatAbility
     public override void Activate(GameObject user, R_ItemRarity rarity)
     {
         float percent = cachedHealPercent / 100f;
-        float maxHP = user.GetComponent<PlayerStats>().p_maxHealth; // You'll need to expose this
+        float maxHP = user.GetComponent<PlayerStats>().p_maxHealth;
         float amountToHeal = maxHP * percent;
 
         user.GetComponent<Player>().Heal(amountToHeal);
 
         Debug.Log($"🌽 Healing for {percent * 100}% of HP.");
+
+        if (healVFXPrefab != null)
+            SpawnAndDestroyVFX(user.transform.position);
+    }
+
+    private void SpawnAndDestroyVFX(Vector3 position)
+    {
+        Vector3 spawnPos = new Vector3(position.x, position.y + vfxYOffset, position.z);
+        GameObject vfx = GameObject.Instantiate(healVFXPrefab, spawnPos, healVFXPrefab.transform.rotation);
+
+        ParticleSystem ps = vfx.GetComponent<ParticleSystem>();
+        if (ps != null)
+            GameObject.Destroy(vfx, ps.main.duration + ps.main.startLifetime.constantMax);
+        else
+            GameObject.Destroy(vfx, 2f);
     }
 
     private float GetRandomHealPercent(R_ItemRarity rarity)
