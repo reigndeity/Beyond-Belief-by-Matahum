@@ -11,6 +11,7 @@ public class Nuno : MonoBehaviour, IDamageable
     private PlayerStats m_playerStats;
     private EnemyStats m_enemyStats;
     private Rigidbody m_rigidbody;
+    [HideInInspector]public bool isVulnerable = true;
 
     public event System.Action OnDeath;
 
@@ -25,32 +26,35 @@ public class Nuno : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damage)
     {
-        GetHit();
-
-        bool isCriticalHit = UnityEngine.Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
-        float damageReduction = m_enemyStats.e_defense * 0.66f; // Defense Scaling
-        float reducedDamage = damage - damageReduction;
-        if (isCriticalHit)
-            reducedDamage *= (1f + (m_playerStats.p_criticalDamage / 100f));
-
-        int finalDamage = Mathf.Max(Mathf.FloorToInt(reducedDamage), 1);
-
-        // NEW: centralize health changes in EnemyStats
-        bool died = m_enemyStats.ApplyDamage(finalDamage);
-
-        Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
-        if (isCriticalHit)
+        if (isVulnerable)
         {
-            DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.red);
-            Debug.Log($"💥 CRITICAL HIT! Enemy took {finalDamage} damage. Current Health: {m_enemyStats.e_currentHealth}");
-        }
-        else
-        {
-            DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.white);
-            Debug.Log($"Enemy took {finalDamage} damage. Current Health: {m_enemyStats.e_currentHealth}");
-        }
+            GetHit();
 
-        if (died) Death();
+            bool isCriticalHit = UnityEngine.Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
+            float damageReduction = m_enemyStats.e_defense * 0.66f; // Defense Scaling
+            float reducedDamage = damage - damageReduction;
+            if (isCriticalHit)
+                reducedDamage *= (1f + (m_playerStats.p_criticalDamage / 100f));
+
+            int finalDamage = Mathf.Max(Mathf.FloorToInt(reducedDamage), 1);
+
+            // NEW: centralize health changes in EnemyStats
+            bool died = m_enemyStats.ApplyDamage(finalDamage);
+
+            Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
+            if (isCriticalHit)
+            {
+                DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.red);
+                Debug.Log($"💥 CRITICAL HIT! Enemy took {finalDamage} damage. Current Health: {m_enemyStats.e_currentHealth}");
+            }
+            else
+            {
+                DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.white);
+                Debug.Log($"Enemy took {finalDamage} damage. Current Health: {m_enemyStats.e_currentHealth}");
+            }
+
+            if (died) Death();
+        }      
     }
 
     #endregion

@@ -10,35 +10,13 @@ public class NgipinNgKalabaw_Knockback : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Enemy enemy = other.GetComponent<Enemy>();
-        if (enemy != null && canDamage)
+        IDamageable damageable = other.GetComponent<IDamageable>();
+        if (damageable != null && canDamage && other.gameObject.tag != "Player")
         {
-            enemy.TakeDamage(damage);
-            enemy.PushBackward(knockbackDistance);
-            // Start knockback
-            //StartCoroutine(KnockbackEnemy(enemy.transform));
-        }
-    }
+            damageable.TakeDamage(damage);
 
-    private IEnumerator KnockbackEnemy(Transform enemy)
-    {
-        Vector3 start = enemy.position;
-
-        // direction away from player (this GameObject's transform.position)
-        Vector3 direction = (enemy.position - transform.position).normalized;
-        Vector3 target = start + direction * knockbackDistance;
-
-        float elapsed = 0f;
-
-        while (elapsed < knockbackDuration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / knockbackDuration;
-
-            // Smooth movement
-            enemy.position = Vector3.Lerp(start, target, t);
-
-            yield return null;
+            Enemy enemy = other.GetComponent<Enemy>();
+            if(enemy != null) enemy.PushBackward(knockbackDistance);
         }
     }
 }
