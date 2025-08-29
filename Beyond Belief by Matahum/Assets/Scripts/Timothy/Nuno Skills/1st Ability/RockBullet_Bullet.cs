@@ -3,7 +3,6 @@ using System.Collections;
 
 public class RockBullet_Bullet : MonoBehaviour
 {
-    [HideInInspector] public RockBullet_ObjectPool pool;
     public Vector3 lastPlayerPosition;
     public float bulletDamage;
     public float bulletSpeed;

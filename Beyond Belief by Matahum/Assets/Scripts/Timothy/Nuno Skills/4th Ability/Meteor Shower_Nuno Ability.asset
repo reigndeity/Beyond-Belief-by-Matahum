@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c657400768d169478bda4b2857998e4, type: 3}
+  m_Name: Meteor Shower_Nuno Ability
+  m_EditorClassIdentifier: 
+  meteorShowerPrefab: {fileID: 4883668428339430134, guid: 0dbb0ef9f07c9ab438b95a6a33c700a4, type: 3}
+  center: {fileID: 0}
+  radius: 15
+  spawnCount: 10
+  minDistanceBetween: 4
+  meteorLifetime: 2
+  areaToSpawn:
+  - {x: 20.6834, y: 1.55, z: -44.442245}
+  - {x: -3.0896826, y: 1.55, z: -57.54082}
+  - {x: -3.0758743, y: 1.55, z: -49.387383}
+  - {x: 6.9670124, y: 1.55, z: -40.311996}
+  - {x: 16.029388, y: 1.55, z: -46.16777}
+  - {x: -1.1678839, y: 1.55, z: -44.978046}
+  - {x: 12.118526, y: 1.55, z: -64.12451}
+  - {x: 4.2461605, y: 1.55, z: -44.052055}
+  - {x: 5.6171217, y: 1.55, z: -64.880165}
+  - {x: 16.536963, y: 1.55, z: -51.074398}
+  startMovingDelay: 2

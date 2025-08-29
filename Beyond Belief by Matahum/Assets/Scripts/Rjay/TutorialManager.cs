@@ -1,9 +1,15 @@
+using System;
+using System.Collections;
+using Abu;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager instance;
+    [SerializeField] private UI_Game m_uiGame;
     public bool isTutorialDone;
 
     [Header("Script References")]
@@ -43,6 +49,30 @@ public class TutorialManager : MonoBehaviour
 
     [Header("Other Variables")]
     public bool tutorial_isFirstStatueInteract = true;
+
+    [Header("UI Tutorial")]
+    public TutorialFadeImage tutorialFadeImage; // default smoothness is 0.0005
+
+    [Header("Quest Journal UI Tutorial")]
+    [SerializeField] private BB_Quest_ButtonManager m_questButtonManager;
+    public GameObject questJournalTutorial;
+    public TutorialHighlight mainQuestViewportTH;
+    public TutorialHighlight questSelectionPanelTH;
+    public TutorialHighlight questDetailsPanelTH;
+    public TutorialHighlight questButtonFiltersTH;
+    public TutorialHighlight claimQuestButtonTH;
+    public TutorialHighlight closeQuestJournalButtonTH;
+    public Button claimQuestButton;
+    public Button closeQuestButton;
+    public TextMeshProUGUI questJournalTextTutorial;
+    public Button nextJournalTutorialButton;
+    public UI_CanvasGroup nextJournalTutorialCanvasGroup;
+    public TutorialHighlight nextJournalTutorialTH;
+    public GameObject nonInteractablePanel;
+    public int currentQuestJournalTutorial = 0;
+    public GameObject claimThisTextHelper;
+
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -82,6 +112,9 @@ public class TutorialManager : MonoBehaviour
         {
             cutsceneBakalNPC.SetActive(false);
         }
+
+        nextJournalTutorialButton.onClick.AddListener(QuestJournalTutorial);
+        
     }
 
     void StartTutorial()
@@ -133,6 +166,7 @@ public class TutorialManager : MonoBehaviour
         tutorial_isFirstStatueInteract = false;
     }
 
+    #region PLAYER BOOLEANS TUTORIAL
     public void AllowCameraDirection() => tutorial_canCameraDirection = true;
     public void AllowCameraZoom() => tutorial_canCameraZoom = true;
     public void AllowMovementToggle() => tutorial_canMovementToggle = true;
@@ -154,4 +188,69 @@ public class TutorialManager : MonoBehaviour
     public void AllowFirstStatueInteraction() => tutorial_isFirstStatueInteract = true;
     public void AllowFullscreenMap() => tutorial_canOpenMap = true;
     public void ShowQuestJournal() => questButton.FadeIn(0.5f);
+    #endregion
+
+    #region QUEST JOURNAL UI TUTORIAL
+
+    public void EnableQuestJournalTutorial()
+    {
+        questJournalTutorial.SetActive(true);
+        tutorialFadeImage.enabled = true;
+        nonInteractablePanel.gameObject.SetActive(true);
+        questJournalTextTutorial.text = "this is where you can filter your quest and even view completed ones";
+        questButtonFiltersTH.enabled = true;
+    }
+    public void QuestJournalTutorial()
+    {
+        switch(currentQuestJournalTutorial)
+        {
+            case 0:
+                m_uiGame.questButton.onClick.RemoveListener(TutorialManager.instance.EnableQuestJournalTutorial);
+                questJournalTextTutorial.text = "Here you can see your main quests and your side quest";
+                questButtonFiltersTH.enabled = false;
+                questSelectionPanelTH.enabled = true;
+                break;
+            case 1:
+                questJournalTextTutorial.text = "You can also see the quest details here";
+                questSelectionPanelTH.enabled = false;
+                questDetailsPanelTH.enabled = true;
+                break;
+            case 2:
+                BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q8_QuestJournal");
+                nextJournalTutorialCanvasGroup.FadeOut(0.25f);
+                nextJournalTutorialTH.enabled = false;
+                nextJournalTutorialButton.enabled = false;
+
+                nonInteractablePanel.SetActive(false);
+                claimThisTextHelper.SetActive(true);
+                questJournalTextTutorial.text = "Here you can claim, track, or untrack your current selected quest";
+                
+                questDetailsPanelTH.enabled = false;
+                mainQuestViewportTH.enabled = true;
+                claimQuestButtonTH.enabled = true;
+                claimQuestButton.onClick.AddListener(QuestJournalTutorial);
+                break;
+            case 3:
+                questJournalTextTutorial.text = "Now click on this button to resume your journey";
+                mainQuestViewportTH.enabled = false;
+                claimQuestButtonTH.enabled = false;
+                claimThisTextHelper.SetActive(false);
+                claimQuestButton.onClick.RemoveListener(QuestJournalTutorial);
+                closeQuestJournalButtonTH.enabled = true;
+                closeQuestButton.onClick.AddListener(QuestJournalTutorial);
+                break;
+            case 4:
+                closeQuestJournalButtonTH.enabled = false;
+                closeQuestButton.onClick.RemoveListener(QuestJournalTutorial);
+                questJournalTutorial.SetActive(false);
+                tutorialFadeImage.enabled = false;
+                BB_QuestManager.Instance.AcceptQuestByID("A0_Q9_OneMoreThing");
+                break;
+        }
+        currentQuestJournalTutorial++;
+    }
+
+    #endregion
+
+
 }
