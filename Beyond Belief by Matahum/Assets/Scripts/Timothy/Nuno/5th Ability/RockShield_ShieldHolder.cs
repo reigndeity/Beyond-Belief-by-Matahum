@@ -5,8 +5,8 @@ public class RockShield_ShieldHolder : MonoBehaviour
 {
     public RockShield_Shield[] shieldPrefab; // 4 shields in inspector
     public GameObject invulnerableShield;
-    private Nuno nuno;
-    private Nuno_Stats stats;
+    [HideInInspector] public Nuno nuno;
+    [HideInInspector] public Nuno_Stats stats;
 
     [HideInInspector] public float shieldHealth;
     [HideInInspector] public float shieldToHealthRatio;
@@ -17,18 +17,22 @@ public class RockShield_ShieldHolder : MonoBehaviour
     public float orbitRadius = 2f;
     public float rotationSpeed = 30f;
 
-    private void Start()
-    {
-        stats = FindFirstObjectByType<Nuno_Stats>();
-        nuno = FindFirstObjectByType<Nuno>();
-        shieldHealth = stats.n_maxHealth * (shieldToHealthRatio / 100);
-    }
     void Update()
     {
         if (IsAllShieldDestroyed() == false)
         {
             transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
         }
+    }
+
+    public void Initialize(Nuno nuno, Nuno_Stats stats, float shieldToHealthRatio, int cooldown)
+    {
+        this.nuno = nuno;
+        this.stats = stats;
+        this.shieldToHealthRatio = shieldToHealthRatio;
+        this.shieldCooldown = cooldown;
+
+        shieldHealth = stats.n_maxHealth * (shieldToHealthRatio / 100);
     }
 
     public void ResetShield()
@@ -46,7 +50,7 @@ public class RockShield_ShieldHolder : MonoBehaviour
                 float angle = (360f / maxShields) * i;
                 Vector3 pos = Quaternion.Euler(0, angle, 0) * Vector3.forward * orbitRadius;
 
-                shield.transform.SetParent(transform, false);
+                //shield.transform.SetParent(transform, false);
                 shield.transform.localPosition = pos;
 
                 shield.Init(this, shieldHealth);

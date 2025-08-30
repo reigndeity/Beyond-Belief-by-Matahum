@@ -17,7 +17,7 @@ public class FractureObject : MonoBehaviour
 
     private GameObject fractObj;
 
-    void Update()
+    /*void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -28,9 +28,9 @@ public class FractureObject : MonoBehaviour
         {
             Reset();
         }
-    }
+    }*/
 
-    void Explode()
+    public void Explode()
     {
         if (originalObject != null)
         {
@@ -39,7 +39,7 @@ public class FractureObject : MonoBehaviour
 
         if (fracturedObject != null)
         {
-            fractObj = Instantiate(fracturedObject);
+            fractObj = Instantiate(fracturedObject, originalObject.transform.position, Quaternion.identity, originalObject.transform.parent);
 
             foreach (Transform t in fractObj.transform)
             {
@@ -56,15 +56,17 @@ public class FractureObject : MonoBehaviour
                 StartCoroutine(Shrink(t, shrinkDelay, shrinkDuration));
             }
 
+            Destroy(fractObj, 7);
+
             if (explosionVFX != null)
             {
-                GameObject exploVFX = Instantiate(explosionVFX);
+                GameObject exploVFX = Instantiate(explosionVFX, originalObject.transform.position, Quaternion.identity, originalObject.transform.parent);
                 Destroy(exploVFX, 7);
             }
         }
     }
 
-    void Reset()
+    public void Reset()
     {
         if (fractObj != null)
             Destroy(fractObj);
