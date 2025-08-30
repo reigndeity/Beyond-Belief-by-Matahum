@@ -1,13 +1,18 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class RockShield_ShieldHolder : MonoBehaviour
 {
     public RockShield_Shield[] shieldPrefab; // 4 shields in inspector
     public GameObject invulnerableShield;
-    private Nuno nuno;
+    [HideInInspector] public Nuno nuno;
+    [HideInInspector] public Nuno_Stats stats;
 
     [HideInInspector] public float shieldHealth;
-    public int maxShields = 4;
+    [HideInInspector] public float shieldToHealthRatio;
+    [HideInInspector] public int shieldCooldown = 10;
+    private bool canUseShield = true;
+    private int maxShields = 4;
 
     public float orbitRadius = 2f;
     public float rotationSpeed = 30f;
@@ -20,10 +25,19 @@ public class RockShield_ShieldHolder : MonoBehaviour
         }
     }
 
+    public void Initialize(Nuno nuno, Nuno_Stats stats, float shieldToHealthRatio, int cooldown)
+    {
+        this.nuno = nuno;
+        this.stats = stats;
+        this.shieldToHealthRatio = shieldToHealthRatio;
+        this.shieldCooldown = cooldown;
+
+        shieldHealth = stats.n_maxHealth * (shieldToHealthRatio / 100);
+    }
+
     public void ResetShield()
     {
-        nuno = FindFirstObjectByType<Nuno>();
-        if (nuno.isVulnerable == false) return;
+        if (nuno.isVulnerable == false || !canUseShield) return;
 
         nuno.isVulnerable = false;
         nuno.gameObject.layer = LayerMask.NameToLayer("Default");
@@ -36,7 +50,7 @@ public class RockShield_ShieldHolder : MonoBehaviour
                 float angle = (360f / maxShields) * i;
                 Vector3 pos = Quaternion.Euler(0, angle, 0) * Vector3.forward * orbitRadius;
 
-                shield.transform.SetParent(transform, false);
+                //shield.transform.SetParent(transform, false);
                 shield.transform.localPosition = pos;
 
                 shield.Init(this, shieldHealth);
@@ -46,13 +60,20 @@ public class RockShield_ShieldHolder : MonoBehaviour
         invulnerableShield.SetActive(!IsAllShieldDestroyed()); // only invulnerable if shields exist
     }
 
-    public void OnShieldDestroyed(/*RockShield_Shield shield*/)
+    IEnumerator ShieldOnCooldown()
+    {
+        canUseShield = false;
+        yield return new WaitForSeconds(shieldCooldown);
+        canUseShield = true;
+    }
+    public void OnShieldDestroyed()
     {
         if (IsAllShieldDestroyed() == true)
         {
             invulnerableShield.SetActive(false);
             nuno.isVulnerable = true;
             nuno.gameObject.layer = LayerMask.NameToLayer("Enemy");
+            StartCoroutine(ShieldOnCooldown());
             Debug.Log("All shields destroyed → Boss vulnerable!");
         }
     }

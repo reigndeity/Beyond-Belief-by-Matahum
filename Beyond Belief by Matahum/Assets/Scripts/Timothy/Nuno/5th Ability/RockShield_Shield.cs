@@ -4,21 +4,23 @@ public class RockShield_Shield : MonoBehaviour, IDamageable
 {
     public float shieldHealth;
     [HideInInspector] public RockShield_ShieldHolder shieldHolder;
+    private FractureObject vfx;
 
     private PlayerStats m_playerStats;
 
     void Start()
     {
         m_playerStats = FindFirstObjectByType<PlayerStats>();
-
+        vfx = GetComponentInParent<FractureObject>();
     }
-public bool IsDead() => shieldHealth <= 0;
+    public bool IsDead() => shieldHealth <= 0;
 
     public void Init(RockShield_ShieldHolder holder, float health)
     {
+        gameObject.SetActive(true);
         shieldHolder = holder;
         shieldHealth = health;
-        gameObject.SetActive(true);
+        
     }
 
     public void TakeDamage(float damage)
@@ -29,7 +31,7 @@ public bool IsDead() => shieldHealth <= 0;
 
         if (IsDead())
         {
-            gameObject.SetActive(false);
+            vfx.Explode();
             shieldHealth = 0f;
             shieldHolder.OnShieldDestroyed();
         }

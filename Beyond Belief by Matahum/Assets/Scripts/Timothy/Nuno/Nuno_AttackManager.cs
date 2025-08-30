@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
+
 public class Nuno_AttackManager : MonoBehaviour
 {
     public static Nuno_AttackManager Instance;
@@ -15,6 +17,7 @@ public class Nuno_AttackManager : MonoBehaviour
 
     private Player player;
     private Animator anim;
+    private Nuno nuno;
 
     private void Awake()
     {
@@ -23,6 +26,7 @@ public class Nuno_AttackManager : MonoBehaviour
     private void Start()
     {
         player = FindFirstObjectByType<Player>();
+        nuno = GetComponent<Nuno>();
         //anim = GetComponent<Animator>();
     }
 
@@ -69,7 +73,15 @@ public class Nuno_AttackManager : MonoBehaviour
 
         //Base the timing for the next attack based on the animation
         /*AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        float animLength = stateInfo.length;*/
+        float animLength = stateInfo.length;
+
+        float elapse = 0;
+        float duration = animLength;
+        while (elapse < duration && !nuno.isStunned)
+        {
+
+        }*/
+
         yield return new WaitForSeconds(5);
         isAttacking = false;
     }

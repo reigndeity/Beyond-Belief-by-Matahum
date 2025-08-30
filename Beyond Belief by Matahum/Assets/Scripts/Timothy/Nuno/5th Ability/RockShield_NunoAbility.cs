@@ -6,7 +6,10 @@ public class RockShield_NunoAbility : Nuno_Ability
 {
     public RockShield_ShieldHolder shieldHolderPrefab;
     private RockShield_ShieldHolder activeShieldHolder;
-    public float shieldHealth;
+
+    [Tooltip("Percentage of Nuno's health is the health of each shield")]
+    public float shieldToNunoHealthRatio;
+    public int shieldCooldown = 10;
 
     public override void Activate()
     {
@@ -22,13 +25,20 @@ public class RockShield_NunoAbility : Nuno_Ability
 
         if (activeShieldHolder == null)
         {
-            // Instantiate at Nuno’s position
-            activeShieldHolder = Instantiate(shieldHolderPrefab, Nuno_AttackManager.Instance.transform.parent);
+            activeShieldHolder = Instantiate(
+                shieldHolderPrefab,
+                Nuno_AttackManager.Instance.transform.position,
+                Quaternion.identity,
+                Nuno_AttackManager.Instance.transform.parent
+            );
         }
 
-        activeShieldHolder.shieldHealth = shieldHealth;
+        // Call initialize manually BEFORE ResetShield
+        var nuno = Object.FindFirstObjectByType<Nuno>();
+        var stats = Object.FindFirstObjectByType<Nuno_Stats>();
+        activeShieldHolder.Initialize(nuno, stats, shieldToNunoHealthRatio, shieldCooldown);
 
-        // Fill missing shields only
         activeShieldHolder.ResetShield();
+
     }
 }
