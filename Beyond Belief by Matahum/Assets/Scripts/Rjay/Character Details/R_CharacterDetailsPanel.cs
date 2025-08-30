@@ -21,6 +21,7 @@ public class R_CharacterDetailsPanel : MonoBehaviour
     void OnEnable()
     {
         SwitchToTab(CharacterDetailsTab.Attribute);
+        FindFirstObjectByType<UI_Game>().OnClickAttributesTab();
     }
 
     public void SwitchToTab(CharacterDetailsTab tab)

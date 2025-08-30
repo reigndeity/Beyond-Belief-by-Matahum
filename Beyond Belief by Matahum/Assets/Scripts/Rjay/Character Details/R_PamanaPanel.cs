@@ -18,6 +18,11 @@ public class R_PamanaPanel : MonoBehaviour
     [SerializeField] private Button slotDiwata;
     [SerializeField] private Button slotLihim;
     [SerializeField] private Button slotSalamangkero;
+    
+    [Header("Default Empty Slot Sprites")]
+    [SerializeField] private Sprite emptyDiwataSprite;
+    [SerializeField] private Sprite emptyLihimSprite;
+    [SerializeField] private Sprite emptySalamangkeroSprite;
 
     [Header("Slot Highlights")]
     [SerializeField] private GameObject highlightDiwata;
@@ -240,24 +245,25 @@ public class R_PamanaPanel : MonoBehaviour
 
     private void UpdateEquippedIcons()
     {
-        SetSlotIcon(iconDiwata, GetEquippedPamanaForSlot(R_PamanaSlotType.Diwata));
-        SetSlotIcon(iconLihim, GetEquippedPamanaForSlot(R_PamanaSlotType.Lihim));
-        SetSlotIcon(iconSalamangkero, GetEquippedPamanaForSlot(R_PamanaSlotType.Salamangkero));
+        SetSlotIcon(iconDiwata, GetEquippedPamanaForSlot(R_PamanaSlotType.Diwata), emptyDiwataSprite);
+        SetSlotIcon(iconLihim, GetEquippedPamanaForSlot(R_PamanaSlotType.Lihim), emptyLihimSprite);
+        SetSlotIcon(iconSalamangkero, GetEquippedPamanaForSlot(R_PamanaSlotType.Salamangkero), emptySalamangkeroSprite);
     }
 
-    private void SetSlotIcon(Image targetImage, R_InventoryItem item)
+    private void SetSlotIcon(Image targetImage, R_InventoryItem item, Sprite emptySprite)
     {
         if (item != null && item.itemData != null && item.itemData.itemIcon != null)
         {
             targetImage.sprite = item.itemData.itemIcon;
-            targetImage.enabled = true;
         }
         else
         {
-            targetImage.sprite = null;
-            targetImage.enabled = false;
+            targetImage.sprite = emptySprite; // slot-specific fallback
         }
+
+        targetImage.enabled = true; // always enabled
     }
+
 
     private R_InventoryItem GetEquippedPamanaForSlot(R_PamanaSlotType slotType)
     {

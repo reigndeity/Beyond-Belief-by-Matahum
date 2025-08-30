@@ -16,6 +16,9 @@ public class R_AgimatPanel : MonoBehaviour
     [Header("Slot Highlights")]
     [SerializeField] private GameObject highlightSlot1;
     [SerializeField] private GameObject highlightSlot2;
+    [Header("Default Empty Slot Sprites")]
+    [SerializeField] private Sprite emptySlot1Sprite;
+    [SerializeField] private Sprite emptySlot2Sprite;
 
     [Header("Equipped Icons")]
     [SerializeField] private Image iconSlot1;
@@ -281,23 +284,24 @@ public class R_AgimatPanel : MonoBehaviour
 
     private void UpdateSlotIcons()
     {
-        SetIcon(iconSlot1, player.GetEquippedAgimat(1));
-        SetIcon(iconSlot2, player.GetEquippedAgimat(2));
+        SetIcon(iconSlot1, player.GetEquippedAgimat(1), emptySlot1Sprite);
+        SetIcon(iconSlot2, player.GetEquippedAgimat(2), emptySlot2Sprite);
     }
 
-    private void SetIcon(Image target, R_InventoryItem item)
+    private void SetIcon(Image target, R_InventoryItem item, Sprite emptySprite)
     {
         if (item != null && item.itemData != null)
         {
             target.sprite = item.itemData.itemIcon;
-            target.enabled = true;
         }
         else
         {
-            target.sprite = null;
-            target.enabled = false;
+            target.sprite = emptySprite; // slot-specific fallback
         }
+
+        target.enabled = true; // always keep enabled
     }
+
 
     private void UpdateSlotHighlight()
     {

@@ -37,6 +37,7 @@ public class R_InventoryUI : MonoBehaviour
     void OnEnable()
     {
         SetFilter(R_InventoryFilter.Consumable);
+        FindFirstObjectByType<UI_Game>().OnClickConsumableFilter();
     }
     void Awake()
     {

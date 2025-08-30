@@ -1,7 +1,21 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
+[System.Serializable]
+public class FilterButton
+{
+    public Button button;
+    public Image icon;
+}
+[System.Serializable]
+public class TabButton
+{
+    public Button button;
+    public Image icon; 
+}
 
 public class UI_Game : MonoBehaviour
 {
@@ -13,28 +27,30 @@ public class UI_Game : MonoBehaviour
     [Header("UI Game Behavior")]
     private bool isUIHidden = false;
 
-    
     [Header("Inventory Properties")]
+    [SerializeField] TextMeshProUGUI currentFilteredInventoryText;
     [SerializeField] Button inventoryButton; // Overall Inventory (No Equipment)
     [SerializeField] GameObject inventoryPanel;
     [SerializeField] Button closeInventoryButton;
     [Header("------------------------")]
-    [SerializeField] Button consumablesFilterButton;
-    [SerializeField] Button questItemsFilterButton;
-    [SerializeField] Button pamanaFilterButton;
-    [SerializeField] Button agimatFilterButton;
-    [SerializeField] Button upgradeMaterialsFilterButton;
-    [SerializeField] Button rawIngredientsFilterButton;
+    [SerializeField] private FilterButton consumablesFilter;
+    [SerializeField] private FilterButton questItemsFilter;
+    [SerializeField] private FilterButton pamanaFilter;
+    [SerializeField] private FilterButton agimatFilter;
+    [SerializeField] private FilterButton upgradeMaterialsFilter;
+    [SerializeField] private FilterButton rawIngredientsFilter;
 
     [Header("Character Details Properties")]
     [SerializeField] Button characterDetailsButton;
     [SerializeField] GameObject characterDetailPanel;
     [SerializeField] Button closeCharacterDetailsButton;
     [Header("------------------------")]
-    [SerializeField] Button attributesTabButton;
-    [SerializeField] Button weaponTabButton;
-    [SerializeField] Button agimatTabButton;
-    [SerializeField] Button pamanaTabButton;
+    [SerializeField] private TabButton attributesTab;
+    [SerializeField] private TabButton weaponTab;
+    [SerializeField] private TabButton agimatTab;
+    [SerializeField] private TabButton pamanaTab;
+    private TabButton activeTab;
+
     [Header("------------------------")]
     [SerializeField] Button diwataSlotButton;
     [SerializeField] Button lihimSlotButton;
@@ -69,12 +85,10 @@ public class UI_Game : MonoBehaviour
     private CanvasGroup topCanvasGroup;
     private CanvasGroup bottomCanvasGroup;
 
+    private FilterButton activeFilterButton;
+
     void Awake()
     {
-        // r_inventoryUI = FindFirstObjectByType<R_InventoryUI>();
-        // m_characterDetailsPanel = FindFirstObjectByType<R_CharacterDetailsPanel>();
-        // m_pamanaPanel = FindFirstObjectByType<R_PamanaPanel>();
-
         topOriginalPos = topUIObj.transform.localPosition;
         bottomOriginalPos = bottomUIObj.transform.localPosition;
         topCanvasGroup = topUIObj.GetComponent<CanvasGroup>();
@@ -88,20 +102,20 @@ public class UI_Game : MonoBehaviour
 
         inventoryButton.onClick.AddListener(OnClickOpenInventory);
         closeInventoryButton.onClick.AddListener(OnClickCloseInventory);
-        consumablesFilterButton.onClick.AddListener(OnClickConsumableFilter);
-        questItemsFilterButton.onClick.AddListener(OnClickQuestItemFilter);
-        pamanaFilterButton.onClick.AddListener(OnClickCPamanaFilter);
-        agimatFilterButton.onClick.AddListener(OnClickAgimatFilter);
-        upgradeMaterialsFilterButton.onClick.AddListener(OnClickUpgradeMaterialsFilter);
-        rawIngredientsFilterButton.onClick.AddListener(OnClickRawIngredientsFilter);
 
+        consumablesFilter.button.onClick.AddListener(OnClickConsumableFilter);
+        questItemsFilter.button.onClick.AddListener(OnClickQuestItemFilter);
+        pamanaFilter.button.onClick.AddListener(OnClickCPamanaFilter);
+        agimatFilter.button.onClick.AddListener(OnClickAgimatFilter);
+        upgradeMaterialsFilter.button.onClick.AddListener(OnClickUpgradeMaterialsFilter);
+        rawIngredientsFilter.button.onClick.AddListener(OnClickRawIngredientsFilter);
 
         characterDetailsButton.onClick.AddListener(OnClickOpenCharacterDetails);
         closeCharacterDetailsButton.onClick.AddListener(OnClickCloseCharacterDetails);
-        attributesTabButton.onClick.AddListener(OnClickAttributesTab);
-        weaponTabButton.onClick.AddListener(OnClickWeaponTab);
-        agimatTabButton.onClick.AddListener(OnClickAgimatTab);
-        pamanaTabButton.onClick.AddListener(OnClickPamanaTab);
+        attributesTab.button.onClick.AddListener(OnClickAttributesTab);
+        weaponTab.button.onClick.AddListener(OnClickWeaponTab);
+        agimatTab.button.onClick.AddListener(OnClickAgimatTab);
+        pamanaTab.button.onClick.AddListener(OnClickPamanaTab);
         diwataSlotButton.onClick.AddListener(OnClickDiwataSort);
         lihimSlotButton.onClick.AddListener(OnClickLihimSort);
         salamangkeroSlotButton.onClick.AddListener(OnClickSalamangkeroSort);
@@ -123,6 +137,7 @@ public class UI_Game : MonoBehaviour
             closeMapButton.gameObject.SetActive(false);
         }   
     }
+
     #region MAP
     public void OnClickCloseTeleportPanel()
     {
@@ -139,8 +154,38 @@ public class UI_Game : MonoBehaviour
     }
     #endregion
     
-
     #region INVENTORY
+    private void SetActiveFilter(FilterButton selected)
+    {
+        ResetFilter(consumablesFilter);
+        ResetFilter(questItemsFilter);
+        ResetFilter(pamanaFilter);
+        ResetFilter(agimatFilter);
+        ResetFilter(upgradeMaterialsFilter);
+        ResetFilter(rawIngredientsFilter);
+
+        var circle = selected.button.GetComponent<Image>();
+        if (circle != null)
+            circle.color = new Color(circle.color.r, circle.color.g, circle.color.b, 1f); // alpha 1
+
+        if (selected.icon != null)
+            selected.icon.color = new Color(0.4f, 0.2f, 0f, 1f); // brown
+
+        activeFilterButton = selected;
+    }
+
+    private void ResetFilter(FilterButton filter)
+    {
+        if (filter == null) return;
+
+        var circle = filter.button.GetComponent<Image>();
+        if (circle != null)
+            circle.color = new Color(circle.color.r, circle.color.g, circle.color.b, 0f); // alpha 0
+
+        if (filter.icon != null)
+            filter.icon.color = Color.white;
+    }
+
     public void OnClickOpenInventory()
     {
         inventoryPanel.SetActive(true);
@@ -157,31 +202,43 @@ public class UI_Game : MonoBehaviour
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.Consumable);
         Debug.Log("Currently in Consumable");
+        currentFilteredInventoryText.text = "Consumables";
+        SetActiveFilter(consumablesFilter);
     }
     public void OnClickQuestItemFilter()
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.QuestItem);
         Debug.Log("Currently in Quest Item");
+        currentFilteredInventoryText.text = "Quest Items";
+        SetActiveFilter(questItemsFilter);
     }
     public void OnClickCPamanaFilter()
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.Pamana);
         Debug.Log("Currently in Pamana");
+        currentFilteredInventoryText.text = "Pamana";
+        SetActiveFilter(pamanaFilter);
     }
     public void OnClickAgimatFilter()
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.Agimat);
         Debug.Log("Currently in Agimat");
+        currentFilteredInventoryText.text = "Agimat";
+        SetActiveFilter(agimatFilter);
     }
     public void OnClickUpgradeMaterialsFilter()
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.UpgradeMaterial);
         Debug.Log("Currently in Materials");
+        currentFilteredInventoryText.text = "Materials";
+        SetActiveFilter(upgradeMaterialsFilter);
     }
     public void OnClickRawIngredientsFilter()
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.Ingredient);
         Debug.Log("Currently in Raw Ingredients");
+        currentFilteredInventoryText.text = "Raw Ingredients";
+        SetActiveFilter(rawIngredientsFilter);
     }
     #endregion
     
@@ -201,18 +258,22 @@ public class UI_Game : MonoBehaviour
     public void OnClickAttributesTab()
     {
         m_characterDetailsPanel.OnClick_AttributeTab();
+        SetActiveTab(attributesTab);
     }
     public void OnClickWeaponTab()
     {
         m_characterDetailsPanel.OnClick_WeaponTab();
+        SetActiveTab(weaponTab);
     }
     public void OnClickAgimatTab()
     {
         m_characterDetailsPanel.OnClick_AgimatTab();
+        SetActiveTab(agimatTab);
     }
     public void OnClickPamanaTab()
     {
         m_characterDetailsPanel.OnClick_PamanaTab();
+        SetActiveTab(pamanaTab);
     }
     public void OnClickDiwataSort()
     {
@@ -226,6 +287,39 @@ public class UI_Game : MonoBehaviour
     {
         m_pamanaPanel.OnClick_EquipSlot_Salamangkero();
     }
+    private void SetActiveTab(TabButton selected)
+    {
+        ResetTab(attributesTab);
+        ResetTab(weaponTab);
+        ResetTab(agimatTab);
+        ResetTab(pamanaTab);
+
+        // Highlight background (button itself)
+        var circle = selected.button.GetComponent<Image>();
+        if (circle != null)
+            circle.color = new Color(circle.color.r, circle.color.g, circle.color.b, 1f); // alpha 1
+
+        // Highlight icon (brown)
+        if (selected.icon != null)
+            selected.icon.color = new Color(0.4f, 0.2f, 0f, 1f);
+
+        activeTab = selected;
+    }
+
+    private void ResetTab(TabButton tab)
+    {
+        if (tab == null) return;
+
+        // Reset background (transparent circle)
+        var circle = tab.button.GetComponent<Image>();
+        if (circle != null)
+            circle.color = new Color(circle.color.r, circle.color.g, circle.color.b, 0f); // alpha 0
+
+        // Reset icon (white)
+        if (tab.icon != null)
+            tab.icon.color = Color.white;
+    }
+
     #endregion
     
     #region QUEST JOURNAL
@@ -287,7 +381,6 @@ public class UI_Game : MonoBehaviour
         Vector3 moveDir = (toPos - fromPos).normalized;
         Vector3 overshootPos = toPos + moveDir * overshootDistance;
 
-        // Phase 1: move to overshoot
         float elapsed1 = 0f;
         while (elapsed1 < halfDuration)
         {
@@ -299,7 +392,6 @@ public class UI_Game : MonoBehaviour
             yield return null;
         }
 
-        // Phase 2: move to target
         float elapsed2 = 0f;
         while (elapsed2 < halfDuration)
         {
@@ -337,7 +429,6 @@ public class UI_Game : MonoBehaviour
     public void PauseGame()
     {
         Time.timeScale = 0f;
-        
     }
 
     public void ResumeGame()
@@ -346,10 +437,6 @@ public class UI_Game : MonoBehaviour
         if (m_player.currentState == PlayerState.FALLING && m_playerMovement.verticalVelocity <= -2)
         {
             m_player.ForceIdleOverride();
-        }
-        else
-        {
-            return;
         }
     }
 
