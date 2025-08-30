@@ -10,7 +10,10 @@ public class FractureObject : MonoBehaviour
     public float explosionMinForce = 5;
     public float explosionMaxForce = 100;
     public float explosionForceRadius = 10;
-    public float fragScaleFactor = 1;
+
+    [Header("Debris Shrink Settings")]
+    public float shrinkDelay = 2f;       // wait before starting shrink
+    public float shrinkDuration = 1.5f;  // how long it takes to shrink to 0
 
     private GameObject fractObj;
 
@@ -27,7 +30,6 @@ public class FractureObject : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Explode()
     {
         if (originalObject != null)
@@ -37,7 +39,7 @@ public class FractureObject : MonoBehaviour
 
         if (fracturedObject != null)
         {
-            fractObj = Instantiate(fracturedObject) as GameObject;
+            fractObj = Instantiate(fracturedObject);
 
             foreach (Transform t in fractObj.transform)
             {
@@ -50,14 +52,13 @@ public class FractureObject : MonoBehaviour
                         explosionForceRadius
                     );
 
-                StartCoroutine(Shrink(t, 2));
+                // start shrink coroutine
+                StartCoroutine(Shrink(t, shrinkDelay, shrinkDuration));
             }
-
-            Destroy(fractObj, 5);
 
             if (explosionVFX != null)
             {
-                GameObject exploVFX = Instantiate(explosionVFX) as GameObject;
+                GameObject exploVFX = Instantiate(explosionVFX);
                 Destroy(exploVFX, 7);
             }
         }
@@ -65,22 +66,32 @@ public class FractureObject : MonoBehaviour
 
     void Reset()
     {
-        Destroy(fractObj);
+        if (fractObj != null)
+            Destroy(fractObj);
+
         originalObject.SetActive(true);
     }
 
-    IEnumerator Shrink(Transform t, float delay)
+    IEnumerator Shrink(Transform t, float delay, float duration)
     {
         yield return new WaitForSeconds(delay);
 
-        Vector3 newScale = t.localScale;
+        if (t == null) yield break;
 
-        while (newScale.x >= 0)
+        Vector3 startScale = t.localScale;
+        float elapsed = 0f;
+
+        while (elapsed < duration && t != null)
         {
-            newScale -= new Vector3(fragScaleFactor, fragScaleFactor, fragScaleFactor);
-            t.localScale = newScale;
+            elapsed += Time.deltaTime;
+            float progress = Mathf.Clamp01(elapsed / duration);
 
-            yield return new WaitForSeconds(0.05f);
+            t.localScale = Vector3.Lerp(startScale, Vector3.zero, progress);
+
+            yield return null; // wait until next frame
         }
+
+        if (t != null)
+            Destroy(t.gameObject);
     }
 }
