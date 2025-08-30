@@ -12,13 +12,14 @@ public class RockShield_Shield : MonoBehaviour, IDamageable
         m_playerStats = FindFirstObjectByType<PlayerStats>();
 
     }
-public bool IsDead() => shieldHealth <= 0;
+    public bool IsDead() => shieldHealth <= 0;
 
     public void Init(RockShield_ShieldHolder holder, float health)
     {
+        gameObject.SetActive(true);
         shieldHolder = holder;
         shieldHealth = health;
-        gameObject.SetActive(true);
+        
     }
 
     public void TakeDamage(float damage)

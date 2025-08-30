@@ -1,17 +1,28 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class RockShield_ShieldHolder : MonoBehaviour
 {
     public RockShield_Shield[] shieldPrefab; // 4 shields in inspector
     public GameObject invulnerableShield;
     private Nuno nuno;
+    private Nuno_Stats stats;
 
     [HideInInspector] public float shieldHealth;
-    public int maxShields = 4;
+    [HideInInspector] public float shieldToHealthRatio;
+    [HideInInspector] public int shieldCooldown = 10;
+    private bool canUseShield = true;
+    private int maxShields = 4;
 
     public float orbitRadius = 2f;
     public float rotationSpeed = 30f;
 
+    private void Start()
+    {
+        stats = FindFirstObjectByType<Nuno_Stats>();
+        nuno = FindFirstObjectByType<Nuno>();
+        shieldHealth = stats.n_maxHealth * (shieldToHealthRatio / 100);
+    }
     void Update()
     {
         if (IsAllShieldDestroyed() == false)
@@ -22,8 +33,7 @@ public class RockShield_ShieldHolder : MonoBehaviour
 
     public void ResetShield()
     {
-        nuno = FindFirstObjectByType<Nuno>();
-        if (nuno.isVulnerable == false) return;
+        if (nuno.isVulnerable == false || !canUseShield) return;
 
         nuno.isVulnerable = false;
         nuno.gameObject.layer = LayerMask.NameToLayer("Default");
@@ -46,13 +56,20 @@ public class RockShield_ShieldHolder : MonoBehaviour
         invulnerableShield.SetActive(!IsAllShieldDestroyed()); // only invulnerable if shields exist
     }
 
-    public void OnShieldDestroyed(/*RockShield_Shield shield*/)
+    IEnumerator ShieldOnCooldown()
+    {
+        canUseShield = false;
+        yield return new WaitForSeconds(shieldCooldown);
+        canUseShield = true;
+    }
+    public void OnShieldDestroyed()
     {
         if (IsAllShieldDestroyed() == true)
         {
             invulnerableShield.SetActive(false);
             nuno.isVulnerable = true;
             nuno.gameObject.layer = LayerMask.NameToLayer("Enemy");
+            StartCoroutine(ShieldOnCooldown());
             Debug.Log("All shields destroyed → Boss vulnerable!");
         }
     }

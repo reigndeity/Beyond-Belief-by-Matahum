@@ -9,7 +9,7 @@ public class Nuno : MonoBehaviour, IDamageable
 {
     private Player m_player;
     private PlayerStats m_playerStats;
-    private EnemyStats m_enemyStats;
+    private Nuno_Stats nunoStats;
     private Rigidbody m_rigidbody;
     [HideInInspector]public bool isVulnerable = true;
 
@@ -19,7 +19,7 @@ public class Nuno : MonoBehaviour, IDamageable
     {
         m_playerStats = FindFirstObjectByType<PlayerStats>();
         m_player = FindFirstObjectByType<Player>();
-        m_enemyStats = GetComponent<EnemyStats>();
+        nunoStats = GetComponent<Nuno_Stats>();
         m_rigidbody = GetComponent<Rigidbody>();
     }
     #region DAMAGE
@@ -31,7 +31,7 @@ public class Nuno : MonoBehaviour, IDamageable
             GetHit();
 
             bool isCriticalHit = UnityEngine.Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
-            float damageReduction = m_enemyStats.e_defense * 0.66f; // Defense Scaling
+            float damageReduction = nunoStats.n_defense * 0.66f; // Defense Scaling
             float reducedDamage = damage - damageReduction;
             if (isCriticalHit)
                 reducedDamage *= (1f + (m_playerStats.p_criticalDamage / 100f));
@@ -39,18 +39,18 @@ public class Nuno : MonoBehaviour, IDamageable
             int finalDamage = Mathf.Max(Mathf.FloorToInt(reducedDamage), 1);
 
             // NEW: centralize health changes in EnemyStats
-            bool died = m_enemyStats.ApplyDamage(finalDamage);
+            bool died = nunoStats.ApplyDamage(finalDamage);
 
             Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
             if (isCriticalHit)
             {
                 DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.red);
-                Debug.Log($"💥 CRITICAL HIT! Enemy took {finalDamage} damage. Current Health: {m_enemyStats.e_currentHealth}");
+                Debug.Log($"💥 CRITICAL HIT! Nuno took {finalDamage} damage. Current Health: {nunoStats.n_currentHealth}");
             }
             else
             {
                 DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.white);
-                Debug.Log($"Enemy took {finalDamage} damage. Current Health: {m_enemyStats.e_currentHealth}");
+                Debug.Log($"Nuno took {finalDamage} damage. Current Health: {nunoStats.n_currentHealth}");
             }
 
             if (died) Death();
