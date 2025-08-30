@@ -5,6 +5,8 @@ public class StonePillar_Pillar : MonoBehaviour
 {
     public float pillarDamage;
     public float pillarHeight;
+    public float risingDuration = 0.25f;
+    public float fallingDuration = 0.5f;
     private bool dealtDamageAlready = false;
 
     private void Start()
@@ -19,12 +21,11 @@ public class StonePillar_Pillar : MonoBehaviour
         Vector3 endPos = startPos + Vector3.up * pillarHeight;
 
         float elapsed = 0f;
-        float riseDuration = 0.25f;
         // Scale in
-        while (elapsed < riseDuration)
+        while (elapsed < risingDuration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / riseDuration;
+            float t = elapsed / risingDuration;
             transform.position = Vector3.Lerp(startPos, endPos, t);
             yield return null;
         }
@@ -35,12 +36,11 @@ public class StonePillar_Pillar : MonoBehaviour
     {
         Vector3 pillarHeightPos = new Vector3(0, pillarHeight, 0);
         float elapsed = 0f;
-        float riseDuration = 0.5f;
         // Scale in
-        while (elapsed < riseDuration)
+        while (elapsed < fallingDuration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / riseDuration;
+            float t = elapsed / fallingDuration;
             transform.position = Vector3.Lerp(topPos, bottomPos, t);
             yield return null;
         }
