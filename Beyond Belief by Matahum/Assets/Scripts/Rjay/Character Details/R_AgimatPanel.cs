@@ -42,6 +42,8 @@ public class R_AgimatPanel : MonoBehaviour
     private R_InventoryItem selectedItem;
     private int? selectedSlot = null;
 
+    private List<R_AgimatSlotUI> slotUIs = new();
+
     private void Start()
     {
         slot1Button.onClick.AddListener(() => OnSelectSlot(1));
@@ -109,9 +111,10 @@ public class R_AgimatPanel : MonoBehaviour
         UpdateInfoPanelAndButtons();
     }
 
-    private void RefreshAgimatList()
+    public void RefreshAgimatList()
     {
         agimatItems.Clear();
+        slotUIs.Clear();
 
         foreach (var item in playerInventory.items)
         {
@@ -128,7 +131,9 @@ public class R_AgimatPanel : MonoBehaviour
             GameObject slotObj = Instantiate(agimatSlotPrefab, agimatSlotContainer);
             var slotUI = slotObj.GetComponent<R_AgimatSlotUI>();
             slotUI.Setup(item, this);
+
             slotUIObjects.Add(slotObj);
+            slotUIs.Add(slotUI); // 👈 keep typed reference
         }
 
         Canvas.ForceUpdateCanvases();
@@ -136,7 +141,6 @@ public class R_AgimatPanel : MonoBehaviour
 
         UpdateSelectionVisuals();
     }
-
     public void OnAgimatSelected(R_InventoryItem item)
     {
         selectedItem = item;
@@ -193,7 +197,8 @@ public class R_AgimatPanel : MonoBehaviour
                 currentSlot,
                 true,  // isSameInstance
                 false, // isSameType
-                () => {
+                () =>
+                {
                     player.UnequipAgimat(otherSlot);
                     player.EquipAgimat(selectedItem, currentSlot);
                     infoPanel.Show(selectedItem.itemData);
@@ -218,7 +223,8 @@ public class R_AgimatPanel : MonoBehaviour
                 currentSlot,
                 false, // not same instance
                 true,  // same type
-                () => {
+                () =>
+                {
                     player.UnequipAgimat(otherSlot);
                     player.EquipAgimat(selectedItem, currentSlot);
                     infoPanel.Show(selectedItem.itemData);
@@ -243,7 +249,8 @@ public class R_AgimatPanel : MonoBehaviour
                 currentSlot,
                 false, // not same instance
                 false, // not same type
-                () => {
+                () =>
+                {
                     player.UnequipAgimat(currentSlot);
                     player.EquipAgimat(selectedItem, currentSlot);
                     infoPanel.Show(selectedItem.itemData);
@@ -349,5 +356,11 @@ public class R_AgimatPanel : MonoBehaviour
             if (obj.TryGetComponent<R_AgimatSlotUI>(out var slotUI))
                 slotUI.SetSelected(slotUI.RepresentsItem(selectedItem));
         }
+    }
+    public Button GetSlotButton(int index)
+    {
+        if (index >= 0 && index < slotUIs.Count)
+            return slotUIs[index].GetButton();
+        return null;
     }
 }

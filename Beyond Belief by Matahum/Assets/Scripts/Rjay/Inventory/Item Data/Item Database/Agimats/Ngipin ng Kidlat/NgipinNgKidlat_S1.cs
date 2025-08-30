@@ -17,7 +17,7 @@ public class NgipinNgKidlat_S1 : R_AgimatAbility
         if (cachedDamagePercent == 0f)
             cachedDamagePercent = GetRandomDamagePercent(rarity);
 
-        return $"Summons a lightning ball, instantly dealing {cachedDamagePercent:F1}% of ATK to all enemies within {strikeRadius}m.";
+        return $"Summons a lightning ball, instantly dealing {cachedDamagePercent:F1}% of ATK to all targets within {strikeRadius}m.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity)
@@ -26,52 +26,41 @@ public class NgipinNgKidlat_S1 : R_AgimatAbility
             cachedDamagePercent = GetRandomDamagePercent(rarity);
 
         float atk = user.GetComponent<PlayerStats>().p_attack;
-
-        // ✅ Damage = ATK + (ATK * %)
         float damage = atk + (atk * (cachedDamagePercent / 100f));
 
         Vector3 origin = user.transform.position;
         Collider[] hits = Physics.OverlapSphere(origin, strikeRadius);
 
-        int enemiesHit = 0;
+        int targetsHit = 0;
         foreach (Collider col in hits)
         {
-            Enemy enemy = col.GetComponent<Enemy>();
-            if (enemy != null)
+            IDamageable dmg = col.GetComponent<IDamageable>();
+            if (dmg != null && !dmg.IsDead() && col.gameObject != user) // ✅ skip self
             {
-                enemy.TakeDamage(damage);
-                enemiesHit++;
-                Debug.Log($"⚡ Ngipin Ng Kidlat struck {enemy.name} for {damage:F1} damage (ATK + {cachedDamagePercent:F1}% of ATK).");
+                dmg.TakeDamage(damage);
+                targetsHit++;
+                Debug.Log($"⚡ Ngipin Ng Kidlat struck {col.name} for {damage:F1} damage (ATK + {cachedDamagePercent:F1}% of ATK).");
 
-                // ✅ Spawn lightning only on enemies
                 if (lightningVFXPrefab != null)
-                    SpawnAndDestroyVFX(enemy.transform.position);
+                    SpawnAndDestroyVFX(col.transform.position);
             }
         }
 
-        if (enemiesHit == 0)
-            Debug.Log("⚡ Ngipin Ng Kidlat activated but no enemies were in range.");
+        if (targetsHit == 0)
+            Debug.Log("⚡ Ngipin Ng Kidlat activated but no targets were in range.");
     }
-
 
     private void SpawnAndDestroyVFX(Vector3 position)
     {
-        // apply Y offset
         Vector3 spawnPos = new Vector3(position.x, position.y + vfxYOffset, position.z);
-
         GameObject vfx = GameObject.Instantiate(lightningVFXPrefab, spawnPos, lightningVFXPrefab.transform.rotation);
 
         ParticleSystem ps = vfx.GetComponent<ParticleSystem>();
         if (ps != null)
-        {
             GameObject.Destroy(vfx, ps.main.duration + ps.main.startLifetime.constantMax);
-        }
         else
-        {
             GameObject.Destroy(vfx, 2f);
-        }
     }
-
 
     private float GetRandomDamagePercent(R_ItemRarity rarity)
     {

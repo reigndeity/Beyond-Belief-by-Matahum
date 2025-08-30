@@ -41,7 +41,7 @@ public class UI_Game : MonoBehaviour
     [SerializeField] private FilterButton rawIngredientsFilter;
 
     [Header("Character Details Properties")]
-    [SerializeField] Button characterDetailsButton;
+    public Button characterDetailsButton;
     [SerializeField] GameObject characterDetailPanel;
     [SerializeField] Button closeCharacterDetailsButton;
     [Header("------------------------")]

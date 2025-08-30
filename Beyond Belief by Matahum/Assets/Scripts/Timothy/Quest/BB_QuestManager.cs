@@ -173,4 +173,28 @@ public class BB_QuestManager : MonoBehaviour
             Debug.LogWarning($"Quest with ID {questID} not found.");
         }
     }
+
+    // DEV FUNCTIONS
+    public void DebugCompleteAndClaimTrackedQuest()
+    {
+        var quest = BB_QuestHUD.instance.trackedQuest;
+        if (quest == null)
+        {
+            Debug.LogWarning("⚠️ No quest is currently tracked.");
+            return;
+        }
+
+        // Force complete all missions
+        foreach (var mission in quest.missions)
+        {
+            mission.currentAmount = mission.requiredAmount;
+        }
+
+        quest.state = QuestState.Completed;
+
+        // Claim instantly
+        ClaimRewards(quest);
+
+        Debug.Log($"✅ DEBUG: Force-completed and claimed quest: {quest.questTitle}");
+    }
 }

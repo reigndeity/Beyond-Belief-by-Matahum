@@ -14,6 +14,8 @@ public class TutorialManager : MonoBehaviour
 
     [Header("Script References")]
     [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private R_Inventory inventory;
+    [SerializeField] private R_AgimatPanel agimatPanel;
 
     [Header("Tutorial Components")]
     public UI_CanvasGroup characterDetailsButton;
@@ -71,8 +73,26 @@ public class TutorialManager : MonoBehaviour
     public GameObject nonInteractablePanel;
     public int currentQuestJournalTutorial = 0;
     public GameObject claimThisTextHelper;
-
-
+    [Header("Character Details UI Tutorial")]
+    public GameObject agimatTutorial;
+    public Button attributesButtonTH;
+    public Button weaponButtonTH;
+    public Button agimatButtonTH;
+    public Button pamanaButtonTH;
+    public Button agimatOneTH;
+    public Button agimatTwoTH;
+    public Button unequipAgimatButtonTH;
+    public Button equipAgimatButtonTH;
+    public TutorialHighlight agimatInventoryTH;
+    public TutorialHighlight agimatItemImageTH;
+    public TutorialHighlight agimatItemDescriptionTH;
+    public int currentAgimatTutorial = 0;
+    public TextMeshProUGUI agimatTutorialText;
+    public Button firstAgimatSlot;
+    public Button nextAgimatTutorialButton;
+    public Button closeCharacterDetailButton;
+    public Button confirmSwitchButton;
+    public TutorialHighlight confirmTextTH;
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -114,8 +134,23 @@ public class TutorialManager : MonoBehaviour
         }
 
         nextJournalTutorialButton.onClick.AddListener(QuestJournalTutorial);
-        
+
     }
+
+    void Update()
+    {
+        // FOR TESTING ONLY
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            BB_QuestManager.Instance.DebugCompleteAndClaimTrackedQuest();
+        }
+        // FOR TESTING ONLY
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            BB_QuestManager.Instance.AcceptQuestByID("A0_Q11_AgimatTraining_P1");
+        }
+    }
+
 
     void StartTutorial()
     {
@@ -131,14 +166,14 @@ public class TutorialManager : MonoBehaviour
         normalSkill.FadeOut(0);
         ultimateSkill.FadeOut(0);
         agimatOne.FadeOut(0);
-        agimatTwo.FadeOut(0);   
+        agimatTwo.FadeOut(0);
         health.FadeOut(0);
 
-        // UI Active State
-        characterDetailsButton.gameObject.SetActive(false);
-        inventoryButton.gameObject.SetActive(false);
-        archiveButton.gameObject.SetActive(false);
-        
+        // Button State
+        characterDetailsButton.GetComponent<Button>().enabled = false;
+        inventoryButton.GetComponent<Button>().enabled = false;
+        archiveButton.GetComponent<Button>().enabled = false;
+
 
         // Tupas House
         tupasHouseStairs.SetActive(false);
@@ -160,7 +195,7 @@ public class TutorialManager : MonoBehaviour
         tutorial_canUltimateSkill = false;
         tutorial_canOpenMap = false;
         tutorial_canToggleMouse = false;
-        playerMovement.ToggleWalk();  
+        playerMovement.ToggleWalk();
 
         // Other Variables
         tutorial_isFirstStatueInteract = false;
@@ -181,6 +216,7 @@ public class TutorialManager : MonoBehaviour
     public void ShowUltimateSkill() => ultimateSkill.FadeIn(0.5f);
     public void HideUltimateSkill() => ultimateSkill.FadeOut(0.5f);
     public void ShowHealth() => health.FadeIn(0.5f);
+    public void HideHealth() => health.FadeOut(0.5f);
 
     public void ShowMinimap() => minimap.FadeIn(0.5f);
     public void HideMinimap() => minimap.FadeOut(0.5f);
@@ -188,6 +224,26 @@ public class TutorialManager : MonoBehaviour
     public void AllowFirstStatueInteraction() => tutorial_isFirstStatueInteract = true;
     public void AllowFullscreenMap() => tutorial_canOpenMap = true;
     public void ShowQuestJournal() => questButton.FadeIn(0.5f);
+    public void HideQuestJournal() => questButton.FadeOut(0.5f);
+
+    public void ShowAgimatOne() => agimatOne.FadeIn(0.5f);
+    public void HideAgimatOne() => agimatOne.FadeOut(0.5f);
+    public void ShowAgimatTwo() => agimatTwo.FadeIn(0.5f);
+    public void HideAgimatTwo() => agimatTwo.FadeOut(0.5f);
+
+
+    public void HideCharacterDetails()
+    {
+        characterDetailsButton.GetComponent<Button>().enabled = false;
+        characterDetailsButton.FadeOut(0.5f);
+    }
+
+    public void ShowCharacterDetails()
+    {
+        characterDetailsButton.GetComponent<Button>().enabled = true;
+        characterDetailsButton.FadeIn(0.5f);
+    }
+
     #endregion
 
     #region QUEST JOURNAL UI TUTORIAL
@@ -202,7 +258,7 @@ public class TutorialManager : MonoBehaviour
     }
     public void QuestJournalTutorial()
     {
-        switch(currentQuestJournalTutorial)
+        switch (currentQuestJournalTutorial)
         {
             case 0:
                 m_uiGame.questButton.onClick.RemoveListener(TutorialManager.instance.EnableQuestJournalTutorial);
@@ -224,7 +280,7 @@ public class TutorialManager : MonoBehaviour
                 nonInteractablePanel.SetActive(false);
                 claimThisTextHelper.SetActive(true);
                 questJournalTextTutorial.text = "Here you can claim, track, or untrack your current selected quest";
-                
+
                 questDetailsPanelTH.enabled = false;
                 mainQuestViewportTH.enabled = true;
                 claimQuestButtonTH.enabled = true;
@@ -252,5 +308,179 @@ public class TutorialManager : MonoBehaviour
 
     #endregion
 
+    #region AGIMAT UI TUTORIAL
+    public void EnableAgimatSlotOneTutorial()
+    {
+        agimatTutorial.SetActive(true);
+        tutorialFadeImage.enabled = true;
+        agimatTutorialText.text = "Click on the button";
+        agimatButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+        agimatButtonTH.onClick.AddListener(AgimatTutorial);
+    }
+    public void EnableAgimatSlotTwoTutorial()
+    {
+        agimatTutorial.SetActive(true);
+        tutorialFadeImage.enabled = true;
+        agimatTutorialText.text = "Click on the button";
+        agimatButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+        agimatButtonTH.onClick.AddListener(AgimatTutorial);
+    }
+    public void AgimatTutorial()
+    {
+        switch (currentAgimatTutorial)
+        {
+            case 0:
+                agimatButtonTH.onClick.RemoveListener(AgimatTutorial);
+                agimatButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                m_uiGame.characterDetailsButton.onClick.RemoveListener(TutorialManager.instance.EnableAgimatSlotOneTutorial);
 
+                agimatTutorialText.text = "Now select the first empty agimat slot";
+                agimatOneTH.GetComponent<TutorialHighlight>().enabled = true;
+                agimatOneTH.onClick.AddListener(AgimatTutorial);
+                break;
+            case 1:
+                agimatOneTH.onClick.RemoveListener(AgimatTutorial);
+                agimatTutorialText.text = "Select the ngipin ng kidlat agimat";
+                agimatInventoryTH.enabled = true;
+                agimatPanel.RefreshAgimatList();
+                StartCoroutine(AttachAgimatTutorialToFirstAgimatSlot());
+                break;
+            case 2:
+                agimatTutorialText.text = "Here you can see the type of agimat that you have";
+                firstAgimatSlot.onClick.RemoveListener(AgimatTutorial);
+                agimatInventoryTH.enabled = false;
+                nextAgimatTutorialButton.gameObject.SetActive(true);
+                StartCoroutine(ShowNextAgimatTutorialButton());
+                nextAgimatTutorialButton.onClick.AddListener(AgimatTutorial);
+                agimatItemDescriptionTH.enabled = true;
+                agimatItemImageTH.enabled = true;
+                agimatOneTH.GetComponent<TutorialHighlight>().enabled = false;
+                break;
+            case 3:
+                agimatItemDescriptionTH.enabled = false;
+                agimatItemImageTH.enabled = false;
+                agimatTutorialText.text = "Try equipping it to slot 1";
+                equipAgimatButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+                equipAgimatButtonTH.onClick.AddListener(AgimatTutorial);
+
+                nextAgimatTutorialButton.gameObject.SetActive(false);
+                break;
+            case 4:
+                agimatTutorialText.text = "Now select this button to continue";
+                equipAgimatButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                equipAgimatButtonTH.onClick.RemoveListener(AgimatTutorial);
+                closeCharacterDetailButton.GetComponent<TutorialHighlight>().enabled = true;
+                closeCharacterDetailButton.onClick.AddListener(CloseAndAcceptAgimatTrainingP2);
+                break;
+            case 5:
+                agimatButtonTH.onClick.RemoveListener(AgimatTutorial);
+                agimatButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                m_uiGame.characterDetailsButton.onClick.RemoveListener(TutorialManager.instance.EnableAgimatSlotTwoTutorial);
+
+                agimatTutorialText.text = "Now select the second empty agimat slot";
+                agimatTwoTH.GetComponent<TutorialHighlight>().enabled = true;
+                agimatTwoTH.onClick.AddListener(AgimatTutorial);
+                break;
+            case 6:
+                agimatTwoTH.GetComponent<TutorialHighlight>().enabled = false;
+                agimatTwoTH.onClick.RemoveListener(AgimatTutorial);
+                agimatTutorialText.text = "Select the ngipin ng kidlat agimat";
+                agimatInventoryTH.enabled = true;
+                agimatPanel.RefreshAgimatList();
+                StartCoroutine(AttachAgimatTutorialToFirstAgimatSlot());
+                break;
+            case 7:
+                agimatInventoryTH.enabled = false;
+                firstAgimatSlot.onClick.RemoveListener(AgimatTutorial);
+                agimatTutorialText.text = "Try equipping it to slot 2";
+                equipAgimatButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+                equipAgimatButtonTH.onClick.AddListener(AgimatTutorial);
+                break;
+            case 8:
+                agimatTutorialText.text = "Click on the confirm button";
+                equipAgimatButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                equipAgimatButtonTH.onClick.RemoveListener(AgimatTutorial);
+                confirmSwitchButton.GetComponent<TutorialHighlight>().enabled = true;
+                confirmSwitchButton.onClick.AddListener(AgimatTutorial);
+                confirmTextTH.enabled = true;
+                break;
+            case 9:
+                agimatTutorialText.text = "Now click on the close button";
+                confirmSwitchButton.GetComponent<TutorialHighlight>().enabled = false;
+                confirmSwitchButton.onClick.RemoveListener(AgimatTutorial);
+                confirmTextTH.enabled = false;
+                closeCharacterDetailButton.GetComponent<TutorialHighlight>().enabled = true;
+                closeCharacterDetailButton.onClick.AddListener(CloseAndAcceptAgimatTrainingP4);
+                break;
+
+        }
+        currentAgimatTutorial++;
+    }
+
+    private IEnumerator AttachAgimatTutorialToFirstAgimatSlot()
+    {
+        yield return null; // wait one frame so RefreshAgimatList is done
+
+        firstAgimatSlot = agimatPanel.GetSlotButton(0);
+
+        if (firstAgimatSlot != null)
+        {
+            firstAgimatSlot.onClick.AddListener(AgimatTutorial);
+            Debug.Log($"✅ Listener added to {firstAgimatSlot.name}");
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ First Agimat Slot not found.");
+        }
+    }
+    private IEnumerator ShowNextAgimatTutorialButton()
+    {
+        // wait 1 second first
+        yield return new WaitForSecondsRealtime(1f);
+
+        CanvasGroup cg = nextAgimatTutorialButton.GetComponent<CanvasGroup>();
+        if (cg == null) yield break;
+
+        float duration = 0.25f;
+        float elapsed = 0f;
+
+        // start from current alpha (maybe 0)
+        float startAlpha = cg.alpha;
+        float endAlpha = 1f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime; // use unscaled so it ignores Time.timeScale
+            float t = Mathf.Clamp01(elapsed / duration);
+            cg.alpha = Mathf.Lerp(startAlpha, endAlpha, t);
+            yield return null;
+        }
+
+        nextAgimatTutorialButton.GetComponent<TutorialHighlight>().enabled = true;
+        cg.alpha = 1f; // make sure it ends at 1
+    }
+
+    private void CloseAndAcceptAgimatTrainingP2()
+    {
+        closeCharacterDetailButton.GetComponent<TutorialHighlight>().enabled = false;
+        agimatTutorial.SetActive(false);
+        tutorialFadeImage.enabled = false;
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q11_AgimatSkillOne");
+        BB_QuestManager.Instance.ClaimRewardsByID("A0_Q11_AgimatTraining_P1");
+        closeCharacterDetailButton.onClick.RemoveListener(CloseAndAcceptAgimatTrainingP2);
+        BB_QuestManager.Instance.AcceptQuestByID("A0_Q11_AgimatTraining_P2");
+        HideCharacterDetails();
+    }
+    private void CloseAndAcceptAgimatTrainingP4()
+    {
+        closeCharacterDetailButton.GetComponent<TutorialHighlight>().enabled = false;
+        agimatTutorial.SetActive(false);
+        tutorialFadeImage.enabled = false;
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q11_AgimatSkillTwo");
+        BB_QuestManager.Instance.ClaimRewardsByID("A0_Q11_AgimatTraining_P3");
+        closeCharacterDetailButton.onClick.RemoveListener(CloseAndAcceptAgimatTrainingP4);
+        BB_QuestManager.Instance.AcceptQuestByID("A0_Q11_AgimatTraining_P4");
+        HideCharacterDetails();
+     }
+    #endregion
 }

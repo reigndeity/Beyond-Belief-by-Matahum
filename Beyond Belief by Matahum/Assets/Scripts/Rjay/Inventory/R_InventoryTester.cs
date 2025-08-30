@@ -23,19 +23,19 @@ public class R_InventoryTester : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time >= nextPressTime && Input.GetKeyDown(KeyCode.I))
-        {
-            if (inventory != null && testItem != null)
-            {
-                inventory.AddItem(testItem, amount);
-                inventory.AddItem(testItem2, amount);
-                inventoryUI.RefreshUI();
-                Debug.Log($"Added {amount} x {testItem.itemName} (Total: {GetTotalAmount(testItem)})");
-                Debug.Log($"Added {amount} x {testItem2.itemName} (Total: {GetTotalAmount(testItem2)})");
+        // if (Time.time >= nextPressTime && Input.GetKeyDown(KeyCode.I))
+        // {
+        //     if (inventory != null && testItem != null)
+        //     {
+        //         inventory.AddItem(testItem, amount);
+        //         inventory.AddItem(testItem2, amount);
+        //         inventoryUI.RefreshUI();
+        //         Debug.Log($"Added {amount} x {testItem.itemName} (Total: {GetTotalAmount(testItem)})");
+        //         Debug.Log($"Added {amount} x {testItem2.itemName} (Total: {GetTotalAmount(testItem2)})");
 
-                nextPressTime = Time.time + keyCooldown;
-            }
-        }
+        //         nextPressTime = Time.time + keyCooldown;
+        //     }
+        // }
 
         if (Input.GetKeyDown(KeyCode.P))
         {

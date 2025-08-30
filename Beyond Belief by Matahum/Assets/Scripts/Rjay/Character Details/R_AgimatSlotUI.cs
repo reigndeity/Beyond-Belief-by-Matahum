@@ -56,9 +56,16 @@ public class R_AgimatSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             equippedLabel.SetActive(isEquipped);
         }
 
-        selectButton.onClick.RemoveAllListeners();
-        selectButton.onClick.AddListener(() => parentPanel.OnAgimatSelected(representedItem));
+        // Instead of nuking all listeners, just replace OURS
+        selectButton.onClick.RemoveListener(OnClickSlot);
+        selectButton.onClick.AddListener(OnClickSlot);
     }
+
+    private void OnClickSlot()
+    {
+        parentPanel.OnAgimatSelected(representedItem);
+    }
+
 
     public void SetSelected(bool selected)
     {
@@ -92,4 +99,10 @@ public class R_AgimatSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         return representedItem == item;
     }
+
+    public Button GetButton()
+    {
+        return selectButton;
+    }
+
 }

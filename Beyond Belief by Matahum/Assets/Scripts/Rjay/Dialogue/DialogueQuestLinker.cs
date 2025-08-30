@@ -11,6 +11,8 @@ public class DialogueQuestLinker : MonoBehaviour
     public bool isDelayAccept;
     [SerializeField] private UI_Game m_uiGame;
     private PlayerInput m_playerInput;
+    [SerializeField] R_Inventory inventory;
+    [SerializeField] R_InventoryUI inventoryUI;
 
     [Header("All NPCs Dialogue State Holders")]
     public DialogueStateHolder tupas;
@@ -45,6 +47,12 @@ public class DialogueQuestLinker : MonoBehaviour
     public TimelineAsset A0_Q4_TrainingWithBangkaw_Cutscene;
     [SerializeField] private MinimapRenderer playerMinimapRenderer;
     [SerializeField] GameObject fullscreenMapPopUp;
+    public R_ItemData ngipinNgKidlatAgimat;
+    public TimelineAsset A0_Q11_AgimatTraining_P1_Cutscene;
+    public TimelineAsset A0_Q11_AgimatTraining_P2_Cutscene;
+    [SerializeField] private Transform agimatSkillOneTrainingDummies;
+    public TimelineAsset A0_Q11_AgimatTraining_P3_Cutscene;
+    public TimelineAsset A0_Q11_AgimatTraining_P4_Cutscene;
 
     void OnEnable()
     {
@@ -108,7 +116,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     bangkaw.SetDialogueState("A0_Q2_FindAndTalkToBangkaw");
                     ApplyStates(tupas, bakal, bangkaw);
                     AddActiveMarker(currentQuestID, tracked);
-        
+
                     break;
 
                 case "A0_Q3_Bangkaw'sTraining_P1":
@@ -197,7 +205,44 @@ public class DialogueQuestLinker : MonoBehaviour
                     ApplyStates(tupas, bangkaw);
                     AddActiveMarker(currentQuestID, tracked);
                     break;
+                case "A0_Q11_AgimatTraining_P1":
+                    bangkaw.SetDialogueState("A0_Q11_AgimatTraining_P1");
+                    ApplyStates(bangkaw);
+                    inventory.AddItem(ngipinNgKidlatAgimat, 1);
+                    inventoryUI.RefreshUI();
+                    m_uiGame.characterDetailsButton.onClick.AddListener(TutorialManager.instance.EnableAgimatSlotOneTutorial);
+                    CutsceneManager.Instance.PlayCutscene(A0_Q11_AgimatTraining_P1_Cutscene);
 
+
+                    TutorialManager.instance.tutorial_canAttack = false;
+                    TutorialManager.instance.tutorial_canNormalSkill = false;
+                    TutorialManager.instance.tutorial_canUltimateSkill = false;
+                    TutorialManager.instance.tutorial_canOpenMap = false;
+                    TutorialManager.instance.HideNormalSkill();
+                    TutorialManager.instance.HideUltimateSkill();
+                    TutorialManager.instance.HideHealth();
+                    TutorialManager.instance.HideQuestJournal();
+                    TutorialManager.instance.HideMinimap();
+                    break;
+                case "A0_Q11_AgimatTraining_P2":
+                    bangkaw.SetDialogueState("A0_Q11_AgimatTraining_P2");
+                    ApplyStates(bangkaw);
+                    CutsceneManager.Instance.PlayCutscene(A0_Q11_AgimatTraining_P2_Cutscene);
+                    TutorialManager.instance.ShowAgimatOne();
+                    break;
+                case "A0_Q11_AgimatTraining_P3":
+                    bangkaw.SetDialogueState("A0_Q11_AgimatTraining_P3");
+                    ApplyStates(bangkaw);
+                    CutsceneManager.Instance.PlayCutscene(A0_Q11_AgimatTraining_P3_Cutscene);
+                    TutorialManager.instance.HideAgimatOne();
+                    m_uiGame.characterDetailsButton.onClick.AddListener(TutorialManager.instance.EnableAgimatSlotTwoTutorial);
+                    break;
+                case "A0_Q11_AgimatTraining_P4":
+                    bangkaw.SetDialogueState("A0_Q11_AgimatTraining_P4");
+                    ApplyStates(bangkaw);
+                    CutsceneManager.Instance.PlayCutscene(A0_Q11_AgimatTraining_P4_Cutscene);
+                    TutorialManager.instance.ShowAgimatTwo();
+                    break;
             }
         }
 
@@ -268,6 +313,15 @@ public class DialogueQuestLinker : MonoBehaviour
                 BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q6_SacredStatue");
                 StartCoroutine(DelayAcceptQuestReward("A0_Q6_SacredStatue"));
                 StartCoroutine(DelayAcceptQuest("A0_Q7_KeepingTrack"));
+            }
+        }
+        if (agimatSkillOneTrainingDummies.childCount == 0)
+        {
+            isDelayAccept = false;
+            if (!isDelayAccept)
+            {
+                StartCoroutine(DelayAcceptQuestReward("A0_Q11_AgimatTraining_P2"));
+                StartCoroutine(DelayAcceptQuest("A0_Q11_AgimatTraining_P3"));
             }
         }
     }

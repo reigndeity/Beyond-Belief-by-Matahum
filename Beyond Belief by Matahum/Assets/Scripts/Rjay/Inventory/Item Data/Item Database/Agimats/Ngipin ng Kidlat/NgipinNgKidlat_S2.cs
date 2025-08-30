@@ -4,12 +4,12 @@ using UnityEngine;
 public class NgipinNgKidlat_S2 : R_AgimatAbility
 {
     [Header("Strike Settings")]
-    [SerializeField] private float searchRadius = 12f;   // how far we look for the nearest enemy
-    [SerializeField] private float strikeRadius = 4f;    // AoE radius around the struck enemy
+    [SerializeField] private float searchRadius = 12f;
+    [SerializeField] private float strikeRadius = 4f;
 
     [Header("Visual Effect")]
     [SerializeField] private GameObject lightningVFXPrefab;
-    [SerializeField] private float vfxYOffset = 0f; // 🔹 new offset value
+    [SerializeField] private float vfxYOffset = 0f;
 
     [HideInInspector] public float cachedDamagePercent;
 
@@ -18,7 +18,7 @@ public class NgipinNgKidlat_S2 : R_AgimatAbility
         if (cachedDamagePercent == 0f)
             cachedDamagePercent = GetRandomDamagePercent(rarity);
 
-        return $"Calls down a thunder strike on the nearest enemy, dealing {cachedDamagePercent:F1}% of ATK. Nearby enemies within {strikeRadius}m are also damaged.";
+        return $"Calls down a thunder strike on the nearest target, dealing {cachedDamagePercent:F1}% of ATK. Nearby targets within {strikeRadius}m are also damaged.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity)
@@ -27,85 +27,73 @@ public class NgipinNgKidlat_S2 : R_AgimatAbility
             cachedDamagePercent = GetRandomDamagePercent(rarity);
 
         float atk = user.GetComponent<PlayerStats>().p_attack;
-        
-        // ✅ Damage = ATK + (ATK * %)
         float damage = atk + (atk * (cachedDamagePercent / 100f));
 
-        // 1️⃣ Find the closest enemy in searchRadius
-        Enemy mainTarget = FindNearestEnemy(user.transform.position, searchRadius);
+        // 1️⃣ Find the closest valid target
+        IDamageable mainTarget = FindNearestTarget(user, user.transform.position, searchRadius);
 
-        if (mainTarget != null)
+        if (mainTarget != null && !mainTarget.IsDead())
         {
-            Vector3 strikePoint = mainTarget.transform.position;
+            Vector3 strikePoint = (mainTarget as MonoBehaviour).transform.position;
 
-            // 2️⃣ Damage the main target
             mainTarget.TakeDamage(damage);
-            Debug.Log($"⚡ Ngipin Ng Kidlat S2 struck {mainTarget.name} for {damage:F1} damage (ATK + {cachedDamagePercent:F1}% of ATK).");
+            Debug.Log($"⚡ Ngipin Ng Kidlat S2 struck {strikePoint} for {damage:F1} damage (ATK + {cachedDamagePercent:F1}% of ATK).");
 
-            // ✅ Spawn thunder VFX only once at the main target
             if (lightningVFXPrefab != null)
                 SpawnAndDestroyVFX(strikePoint);
 
-            // 3️⃣ Damage other enemies nearby (splash damage, no extra prefab)
+            // 2️⃣ AoE splash
             Collider[] hits = Physics.OverlapSphere(strikePoint, strikeRadius);
             foreach (Collider col in hits)
             {
-                Enemy enemy = col.GetComponent<Enemy>();
-                if (enemy != null && enemy != mainTarget)
+                IDamageable dmg = col.GetComponent<IDamageable>();
+                if (dmg != null && dmg != mainTarget && !dmg.IsDead() && col.gameObject != user) // ✅ skip self
                 {
-                    enemy.TakeDamage(damage);
-                    Debug.Log($"⚡ AoE splash hit {enemy.name} for {damage:F1} damage.");
+                    dmg.TakeDamage(damage);
+                    Debug.Log($"⚡ AoE splash hit {col.name} for {damage:F1} damage.");
                 }
             }
         }
         else
         {
-            Debug.Log("⚡ Ngipin Ng Kidlat S2 activated but no enemy was found in range.");
+            Debug.Log("⚡ Ngipin Ng Kidlat S2 activated but no valid target was found in range.");
         }
     }
 
-
-    private Enemy FindNearestEnemy(Vector3 origin, float radius)
+    private IDamageable FindNearestTarget(GameObject caster, Vector3 origin, float radius)
     {
         Collider[] hits = Physics.OverlapSphere(origin, radius);
         float closestDist = Mathf.Infinity;
-        Enemy closestEnemy = null;
+        IDamageable closest = null;
 
         foreach (Collider col in hits)
         {
-            Enemy enemy = col.GetComponent<Enemy>();
-            if (enemy != null)
+            IDamageable dmg = col.GetComponent<IDamageable>();
+            if (dmg != null && !dmg.IsDead() && col.gameObject != caster) // ✅ skip self
             {
-                float dist = Vector3.Distance(origin, enemy.transform.position);
+                float dist = Vector3.Distance(origin, (dmg as MonoBehaviour).transform.position);
                 if (dist < closestDist)
                 {
                     closestDist = dist;
-                    closestEnemy = enemy;
+                    closest = dmg;
                 }
             }
         }
 
-        return closestEnemy;
+        return closest;
     }
 
     private void SpawnAndDestroyVFX(Vector3 position)
     {
-        // apply Y offset
         Vector3 spawnPos = new Vector3(position.x, position.y + vfxYOffset, position.z);
-
         GameObject vfx = GameObject.Instantiate(lightningVFXPrefab, spawnPos, lightningVFXPrefab.transform.rotation);
 
         ParticleSystem ps = vfx.GetComponent<ParticleSystem>();
         if (ps != null)
-        {
             GameObject.Destroy(vfx, ps.main.duration + ps.main.startLifetime.constantMax);
-        }
         else
-        {
             GameObject.Destroy(vfx, 2f);
-        }
     }
-
 
     private float GetRandomDamagePercent(R_ItemRarity rarity)
     {
