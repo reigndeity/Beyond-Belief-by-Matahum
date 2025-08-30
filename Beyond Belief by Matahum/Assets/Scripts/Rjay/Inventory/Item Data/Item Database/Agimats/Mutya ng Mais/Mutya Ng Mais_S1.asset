@@ -14,5 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Golden Kernel
   abilityIcon: {fileID: -1337500606, guid: 0e23a73e1f2d88241936c9c687911d73, type: 3}
-  description: Heals an amount equivalent to 50% of HP.
+  passiveTriggerDelay: 1
   isPassive: 0
+  baseCooldown: 12
+  cachedHealPercent: 0
+  healVFXPrefab: {fileID: 105942, guid: a5ce04056906c4146933f34ba5fed0bd, type: 3}
+  vfxYOffset: 1

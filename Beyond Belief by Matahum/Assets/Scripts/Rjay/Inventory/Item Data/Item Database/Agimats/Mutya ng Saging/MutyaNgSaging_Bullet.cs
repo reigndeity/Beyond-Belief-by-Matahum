@@ -18,10 +18,10 @@ public class MutyaNgSaging_Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Enemy enemy = other.GetComponent<Enemy>();
-        if (enemy != null)
+        IDamageable damageable = other.GetComponent<IDamageable>();
+        if (damageable != null && other.gameObject.tag != "Player")
         {
-            enemy.TakeDamage(bulletDamage);
+            damageable.TakeDamage(bulletDamage);
             Destroy(gameObject);
         }
     }

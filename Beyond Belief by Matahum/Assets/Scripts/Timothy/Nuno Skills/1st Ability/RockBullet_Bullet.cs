@@ -24,6 +24,6 @@ public class RockBullet_Bullet : MonoBehaviour
         {
             player.TakeDamage(bulletDamage);
         }
-        Destroy(gameObject);
+        if(canShoot) Destroy(gameObject);
     }
 }

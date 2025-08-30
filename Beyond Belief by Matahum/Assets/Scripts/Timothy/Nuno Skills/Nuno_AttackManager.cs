@@ -7,7 +7,7 @@ public class Nuno_AttackManager : MonoBehaviour
 
     public List<Nuno_Ability> abilityList = new List<Nuno_Ability>();
     public bool isBattleStart = false;
-    public bool isAttacking = false;
+    private bool isAttacking = false;
 
     [Header("Skill 1 Properties")]
     public Transform[] bulletPosition;
@@ -30,9 +30,14 @@ public class Nuno_AttackManager : MonoBehaviour
     {
         if (!isBattleStart) return;
 
-        // Always face the player
-        Vector3 direction = (player.transform.position - transform.position).normalized;
-        transform.rotation = Quaternion.LookRotation(direction);
+        // Get direction to player but ignore Y axis
+        Vector3 direction = player.transform.position - transform.position;
+        direction.y = 0f; // prevents looking up/down
+
+        if (direction != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
 
         if (!isAttacking)
         {
@@ -40,6 +45,7 @@ public class Nuno_AttackManager : MonoBehaviour
             StartCoroutine(SkillRandomizer());
         }
     }
+
 
     private IEnumerator SkillRandomizer()
     {

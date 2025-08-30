@@ -4,14 +4,13 @@ public class RockShield_ShieldHolder : MonoBehaviour
 {
     public RockShield_Shield[] shieldPrefab; // 4 shields in inspector
     public GameObject invulnerableShield;
+    private Nuno nuno;
 
     [HideInInspector] public float shieldHealth;
     public int maxShields = 4;
 
     public float orbitRadius = 2f;
     public float rotationSpeed = 30f;
-
-    //public int currentActiveShields = 0;
 
     void Update()
     {
@@ -23,8 +22,11 @@ public class RockShield_ShieldHolder : MonoBehaviour
 
     public void ResetShield()
     {
-        //currentActiveShields = 0;
+        nuno = FindFirstObjectByType<Nuno>();
+        if (nuno.isVulnerable == false) return;
 
+        nuno.isVulnerable = false;
+        nuno.gameObject.layer = LayerMask.NameToLayer("Default");
         for (int i = 0; i < shieldPrefab.Length; i++)
         {
             var shield = shieldPrefab[i];
@@ -39,8 +41,6 @@ public class RockShield_ShieldHolder : MonoBehaviour
 
                 shield.Init(this, shieldHealth);
             }
-
-            //if (shield.gameObject.activeSelf) currentActiveShields++;
         }
 
         invulnerableShield.SetActive(!IsAllShieldDestroyed()); // only invulnerable if shields exist
@@ -48,11 +48,11 @@ public class RockShield_ShieldHolder : MonoBehaviour
 
     public void OnShieldDestroyed(/*RockShield_Shield shield*/)
     {
-        //currentActiveShields--;
-
         if (IsAllShieldDestroyed() == true)
         {
             invulnerableShield.SetActive(false);
+            nuno.isVulnerable = true;
+            nuno.gameObject.layer = LayerMask.NameToLayer("Enemy");
             Debug.Log("All shields destroyed → Boss vulnerable!");
         }
     }

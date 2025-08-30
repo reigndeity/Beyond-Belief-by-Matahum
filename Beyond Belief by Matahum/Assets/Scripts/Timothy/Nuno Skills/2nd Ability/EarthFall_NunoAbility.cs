@@ -9,9 +9,6 @@ public class EarthFall_NunoAbility : Nuno_Ability
     public GameObject earthFallHolderPrefab;
     public float earthFallObjLifetime;
 
-    [HideInInspector] public Vector3[] areaToSpawn; // Store positions instead of transforms
-    public float startMovingDelay = 3f;
-
     public override void Activate()
     {
         CoroutineRunner.Instance.RunCoroutine(SpawnEarthFall());

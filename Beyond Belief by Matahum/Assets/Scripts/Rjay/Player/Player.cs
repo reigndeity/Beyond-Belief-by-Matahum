@@ -234,6 +234,11 @@ public class Player : MonoBehaviour, IDamageable
 
         m_playerStats.p_currentHealth = Mathf.Min(oldHP + amount, maxHP);
 
+        int displayAmount = Mathf.Max(1, Mathf.FloorToInt(amount));
+
+        Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f),Random.Range(0f, 0.25f),Random.Range(0f, 0.25f));
+        DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, displayAmount.ToString(), Color.green);
+
         Debug.Log($"💚 Healed {amount} HP. Current Health: {m_playerStats.p_currentHealth} / {maxHP}");
     }
     #endregion

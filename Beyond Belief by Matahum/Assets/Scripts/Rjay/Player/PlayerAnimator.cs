@@ -337,11 +337,10 @@ public class PlayerAnimator : MonoBehaviour
     {
         m_playerInput.enabled = false;
         m_playerMovement.enabled = false;
-
         yield return new WaitForSeconds(duration);
-
         m_playerInput.enabled = true;
         m_playerMovement.enabled = true;
+
         isHit = false;
     }
 

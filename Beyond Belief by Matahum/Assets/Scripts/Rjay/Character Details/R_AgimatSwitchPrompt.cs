@@ -11,15 +11,12 @@ public class R_AgimatSwitchPrompt : MonoBehaviour
 
     private Action onConfirm;
 
-    public void Open(string itemName, int fromSlot, int toSlot, Action confirmCallback)
+    // General-purpose switch prompt
+    public void Open(string message, Action confirmCallback)
     {
         gameObject.SetActive(true);
 
-        if (fromSlot == toSlot)
-            messageText.text = $"{itemName} is already equipped in Slot {fromSlot}. Replace it with this one instead?";
-        else
-            messageText.text = $"{itemName} is equipped on Slot {fromSlot}. Equip it to Slot {toSlot} instead?";
-
+        messageText.text = message;
         onConfirm = confirmCallback;
 
         yesButton.onClick.RemoveAllListeners();
@@ -33,6 +30,32 @@ public class R_AgimatSwitchPrompt : MonoBehaviour
         cancelButton.onClick.AddListener(Close);
     }
 
+    // Specific helper for Agimat messages
+    public void OpenForAgimat(string selectedName, string equippedName, int fromSlot, int toSlot, 
+                              bool isSameInstance, bool isSameType, Action confirmCallback)
+    {
+        string msg;
+
+        if (isSameInstance)
+        {
+            // Case 1: Same instance, moving to another slot
+            msg = $"{selectedName} is already equipped on Slot {fromSlot}. Do you want to equip it on Slot {toSlot} instead?";
+        }
+        else if (isSameType)
+        {
+            // Case 2: Another copy of the same Agimat type
+            msg = $"The same type of agimat is already equipped on Slot {fromSlot}. " +
+                  $"Do you want to replace it in this slot with this one instead?";
+        }
+        else
+        {
+            // Case 3: Different type replacing current
+            msg = $"{equippedName} is currently equipped on Slot {toSlot}. " +
+                  $"Replace it with {selectedName} instead?";
+        }
+
+        Open(msg, confirmCallback);
+    }
 
     public void Close()
     {

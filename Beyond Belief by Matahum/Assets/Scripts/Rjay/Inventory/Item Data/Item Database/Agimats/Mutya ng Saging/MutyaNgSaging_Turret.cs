@@ -27,9 +27,8 @@ public class MutyaNgSaging_Turret : MonoBehaviour
             // Find all enemies in range
             Collider[] hits = Physics.OverlapSphere(transform.position, range);
             var enemies = hits
-                .Select(h => h.GetComponent<Enemy>())
-                .Where(e => e != null)
-                .ToList();
+            .Where(h => h.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            .ToList();
 
             if (enemies.Count > 0)
             {
@@ -39,8 +38,7 @@ public class MutyaNgSaging_Turret : MonoBehaviour
                     .First().transform;
 
                 // Compute direction directly toward the enemy
-                Vector3 offset = new Vector3(0,0.5f,0);
-                Vector3 dir = ((target.position + offset) - transform.position).normalized;
+                Vector3 dir = ((target.position) - transform.position).normalized;
 
                 // Spawn bullet
                 GameObject bulletObj = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
