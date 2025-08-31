@@ -18,7 +18,7 @@ public class R_PamanaPanel : MonoBehaviour
     [SerializeField] private Button slotDiwata;
     [SerializeField] private Button slotLihim;
     [SerializeField] private Button slotSalamangkero;
-    
+
     [Header("Default Empty Slot Sprites")]
     [SerializeField] private Sprite emptyDiwataSprite;
     [SerializeField] private Sprite emptyLihimSprite;
@@ -51,6 +51,8 @@ public class R_PamanaPanel : MonoBehaviour
     private R_InventoryItem selectedItem;
     private Player player;
 
+    private List<R_PamanaSlotUI> slotUIs = new();
+
 
     private void Awake()
     {
@@ -74,6 +76,7 @@ public class R_PamanaPanel : MonoBehaviour
     public void RefreshPamanaList()
     {
         filteredPamanaItems.Clear();
+        slotUIs.Clear();
 
         foreach (var item in playerInventory.items)
         {
@@ -96,9 +99,12 @@ public class R_PamanaPanel : MonoBehaviour
 
             R_PamanaSlotUI slotUI = slotObj.GetComponent<R_PamanaSlotUI>();
             slotUI.Setup(item, this);
+
             uiSlots.Add(slotObj);
+            slotUIs.Add(slotUI); // 👈 keep typed reference
         }
     }
+
 
     public void OnClick_EquipSlot_Diwata() => SelectEquipSlot(R_PamanaSlotType.Diwata);
     public void OnClick_EquipSlot_Lihim() => SelectEquipSlot(R_PamanaSlotType.Lihim);
@@ -124,7 +130,7 @@ public class R_PamanaPanel : MonoBehaviour
             unequipButton.interactable = true;
             equipButton.interactable = false; // already equipped
 
-             UpdateSelectedSlotVisual();
+            UpdateSelectedSlotVisual();
         }
         else if (filteredPamanaItems.Count > 0)
         {
@@ -300,4 +306,11 @@ public class R_PamanaPanel : MonoBehaviour
             }
         }
     }
+    public Button GetSlotButton(int index)
+    {
+        if (index >= 0 && index < slotUIs.Count)
+            return slotUIs[index].GetButton();
+        return null;
+    }
+
 }

@@ -53,6 +53,9 @@ public class DialogueQuestLinker : MonoBehaviour
     [SerializeField] private Transform agimatSkillOneTrainingDummies;
     public TimelineAsset A0_Q11_AgimatTraining_P3_Cutscene;
     public TimelineAsset A0_Q11_AgimatTraining_P4_Cutscene;
+    [SerializeField] private Transform agimatSkillTwoTrainingDummies;
+    public TimelineAsset A0_Q12_PamanaTraining_P1_Cutscene;
+    public R_ItemData[] adlaoPamana;
 
     void OnEnable()
     {
@@ -243,6 +246,16 @@ public class DialogueQuestLinker : MonoBehaviour
                     CutsceneManager.Instance.PlayCutscene(A0_Q11_AgimatTraining_P4_Cutscene);
                     TutorialManager.instance.ShowAgimatTwo();
                     break;
+                case "A0_Q12_PamanaTraining_P1":
+                    bangkaw.SetDialogueState("A0_Q12_PamanaTraining_P1");
+                    ApplyStates(bangkaw);
+                    CutsceneManager.Instance.PlayCutscene(A0_Q12_PamanaTraining_P1_Cutscene);
+                    TutorialManager.instance.HideAgimatTwo();
+
+                    m_uiGame.characterDetailsButton.onClick.AddListener(TutorialManager.instance.EnablePamanaTutorial);
+                    R_GeneralItemSpawner.instance.SpawnSinglePamana(adlaoPamana);
+                    inventoryUI.RefreshUI();
+                    break;
             }
         }
 
@@ -322,6 +335,15 @@ public class DialogueQuestLinker : MonoBehaviour
             {
                 StartCoroutine(DelayAcceptQuestReward("A0_Q11_AgimatTraining_P2"));
                 StartCoroutine(DelayAcceptQuest("A0_Q11_AgimatTraining_P3"));
+            }
+        }
+        if (agimatSkillTwoTrainingDummies.childCount == 0)
+        {
+            isDelayAccept = false;
+            if (!isDelayAccept)
+            {
+                StartCoroutine(DelayAcceptQuestReward("A0_Q11_AgimatTraining_P4"));
+                StartCoroutine(DelayAcceptQuest("A0_Q12_PamanaTraining_P1"));
             }
         }
     }

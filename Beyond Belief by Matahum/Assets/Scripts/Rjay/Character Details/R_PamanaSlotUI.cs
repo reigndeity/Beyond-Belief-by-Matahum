@@ -91,4 +91,8 @@ public class R_PamanaSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         return representedItem == item;
     }
+    public Button GetButton()
+    {
+        return selectButton;
+    }
 }

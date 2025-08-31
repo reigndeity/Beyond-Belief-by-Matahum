@@ -16,6 +16,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private R_Inventory inventory;
     [SerializeField] private R_AgimatPanel agimatPanel;
+    [SerializeField] private R_PamanaPanel pamanaPanel;
 
     [Header("Tutorial Components")]
     public UI_CanvasGroup characterDetailsButton;
@@ -74,11 +75,14 @@ public class TutorialManager : MonoBehaviour
     public int currentQuestJournalTutorial = 0;
     public GameObject claimThisTextHelper;
     [Header("Character Details UI Tutorial")]
-    public GameObject agimatTutorial;
-    public Button attributesButtonTH;
     public Button weaponButtonTH;
+    public Button closeCharacterDetailButton;
+    public Button confirmSwitchButton;
+    public TutorialHighlight confirmTextTH;
+
+    [Header("Agimat Tutorial")]
     public Button agimatButtonTH;
-    public Button pamanaButtonTH;
+    public GameObject agimatTutorial;
     public Button agimatOneTH;
     public Button agimatTwoTH;
     public Button unequipAgimatButtonTH;
@@ -90,9 +94,22 @@ public class TutorialManager : MonoBehaviour
     public TextMeshProUGUI agimatTutorialText;
     public Button firstAgimatSlot;
     public Button nextAgimatTutorialButton;
-    public Button closeCharacterDetailButton;
-    public Button confirmSwitchButton;
-    public TutorialHighlight confirmTextTH;
+
+    [Header("Pamana Tutorial")]
+    public Button pamanaButtonTH;
+    public Button attributesButtonTH;
+    public int currentPamanaTutorial = 0;
+    public Button firstPamanaSlot;
+    public TextMeshProUGUI pamanaTutorialText;
+    public GameObject pamanaTutorial;
+    public Button diwataSlotButtonTH;
+    public TutorialHighlight pamanaInventoryTH;
+    public TutorialHighlight pamanaItemImageTH;
+    public TutorialHighlight pamanaItemDescriptionTH;
+    public Button equipPamanaButtonTH;
+    public Button nextPamanaTutorialButtonTH;
+    public TutorialHighlight attributeBackgroundTH;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -147,7 +164,7 @@ public class TutorialManager : MonoBehaviour
         // FOR TESTING ONLY
         if (Input.GetKeyDown(KeyCode.I))
         {
-            BB_QuestManager.Instance.AcceptQuestByID("A0_Q11_AgimatTraining_P1");
+            BB_QuestManager.Instance.AcceptQuestByID("A0_Q12_PamanaTraining_P1");
         }
     }
 
@@ -481,6 +498,161 @@ public class TutorialManager : MonoBehaviour
         closeCharacterDetailButton.onClick.RemoveListener(CloseAndAcceptAgimatTrainingP4);
         BB_QuestManager.Instance.AcceptQuestByID("A0_Q11_AgimatTraining_P4");
         HideCharacterDetails();
-     }
+    }
+    #endregion
+
+    #region PAMANA TUTORIAL
+    public void EnablePamanaTutorial()
+    {
+        pamanaTutorial.SetActive(true);
+        tutorialFadeImage.enabled = true;
+        pamanaTutorialText.text = "Here you can see your current stats";
+        attributesButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+        attributeBackgroundTH.enabled = true;
+        nextPamanaTutorialButtonTH.onClick.AddListener(PamanaTutorial);
+    }
+
+    public void PamanaTutorial()
+    {
+        switch (currentPamanaTutorial)
+        {
+            case 0:
+                attributeBackgroundTH.enabled = false;
+                attributesButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                nextPamanaTutorialButtonTH.gameObject.SetActive(false);
+                nextPamanaTutorialButtonTH.onClick.RemoveListener(PamanaTutorial);
+                nextPamanaTutorialButtonTH.GetComponent<CanvasGroup>().alpha = 0;
+                nextPamanaTutorialButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+
+
+                pamanaTutorialText.text = "Now click on this button to check your pamana";
+                pamanaButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+                pamanaButtonTH.onClick.AddListener(PamanaTutorial);
+                break;
+            case 1:
+                pamanaButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                pamanaButtonTH.onClick.RemoveListener(PamanaTutorial);
+
+                pamanaTutorialText.text = "Click on the diwata slot";
+                diwataSlotButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+                diwataSlotButtonTH.onClick.AddListener(PamanaTutorial);
+
+                break;
+            case 2:
+                diwataSlotButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                diwataSlotButtonTH.onClick.AddListener(PamanaTutorial);
+
+                pamanaTutorialText.text = "Now click on the pamana";
+                pamanaInventoryTH.enabled = true;
+                StartCoroutine(AttachPamanaTutorialToFirstPamanaSlot());
+                break;
+            case 3:
+                pamanaInventoryTH.enabled = false;
+                firstPamanaSlot.onClick.RemoveListener(PamanaTutorial);
+
+                pamanaTutorialText.text = "Here you can see the main stat that it has";
+                pamanaItemImageTH.enabled = true;
+                StartCoroutine(ShowNextPamanaTutorialButton());
+                nextPamanaTutorialButtonTH.onClick.AddListener(PamanaTutorial);
+                break;
+            case 4:
+                pamanaItemImageTH.enabled = false;
+
+                pamanaTutorialText.text = "This shows what set it comes from and what bonuses you can unlock";
+                pamanaItemDescriptionTH.enabled = true;
+                break;
+            case 5:
+                pamanaItemDescriptionTH.enabled = false;
+                nextPamanaTutorialButtonTH.gameObject.SetActive(false);
+                nextPamanaTutorialButtonTH.onClick.RemoveListener(PamanaTutorial);
+                nextPamanaTutorialButtonTH.GetComponent<CanvasGroup>().alpha = 0;
+                nextPamanaTutorialButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+
+                pamanaTutorialText.text = "Now let's equip it";
+                equipPamanaButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+                equipPamanaButtonTH.onClick.AddListener(PamanaTutorial);
+                break;
+            case 6:
+                equipPamanaButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                equipPamanaButtonTH.onClick.RemoveListener(PamanaTutorial);
+
+                pamanaTutorialText.text = "Let's go back and see your stats";
+                attributesButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+                attributesButtonTH.onClick.AddListener(PamanaTutorial);
+                break;
+            case 7:
+                attributesButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                attributesButtonTH.onClick.RemoveListener(PamanaTutorial);
+
+                pamanaTutorialText.text = "As you can see, your stats have increased";
+                attributeBackgroundTH.enabled = true;
+                StartCoroutine(ShowNextPamanaTutorialButton());
+                nextPamanaTutorialButtonTH.onClick.AddListener(PamanaTutorial);
+                break;
+            case 8:
+                attributeBackgroundTH.enabled = false;
+                nextPamanaTutorialButtonTH.gameObject.SetActive(false);
+
+                pamanaTutorialText.text = "Now click on this button to resume your journey";
+                closeCharacterDetailButton.GetComponent<TutorialHighlight>().enabled = true;
+                closeCharacterDetailButton.onClick.AddListener(ClosePamanaTutorial);
+                break;
+
+        }
+
+        currentPamanaTutorial++;
+    }
+    private IEnumerator ShowNextPamanaTutorialButton()
+    {
+        // wait 1 second first
+        nextPamanaTutorialButtonTH.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(1f);
+
+        CanvasGroup cg = nextPamanaTutorialButtonTH.GetComponent<CanvasGroup>();
+        if (cg == null) yield break;
+
+        float duration = 0.25f;
+        float elapsed = 0f;
+
+        // start from current alpha (maybe 0)
+        float startAlpha = cg.alpha;
+        float endAlpha = 1f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime; // use unscaled so it ignores Time.timeScale
+            float t = Mathf.Clamp01(elapsed / duration);
+            cg.alpha = Mathf.Lerp(startAlpha, endAlpha, t);
+            yield return null;
+        }
+
+        nextPamanaTutorialButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+        cg.alpha = 1f; // make sure it ends at 1
+    }
+
+    private IEnumerator AttachPamanaTutorialToFirstPamanaSlot()
+    {
+        yield return null; // wait one frame so RefreshAgimatList is done
+
+        firstPamanaSlot = pamanaPanel.GetSlotButton(0);
+
+        if (firstPamanaSlot != null)
+        {
+            firstPamanaSlot.onClick.AddListener(PamanaTutorial);
+            Debug.Log($"✅ Listener added to {firstPamanaSlot.name}");
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ First Pamana Slot not found.");
+        }
+    }
+    private void ClosePamanaTutorial()
+    {
+        pamanaTutorial.SetActive(false);
+        tutorialFadeImage.enabled = false;
+        m_uiGame.characterDetailsButton.onClick.RemoveListener(PamanaTutorial);
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q12_P1_Pamana");
+
+    }
     #endregion
 }
