@@ -30,7 +30,7 @@ public class FractureObject : MonoBehaviour
         }
     }
 
-    void Explode()
+    public void Explode()
     {
         if (originalObject != null)
         {
