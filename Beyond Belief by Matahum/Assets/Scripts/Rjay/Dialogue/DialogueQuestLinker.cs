@@ -38,6 +38,8 @@ public class DialogueQuestLinker : MonoBehaviour
     [SerializeField] GameObject A0_Q0_InitialTalk_NQP;
     [SerializeField] private Transform SwordTrainingDummies;
     [SerializeField] Collider playerWeaponCollider;
+    [SerializeField] GameObject normalTrainingAreaMode;
+    [SerializeField] GameObject trainingAreaMode;
     public TimelineAsset A0_Q3_BangkawTraining_P2_Cutscene;
     [SerializeField] private Transform normalSkillTrainingDummies;
     public TimelineAsset A0_Q3_BangkawTraining_P3_Cutscene;
@@ -279,11 +281,8 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.ShowAgimatOne();
                     TutorialManager.instance.ShowAgimatTwo();
 
-                    // TEMPORARY
-                    TutorialManager.instance.tutorial_canSprintAndDash = true;
-                    TutorialManager.instance.tutorial_canMovementToggle = true;
-                    TutorialManager.instance.tutorial_canCameraDirection = true;
-                    TutorialManager.instance.tutorial_canCameraZoom = true;
+                    normalTrainingAreaMode.SetActive(true);
+                    trainingAreaMode.SetActive(false);
                     break;
                 case "A0_Q13_BackpackTraining":
                     tupas.SetDialogueState("A0_Q13_BackpackTraining");
@@ -411,6 +410,16 @@ public class DialogueQuestLinker : MonoBehaviour
         }
     }
 
+    public void EnableTrainingAreaMode()
+    {
+        normalTrainingAreaMode.SetActive(false);
+        trainingAreaMode.SetActive(true);
+    }
+    public void DisableTrainingAreaMode()
+    {
+        normalTrainingAreaMode.SetActive(true);
+        trainingAreaMode.SetActive(false);
+    }
     public void FirstStatueInteraction()
     {
         TutorialManager.instance.AllowFirstStatueInteraction();
