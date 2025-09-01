@@ -6,4 +6,8 @@ public class cutsceneLoader : MonoBehaviour
     {
         Loader.Load(4);
     }
+    public void LoadNunoBossFightScene()
+    {
+        Loader.Load(6);
+    }
 }
