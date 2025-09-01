@@ -12,8 +12,6 @@ public class Nuno : MonoBehaviour, IDamageable
     private Nuno_Stats nunoStats;
     private Rigidbody m_rigidbody;
     public bool isVulnerable = true;
-    public float stunDuration = 5f;
-    public bool isStunned;
 
     public event System.Action OnDeath;
 

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -10,6 +10,7 @@ public class Nuno_AttackManager : MonoBehaviour
     public List<Nuno_Ability> abilityList = new List<Nuno_Ability>();
     public bool isBattleStart = false;
     private bool isAttacking = false;
+    public bool isStunned = false;
 
     [Header("Skill 1 Properties")]
     public Transform[] bulletPosition;
@@ -53,36 +54,56 @@ public class Nuno_AttackManager : MonoBehaviour
 
     private IEnumerator SkillRandomizer()
     {
-        // Random cooldown before skill
+        // If stunned, pause attack logic
+        if (isStunned)
+        {
+            Debug.Log("Nuno is Stunned");
+            yield return new WaitForSeconds(5f);
+            isStunned = false;
+        }
+
+        // Random pre-attack delay
         float cooldown = Random.Range(1f, 3f);
         yield return new WaitForSeconds(cooldown);
 
-        // Randomly pick a skill or skip
-        int skillIndex = Random.Range(0, abilityList.Count + 1); // inclusive upper bound
-        if (skillIndex < abilityList.Count)
+        // Skip attacking if stunned during cooldown
+        if (isStunned)
         {
-            abilityList[skillIndex].Activate();
-            Debug.Log($"Attacking with {abilityList[skillIndex].name}");
-        }
-        else
-        {
-            Debug.Log($"Still Idle");
+            Debug.Log("Attack interrupted because of stun");
             isAttacking = false;
             yield break;
         }
 
-        //Base the timing for the next attack based on the animation
-        /*AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        float animLength = stateInfo.length;
-
-        float elapse = 0;
-        float duration = animLength;
-        while (elapse < duration && !nuno.isStunned)
+        // Randomly pick a skill or idle
+        int skillIndex = Random.Range(0, abilityList.Count + 1);
+        if (skillIndex < abilityList.Count)
         {
+            abilityList[skillIndex].Activate();
+            Debug.Log($"Attacking with {abilityList[skillIndex].name}");
 
-        }*/
+            // ✅ Wait for attack to "finish"
+            float attackDuration = 3f; // could be animation length instead
+            float elapsed = 0f;
+            while (elapsed < attackDuration)
+            {
+                if (isStunned) // interrupt attack if stunned mid-cast
+                {
+                    Debug.Log("Attack interrupted by stun");
+                    yield return new WaitForSeconds(5f); // stun duration
+                    isStunned = false;
+                    break;
+                }
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+        }
+        else
+        {
+            Debug.Log("Nuno is Idle");
+        }
 
-        yield return new WaitForSeconds(5);
+        // ✅ Only allow next attack after finishing the full cycle
         isAttacking = false;
     }
+
 }
