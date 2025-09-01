@@ -56,6 +56,8 @@ public class DialogueQuestLinker : MonoBehaviour
     [SerializeField] private Transform agimatSkillTwoTrainingDummies;
     public TimelineAsset A0_Q12_PamanaTraining_P1_Cutscene;
     public R_ItemData[] adlaoPamana;
+    public TimelineAsset A0_Q12_PamanaTraining_P2_Cutscene;
+    [SerializeField] GameObject inventoryPopUp;
 
     void OnEnable()
     {
@@ -256,6 +258,42 @@ public class DialogueQuestLinker : MonoBehaviour
                     R_GeneralItemSpawner.instance.SpawnSinglePamana(adlaoPamana);
                     inventoryUI.RefreshUI();
                     break;
+                case "A0_Q12_PamanaTraining_P2":
+                    bangkaw.SetDialogueState("A0_Q12_PamanaTraining_P2");
+                    tupas.SetDialogueState("A0_Q12_PamanaTraining_P2");
+                    ApplyStates(bangkaw, tupas);
+                    CutsceneManager.Instance.PlayCutscene(A0_Q12_PamanaTraining_P2_Cutscene);
+                    m_uiGame.characterDetailsButton.onClick.RemoveListener(TutorialManager.instance.EnablePamanaTutorial);
+
+
+                    TutorialManager.instance.tutorial_canAttack = true;
+                    TutorialManager.instance.tutorial_canNormalSkill = true;
+                    TutorialManager.instance.tutorial_canUltimateSkill = true;
+                    TutorialManager.instance.tutorial_canOpenMap = true;
+                    TutorialManager.instance.ShowNormalSkill();
+                    TutorialManager.instance.ShowUltimateSkill();
+                    TutorialManager.instance.ShowHealth();
+                    TutorialManager.instance.ShowQuestJournal();
+                    TutorialManager.instance.ShowMinimap();
+                    TutorialManager.instance.ShowCharacterDetails();
+                    TutorialManager.instance.ShowAgimatOne();
+                    TutorialManager.instance.ShowAgimatTwo();
+
+                    // TEMPORARY
+                    TutorialManager.instance.tutorial_canSprintAndDash = true;
+                    TutorialManager.instance.tutorial_canMovementToggle = true;
+                    TutorialManager.instance.tutorial_canCameraDirection = true;
+                    TutorialManager.instance.tutorial_canCameraZoom = true;
+                    break;
+                case "A0_Q13_BackpackTraining":
+                    tupas.SetDialogueState("A0_Q13_BackpackTraining");
+                    ApplyStates(tupas);
+
+                    TutorialManager.instance.ShowInventory();
+                    inventoryPopUp.SetActive(true);
+                    m_uiGame.inventoryButton.onClick.AddListener(TutorialManager.instance.EnableInventoryTutorial);
+
+                    break;
             }
         }
 
@@ -439,7 +477,8 @@ public class DialogueQuestLinker : MonoBehaviour
             case "A0_Q6_SacredStatue": return TutorialManager.instance.lewenriSacredStatue.transform;
             case "A0_Q7_KeepingTrack": return tupas.transform;
             case "A0_Q9_OneMoreThing": return tupas.transform;
-            case "A0_Q10_ReturnToBangkaw" : return bangkaw.transform;
+            case "A0_Q10_ReturnToBangkaw": return bangkaw.transform;
+            case "A0_Q12_PamanaTraining_P2": return tupas.transform;
         }
         return null;
     }

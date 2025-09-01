@@ -110,6 +110,19 @@ public class TutorialManager : MonoBehaviour
     public Button nextPamanaTutorialButtonTH;
     public TutorialHighlight attributeBackgroundTH;
 
+    [Header("Inventory Tutorial")]
+    public GameObject inventoryTutorial;
+    public TextMeshProUGUI inventoryTutorialText;
+    public GameObject nonInteractableInventory;
+    public TutorialHighlight sortButtonsTH;
+    public TutorialHighlight currentFilterTextTH;
+    public TutorialHighlight inventorySlotTH;
+    public Button nextInventoryTutorial;
+    public int currentInventoryTutorial;
+    public TutorialHighlight inventoryItemImageTH;
+    public TutorialHighlight inventoryDescriptionTH;
+    public Button closeInventoryButtonTH;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -259,6 +272,12 @@ public class TutorialManager : MonoBehaviour
     {
         characterDetailsButton.GetComponent<Button>().enabled = true;
         characterDetailsButton.FadeIn(0.5f);
+    }
+
+    public void ShowInventory()
+    {
+        inventoryButton.GetComponent<Button>().enabled = true;
+        inventoryButton.FadeIn(0.5f);
     }
 
     #endregion
@@ -592,10 +611,12 @@ public class TutorialManager : MonoBehaviour
             case 8:
                 attributeBackgroundTH.enabled = false;
                 nextPamanaTutorialButtonTH.gameObject.SetActive(false);
+                m_uiGame.characterDetailsButton.onClick.RemoveListener(PamanaTutorial);
 
                 pamanaTutorialText.text = "Now click on this button to resume your journey";
                 closeCharacterDetailButton.GetComponent<TutorialHighlight>().enabled = true;
                 closeCharacterDetailButton.onClick.AddListener(ClosePamanaTutorial);
+
                 break;
 
         }
@@ -650,9 +671,62 @@ public class TutorialManager : MonoBehaviour
     {
         pamanaTutorial.SetActive(false);
         tutorialFadeImage.enabled = false;
-        m_uiGame.characterDetailsButton.onClick.RemoveListener(PamanaTutorial);
         BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q12_P1_Pamana");
+        BB_QuestManager.Instance.ClaimRewardsByID("A0_Q12_PamanaTraining_P1");
+        BB_QuestManager.Instance.AcceptQuestByID("A0_Q12_PamanaTraining_P2");
+    }
+    #endregion
 
+    #region INVENTORY TUTORIAL
+    public void EnableInventoryTutorial()
+    {
+        inventoryTutorial.SetActive(true);
+        tutorialFadeImage.enabled = true;
+        inventoryTutorialText.text = "These buttons filter out the types of the item";
+        nonInteractableInventory.gameObject.SetActive(true);
+        sortButtonsTH.enabled = true;
+
+        nextInventoryTutorial.onClick.AddListener(InventoryTutorial);
+    }
+    public void InventoryTutorial()
+    {
+        switch (currentInventoryTutorial)
+        {
+            case 0:
+                sortButtonsTH.enabled = false;
+                m_uiGame.OnClickAgimatFilter();
+                inventoryTutorialText.text = "As of now, we are currently on the agimat filter";
+                currentFilterTextTH.enabled = true;
+                break;
+            case 1:
+                currentFilterTextTH.enabled = false;
+
+                inventoryTutorialText.text = "You can see the details of the item you selected here";
+                inventorySlotTH.enabled = true;
+                inventoryDescriptionTH.enabled = true;
+                inventoryItemImageTH.enabled = true;
+                break;
+            case 2:
+                inventorySlotTH.enabled = false;
+                inventoryDescriptionTH.enabled = false;
+                inventoryItemImageTH.enabled = false;
+                nextInventoryTutorial.gameObject.SetActive(false);
+                nonInteractableInventory.gameObject.SetActive(false);
+
+                inventoryTutorialText.text = "Now click on this button to resume your journey";
+                closeInventoryButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+                closeInventoryButtonTH.onClick.AddListener(CloseAndAcceptMainQuest);
+                break;
+        }
+        currentInventoryTutorial++;
+    }
+
+    public void CloseAndAcceptMainQuest()
+    {
+        inventoryTutorial.SetActive(false);
+        tutorialFadeImage.enabled = false;
+        m_uiGame.inventoryButton.onClick.RemoveListener(EnableInventoryTutorial);
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q13_Backpack");
     }
     #endregion
 }

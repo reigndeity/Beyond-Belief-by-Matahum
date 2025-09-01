@@ -282,3 +282,60 @@ MonoBehaviour:
       isChoiceLine: 0
       choices: []
       animationName: 
+  - dialogueState: A0_Q12_PamanaTraining_P2
+    lines:
+    - speakerName: Tupas
+      dialogueText: Has Bangkaw taught you how to use the agimat and pamana?
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: Yes
+        dialogueState: A0_Q12_PamanaTraining_Yes
+      animationName: 
+  - dialogueState: A0_Q12_PamanaTraining_Yes
+    lines:
+    - speakerName: Tupas
+      dialogueText: That's good!
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: I think you're finally ready to head out on your own.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: Here's a <color=yellow>backpack</color>.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: I first need you to familiarize yourself with this.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+  - dialogueState: A0_Q13_BackpackTraining
+    lines:
+    - speakerName: Tupas
+      dialogueText: Have you explored the contents of your backpack?
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: If not, you should do so as soon as possible.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 

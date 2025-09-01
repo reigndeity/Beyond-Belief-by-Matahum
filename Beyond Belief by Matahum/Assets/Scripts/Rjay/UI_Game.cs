@@ -29,7 +29,7 @@ public class UI_Game : MonoBehaviour
 
     [Header("Inventory Properties")]
     [SerializeField] TextMeshProUGUI currentFilteredInventoryText;
-    [SerializeField] Button inventoryButton; // Overall Inventory (No Equipment)
+    public Button inventoryButton; // Overall Inventory (No Equipment)
     [SerializeField] GameObject inventoryPanel;
     [SerializeField] Button closeInventoryButton;
     [Header("------------------------")]
