@@ -288,7 +288,7 @@ public class DialogueQuestLinker : MonoBehaviour
                 case "A0_Q13_BackpackTraining":
                     tupas.SetDialogueState("A0_Q13_BackpackTraining");
                     ApplyStates(tupas);
-
+                    RemoveActiveMarker();
                     TutorialManager.instance.ShowInventory();
                     inventoryPopUp.SetActive(true);
                     m_uiGame.inventoryButton.onClick.AddListener(TutorialManager.instance.EnableInventoryTutorial);
