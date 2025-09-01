@@ -34,7 +34,7 @@ public class StonePillar_Pillar : MonoBehaviour
     }
     IEnumerator StartFalling(Vector3 topPos, Vector3 bottomPos)
     {
-        Vector3 pillarHeightPos = new Vector3(0, pillarHeight, 0);
+        yield return new WaitForSeconds(1.25f);
         float elapsed = 0f;
         // Scale in
         while (elapsed < fallingDuration)
@@ -45,7 +45,6 @@ public class StonePillar_Pillar : MonoBehaviour
             yield return null;
         }
         Debug.Log("Starts Falling");
-        Destroy(transform.parent.gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
