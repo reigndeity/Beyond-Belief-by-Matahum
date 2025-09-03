@@ -50,6 +50,9 @@ public class TutorialManager : MonoBehaviour
     public bool tutorial_canOpenMap = true;
     public bool tutorial_canToggleMouse = true;
 
+    // tutorial for later
+    public bool tutorial_canArchives = false;
+
     [Header("Other Variables")]
     public bool tutorial_isFirstStatueInteract = true;
 
@@ -165,6 +168,16 @@ public class TutorialManager : MonoBehaviour
 
         nextJournalTutorialButton.onClick.AddListener(QuestJournalTutorial);
 
+        if (tutorial_canArchives)
+        {
+            archiveButton.FadeIn(0.5f);
+            archiveButton.GetComponent<Button>().enabled = true;
+        }
+        else
+        {
+            archiveButton.FadeOut(0);
+            archiveButton.GetComponent<Button>().enabled = false;
+        }
     }
 
     void Update()
@@ -190,7 +203,7 @@ public class TutorialManager : MonoBehaviour
         // UI Visibility
         characterDetailsButton.FadeOut(0);
         inventoryButton.FadeOut(0);
-        archiveButton.FadeOut(0);
+        //archiveButton.FadeOut(0);
         questButton.FadeOut(0);
         minimap.FadeOut(0);
         normalSkill.FadeOut(0);
@@ -202,7 +215,7 @@ public class TutorialManager : MonoBehaviour
         // Button State
         characterDetailsButton.GetComponent<Button>().enabled = false;
         inventoryButton.GetComponent<Button>().enabled = false;
-        archiveButton.GetComponent<Button>().enabled = false;
+        //archiveButton.GetComponent<Button>().enabled = false;
 
 
         // Tupas House
