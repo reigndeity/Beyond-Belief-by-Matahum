@@ -13,7 +13,7 @@ public class RockBullet_NunoAbility : Nuno_Ability
         float delay = 0;
         foreach(Transform transform in bulletPosition)
         {
-            delay += 0.5f;
+            delay += 0.4f;
             CoroutineRunner.Instance.RunCoroutine(DelaySpawn(transform, delay));
         }
     }
@@ -31,7 +31,7 @@ public class RockBullet_NunoAbility : Nuno_Ability
         RockBullet_Bullet bullet = bulletObj.GetComponent<RockBullet_Bullet>();
 
         float elapsed = 0f;
-        float scaleDuration = 0.25f;
+        float scaleDuration = 2f;
 
         // Scale in
         while (elapsed < scaleDuration)

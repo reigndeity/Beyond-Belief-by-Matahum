@@ -2,14 +2,18 @@ using UnityEngine;
 
 public class EarthFall_Bullet : MonoBehaviour
 {
+    public float bulletDamagePercentage;
     public float bulletDamage;
     public float bulletSpeed = 30;
     public bool startFalling;
     private Rigidbody rb;
+    private Nuno_Stats stats;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        stats = FindFirstObjectByType<Nuno_Stats>();
+        bulletDamage = (stats.n_attack * (bulletDamagePercentage / 100));
     }
 
     // Update is called once per frame

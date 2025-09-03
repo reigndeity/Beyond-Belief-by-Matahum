@@ -10,6 +10,7 @@ public class Nuno : MonoBehaviour, IDamageable
     private Player m_player;
     private PlayerStats m_playerStats;
     private Nuno_Stats nunoStats;
+    private Nuno_Animations animator;
     private Rigidbody m_rigidbody;
     public bool isVulnerable = true;
 
@@ -20,13 +21,14 @@ public class Nuno : MonoBehaviour, IDamageable
         m_playerStats = FindFirstObjectByType<PlayerStats>();
         m_player = FindFirstObjectByType<Player>();
         nunoStats = GetComponent<Nuno_Stats>();
+        animator = GetComponent<Nuno_Animations>();
         m_rigidbody = GetComponent<Rigidbody>();
     }
     #region DAMAGE
 
     public void TakeDamage(float damage)
     {
-        if (isVulnerable)
+        if (isVulnerable && !isDead)
         {
             GetHit();
 
@@ -63,19 +65,8 @@ public class Nuno : MonoBehaviour, IDamageable
     {
         FindFirstObjectByType<PlayerCamera>().CameraShake(0.1f, 1f);
         HitStop.Instance.TriggerHitStop(0.05f);
-        FacePlayer();
-    }
 
-    private void FacePlayer()
-    {
-        Vector3 dirToPlayer = m_player.transform.position - transform.position;
-        dirToPlayer.y = 0f;
-
-        if (dirToPlayer != Vector3.zero)
-        {
-            Quaternion lookRotation = Quaternion.LookRotation(dirToPlayer.normalized);
-            transform.rotation = lookRotation;
-        }
+        if(Nuno_AttackManager.Instance.isStunned) animator.GetHit();
     }
 
     #endregion
@@ -90,7 +81,9 @@ public class Nuno : MonoBehaviour, IDamageable
     {
         isDead = true;
         OnDeath?.Invoke();
-        yield return new WaitForSeconds(0.5f);
+        animator.ChangeAnimationState("Nuno_Death");
+        yield return new WaitForSeconds(9f);
+        animator.ChangeAnimationState("Nuno_Death_to_Stand");
     }
     #endregion
 }

@@ -16,7 +16,7 @@ public class EarthFall_NunoAbility : Nuno_Ability
 
     IEnumerator SpawnEarthFall()
     {
-        //yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2.5f);
         GameObject earthFallObj = Instantiate(earthFallHolderPrefab, FindPlayerPosition(), Quaternion.identity, Nuno_AttackManager.Instance.transform.parent);
         EarthFall_Holder earthFallHolder = earthFallObj.GetComponent<EarthFall_Holder>();
         Vector3 initialSize = new Vector3(0, 1, 0);

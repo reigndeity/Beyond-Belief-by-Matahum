@@ -3,14 +3,18 @@ using UnityEngine;
 
 public class StonePillar_Pillar : MonoBehaviour
 {
+    public float pillarDamagePercentage;
     public float pillarDamage;
     public float pillarHeight;
     public float risingDuration = 0.25f;
     public float fallingDuration = 0.5f;
     private bool dealtDamageAlready = false;
+    private Nuno_Stats stats;
 
     private void Start()
     {
+        stats = FindFirstObjectByType<Nuno_Stats>();
+        pillarDamage = (stats.n_attack * (pillarDamagePercentage / 100));
         StartCoroutine(StartRising());
     }
     public IEnumerator StartRising()

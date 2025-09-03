@@ -7,9 +7,12 @@ public class Nuno_AttackManager : MonoBehaviour
 {
     public static Nuno_AttackManager Instance;
 
+    public float rotationSpeed = 5f;
     public List<Nuno_Ability> abilityList = new List<Nuno_Ability>();
+    public Nuno_Ability castingCurrentAbility;
     public bool isBattleStart = false;
-    private bool isAttacking = false;
+    [HideInInspector] public bool isAttacking = false;
+    private bool canAttack = true;
     public bool isStunned = false;
 
     [Header("Skill 1 Properties")]
@@ -19,6 +22,7 @@ public class Nuno_AttackManager : MonoBehaviour
     private Player player;
     private Animator anim;
     private Nuno nuno;
+    private Nuno_Animations animator;
 
     private void Awake()
     {
@@ -26,31 +30,50 @@ public class Nuno_AttackManager : MonoBehaviour
     }
     private void Start()
     {
+        anim = GetComponent<Animator>();
         player = FindFirstObjectByType<Player>();
         nuno = GetComponent<Nuno>();
+        animator = GetComponent<Nuno_Animations>();
         //anim = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if (!isBattleStart) return;
+        if(nuno.isDead) return;
+
+        animator.HandleAnimations();
+
+        if (!isBattleStart)
+        {
+            Invoke("BattleStart", 2);
+            return;
+        }
 
         // Get direction to player but ignore Y axis
         Vector3 direction = player.transform.position - transform.position;
         direction.y = 0f; // prevents looking up/down
 
-        if (direction != Vector3.zero)
+        if (direction != Vector3.zero && !isStunned)
         {
-            transform.rotation = Quaternion.LookRotation(direction);
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
         }
 
-        if (!isAttacking)
+        if (canAttack)
         {
-            isAttacking = true;
+            canAttack = false;
             StartCoroutine(SkillRandomizer());
         }
     }
 
+    void BattleStart()
+    {
+        isBattleStart = true;
+    }
 
     private IEnumerator SkillRandomizer()
     {
@@ -58,7 +81,7 @@ public class Nuno_AttackManager : MonoBehaviour
         if (isStunned)
         {
             Debug.Log("Nuno is Stunned");
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(10f);
             isStunned = false;
         }
 
@@ -70,40 +93,47 @@ public class Nuno_AttackManager : MonoBehaviour
         if (isStunned)
         {
             Debug.Log("Attack interrupted because of stun");
-            isAttacking = false;
+            canAttack = true;
             yield break;
         }
 
-        // Randomly pick a skill or idle
         int skillIndex = Random.Range(0, abilityList.Count + 1);
+
+        // ⛔ If shield picked but Nuno is not vulnerable, retry
+        if (skillIndex == 4 && !nuno.isVulnerable)
+        {
+            Debug.Log("Shield skipped (Nuno still invulnerable), retrying...");
+            canAttack = true;
+            yield break; // exit coroutine early → Update() will restart SkillRandomizer next frame
+        }
+
         if (skillIndex < abilityList.Count)
         {
+            isAttacking = true;
+            castingCurrentAbility = abilityList[skillIndex];
+
             abilityList[skillIndex].Activate();
             Debug.Log($"Attacking with {abilityList[skillIndex].name}");
 
-            // ✅ Wait for attack to "finish"
-            float attackDuration = 3f; // could be animation length instead
-            float elapsed = 0f;
-            while (elapsed < attackDuration)
-            {
-                if (isStunned) // interrupt attack if stunned mid-cast
-                {
-                    Debug.Log("Attack interrupted by stun");
-                    yield return new WaitForSeconds(5f); // stun duration
-                    isStunned = false;
-                    break;
-                }
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
+            // ✅ Wait until animator is actually in the right state
+            string expectedState = $"Nuno_Skill_{skillIndex + 1}";
+            yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsName(expectedState));
+
+            // ✅ Now get the correct animation length
+            float animLength = anim.GetCurrentAnimatorStateInfo(0).length;
+            Debug.Log($"Playing {expectedState} for {animLength} seconds");
+
+            yield return new WaitForSeconds(animLength);
         }
         else
         {
             Debug.Log("Nuno is Idle");
         }
 
-        // ✅ Only allow next attack after finishing the full cycle
+        // ✅ Allow next attack
         isAttacking = false;
+        canAttack = true;
+        castingCurrentAbility = null;
     }
 
 }

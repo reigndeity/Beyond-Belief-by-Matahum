@@ -4,11 +4,20 @@ using System.Collections;
 public class RockBullet_Bullet : MonoBehaviour
 {
     public Vector3 lastPlayerPosition;
+    public float bulletDamagePercentage = 50;
     public float bulletDamage;
     public float bulletSpeed;
     public bool canShoot;
 
+    private Nuno_Stats stats;
+
     // Update is called once per frame
+
+    private void Start()
+    {
+        stats = FindFirstObjectByType<Nuno_Stats>();
+        bulletDamage = (stats.n_attack * (bulletDamagePercentage / 100));
+    }
     void Update()
     {
         if(canShoot)

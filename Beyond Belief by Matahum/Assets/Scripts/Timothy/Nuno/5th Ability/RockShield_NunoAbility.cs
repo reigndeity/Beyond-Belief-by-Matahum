@@ -18,16 +18,17 @@ public class RockShield_NunoAbility : Nuno_Ability
 
     IEnumerator DelaySpawnShield()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(4f);
 
         // Look for existing shieldHolder
         activeShieldHolder = Object.FindFirstObjectByType<RockShield_ShieldHolder>();
 
         if (activeShieldHolder == null)
         {
+            Vector3 offset = new Vector3(0, 0.5f, 0);
             activeShieldHolder = Instantiate(
                 shieldHolderPrefab,
-                Nuno_AttackManager.Instance.transform.position,
+                Nuno_AttackManager.Instance.transform.position + offset,
                 Quaternion.identity,
                 Nuno_AttackManager.Instance.transform.parent
             );

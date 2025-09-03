@@ -38,9 +38,8 @@ public class MeteorShower_NunoAbility : Nuno_Ability
 
     IEnumerator SpawnMeteor(Vector3 position)
     {
-        //yield return new WaitForSeconds(2f);
-        Vector3 offset = new Vector3(0, 10,0);
-        GameObject meteorObj = Instantiate(meteorShowerPrefab, position + offset, Quaternion.identity, Nuno_AttackManager.Instance.transform.parent);
+        yield return new WaitForSeconds(2f);
+        GameObject meteorObj = Instantiate(meteorShowerPrefab, position, Quaternion.identity, Nuno_AttackManager.Instance.transform.parent);
         MeteorShower_Holder meteorHolder = meteorObj.GetComponent<MeteorShower_Holder>();
         meteorHolder.transform.position = position;
         Vector3 initialSize = new Vector3(0, 1, 0);
@@ -87,9 +86,10 @@ public class MeteorShower_NunoAbility : Nuno_Ability
 
     private Vector3 RandomPosition(Transform center)
     {
+        Transform playerPos = FindFirstObjectByType<Player>().transform;
         // Pick a random point inside a circle (2D) or sphere (3D)
         Vector2 randomCircle = Random.insideUnitCircle * radius;
-        Vector3 targetPos = center.position + new Vector3(randomCircle.x, -1f, randomCircle.y);
+        Vector3 targetPos = center.position + new Vector3(randomCircle.x, playerPos.position.y, randomCircle.y);
 
         return targetPos;
     }

@@ -8,12 +8,12 @@ public class StonePillar_NunoAbility : Nuno_Ability
 {
     public GameObject stonePillarHolderPrefab;
     public int maxPillarCount = 10;
-    public float spawnInterval = 0.4f;
+    public float spawnInterval = 0.25f;
 
     public override void Activate()
     {
 
-        float delay = 0;
+        float delay = 3;
         for (int i = 0; i < maxPillarCount; i++)
         {
             delay += spawnInterval;
