@@ -86,10 +86,9 @@ public class MeteorShower_NunoAbility : Nuno_Ability
 
     private Vector3 RandomPosition(Transform center)
     {
-        Transform playerPos = FindFirstObjectByType<Player>().transform;
         // Pick a random point inside a circle (2D) or sphere (3D)
         Vector2 randomCircle = Random.insideUnitCircle * radius;
-        Vector3 targetPos = center.position + new Vector3(randomCircle.x, playerPos.position.y, randomCircle.y);
+        Vector3 targetPos = center.position + new Vector3(randomCircle.x, -0.65f, randomCircle.y);
 
         return targetPos;
     }

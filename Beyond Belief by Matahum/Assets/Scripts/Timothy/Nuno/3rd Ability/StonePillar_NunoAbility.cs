@@ -31,7 +31,7 @@ public class StonePillar_NunoAbility : Nuno_Ability
     {
         Transform playerTransform = FindFirstObjectByType<Player>().transform;
 
-        Vector3 playerPos = new Vector3(playerTransform.position.x, playerTransform.position.y, playerTransform.position.z);
+        Vector3 playerPos = new Vector3(playerTransform.position.x, -0.65f, playerTransform.position.z);
 
         return playerPos;
     }
