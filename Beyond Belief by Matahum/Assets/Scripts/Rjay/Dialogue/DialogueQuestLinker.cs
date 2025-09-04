@@ -363,6 +363,7 @@ public class DialogueQuestLinker : MonoBehaviour
                 BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q6_SacredStatue");
                 StartCoroutine(DelayAcceptQuestReward("A0_Q6_SacredStatue"));
                 StartCoroutine(DelayAcceptQuest("A0_Q7_KeepingTrack"));
+                Debug.Log("bruh keeping track");
             }
         }
         if (agimatSkillOneTrainingDummies.childCount == 0)
