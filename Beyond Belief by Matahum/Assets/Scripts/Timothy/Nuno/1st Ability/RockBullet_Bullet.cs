@@ -10,6 +10,7 @@ public class RockBullet_Bullet : MonoBehaviour
     public bool canShoot;
 
     private Nuno_Stats stats;
+    public GameObject explosionVFX;
 
     // Update is called once per frame
 
@@ -24,6 +25,11 @@ public class RockBullet_Bullet : MonoBehaviour
         {
             transform.position += lastPlayerPosition * bulletSpeed * Time.deltaTime;
         }
+        else if(!canShoot)
+        {
+            Vector3 direction = FindFirstObjectByType<Player>().transform.position - transform.position;
+            transform.rotation = Quaternion.LookRotation(direction.normalized);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -32,7 +38,11 @@ public class RockBullet_Bullet : MonoBehaviour
         if (player != null)
         {
             player.TakeDamage(bulletDamage);
+
+            GameObject explosionObj = Instantiate(explosionVFX, gameObject.transform.position, Quaternion.identity);
+            Destroy(explosionObj, 2);
         }
-        if(canShoot) Destroy(gameObject);
+
+        Destroy(gameObject);
     }
 }

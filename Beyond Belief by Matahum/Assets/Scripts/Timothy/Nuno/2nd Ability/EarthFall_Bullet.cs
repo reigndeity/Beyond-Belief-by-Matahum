@@ -9,6 +9,9 @@ public class EarthFall_Bullet : MonoBehaviour
     private Rigidbody rb;
     private Nuno_Stats stats;
 
+    public FractureObject fractObj;
+    public GameObject smokeVFX;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -30,6 +33,14 @@ public class EarthFall_Bullet : MonoBehaviour
         if (player != null)
         {
             player.TakeDamage(bulletDamage);
+        }
+
+        if (other.gameObject.CompareTag("Nuno_Indicator"))
+        {
+            fractObj.Explode();
+
+            GameObject smokeVFXObj = Instantiate(smokeVFX, gameObject.transform.position, Quaternion.identity);
+            Destroy(smokeVFXObj, 2);
         }
     }
 }
