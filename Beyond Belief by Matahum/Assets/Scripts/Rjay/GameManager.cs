@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.IO;
 using System.Threading.Tasks;
-
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,7 +28,31 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        StartCoroutine(LoadPlayer());
+        Scene currentScene = SceneManager.GetActiveScene();
+        string sceneName = currentScene.name;
+
+        if (sceneName == "OpenWorldScene")
+        {
+            StartCoroutine(LoadPlayer());
+        }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainMenuScene")
+        {
+            Destroy(gameObject);
+        }
     }
 
     async void Update()
@@ -56,6 +80,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         StartCoroutine(UI_TransitionController.instance.Fade(1f, 0f, 0.5f));
     }
+ 
 
     public async Task SaveAll()
     {
