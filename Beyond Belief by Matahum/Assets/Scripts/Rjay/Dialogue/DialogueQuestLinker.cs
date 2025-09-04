@@ -60,6 +60,7 @@ public class DialogueQuestLinker : MonoBehaviour
     public GameObject duwendeCamp;
     public GameObject garlicParent;
     public MinimapItem garlicHighlight;
+    public FogAreaReveal duwendeAreaMap;
 
     void OnEnable()
     {
@@ -305,6 +306,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     amihanGuard.SetDialogueState("A1_Q1_Tupas'Request_P2");
                     ApplyStates(tupas, amihanGuard);
                     AddActiveMarker(currentQuestID, tracked);
+                    duwendeAreaMap.RevealNow();
                     break;
                 case "A1_Q1_Tupas'Request_P3":
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P3");
@@ -314,6 +316,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     duwendeCamp.SetActive(true);
                     garlicParent.SetActive(true);
                     playerMinimapRenderer.AddMinimapItemToBeHighlighted(garlicHighlight);
+                    duwendeAreaMap.RevealNow();
                     break;
             }
         }

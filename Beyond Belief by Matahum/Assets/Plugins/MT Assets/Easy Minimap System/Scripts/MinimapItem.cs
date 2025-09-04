@@ -47,7 +47,8 @@ namespace MTAssets.EasyMinimapSystem
         {
             Disabled,
             WavesIncrease,
-            WavesDecrease
+            WavesDecrease,
+            StationaryCircle
         }
         public enum FollowRotationOf
         {
@@ -423,7 +424,43 @@ namespace MTAssets.EasyMinimapSystem
                 renderer.material = minimapDataHolder.defaultMaterialForMinimapItems;
                 renderer.maxParticleSize = 100.0f;
             }
+            //----- Stationary Circle
+            if (particlesHighlightMode == ParticlesHighlightMode.StationaryCircle)
+            {
+                var main = tempParticles.main;
+                main.maxParticles = 1;
+                main.startLifetime = Mathf.Infinity;      // Never dies
+                main.startSpeed = 0.0f;                   // Don’t move
+                main.scalingMode = ParticleSystemScalingMode.Shape;
+                main.startSize = ((sizeOnMinimap.x + (sizeOnMinimap.x * 2.5f)) * particlesSizeMultiplier) 
+                                * MinimapDataGlobal.GetMinimapItemsSizeGlobalMultiplier();
 
+                var emission = tempParticles.emission;
+                emission.enabled = true;
+                emission.rateOverTime = 0;
+                emission.SetBursts(new ParticleSystem.Burst[]
+                {
+                    new ParticleSystem.Burst(0.0f, 1)     // Spawn exactly one particle instantly
+                });
+
+                var shape = tempParticles.shape;
+                shape.enabled = true;
+                shape.shapeType = ParticleSystemShapeType.Circle;
+                shape.radius = 0.0f;
+                shape.position = new Vector3(0, 0, 0.1f);
+
+                var sizeOverLifetime = tempParticles.sizeOverLifetime;
+                sizeOverLifetime.enabled = false;         // Don’t animate size
+
+                var colorOverLifetime = tempParticles.colorOverLifetime;
+                colorOverLifetime.enabled = false;        // Don’t animate color
+
+                var renderer = tempParticlesRenderer;
+                renderer.enabled = true;
+                renderer.renderMode = ParticleSystemRenderMode.Billboard;
+                renderer.material = minimapDataHolder.defaultMaterialForMinimapItems;
+                renderer.maxParticleSize = 100.0f;
+            }
             //If particle highlight is not disabled, play it
             if (tempParticles.isPlaying == false)
             {
