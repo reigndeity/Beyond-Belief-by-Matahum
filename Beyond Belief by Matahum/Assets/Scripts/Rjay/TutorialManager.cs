@@ -137,6 +137,10 @@ public class TutorialManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
+    void Start()
+    {
+        PlayerCamera.Instance.HardLockCamera();
+    }
 
     private void OnEnable()
     {
@@ -155,7 +159,7 @@ public class TutorialManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    void Start()
+    public void TutorialCheck()
     {
         if (!isTutorialDone)
         {
@@ -164,6 +168,9 @@ public class TutorialManager : MonoBehaviour
         else
         {
             cutsceneBakalNPC.SetActive(false);
+            tutorial_isFirstStatueInteract = false;
+            PlayerCamera.Instance.HardUnlockCamera();
+            PlayerCamera.Instance.AdjustCamera();
         }
 
         nextJournalTutorialButton.onClick.AddListener(QuestJournalTutorial);
@@ -179,21 +186,6 @@ public class TutorialManager : MonoBehaviour
             archiveButton.GetComponent<Button>().enabled = false;
         }
     }
-
-    void Update()
-    {
-        // FOR TESTING ONLY
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            BB_QuestManager.Instance.DebugCompleteAndClaimTrackedQuest();
-        }
-        // FOR TESTING ONLY
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            BB_QuestManager.Instance.AcceptQuestByID("A0_Q12_PamanaTraining_P1");
-        }
-    }
-
 
     void StartTutorial()
     {
@@ -740,6 +732,7 @@ public class TutorialManager : MonoBehaviour
         tutorialFadeImage.enabled = false;
         m_uiGame.inventoryButton.onClick.RemoveListener(EnableInventoryTutorial);
         BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q13_Backpack");
+        isTutorialDone = true;
     }
     #endregion
 }

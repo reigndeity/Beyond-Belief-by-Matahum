@@ -239,6 +239,11 @@ public class BB_QuestManager : MonoBehaviour
             }
         }
     }
+    public void LoadQuestData()
+    {
+        saveSystem.LoadQuests(allQuests);
+        LoadQuestToJournal();
+    }
     #endregion
 
     #region Clearing Quest Save Data

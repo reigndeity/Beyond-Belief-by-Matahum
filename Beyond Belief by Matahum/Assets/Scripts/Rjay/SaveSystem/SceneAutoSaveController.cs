@@ -91,20 +91,6 @@ public class SceneAutoSaveController : MonoBehaviour
         }
     }
 
-    // Your hotkeys or UI can call these
-    async void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftBracket))
-        {
-            SaveSceneNow();
-            await SaveManager.Instance.SaveAsync("Slot_01");
-        }
-        if (Input.GetKeyDown(KeyCode.RightBracket))
-        {
-            LoadSceneNow();
-            await SaveManager.Instance.LoadAsync("Slot_01");
-        }
-    }
     #region ACCESSIBLE FUNCTIONS
     public async void SaveAll()
     {
