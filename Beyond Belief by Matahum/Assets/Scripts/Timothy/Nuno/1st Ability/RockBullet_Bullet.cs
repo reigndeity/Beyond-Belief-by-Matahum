@@ -38,8 +38,8 @@ public class RockBullet_Bullet : MonoBehaviour
         if (player != null)
         {
             player.TakeDamage(bulletDamage);
-            GameObject explosionObj = Instantiate(explosionVFX, gameObject.transform.position, Quaternion.identity);
 
+            GameObject explosionObj = Instantiate(explosionVFX, gameObject.transform.position, Quaternion.identity);
             Destroy(explosionObj, 2);
         }
 

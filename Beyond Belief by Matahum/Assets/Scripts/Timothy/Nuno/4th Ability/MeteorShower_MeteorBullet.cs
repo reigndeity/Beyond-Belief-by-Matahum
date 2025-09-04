@@ -10,6 +10,9 @@ public class MeteorShower_MeteorBullet : MonoBehaviour
     private Rigidbody rb;
     private Nuno_Stats stats;
 
+    public FractureObject fractObj;
+    public GameObject smokeVFX;
+
     private void Start()
     {
         stats = FindFirstObjectByType<Nuno_Stats>();
@@ -31,6 +34,14 @@ public class MeteorShower_MeteorBullet : MonoBehaviour
         if (player != null)
         {
             player.TakeDamage(meteorDamage);
+        }
+
+        if (other.gameObject.CompareTag("Nuno_Indicator"))
+        {
+            fractObj.Explode();
+
+            GameObject smokeVFXObj = Instantiate(smokeVFX, gameObject.transform.position, Quaternion.identity);
+            Destroy(smokeVFXObj, 2);
         }
     }
 }
