@@ -28,6 +28,7 @@ public class BB_CampSpawner : MonoBehaviour
 
         InvokeRepeating(nameof(StayWithinBoundaries), 0f, 1f);
         InvokeRepeating(nameof(StartSpawning), 0f, 1f);
+        SpawnUnits();
     }
 
     public void RemoveEnemyInList(EnemyStats enemyStats)
@@ -40,7 +41,7 @@ public class BB_CampSpawner : MonoBehaviour
         // Check if all enemies are gone and not already waiting to respawn
         if (enemyList.Count == 0 && !spawningInProgress)
         {
-            StartCoroutine(SpawnUnits());
+            StartCoroutine(DelaySpawn());
         }
     }
 
@@ -59,12 +60,15 @@ public class BB_CampSpawner : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnUnits()
+    IEnumerator DelaySpawn()
     {
         spawningInProgress = true;
 
         yield return new WaitForSeconds(spawnInterval);
-
+        SpawnUnits();
+    }
+    void SpawnUnits()
+    {
         foreach (var enemy in enemiesToSpawn)
         {
             for (int i = 0; i < enemy.count; i++)
@@ -134,6 +138,22 @@ public class BB_CampSpawner : MonoBehaviour
         Vector2 randomCircle = UnityEngine.Random.insideUnitCircle * radius;
         return new Vector3(center.x + randomCircle.x, center.y, center.z + randomCircle.y);
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (spawnArea == null)
+            spawnArea = GetComponent<SphereCollider>();
+
+        if (spawnArea != null)
+        {
+            Gizmos.color = new Color(0f, 1f, 0f, 0.25f); // green, semi-transparent
+            Gizmos.DrawSphere(transform.TransformPoint(spawnArea.center), spawnArea.radius);
+
+            Gizmos.color = Color.green; // outline
+            Gizmos.DrawWireSphere(transform.TransformPoint(spawnArea.center), spawnArea.radius);
+        }
+    }
+
 }
 
 [Serializable]
