@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.IO;
 
 public class BB_QuestManager : MonoBehaviour
 {
@@ -14,7 +15,13 @@ public class BB_QuestManager : MonoBehaviour
     public List<BB_Quest> activeMainQuests = new List<BB_Quest>();
     public List<BB_Quest> activeSideQuests = new List<BB_Quest>();
 
+    private BB_QuestSaveSystem saveSystem;
+
     public event Action OnQuestUpdate;
+
+    [Header("For Clearing Quest Save Data(Dev Stuff)")]
+    private string savePath;
+    public bool clearQuestSaveData = false;
 
     private void Awake()
     {
@@ -23,9 +30,82 @@ public class BB_QuestManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject); // Optional: persist across scenes
             allQuests = new List<BB_Quest>(Resources.LoadAll<BB_Quest>("Quests")); //Loads all available quests
+            saveSystem = gameObject.AddComponent<BB_QuestSaveSystem>();
+            savePath = Path.Combine(Application.persistentDataPath, "quests.json");
         }
         else Destroy(gameObject);
     }
+
+    #region Loading Quests
+    private void Start()
+    {
+        saveSystem.LoadQuests(allQuests);
+        LoadQuestToJournal();
+    }
+    private void OnApplicationQuit()
+    {
+        if (clearQuestSaveData)       
+            ClearQuestSaveData(); 
+        else 
+            saveSystem.SaveQuests(allQuests);
+    }
+
+    void LoadQuestToJournal()
+    {
+        foreach (var quest in allQuests)
+        {
+            if (quest.state != QuestState.Inactive)
+            {
+                BB_QuestJournalUI.instance.AddQuestToJournal(quest);
+
+                if(quest.state == QuestState.Claimed)
+                    BB_QuestJournalUI.instance.MoveQuestToCompletedPanel(quest);
+
+                if (quest.isBeingTracked)
+                {
+                   BB_QuestJournalUI.instance.TrackQuest(quest);
+                }
+            }
+        }
+    }
+    #endregion
+    #region Clearing Quest Save Data
+    /// <summary>
+    /// Deletes quest save data from disk and resets quest states.
+    /// </summary>
+    public void ClearQuestSaveData()
+    {
+        // Delete the save file if it exists
+        if (File.Exists(savePath))
+        {
+            File.Delete(savePath);
+            Debug.Log($"Quest save data cleared at {savePath}");
+        }
+        else
+        {
+            Debug.Log("No quest save file found to clear.");
+        }
+
+        // Reset in-memory quest states
+        foreach (BB_Quest quest in allQuests)
+        {
+            quest.state = QuestState.Inactive;
+            quest.isBeingTracked = false;
+
+            foreach (var mission in quest.missions)
+            {
+                mission.currentAmount = 0;
+            }
+        }
+
+        // Tell the journal UI to refresh (so it hides everything)
+        if (BB_QuestJournalUI.instance != null)
+        {
+            BB_QuestJournalUI.instance.ClearDetails();
+            // You could also trigger a full rebuild here if you want
+        }
+    }
+    #endregion
 
     public void AcceptQuest(BB_Quest quest)
     {

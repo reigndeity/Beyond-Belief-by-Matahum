@@ -72,6 +72,35 @@ public class BB_QuestJournalUI : MonoBehaviour
         BB_QuestManager.Instance.OnQuestUpdate += HandleQuestUpdate;
     }
 
+    public void RefreshJournalUI()
+    {
+        foreach (BB_Quest quest in BB_QuestManager.Instance.allQuests)
+        {
+            // Skip inactive quests (they shouldn't be in the journal UI)
+            if (quest.state == QuestState.Inactive)
+                continue;
+
+            // If claimed but not already in completed panel → move it
+            if (quest.state == QuestState.Claimed && !IsInCompletedPanel(quest))
+            {
+                MoveQuestToCompletedPanel(quest);
+                continue; // it's already handled
+            }
+
+            // If quest is still active/completed but in main/side lists → update its position
+            if (quest.state == QuestState.Active || quest.state == QuestState.Completed)
+            {
+                ChangeSiblingArrangement(quest);
+            }
+
+            // Update buttons only for the currently selected quest
+            if (quest == currentSelectedQuest)
+            {
+                ChangeTrackerButtonDisplay(quest);
+            }
+        }
+    }
+
     public void OnOpenJournal(params Transform[] questPanels)
     {
         List<Transform> allQuestLists = new List<Transform>();
@@ -425,7 +454,7 @@ public class BB_QuestJournalUI : MonoBehaviour
         }
     }
 
-    private void MoveQuestToCompletedPanel(BB_Quest quest)
+    public void MoveQuestToCompletedPanel(BB_Quest quest)
     {
         string actKey = $"{quest.questType}_{quest.actNumber}";
 

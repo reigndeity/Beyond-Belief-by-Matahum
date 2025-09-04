@@ -23,9 +23,6 @@ public class BB_QuestHUD : MonoBehaviour
     [Header("Quest Mission HUD Template")]
     public BB_QuestMissionTemplate questHUDTemplate;
 
-    /*public BB_Quest trackedMainQuest;
-    public BB_Quest trackedSideQuest;*/
-
     public BB_Quest trackedQuest;
 
     private void Awake()
