@@ -39,8 +39,8 @@ public class FractureObject : MonoBehaviour
 
         if (fracturedObject != null)
         {
-            fractObj = Instantiate(fracturedObject, originalObject.transform.position, Quaternion.identity, gameObject.transform.parent.parent);
-
+            fractObj = Instantiate(fracturedObject, originalObject.transform.position, Quaternion.identity);
+            Destroy(fractObj, shrinkDuration + shrinkDelay + 1);
             foreach (Transform t in fractObj.transform)
             {
                 var rb = t.GetComponent<Rigidbody>();
@@ -53,13 +53,13 @@ public class FractureObject : MonoBehaviour
                     );
 
                 // start shrink coroutine
-                StartCoroutine(Shrink(t, shrinkDelay, shrinkDuration));
+                CoroutineRunner.Instance.RunCoroutine(Shrink(t, shrinkDelay, shrinkDuration));
             }
 
             if (explosionVFX != null)
             {
-                GameObject exploVFX = Instantiate(explosionVFX, originalObject.transform.position, Quaternion.identity, gameObject.transform.parent.parent);
-                Destroy(exploVFX, 7);
+                GameObject exploVFX = Instantiate(explosionVFX, originalObject.transform.position, Quaternion.identity);
+                Destroy(exploVFX, 5);
             }
         }
     }
@@ -90,7 +90,6 @@ public class FractureObject : MonoBehaviour
 
             yield return null; // wait until next frame
         }
-
         if (t != null)
             Destroy(t.gameObject);
     }
