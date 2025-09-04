@@ -307,6 +307,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     ApplyStates(tupas, amihanGuard);
                     AddActiveMarker(currentQuestID, tracked);
                     duwendeAreaMap.RevealNow();
+                    
                     break;
                 case "A1_Q1_Tupas'Request_P3":
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P3");
@@ -315,8 +316,8 @@ public class DialogueQuestLinker : MonoBehaviour
                     RemoveActiveMarker();
                     duwendeCamp.SetActive(true);
                     garlicParent.SetActive(true);
-                    playerMinimapRenderer.AddMinimapItemToBeHighlighted(garlicHighlight);
                     duwendeAreaMap.RevealNow();
+                    playerMinimapRenderer.AddMinimapItemToBeHighlighted(garlicHighlight);
                     break;
             }
         }
