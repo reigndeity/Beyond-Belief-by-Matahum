@@ -18,11 +18,7 @@ public class DialogueQuestLinker : MonoBehaviour
     public DialogueStateHolder tupas;
     public DialogueStateHolder bakal;
     public DialogueStateHolder bangkaw;
-
-    [Header("All NPCs Quest Tracker Icon")]
-    public UI_CanvasGroup tupasTracker;
-    public UI_CanvasGroup bakalTracker;
-    public UI_CanvasGroup bangkawTracker;
+    public DialogueStateHolder amihanGuard;
 
     [Header("Quest Marker")]
     [SerializeField] private QuestMarker markerPrefab;       // Prefab of quest marker (UI only)
@@ -60,6 +56,10 @@ public class DialogueQuestLinker : MonoBehaviour
     public R_ItemData[] adlaoPamana;
     public TimelineAsset A0_Q12_PamanaTraining_P2_Cutscene;
     [SerializeField] GameObject inventoryPopUp;
+    [Header("Act 1 Components")]
+    public GameObject duwendeCamp;
+    public GameObject garlicParent;
+    public MinimapItem garlicHighlight;
 
     void OnEnable()
     {
@@ -105,7 +105,8 @@ public class DialogueQuestLinker : MonoBehaviour
             {
                 case "A0_Q0_InitialTalk":
                     bakal.SetDialogueState("A0_Q0_InitialTalk");
-                    ApplyStates(bakal);
+                    amihanGuard.SetDialogueState("A0_Q0_InitialTalk");
+                    ApplyStates(bakal, amihanGuard);
                     A0_Q0_InitialTalk_NQP.SetActive(true);
                     TutorialManager.instance.cutsceneTriggerOne.SetActive(true);
                     break;
@@ -281,6 +282,8 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.ShowAgimatOne();
                     TutorialManager.instance.ShowAgimatTwo();
 
+                    TutorialManager.instance.AllowTemporaryBooleans();
+
                     normalTrainingAreaMode.SetActive(true);
                     trainingAreaMode.SetActive(false);
                     break;
@@ -291,7 +294,26 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.ShowInventory();
                     inventoryPopUp.SetActive(true);
                     m_uiGame.inventoryButton.onClick.AddListener(TutorialManager.instance.EnableInventoryTutorial);
-
+                    break;
+                case "A1_Q1_Tupas'Request_P1":
+                    tupas.SetDialogueState("A1_Q1_Tupas'Request_P1");
+                    ApplyStates(tupas);
+                    AddActiveMarker(currentQuestID, tracked);
+                    break;
+                case "A1_Q1_Tupas'Request_P2":
+                    tupas.SetDialogueState("A1_Q1_Tupas'Request_P2");
+                    amihanGuard.SetDialogueState("A1_Q1_Tupas'Request_P2");
+                    ApplyStates(tupas, amihanGuard);
+                    AddActiveMarker(currentQuestID, tracked);
+                    break;
+                case "A1_Q1_Tupas'Request_P3":
+                    tupas.SetDialogueState("A1_Q1_Tupas'Request_P3");
+                    amihanGuard.SetDialogueState("Default");
+                    ApplyStates(tupas, amihanGuard);
+                    RemoveActiveMarker();
+                    duwendeCamp.SetActive(true);
+                    garlicParent.SetActive(true);
+                    playerMinimapRenderer.AddMinimapItemToBeHighlighted(garlicHighlight);
                     break;
             }
         }
@@ -363,7 +385,6 @@ public class DialogueQuestLinker : MonoBehaviour
                 BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q6_SacredStatue");
                 StartCoroutine(DelayAcceptQuestReward("A0_Q6_SacredStatue"));
                 StartCoroutine(DelayAcceptQuest("A0_Q7_KeepingTrack"));
-                Debug.Log("bruh keeping track");
             }
         }
         if (agimatSkillOneTrainingDummies.childCount == 0)
@@ -382,6 +403,18 @@ public class DialogueQuestLinker : MonoBehaviour
             {
                 StartCoroutine(DelayAcceptQuestReward("A0_Q11_AgimatTraining_P4"));
                 StartCoroutine(DelayAcceptQuest("A0_Q12_PamanaTraining_P1"));
+            }
+        }
+        if (BB_QuestManager.Instance.IsQuestDone("A0_Q13_BackpackTraining"))
+        {
+            isDelayAccept = false;
+            if (!isDelayAccept)
+            {
+                StartCoroutine(DelayAcceptQuestReward("A0_Q13_BackpackTraining"));
+                StartCoroutine(DelayAcceptQuest("A1_Q1_Tupas'Request_P1"));
+
+                inventoryPopUp.SetActive(false);
+                m_uiGame.inventoryButton.onClick.RemoveListener(TutorialManager.instance.EnableInventoryTutorial);
             }
         }
     }
@@ -489,6 +522,8 @@ public class DialogueQuestLinker : MonoBehaviour
             case "A0_Q9_OneMoreThing": return tupas.transform;
             case "A0_Q10_ReturnToBangkaw": return bangkaw.transform;
             case "A0_Q12_PamanaTraining_P2": return tupas.transform;
+            case "A1_Q1_Tupas'Request_P1": return tupas.transform;
+            case "A1_Q1_Tupas'Request_P2": return amihanGuard.transform;
         }
         return null;
     }

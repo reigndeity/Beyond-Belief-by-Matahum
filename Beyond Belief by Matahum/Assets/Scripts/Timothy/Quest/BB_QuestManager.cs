@@ -283,4 +283,12 @@ public class BB_QuestManager : MonoBehaviour
         }
     }
     #endregion
+
+    public bool IsQuestDone(string questID)
+    {
+        var quest = BB_QuestManager.Instance.allQuests.Find(q => q.questID == questID);
+        if (quest == null) return false;
+
+        return quest.state == QuestState.Completed || quest.state == QuestState.Claimed;
+    }
 }

@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96f6ae9bcd23cb64780b824aeb56a38a, type: 3}
+  m_Name: Amihan - Guard Sequence
+  m_EditorClassIdentifier: 
+  groups:
+  - dialogueState: Default
+    lines:
+    - speakerName: Amihan
+      dialogueText: Does it ever get boring standing near the gates?
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Amihan
+      dialogueText: I don't really know.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Amihan
+      dialogueText: I've been standing here for quite a while now.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+  - dialogueState: A0_Q0_InitialTalk
+    lines:
+    - speakerName: Amihan
+      dialogueText: What?
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Amihan
+      dialogueText: I can't open the gates for you yet.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+  - dialogueState: A1_Q1_Tupas'Request_P2
+    lines:
+    - speakerName: Amihan
+      dialogueText: Tupas instructed you to ask me to open the gates?
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: Yes
+        dialogueState: A1_Q1_Tupas'Request_P2_Yes
+      animationName: 
+  - dialogueState: A1_Q1_Tupas'Request_P2_Yes
+    lines:
+    - speakerName: Amihan
+      dialogueText: Okay.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Amihan
+      dialogueText: Ill open the gates for you.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Amihan
+      dialogueText: Be careful though.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Amihan
+      dialogueText: It's dangerous out there.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 

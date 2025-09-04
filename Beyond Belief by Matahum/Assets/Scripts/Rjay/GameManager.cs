@@ -95,11 +95,19 @@ public class GameManager : MonoBehaviour
             Debug.Log($"🗑️ Deleted SaveManager folder: {dir}");
         }
 
-        var es3Path = Path.Combine(Application.persistentDataPath, ES3File);
+        // Delete only the current slot
+        var es3Path = Path.Combine(Application.persistentDataPath, $"Auto_{slotId}.es3");
         if (File.Exists(es3Path))
         {
             File.Delete(es3Path);
             Debug.Log($"🗑️ Deleted ES3 file: {es3Path}");
+        }
+
+        // Cleanup ALL Auto_*.es3 files (old or mismatched)
+        foreach (var file in Directory.GetFiles(Application.persistentDataPath, "Auto_*.es3"))
+        {
+            File.Delete(file);
+            Debug.Log($"🗑️ Force deleted leftover ES3 file: {file}");
         }
 
         BB_QuestManager.Instance?.ClearQuestSaveData();
@@ -108,6 +116,11 @@ public class GameManager : MonoBehaviour
     private bool SceneAutoSaveControllerExists()
     {
         return FindFirstObjectByType<SceneAutoSaveController>() != null;
+    }
+
+    public async void SaveGame()
+    {
+        await SaveAll();
     }
 
 }

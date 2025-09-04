@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a962021d732214296807c0b79bcfcf, type: 3}
+  m_Name: A1_Q1_Tupas'Request_P3
+  m_EditorClassIdentifier: 
+  questID: A1_Q1_Tupas'Request_P2
+  questTitle: Tupas' Request
+  actNumber: ACT 1
+  questJournalDescription:
+  - Tupas kindlly asked you a favor to collect 10 garlics.
+  - Tupas kindlly asked you a favor to collect 10 garlics.
+  - Tupas kindlly asked you a favor to collect 10 garlics.
+  questHudDescription: 
+  questType: 0
+  state: 0
+  missions:
+  - whatMustBeDone: Collect 10 Garlics
+    targetID: A1_Q1_Garlic
+    hasCounter: 1
+    requiredAmount: 10
+    currentAmount: 0
+  rewards: []
+  isBeingTracked: 0

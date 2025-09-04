@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneAutoSaveController : MonoBehaviour
 {
-    [SerializeField] string slotId = "01";
-    string SlotFile => $"Auto_{slotId}.es3";
+    // No need for a separate slotId anymore — pull directly from GameManager
+    string SlotFile => $"Auto_{GameManager.instance.slotId}.es3";
 
     public void SaveSceneNow()
     {
@@ -36,7 +36,7 @@ public class SceneAutoSaveController : MonoBehaviour
         }
         ES3.Save("Teleport.Unlocked", unlockedGuids, SlotFile);
 
-        // Save everything configured in ES3 Auto Save window (your other systems)
+        // Save everything configured in ES3 Auto Save window
         ES3AutoSaveMgr.Current.Save();
 
         Debug.Log($"[AutoSave] Saved to {SlotFile}");
@@ -60,7 +60,7 @@ public class SceneAutoSaveController : MonoBehaviour
             }
         }
 
-        // 2) Load autosave objects (positions, inventories, etc.)
+        // 2) Load autosave objects
         ES3AutoSaveMgr.Current.Load();
 
         // 3) Restore revealed fog
@@ -74,10 +74,10 @@ public class SceneAutoSaveController : MonoBehaviour
             }
         }
 
-        // 4) Restore unlocked teleports (silent)
+        // 4) Restore unlocked teleports
         if (ES3.KeyExists("Teleport.Unlocked", file))
         {
-            var unlocked = ES3.Load<List<string>>("Teleport.Unlocked", file) ?? new List<string>();
+            var unlocked = ES3.Load<List<string>>(file) ?? new List<string>();
             var statues = FindObjectsByType<TeleportInteractable>(FindObjectsSortMode.None);
             foreach (var s in statues)
             {
@@ -85,7 +85,7 @@ public class SceneAutoSaveController : MonoBehaviour
                 var g = s.GetGuid();
                 if (!string.IsNullOrEmpty(g) && unlocked.Contains(g))
                 {
-                    s.ForceUnlockSilent(true); // no extra reveals; map fog already handled
+                    s.ForceUnlockSilent(true);
                 }
             }
         }
@@ -95,12 +95,12 @@ public class SceneAutoSaveController : MonoBehaviour
     public async void SaveAll()
     {
         SaveSceneNow();
-        await SaveManager.Instance.SaveAsync("Slot_01");
+        await SaveManager.Instance.SaveAsync(GameManager.instance.slotId);
     }
     public async void LoadAll()
     {
         LoadSceneNow();
-        await SaveManager.Instance.LoadAsync("Slot_01");
+        await SaveManager.Instance.LoadAsync(GameManager.instance.slotId);
     }
     #endregion
 }

@@ -11,6 +11,7 @@ public class TutorialManager : MonoBehaviour
     public static TutorialManager instance;
     [SerializeField] private UI_Game m_uiGame;
     public bool isTutorialDone;
+    [SerializeField] private LewenriGate lewenriGate;
 
     [Header("Script References")]
     [SerializeField] private PlayerMovement playerMovement;
@@ -55,6 +56,7 @@ public class TutorialManager : MonoBehaviour
 
     [Header("Other Variables")]
     public bool tutorial_isFirstStatueInteract = true;
+    public bool tutorial_isGateOpen = true;
 
     [Header("UI Tutorial")]
     public TutorialFadeImage tutorialFadeImage; // default smoothness is 0.0005
@@ -141,6 +143,39 @@ public class TutorialManager : MonoBehaviour
     {
         PlayerCamera.Instance.HardLockCamera();
     }
+    void Update()
+    {
+        // FOR TESTING ONLY
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            BB_QuestManager.Instance.DebugCompleteAndClaimTrackedQuest();
+        }
+        // FOR TESTING ONLY
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            BB_QuestManager.Instance.AcceptQuestByID("A0_Q12_PamanaTraining_P1");
+        }
+    }
+    public void AllowTemporaryBooleans()
+    {
+        tutorial_canCameraDirection = true;
+        tutorial_canCameraZoom = true;
+        tutorial_canMovementToggle = true;
+        tutorial_canJump = true;
+        tutorial_canSprintAndDash = true;
+        tutorial_canAttack = true;
+        tutorial_canNormalSkill = true;
+        tutorial_canUltimateSkill = true;
+        tutorial_canOpenMap = true;
+        ShowNormalSkill();
+        ShowUltimateSkill();
+        ShowHealth();
+        ShowQuestJournal();
+        ShowMinimap();
+        ShowCharacterDetails();
+        ShowAgimatOne();
+        ShowAgimatTwo();
+    }
 
     private void OnEnable()
     {
@@ -171,6 +206,15 @@ public class TutorialManager : MonoBehaviour
             tutorial_isFirstStatueInteract = false;
             PlayerCamera.Instance.HardUnlockCamera();
             PlayerCamera.Instance.AdjustCamera();
+            if (tutorial_isGateOpen == true)
+            {
+                lewenriGate.Open();
+            }
+            else
+            {
+                lewenriGate.Close();
+            }
+            
         }
 
         nextJournalTutorialButton.onClick.AddListener(QuestJournalTutorial);
@@ -234,6 +278,9 @@ public class TutorialManager : MonoBehaviour
 
         // Other Variables
         tutorial_isFirstStatueInteract = false;
+        tutorial_isGateOpen = false;
+
+        lewenriGate.Close();
     }
 
     #region PLAYER BOOLEANS TUTORIAL

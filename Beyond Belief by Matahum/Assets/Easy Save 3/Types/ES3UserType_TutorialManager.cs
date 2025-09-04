@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ES3Types
 {
 	[UnityEngine.Scripting.Preserve]
-	[ES3PropertiesAttribute("instance", "m_uiGame", "isTutorialDone", "playerMovement", "inventory", "agimatPanel", "pamanaPanel", "characterDetailsButton", "inventoryButton", "archiveButton", "questButton", "minimap", "normalSkill", "ultimateSkill", "agimatOne", "agimatTwo", "health", "temporaryCollider", "tupasHouseStairs", "tupasHouseDoor", "cutsceneTriggerOne", "cutsceneBakalNPC", "lewenriSacredStatue", "tutorial_canMovementToggle", "tutorial_canJump", "tutorial_canCameraZoom", "tutorial_canCameraDirection", "tutorial_canAttack", "tutorial_canSprintAndDash", "tutorial_canNormalSkill", "tutorial_canUltimateSkill", "tutorial_canOpenMap", "tutorial_canToggleMouse", "tutorial_canArchives", "tutorial_isFirstStatueInteract", "tutorialFadeImage", "m_questButtonManager", "questJournalTutorial", "mainQuestViewportTH", "questSelectionPanelTH", "questDetailsPanelTH", "questButtonFiltersTH", "claimQuestButtonTH", "closeQuestJournalButtonTH", "claimQuestButton", "closeQuestButton", "questJournalTextTutorial", "nextJournalTutorialButton", "nextJournalTutorialCanvasGroup", "nextJournalTutorialTH", "nonInteractablePanel", "currentQuestJournalTutorial", "claimThisTextHelper", "weaponButtonTH", "closeCharacterDetailButton", "confirmSwitchButton", "confirmTextTH", "agimatButtonTH", "agimatTutorial", "agimatOneTH", "agimatTwoTH", "unequipAgimatButtonTH", "equipAgimatButtonTH", "agimatInventoryTH", "agimatItemImageTH", "agimatItemDescriptionTH", "currentAgimatTutorial", "agimatTutorialText", "firstAgimatSlot", "nextAgimatTutorialButton", "pamanaButtonTH", "attributesButtonTH", "currentPamanaTutorial", "firstPamanaSlot", "pamanaTutorialText", "pamanaTutorial", "diwataSlotButtonTH", "pamanaInventoryTH", "pamanaItemImageTH", "pamanaItemDescriptionTH", "equipPamanaButtonTH", "nextPamanaTutorialButtonTH", "attributeBackgroundTH", "inventoryTutorial", "inventoryTutorialText", "nonInteractableInventory", "sortButtonsTH", "currentFilterTextTH", "inventorySlotTH", "nextInventoryTutorial", "currentInventoryTutorial", "inventoryItemImageTH", "inventoryDescriptionTH", "closeInventoryButtonTH")]
+	[ES3PropertiesAttribute("instance", "m_uiGame", "isTutorialDone", "playerMovement", "inventory", "agimatPanel", "pamanaPanel", "characterDetailsButton", "inventoryButton", "archiveButton", "questButton", "minimap", "normalSkill", "ultimateSkill", "agimatOne", "agimatTwo", "health", "temporaryCollider", "tupasHouseStairs", "tupasHouseDoor", "cutsceneTriggerOne", "cutsceneBakalNPC", "lewenriSacredStatue", "tutorial_canMovementToggle", "tutorial_canJump", "tutorial_canCameraZoom", "tutorial_canCameraDirection", "tutorial_canAttack", "tutorial_canSprintAndDash", "tutorial_canNormalSkill", "tutorial_canUltimateSkill", "tutorial_canOpenMap", "tutorial_canToggleMouse", "tutorial_canArchives", "tutorial_isFirstStatueInteract", "tutorialFadeImage", "m_questButtonManager", "questJournalTutorial", "mainQuestViewportTH", "questSelectionPanelTH", "questDetailsPanelTH", "questButtonFiltersTH", "claimQuestButtonTH", "closeQuestJournalButtonTH", "claimQuestButton", "closeQuestButton", "questJournalTextTutorial", "nextJournalTutorialButton", "nextJournalTutorialCanvasGroup", "nextJournalTutorialTH", "nonInteractablePanel", "claimThisTextHelper", "weaponButtonTH", "closeCharacterDetailButton", "confirmSwitchButton", "confirmTextTH", "agimatButtonTH", "agimatTutorial", "agimatOneTH", "agimatTwoTH", "unequipAgimatButtonTH", "equipAgimatButtonTH", "agimatInventoryTH", "agimatItemImageTH", "agimatItemDescriptionTH", "agimatTutorialText", "firstAgimatSlot", "nextAgimatTutorialButton", "pamanaButtonTH", "attributesButtonTH", "firstPamanaSlot", "pamanaTutorialText", "pamanaTutorial", "diwataSlotButtonTH", "pamanaInventoryTH", "pamanaItemImageTH", "pamanaItemDescriptionTH", "equipPamanaButtonTH", "nextPamanaTutorialButtonTH", "attributeBackgroundTH", "inventoryTutorial", "inventoryTutorialText", "nonInteractableInventory", "sortButtonsTH", "currentFilterTextTH", "inventorySlotTH", "nextInventoryTutorial", "currentInventoryTutorial", "inventoryItemImageTH", "inventoryDescriptionTH", "closeInventoryButtonTH")]
 	public class ES3UserType_TutorialManager : ES3ComponentType
 	{
 		public static ES3Type Instance = null;
@@ -67,7 +67,6 @@ namespace ES3Types
 			writer.WritePropertyByRef("nextJournalTutorialCanvasGroup", instance.nextJournalTutorialCanvasGroup);
 			writer.WritePropertyByRef("nextJournalTutorialTH", instance.nextJournalTutorialTH);
 			writer.WritePropertyByRef("nonInteractablePanel", instance.nonInteractablePanel);
-			writer.WriteProperty("currentQuestJournalTutorial", instance.currentQuestJournalTutorial, ES3Type_int.Instance);
 			writer.WritePropertyByRef("claimThisTextHelper", instance.claimThisTextHelper);
 			writer.WritePropertyByRef("weaponButtonTH", instance.weaponButtonTH);
 			writer.WritePropertyByRef("closeCharacterDetailButton", instance.closeCharacterDetailButton);
@@ -82,13 +81,11 @@ namespace ES3Types
 			writer.WritePropertyByRef("agimatInventoryTH", instance.agimatInventoryTH);
 			writer.WritePropertyByRef("agimatItemImageTH", instance.agimatItemImageTH);
 			writer.WritePropertyByRef("agimatItemDescriptionTH", instance.agimatItemDescriptionTH);
-			writer.WriteProperty("currentAgimatTutorial", instance.currentAgimatTutorial, ES3Type_int.Instance);
 			writer.WritePropertyByRef("agimatTutorialText", instance.agimatTutorialText);
 			writer.WritePropertyByRef("firstAgimatSlot", instance.firstAgimatSlot);
 			writer.WritePropertyByRef("nextAgimatTutorialButton", instance.nextAgimatTutorialButton);
 			writer.WritePropertyByRef("pamanaButtonTH", instance.pamanaButtonTH);
 			writer.WritePropertyByRef("attributesButtonTH", instance.attributesButtonTH);
-			writer.WriteProperty("currentPamanaTutorial", instance.currentPamanaTutorial, ES3Type_int.Instance);
 			writer.WritePropertyByRef("firstPamanaSlot", instance.firstPamanaSlot);
 			writer.WritePropertyByRef("pamanaTutorialText", instance.pamanaTutorialText);
 			writer.WritePropertyByRef("pamanaTutorial", instance.pamanaTutorial);
@@ -121,7 +118,7 @@ namespace ES3Types
 				{
 					
 					case "instance":
-						TutorialManager.instance = reader.Read<TutorialManager>();
+						TutorialManager.instance = reader.Read<TutorialManager>(ES3UserType_TutorialManager.Instance);
 						break;
 					case "m_uiGame":
 					instance = (TutorialManager)reader.SetPrivateField("m_uiGame", reader.Read<UI_Game>(), instance);
@@ -273,9 +270,6 @@ namespace ES3Types
 					case "nonInteractablePanel":
 						instance.nonInteractablePanel = reader.Read<UnityEngine.GameObject>(ES3Type_GameObject.Instance);
 						break;
-					case "currentQuestJournalTutorial":
-						instance.currentQuestJournalTutorial = reader.Read<System.Int32>(ES3Type_int.Instance);
-						break;
 					case "claimThisTextHelper":
 						instance.claimThisTextHelper = reader.Read<UnityEngine.GameObject>(ES3Type_GameObject.Instance);
 						break;
@@ -318,9 +312,6 @@ namespace ES3Types
 					case "agimatItemDescriptionTH":
 						instance.agimatItemDescriptionTH = reader.Read<Abu.TutorialHighlight>();
 						break;
-					case "currentAgimatTutorial":
-						instance.currentAgimatTutorial = reader.Read<System.Int32>(ES3Type_int.Instance);
-						break;
 					case "agimatTutorialText":
 						instance.agimatTutorialText = reader.Read<TMPro.TextMeshProUGUI>();
 						break;
@@ -335,9 +326,6 @@ namespace ES3Types
 						break;
 					case "attributesButtonTH":
 						instance.attributesButtonTH = reader.Read<UnityEngine.UI.Button>();
-						break;
-					case "currentPamanaTutorial":
-						instance.currentPamanaTutorial = reader.Read<System.Int32>(ES3Type_int.Instance);
 						break;
 					case "firstPamanaSlot":
 						instance.firstPamanaSlot = reader.Read<UnityEngine.UI.Button>();
