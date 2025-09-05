@@ -217,9 +217,10 @@ public class Player : MonoBehaviour, IDamageable
             Debug.Log($"Player took {finalDamage} damage. Current Health: {m_playerStats.p_currentHealth}");
         }
 
-        if (m_playerStats.p_currentHealth <= 0f) // Death check
+        if (m_playerStats.p_currentHealth <= 0f && !isDead) // Death check
         {
             Debug.Log("Player is dead.");
+            HandleDeath();
         }
         if (m_playerSkills.isUsingNormalSkill) return;
         m_playerAnimator.GetHit();
@@ -241,6 +242,24 @@ public class Player : MonoBehaviour, IDamageable
 
         Debug.Log($"💚 Healed {amount} HP. Current Health: {m_playerStats.p_currentHealth} / {maxHP}");
     }
+    #region DEATH
+    public async void HandleDeath()
+    {
+        if (isDead) return;
+        isDead = true;
+
+        Debug.Log("💀 Player has died.");
+
+        // Play death animation if you have one
+        SetPlayerLocked(true);
+        m_playerAnimator.ChangeAnimationState("player_death");
+        StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
+        await System.Threading.Tasks.Task.Delay(1000);
+        Loader.Load(4);
+        // Fade back in
+    }
+    #endregion
+
     #endregion
 
     #region PLAYER EXP

@@ -93,7 +93,6 @@ public class Nuno : MonoBehaviour, IDamageable
         BB_QuestManager.Instance.AcceptQuestByID("A1_Q7_LessonFromNuno");
         await Task.Delay(500);
         await GameManager.instance.SavePlayerCoreData();
-        StartCoroutine(UI_TransitionController.instance.Fade(1f, 0f, 0.5f));
         await Task.Delay(500);
         Loader.Load(4);
     }

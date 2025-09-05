@@ -153,6 +153,10 @@ public class TutorialManager : MonoBehaviour
         // FOR TESTING ONLY
         if (Input.GetKeyDown(KeyCode.I))
         {
+            BB_QuestManager.Instance.AcceptQuestByID("A0_Q12_PamanaTraining_P1");
+        }
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
             BB_QuestManager.Instance.AcceptQuestByID("A1_Q2_NewsFromTupas");
         }
     }

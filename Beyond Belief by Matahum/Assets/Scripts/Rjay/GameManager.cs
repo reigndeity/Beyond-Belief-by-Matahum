@@ -135,6 +135,14 @@ public class GameManager : MonoBehaviour
         Debug.Log("💾 [GameSaveController] Saved Player Stats + Inventory + Equipment + Quests.");
     }
 
+    public async Task LoadPlayerNoQuest()
+    {
+        await SaveManager.Instance.LoadSystemsAsync(slotId, updateScene: false, "Player.Stats");
+        await SaveManager.Instance.LoadSystemsAsync(slotId, updateScene: false, "Inventory.Main");
+        await SaveManager.Instance.LoadSystemsAsync(slotId, updateScene: false, "Equipment.Main");
+        TutorialManager.instance?.TutorialCheck();
+    }
+
 
 
     public void DeleteAll()

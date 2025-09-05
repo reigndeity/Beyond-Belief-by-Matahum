@@ -22,6 +22,7 @@ public class DialogueQuestLinker : MonoBehaviour
     public DialogueStateHolder bangkaw;
     public DialogueStateHolder besik;
     public DialogueStateHolder tupas;
+    public DialogueStateHolder nunoSaPunso;
     
 
     [Header("Quest Marker")]
@@ -71,6 +72,7 @@ public class DialogueQuestLinker : MonoBehaviour
     public GameObject nunoMound;
     public GameObject nunoBossFightTrigger;
     public GameObject nunoSaveTrigger;
+    public GameObject nunoSaPunsoCharacter;
 
     void OnEnable()
     {
@@ -359,6 +361,16 @@ public class DialogueQuestLinker : MonoBehaviour
                 case "A1_Q7_LessonFromNuno":
                     nunoBossFightTrigger.SetActive(false);
                     nunoSaveTrigger.SetActive(false);
+                    nunoSaPunsoCharacter.SetActive(true);
+                    nunoSaPunso.SetDialogueState("A1_Q7_LessonFromNuno");
+                    ApplyStates(nunoSaPunso);
+
+                    BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q5_NunoMound");
+                    BB_QuestManager.Instance.ClaimRewardsByID("A1_Q5_TimeToRest");
+
+                    BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q6_Nuno");
+                    BB_QuestManager.Instance.ClaimRewardsByID("A1_Q6_NunoAnger");
+                    ApplyStates(nunoSaPunso);
                     break;
 
             }

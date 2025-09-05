@@ -4,6 +4,8 @@ using UnityEngine;
 public class Nuno_GameStart : MonoBehaviour
 {
     [SerializeField] UI_CanvasGroup nunoCanvasGroup;
+    [SerializeField] UI_CanvasGroup questHudCanvasGroup;
+
     private async void Start()
     {
         await CustomLoadPlayer();
@@ -12,6 +14,7 @@ public class Nuno_GameStart : MonoBehaviour
     private async Task CustomLoadPlayer()
     {
         // Fade in
+        questHudCanvasGroup.FadeOut(0.25f);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
         await Task.Delay(1000);
 
@@ -19,8 +22,11 @@ public class Nuno_GameStart : MonoBehaviour
         TutorialManager.instance.TutorialCheck();
         PlayerCamera.Instance.HardUnlockCamera();
         PlayerCamera.Instance.AdjustCamera();
-        
-        await GameManager.instance.LoadPlayerCoreData();
+        await GameManager.instance.LoadPlayerNoQuest();
+        await Task.Delay(100);
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q5_NunoMound");
+        await Task.Delay(100);
+        BB_QuestManager.Instance.ClaimRewardsByID("A1_Q5_TimeToRest");
         await Task.Delay(100);
         BB_QuestManager.Instance.AcceptQuestByID("A1_Q6_NunoAnger");
 
