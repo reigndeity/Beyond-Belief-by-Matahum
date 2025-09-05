@@ -18,6 +18,8 @@ public class Nuno : MonoBehaviour, IDamageable
 
     public event System.Action OnDeath;
 
+    [SerializeField] UI_CanvasGroup hpCanvas;
+
     void Awake()
     {
         m_playerStats = FindFirstObjectByType<PlayerStats>();
@@ -85,6 +87,7 @@ public class Nuno : MonoBehaviour, IDamageable
         OnDeath?.Invoke();
 
         animator.ChangeAnimationState("Nuno_Death");
+        hpCanvas.FadeOut(1f);
         BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q6_Nuno");
         await Task.Delay(2500);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
