@@ -84,7 +84,7 @@ public class Nuno_Animations : MonoBehaviour
         if (to == "Nuno_Down" || to == "Nuno_Down_Idle") return 0.15f;
 
         //Being hit while down
-        if (from == "Nuno_Down_Idle" && to.StartsWith("Nuno_GetHit")) return 0.25f;
+        if (from == "Nuno_Down_Idle" && to.StartsWith("Nuno_GetHit")) return 0.15f;
 
         //While Idle
         if (from == "Nuno_GetHit_1" && to == "Nuno_Down_Idle") return 1f;

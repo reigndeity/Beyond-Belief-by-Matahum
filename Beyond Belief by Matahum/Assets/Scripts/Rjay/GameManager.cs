@@ -111,6 +111,32 @@ public class GameManager : MonoBehaviour
         TutorialManager.instance?.TutorialCheck();
     }
 
+    public async Task LoadPlayerCoreData()
+    {
+        await SaveManager.Instance.LoadSystemsAsync(slotId, updateScene: false, "Player.Stats");
+        await SaveManager.Instance.LoadSystemsAsync(slotId, updateScene: false, "Inventory.Main");
+        await SaveManager.Instance.LoadSystemsAsync(slotId, updateScene: false, "Equipment.Main");
+
+        BB_QuestManager.Instance?.LoadQuestData();
+
+        Debug.Log("📂 [GameSaveController] Loaded Player Stats + Inventory + Equipment + Quests.");
+
+        TutorialManager.instance?.TutorialCheck();
+    }
+    public async Task SavePlayerCoreData()
+    {
+        await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "Player.Stats");
+        await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "Inventory.Main");
+        await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "Equipment.Main");
+
+        // Save quests as well
+        BB_QuestManager.Instance?.SaveQuestData();
+
+        Debug.Log("💾 [GameSaveController] Saved Player Stats + Inventory + Equipment + Quests.");
+    }
+
+
+
     public void DeleteAll()
     {
         var dir = Path.Combine(SaveDir, slotId);

@@ -10,23 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25a962021d732214296807c0b79bcfcf, type: 3}
-  m_Name: A1_Q1_Tupas'Request_P3
+  m_Name: A1_Q6_NunoAnger
   m_EditorClassIdentifier: 
-  questID: A1_Q1_Tupas'Request_P3
-  questTitle: Tupas' Request
+  questID: A1_Q6_NunoAnger
+  questTitle: Nuno's wrath
   actNumber: ACT 1
   questJournalDescription:
-  - Tupas kindlly asked you a favor to collect 10 garlics.
-  - Tupas kindlly asked you a favor to collect 10 garlics.
-  - Tupas kindlly asked you a favor to collect 10 garlics.
+  - You ignored Nuno's warning and now you suffer his wrath and engage in a fierce
+    battle.
+  - You ignored Nuno's warning and now you suffer his wrath and engage in a fierce
+    battle.
+  - You ignored Nuno's warning and now you suffer his wrath and engage in a fierce
+    battle.
   questHudDescription: 
   questType: 0
   state: 1
   missions:
-  - whatMustBeDone: Collect 10 Garlics
-    targetID: A1_Q1_Garlic
-    hasCounter: 1
-    requiredAmount: 10
+  - whatMustBeDone: Fight Nuno sa Punso
+    targetID: A1_Q6_Nuno
+    hasCounter: 0
+    requiredAmount: 1
     currentAmount: 0
   rewards: []
-  isBeingTracked: 1
+  isBeingTracked: 0

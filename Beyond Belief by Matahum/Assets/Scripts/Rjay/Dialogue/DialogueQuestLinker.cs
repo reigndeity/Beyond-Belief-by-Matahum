@@ -15,10 +15,14 @@ public class DialogueQuestLinker : MonoBehaviour
     [SerializeField] R_InventoryUI inventoryUI;
 
     [Header("All NPCs Dialogue State Holders")]
-    public DialogueStateHolder tupas;
+    public DialogueStateHolder layag;
+    public DialogueSequence layagSequence;
+    public DialogueStateHolder amihanGuard;
     public DialogueStateHolder bakal;
     public DialogueStateHolder bangkaw;
-    public DialogueStateHolder amihanGuard;
+    public DialogueStateHolder besik;
+    public DialogueStateHolder tupas;
+    
 
     [Header("Quest Marker")]
     [SerializeField] private QuestMarker markerPrefab;       // Prefab of quest marker (UI only)
@@ -61,6 +65,12 @@ public class DialogueQuestLinker : MonoBehaviour
     public GameObject garlicParent;
     public MinimapItem garlicHighlight;
     public FogAreaReveal duwendeAreaMap;
+    public GameObject mapPinPopUp;
+    public GameObject besikNPC;
+    public FogAreaReveal nunoSaPunsoAreaMap;
+    public GameObject nunoMound;
+    public GameObject nunoBossFightTrigger;
+    public GameObject nunoSaveTrigger;
 
     void OnEnable()
     {
@@ -307,7 +317,6 @@ public class DialogueQuestLinker : MonoBehaviour
                     ApplyStates(tupas, amihanGuard);
                     AddActiveMarker(currentQuestID, tracked);
                     duwendeAreaMap.RevealNow();
-                    
                     break;
                 case "A1_Q1_Tupas'Request_P3":
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P3");
@@ -316,9 +325,42 @@ public class DialogueQuestLinker : MonoBehaviour
                     RemoveActiveMarker();
                     duwendeCamp.SetActive(true);
                     garlicParent.SetActive(true);
-                    duwendeAreaMap.RevealNow();
                     playerMinimapRenderer.AddMinimapItemToBeHighlighted(garlicHighlight);
+                    mapPinPopUp.SetActive(true);
                     break;
+                case "A1_Q2_NewsFromTupas":
+                    tupas.SetDialogueState("A1_Q2_NewsFromTupas");
+                    ApplyStates(tupas);
+                    AddActiveMarker(currentQuestID, tracked);
+                    garlicParent.SetActive(false);
+                    playerMinimapRenderer.RemoveMinimapItemOfHighlight(garlicHighlight);
+                    break;
+                case "A1_Q3_BesikTheScout":
+                    besikNPC.SetActive(true);
+                    tupas.SetDialogueState("A1_Q3_BesikTheScout");
+                    besik.SetDialogueState("A1_Q3_BesikTheScout");
+                    ApplyStates(tupas, besik);
+                    AddActiveMarker(currentQuestID, tracked);
+                    nunoSaPunsoAreaMap.RevealNow();
+                    break;
+                case "A1_Q4_Albularyo'sHut":
+                    tupas.SetDialogueState("Default");
+                    besik.SetDialogueState("A1_Q4_AlbularyoHut");
+                    ApplyStates(tupas, besik);
+                    //StartCoroutine(DelayAcceptQuestWithTimer("A1_Q5_TimeToRest", 10f));
+                    break;
+                case "A1_Q5_TimeToRest":
+                    besik.SetDialogueState("Default");
+                    layag.SetDialogueState("A1_Q5_TimeToRest");
+                    DialogueManager.Instance.StartDialogue(layagSequence, layag);
+                    ApplyStates(besik, layag);
+                    nunoMound.SetActive(true);
+                    break;
+                case "A1_Q7_LessonFromNuno":
+                    nunoBossFightTrigger.SetActive(false);
+                    nunoSaveTrigger.SetActive(false);
+                    break;
+
             }
         }
 
@@ -370,12 +412,24 @@ public class DialogueQuestLinker : MonoBehaviour
 
         if (dashAmount == 5)
         {
+            // isDelayAccept = false;
+            // if (!isDelayAccept)
+            // {
+            //     dashAmount = 0;
+            //     StartCoroutine(DelayAcceptQuestReward("A0_Q3_Bangkaw'sTraining_P4"));
+            //     StartCoroutine(DelayAcceptQuest("A0_Q4_TrainingWithBangkaw"));
+            // }
+
             isDelayAccept = false;
+
             if (!isDelayAccept)
             {
-                dashAmount = 0;
-                StartCoroutine(DelayAcceptQuestReward("A0_Q3_Bangkaw'sTraining_P4"));
-                StartCoroutine(DelayAcceptQuest("A0_Q4_TrainingWithBangkaw"));
+
+                if (!BB_QuestManager.Instance.HasQuest("A0_Q4_TrainingWithBangkaw"))
+                {
+                    StartCoroutine(DelayAcceptQuestReward("A0_Q3_Bangkaw'sTraining_P4"));
+                    StartCoroutine(DelayAcceptQuest("A0_Q4_TrainingWithBangkaw"));
+                }
             }
         }
 
@@ -412,13 +466,32 @@ public class DialogueQuestLinker : MonoBehaviour
         if (BB_QuestManager.Instance.IsQuestDone("A0_Q13_BackpackTraining"))
         {
             isDelayAccept = false;
+
             if (!isDelayAccept)
             {
-                StartCoroutine(DelayAcceptQuestReward("A0_Q13_BackpackTraining"));
-                StartCoroutine(DelayAcceptQuest("A1_Q1_Tupas'Request_P1"));
+                // ✅ Only add Tupas' Request if it's not already in progress/completed/claimed
+                if (!BB_QuestManager.Instance.HasQuest("A1_Q1_Tupas'Request_P1"))
+                {
+                    StartCoroutine(DelayAcceptQuestReward("A0_Q13_BackpackTraining"));
+                    StartCoroutine(DelayAcceptQuest("A1_Q1_Tupas'Request_P1"));
+                }
 
                 inventoryPopUp.SetActive(false);
                 m_uiGame.inventoryButton.onClick.RemoveListener(TutorialManager.instance.EnableInventoryTutorial);
+            }
+        }
+        if (BB_QuestManager.Instance.IsQuestDone("A1_Q1_Tupas'Request_P3"))
+        {
+            isDelayAccept = false;
+
+            if (!isDelayAccept)
+            {
+
+                if (!BB_QuestManager.Instance.HasQuest("A1_Q2_NewsFromTupas"))
+                {
+                    StartCoroutine(DelayAcceptQuestReward("A1_Q1_Tupas'Request_P3"));
+                    StartCoroutine(DelayAcceptQuest("A1_Q2_NewsFromTupas"));
+                }
             }
         }
     }
@@ -437,6 +510,25 @@ public class DialogueQuestLinker : MonoBehaviour
         yield return new WaitForSeconds(2f);
         isDelayAccept = false;
         BB_QuestManager.Instance.ClaimRewardsByID(questID);
+    }
+    IEnumerator DelayAcceptQuestWithTimer(string questID, float delaySeconds)
+    {
+        Debug.Log($"⏱ Timer started for {questID} ({delaySeconds}s)");
+        yield return new WaitForSeconds(delaySeconds);
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q4_AlbularyoHut");
+        BB_QuestManager.Instance.ClaimRewardsByID("A1_Q4_Albularyo'sHut");
+        yield return new WaitForSeconds(0.25f);
+        
+        if (!BB_QuestManager.Instance.HasQuest(questID))
+        {
+            BB_QuestManager.Instance.AcceptQuestByID(questID);
+            Debug.Log($"✅ Quest {questID} auto-accepted after {delaySeconds} seconds.");
+        }
+    }
+
+    public void DelayAcceptA1Q5()
+    {
+        StartCoroutine(DelayAcceptQuestWithTimer("A1_Q5_TimeToRest", 5f));
     }
 
     public void DashCounter()
@@ -528,6 +620,9 @@ public class DialogueQuestLinker : MonoBehaviour
             case "A0_Q12_PamanaTraining_P2": return tupas.transform;
             case "A1_Q1_Tupas'Request_P1": return tupas.transform;
             case "A1_Q1_Tupas'Request_P2": return amihanGuard.transform;
+            case "A1_Q2_NewsFromTupas": return tupas.transform;
+            case "A1_Q3_BesikTheScout": return besik.transform;
+            case "A1_Q5_TimeToRest": return nunoMound.transform;
         }
         return null;
     }

@@ -37,7 +37,7 @@ public class BB_QuestManager : MonoBehaviour
     }
     private void Start()
     {
-        saveSystem.LoadQuests(allQuests);
+        //saveSystem.LoadQuests(allQuests);
         //LoadQuestToJournal();
     }
 
@@ -291,4 +291,15 @@ public class BB_QuestManager : MonoBehaviour
 
         return quest.state == QuestState.Completed || quest.state == QuestState.Claimed;
     }
+
+    public bool HasQuest(string questID)
+    {
+        var quest = allQuests.Find(q => q.questID == questID);
+        if (quest == null) return false;
+
+        return quest.state == QuestState.Active 
+            || quest.state == QuestState.Completed 
+            || quest.state == QuestState.Claimed;
+    }
+
 }

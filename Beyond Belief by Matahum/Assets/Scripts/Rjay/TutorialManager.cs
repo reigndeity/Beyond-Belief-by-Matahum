@@ -137,7 +137,7 @@ public class TutorialManager : MonoBehaviour
         }
 
         instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
     void Start()
     {
@@ -153,7 +153,7 @@ public class TutorialManager : MonoBehaviour
         // FOR TESTING ONLY
         if (Input.GetKeyDown(KeyCode.I))
         {
-            BB_QuestManager.Instance.AcceptQuestByID("A0_Q12_PamanaTraining_P1");
+            BB_QuestManager.Instance.AcceptQuestByID("A1_Q2_NewsFromTupas");
         }
     }
     public void AllowTemporaryBooleans()
@@ -305,8 +305,17 @@ public class TutorialManager : MonoBehaviour
 
     public void AllowFirstStatueInteraction() => tutorial_isFirstStatueInteract = true;
     public void AllowFullscreenMap() => tutorial_canOpenMap = true;
-    public void ShowQuestJournal() => questButton.FadeIn(0.5f);
-    public void HideQuestJournal() => questButton.FadeOut(0.5f);
+    public void DisableFullscreenMap() => tutorial_canOpenMap = false;
+    public void ShowQuestJournal()
+    {
+        questButton.GetComponent<Button>().enabled = true;
+        questButton.FadeIn(0.5f);
+    }
+    public void HideQuestJournal()
+    {
+        questButton.GetComponent<Button>().enabled = false;
+        questButton.FadeOut(0.5f);
+    }
 
     public void ShowAgimatOne() => agimatOne.FadeIn(0.5f);
     public void HideAgimatOne() => agimatOne.FadeOut(0.5f);
@@ -330,6 +339,11 @@ public class TutorialManager : MonoBehaviour
     {
         inventoryButton.GetComponent<Button>().enabled = true;
         inventoryButton.FadeIn(0.5f);
+    }
+    public void HideInventory()
+    {
+        inventoryButton.GetComponent<Button>().enabled = false;
+        inventoryButton.FadeOut(0.5f);
     }
 
     #endregion

@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using FIMSpace.FProceduralAnimation;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 
 public class Nuno : MonoBehaviour, IDamageable
 {
@@ -73,17 +75,27 @@ public class Nuno : MonoBehaviour, IDamageable
     #region DEATH
     public void Death()
     {
-        StartCoroutine(Dying());
+         _ = Dying();
     }
     public bool isDead = false;
     public bool IsDead() => isDead;
-    IEnumerator Dying()
+    private async Task Dying()
     {
         isDead = true;
         OnDeath?.Invoke();
+
         animator.ChangeAnimationState("Nuno_Death");
-        yield return new WaitForSeconds(9f);
-        animator.ChangeAnimationState("Nuno_Death_to_Stand");
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q6_Nuno");
+        await Task.Delay(2500);
+        StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
+        BB_QuestManager.Instance.ClaimRewardsByID("A1_Q6_NunoAnger");
+        await Task.Delay(500);
+        BB_QuestManager.Instance.AcceptQuestByID("A1_Q7_LessonFromNuno");
+        await Task.Delay(500);
+        await GameManager.instance.SavePlayerCoreData();
+        StartCoroutine(UI_TransitionController.instance.Fade(1f, 0f, 0.5f));
+        await Task.Delay(500);
+        Loader.Load(4);
     }
     #endregion
 }
