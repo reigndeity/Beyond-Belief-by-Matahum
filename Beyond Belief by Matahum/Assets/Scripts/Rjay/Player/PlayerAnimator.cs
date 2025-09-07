@@ -151,6 +151,18 @@ public class PlayerAnimator : MonoBehaviour
                 ChangeAnimationState("player_jog");
             }
         }
+
+        // THIS IS NEW, MIGHT REMOVE IF STILL SHIT BUT IT SEEMS TO FIX THE ISSUE WITH THE IDLE SLIDING BUG 09/07/2025 - 2:23PM
+        if (m_playerMovement.MoveDirection.magnitude > 0.1f &&
+            currentAnimationState.StartsWith("player_idle"))
+        {
+            if (m_playerMovement.isSprinting)
+                ChangeAnimationState("player_run");
+            else if (m_playerMovement.IsWalking)
+                ChangeAnimationState("player_walk");
+            else
+                ChangeAnimationState("player_jog");
+        }
     }
 
     private void HandleStopAndIdleAnimations()

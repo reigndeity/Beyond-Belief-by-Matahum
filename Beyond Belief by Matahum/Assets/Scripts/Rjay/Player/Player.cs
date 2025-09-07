@@ -180,6 +180,10 @@ public class Player : MonoBehaviour, IDamageable
             m_playerSkills.ForceStopSkills();
             m_playerAnimator.ForceIdleState();
         }
+        else // THIS ELSE BLOCK IS ALSO NEW IN AN ATTEMPT TO FIX THE SLIDING BUG 09/07/2025 - 2:23PM
+        {
+            m_playerAnimator.HandleAnimations();
+        }
 
         Debug.Log($"🔒 Player locked: {isLocked}");
     }
