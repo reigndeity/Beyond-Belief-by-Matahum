@@ -26,7 +26,14 @@ public class QuestMarker : MonoBehaviour
     public float fadeInDuration = 0.5f;
     public float fadeOutDuration = 0.5f;
 
+    [Header("Clamping Shape")]
+    public ClampShape clampShape = ClampShape.Circle;
+    public enum ClampShape { Circle, Square }
+    
+
     private RectTransform rectTransform;
+    private Coroutine fadeRoutine;
+    private bool isVisible = true;
 
     void Awake()
     {
@@ -39,7 +46,7 @@ public class QuestMarker : MonoBehaviour
         if (canvasGroup != null)
         {
             canvasGroup.alpha = 0f; // start hidden
-            StartCoroutine(FadeIn());
+            fadeRoutine = StartCoroutine(FadeTo(1f, fadeInDuration));
         }
     }
 
@@ -54,17 +61,21 @@ public class QuestMarker : MonoBehaviour
         // Center of screen
         Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Vector2 dir = ((Vector2)screenPos - screenCenter).normalized;
-
-        // Circle radius (smaller of width/height / 2, minus buffer)
-        float radius = Mathf.Min(Screen.width, Screen.height) / 2f - edgeBuffer;
-
-        // Distance from center
         Vector2 offsetFromCenter = (Vector2)screenPos - screenCenter;
 
-        // If outside circle, clamp to edge of circle
-        if (offsetFromCenter.magnitude > radius)
+        if (clampShape == ClampShape.Circle)
         {
-            offsetFromCenter = dir * radius;
+            // Circle radius
+            float radius = Mathf.Min(Screen.width, Screen.height) / 2f - edgeBuffer;
+            if (offsetFromCenter.magnitude > radius)
+                offsetFromCenter = dir * radius;
+        }
+        else // Square clamp
+        {
+            float halfW = Screen.width / 2f - edgeBuffer;
+            float halfH = Screen.height / 2f - edgeBuffer;
+            offsetFromCenter.x = Mathf.Clamp(offsetFromCenter.x, -halfW, halfW);
+            offsetFromCenter.y = Mathf.Clamp(offsetFromCenter.y, -halfH, halfH);
         }
 
         // Final position
@@ -78,39 +89,45 @@ public class QuestMarker : MonoBehaviour
 
         // Distance text
         distanceText.text = $"{dist:F0}m";
+
+        // Fade near/far
+        if (dist <= 5f && isVisible)
+        {
+            if (fadeRoutine != null) StopCoroutine(fadeRoutine);
+            fadeRoutine = StartCoroutine(FadeTo(0f, fadeOutDuration));
+            isVisible = false;
+        }
+        else if (dist > 5f && !isVisible)
+        {
+            if (fadeRoutine != null) StopCoroutine(fadeRoutine);
+            fadeRoutine = StartCoroutine(FadeTo(1f, fadeInDuration));
+            isVisible = true;
+        }
     }
 
-    IEnumerator FadeIn()
+    IEnumerator FadeTo(float targetAlpha, float duration)
     {
+        float startAlpha = canvasGroup.alpha;
         float time = 0f;
-        while (time < fadeInDuration)
+        while (time < duration)
         {
             time += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(0f, 1f, time / fadeInDuration);
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, time / duration);
             yield return null;
         }
-        canvasGroup.alpha = 1f;
+        canvasGroup.alpha = targetAlpha;
     }
 
     IEnumerator FadeOutAndDestroy()
     {
-        float time = 0f;
-        float startAlpha = canvasGroup.alpha;
-
-        while (time < fadeOutDuration)
-        {
-            time += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(startAlpha, 0f, time / fadeOutDuration);
-            yield return null;
-        }
-
+        yield return FadeTo(0f, fadeOutDuration);
         Destroy(gameObject);
     }
 
-    // 🔑 Public function to call from DialogueQuestLinker or QuestManager
     public void FadeOutAndDestroyMarker()
     {
-        StartCoroutine(FadeOutAndDestroy());
+        if (fadeRoutine != null) StopCoroutine(fadeRoutine);
+        fadeRoutine = StartCoroutine(FadeOutAndDestroy());
     }
 
     public void SetQuestType(bool isMainQuest, Sprite mainSprite, Sprite sideSprite)
@@ -118,9 +135,9 @@ public class QuestMarker : MonoBehaviour
         if (iconImage != null)
             iconImage.sprite = isMainQuest ? mainSprite : sideSprite;
     }
+
     public void SetOffset(Vector3 customOffset)
     {
         offset = customOffset;
     }
-
 }

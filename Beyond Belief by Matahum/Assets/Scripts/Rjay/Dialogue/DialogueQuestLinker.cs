@@ -295,8 +295,6 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.ShowAgimatOne();
                     TutorialManager.instance.ShowAgimatTwo();
 
-                    TutorialManager.instance.AllowTemporaryBooleans();
-
                     normalTrainingAreaMode.SetActive(true);
                     trainingAreaMode.SetActive(false);
                     break;
@@ -320,15 +318,18 @@ public class DialogueQuestLinker : MonoBehaviour
                     AddActiveMarker(currentQuestID, tracked);
                     duwendeAreaMap.RevealNow();
                     break;
-                case "A1_Q1_Tupas'Request_P3":
+                case "A1_Q1_Tupas'Request_P3": // SAVED POINT - must always setdialogue state of other npcs
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P3");
                     amihanGuard.SetDialogueState("Default");
-                    ApplyStates(tupas, amihanGuard);
-                    RemoveActiveMarker();
+                    ApplyStates(tupas, amihanGuard,bakal, bangkaw);
+                    AddActiveMarker(currentQuestID, tracked);
                     duwendeCamp.SetActive(true);
                     garlicParent.SetActive(true);
                     playerMinimapRenderer.AddMinimapItemToBeHighlighted(garlicHighlight);
                     mapPinPopUp.SetActive(true);
+
+                    bakal.SetDialogueState("Default");
+                    bangkaw.SetDialogueState("Default");
                     break;
                 case "A1_Q2_NewsFromTupas":
                     tupas.SetDialogueState("A1_Q2_NewsFromTupas");
@@ -349,7 +350,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     tupas.SetDialogueState("Default");
                     besik.SetDialogueState("A1_Q4_AlbularyoHut");
                     ApplyStates(tupas, besik);
-                    //StartCoroutine(DelayAcceptQuestWithTimer("A1_Q5_TimeToRest", 10f));
+
                     break;
                 case "A1_Q5_TimeToRest":
                     besik.SetDialogueState("Default");
@@ -540,7 +541,7 @@ public class DialogueQuestLinker : MonoBehaviour
 
     public void DelayAcceptA1Q5()
     {
-        StartCoroutine(DelayAcceptQuestWithTimer("A1_Q5_TimeToRest", 5f));
+        StartCoroutine(DelayAcceptQuestWithTimer("A1_Q5_TimeToRest", 10f));
     }
 
     public void DashCounter()
@@ -632,6 +633,7 @@ public class DialogueQuestLinker : MonoBehaviour
             case "A0_Q12_PamanaTraining_P2": return tupas.transform;
             case "A1_Q1_Tupas'Request_P1": return tupas.transform;
             case "A1_Q1_Tupas'Request_P2": return amihanGuard.transform;
+            case "A1_Q1_Tupas'Request_P3": return garlicParent.transform; 
             case "A1_Q2_NewsFromTupas": return tupas.transform;
             case "A1_Q3_BesikTheScout": return besik.transform;
             case "A1_Q5_TimeToRest": return nunoMound.transform;

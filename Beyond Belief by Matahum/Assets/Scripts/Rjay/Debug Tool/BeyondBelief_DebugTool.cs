@@ -27,6 +27,7 @@ public class BeyondBelief_DebugTool : MonoBehaviour
     public Button infiniteDamageButton;
     public Button infiniteMoneyButton;
     public Button infiniteStaminaButton;
+    public Button enablePlayerAcess;
 
     void Start()
     {
@@ -104,5 +105,10 @@ public class BeyondBelief_DebugTool : MonoBehaviour
     void OnClickRestartGame()
     {
         Loader.Load(4);
+    }
+
+    void OnClickEnablePlayerAccess()
+    { 
+        TutorialManager.instance.AllowTemporaryBooleans();
     }
 }

@@ -251,24 +251,24 @@ public class R_PamanaPanel : MonoBehaviour
 
     private void UpdateEquippedIcons()
     {
-        SetSlotIcon(iconDiwata, GetEquippedPamanaForSlot(R_PamanaSlotType.Diwata), emptyDiwataSprite);
-        SetSlotIcon(iconLihim, GetEquippedPamanaForSlot(R_PamanaSlotType.Lihim), emptyLihimSprite);
-        SetSlotIcon(iconSalamangkero, GetEquippedPamanaForSlot(R_PamanaSlotType.Salamangkero), emptySalamangkeroSprite);
+        SetIcon(iconDiwata, GetEquippedPamanaForSlot(R_PamanaSlotType.Diwata), emptyDiwataSprite);
+        SetIcon(iconLihim, GetEquippedPamanaForSlot(R_PamanaSlotType.Lihim), emptyLihimSprite);
+        SetIcon(iconSalamangkero, GetEquippedPamanaForSlot(R_PamanaSlotType.Salamangkero), emptySalamangkeroSprite);
     }
 
-    private void SetSlotIcon(Image targetImage, R_InventoryItem item, Sprite emptySprite)
+    private void SetIcon(Image target, R_InventoryItem item, Sprite emptySprite)
     {
         if (item != null && item.itemData != null && item.itemData.itemIcon != null)
         {
-            targetImage.sprite = item.itemData.itemIcon;
+            target.sprite = item.itemData.itemIcon;
         }
         else
         {
-            targetImage.sprite = emptySprite; // slot-specific fallback
+            target.sprite = emptySprite;
         }
-
-        targetImage.enabled = true; // always enabled
+        target.enabled = true;
     }
+
 
 
     private R_InventoryItem GetEquippedPamanaForSlot(R_PamanaSlotType slotType)

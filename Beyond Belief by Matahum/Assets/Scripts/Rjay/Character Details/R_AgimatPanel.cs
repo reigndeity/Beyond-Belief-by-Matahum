@@ -297,16 +297,15 @@ public class R_AgimatPanel : MonoBehaviour
 
     private void SetIcon(Image target, R_InventoryItem item, Sprite emptySprite)
     {
-        if (item != null && item.itemData != null)
+        if (item != null && item.itemData != null && item.itemData.itemIcon != null)
         {
             target.sprite = item.itemData.itemIcon;
         }
         else
         {
-            target.sprite = emptySprite; // slot-specific fallback
+            target.sprite = emptySprite;
         }
-
-        target.enabled = true; // always keep enabled
+        target.enabled = true;
     }
 
 

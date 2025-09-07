@@ -127,19 +127,25 @@ public class InventorySaver : MonoBehaviour, ISaveable
     {
         if (string.IsNullOrEmpty(typeName) || string.IsNullOrEmpty(dataJson)) return null;
 
-        var type = Type.GetType(typeName);
-        if (type == null)
-        {
-            Debug.LogWarning($"[InventorySaver] Unknown type: {typeName}");
-            return null;
-        }
+        var type = System.Type.GetType(typeName);
+        if (type == null) return null;
 
         var instance = ScriptableObject.CreateInstance(type) as R_ItemData;
         if (!instance) return null;
 
         JsonUtility.FromJsonOverwrite(dataJson, instance);
+
+        // 🔹 Attempt to reload original asset for references like itemIcon
+        var original = Resources.Load<R_ItemData>($"Items/{instance.itemName}");
+        if (original != null)
+        {
+            instance.itemIcon = original.itemIcon;
+            // copy other reference fields if needed (prefabs, etc.)
+        }
+
         return instance;
     }
+
 
     static R_InventoryItem FindNextUnassignedInstance(R_Inventory inv, R_ItemData data, HashSet<string> assigned)
     {
