@@ -35,10 +35,10 @@ public class R_GeneralItemSpawner : MonoBehaviour
         simulatedPlayerLevel = playerStats.currentLevel;
 
         // // Testing Purposes
-        // if (Input.GetKeyDown(KeyCode.P))
-        // {
-        //     R_PamanaSpawnerUtility.SpawnRandomPamanaFromPool(pamanaTemplates, inventory, inventoryUI, simulatedPlayerLevel, visualConfig);
-        // }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            R_PamanaSpawnerUtility.SpawnRandomPamanaFromPool(pamanaTemplates, inventory, inventoryUI, simulatedPlayerLevel, visualConfig);
+        }
 
         // if (Input.GetKeyDown(KeyCode.O))
         // {

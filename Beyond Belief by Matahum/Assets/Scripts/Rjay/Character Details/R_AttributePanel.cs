@@ -20,18 +20,12 @@ public class R_AttributePanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI cooldownTxt;
     [SerializeField] private TextMeshProUGUI staminaTxt;
 
-    // 🔹 Store baseline values once
-    private float storedBaseHP;
-    private float storedBaseATK;
-    private float storedBaseDEF;
-    private float storedBaseCritRate;
-    private float storedBaseCritDmg;
-    private float storedBaseCDR;
-    private float storedBaseStamina;
+    private Player m_player;
 
     void Awake()
     {
         playerStats = FindFirstObjectByType<PlayerStats>();
+        m_player = FindFirstObjectByType<Player>();
     }
 
     private void OnEnable()
@@ -40,18 +34,6 @@ public class R_AttributePanel : MonoBehaviour
         {
             Debug.LogWarning("PlayerStats not assigned to R_AttributePanel.");
             return;
-        }
-
-        // Store baseline stats only once
-        if (storedBaseHP == 0 && storedBaseATK == 0 && storedBaseDEF == 0)
-        {
-            storedBaseHP = playerStats.p_maxHealth;
-            storedBaseATK = playerStats.p_attack;
-            storedBaseDEF = playerStats.p_defense;
-            storedBaseCritRate = playerStats.p_criticalRate;
-            storedBaseCritDmg = playerStats.p_criticalDamage;
-            storedBaseCDR = playerStats.p_cooldownReduction;
-            storedBaseStamina = playerStats.p_stamina;
         }
 
         RefreshStats();
@@ -76,47 +58,72 @@ public class R_AttributePanel : MonoBehaviour
         float fill = xpToNext > 0 ? (float)currXP / xpToNext : 0f;
         xpFillImage.fillAmount = fill;
 
+        // --- Baseline stats from growth table ---
+        float baseHP  = PlayerStatGrowthTable.GetHP(playerStats.currentLevel);
+        float baseATK = PlayerStatGrowthTable.GetATK(playerStats.currentLevel);
+        float baseDEF = PlayerStatGrowthTable.GetDEF(playerStats.currentLevel);
+
+        // --- Weapon ATK ---
+        float weaponATK = m_player != null ? m_player.GetWeaponATK() : 0f;
+        float atkWithoutWeapon = playerStats.p_attack - weaponATK;
+
+        // --- Flat baselines from PlayerStats ---
+        float baseCritRate = playerStats.baseCriticalRate;
+        float baseCritDmg  = playerStats.baseCriticalDamage;
+        float baseCDR      = playerStats.baseCooldownReduction;
+        float baseStamina  = playerStats.baseStamina;
+
         // 🔹 HP
-        float bonusHP = playerStats.p_maxHealth - storedBaseHP;
+        float bonusHP = playerStats.p_maxHealth - baseHP;
         maxHPTxt.text = bonusHP > 0
             ? $"HP: {playerStats.p_maxHealth:F0} <color=#00FF00>(+{bonusHP:F0})</color>"
             : $"HP: {playerStats.p_maxHealth:F0}";
 
-        // 🔹 ATK
-        float bonusATK = playerStats.p_attack - storedBaseATK;
-        atkTxt.text = bonusATK > 0
-            ? $"ATK: {playerStats.p_attack:F0} <color=#00FF00>(+{bonusATK:F0})</color>"
-            : $"ATK: {playerStats.p_attack:F0}";
+        // --- ATK (exclude weapon ATK from bonus)
+        float bonusATK = atkWithoutWeapon - baseATK;
+        int roundedBonusATK = Mathf.RoundToInt(bonusATK);
+
+        if (roundedBonusATK > 0)
+        {
+            atkTxt.text = $"ATK: {playerStats.p_attack} <color=#00FF00>(+{roundedBonusATK})</color>";
+        }
+        else if (roundedBonusATK < 0)
+        {
+            atkTxt.text = $"ATK: {playerStats.p_attack} <color=#FF0000>({roundedBonusATK})</color>";
+        }
+        else
+        {
+            atkTxt.text = $"ATK: {playerStats.p_attack}";
+}
 
         // 🔹 DEF
-        float bonusDEF = playerStats.p_defense - storedBaseDEF;
+        float bonusDEF = playerStats.p_defense - baseDEF;
         defTxt.text = bonusDEF > 0
             ? $"DEF: {playerStats.p_defense:F0} <color=#00FF00>(+{bonusDEF:F0})</color>"
             : $"DEF: {playerStats.p_defense:F0}";
 
         // 🔹 CRIT Rate
-        float bonusCritRate = playerStats.p_criticalRate - storedBaseCritRate;
+        float bonusCritRate = playerStats.p_criticalRate - baseCritRate;
         critRateTxt.text = bonusCritRate > 0
             ? $"CRIT Rate: {playerStats.p_criticalRate:F1}% <color=#00FF00>(+{bonusCritRate:F1}%)</color>"
             : $"CRIT Rate: {playerStats.p_criticalRate:F1}%";
 
         // 🔹 CRIT DMG
-        float bonusCritDmg = playerStats.p_criticalDamage - storedBaseCritDmg;
+        float bonusCritDmg = playerStats.p_criticalDamage - baseCritDmg;
         critDmgTxt.text = bonusCritDmg > 0
             ? $"CRIT DMG: {playerStats.p_criticalDamage:F1}% <color=#00FF00>(+{bonusCritDmg:F1}%)</color>"
             : $"CRIT DMG: {playerStats.p_criticalDamage:F1}%";
 
         // 🔹 Cooldown Reduction
-        float bonusCDR = playerStats.p_cooldownReduction - storedBaseCDR;
+        float bonusCDR = playerStats.p_cooldownReduction - baseCDR;
         cooldownTxt.text = bonusCDR > 0
             ? $"CDR: {playerStats.p_cooldownReduction:F1}% <color=#00FF00>(+{bonusCDR:F1}%)</color>"
             : $"CDR: {playerStats.p_cooldownReduction:F1}%";
 
         // 🔹 Stamina
-        float bonusStamina = playerStats.p_stamina - storedBaseStamina;
+        float bonusStamina = playerStats.p_stamina - baseStamina;
         staminaTxt.text = bonusStamina > 0
             ? $"Stamina: {playerStats.p_stamina:F0} <color=#00FF00>(+{bonusStamina:F0})</color>"
             : $"Stamina: {playerStats.p_stamina:F0}";
-
     }
 }
