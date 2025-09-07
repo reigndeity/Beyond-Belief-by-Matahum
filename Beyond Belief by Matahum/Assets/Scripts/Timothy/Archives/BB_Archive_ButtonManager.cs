@@ -85,4 +85,9 @@ public class BB_Archive_ButtonManager : MonoBehaviour
         OnOpenCreatureCategory();
     }
     #endregion
+
+    public bool IsArchiveOpen()
+    {
+        return archiveUI.activeSelf;
+    }
 }

@@ -67,16 +67,24 @@ public class PlayerMinimap : MonoBehaviour
     public void HandleMapToggle()
     {
         if (TutorialManager.instance.tutorial_canOpenMap == false) return;
+
+        // Block map during dialogue
+        if (DialogueManager.Instance != null && DialogueManager.Instance.isDialoguePlaying) return;
+
+        // Block map while any major UI panel is open
+        if (FindFirstObjectByType<UI_Game>()?.IsAnyMajorPanelOpen() == true) return;
+
         if (Input.GetKeyDown(m_playerInput.mapKey))
         {
             bool open = !isMapOpen;
             SetMapOpen(open);
 
-            // Auto-center when opening
             if (open)
                 CenterMapOnPlayerWithZoom();
         }
     }
+
+
 
     public void ZoomControl()
     {

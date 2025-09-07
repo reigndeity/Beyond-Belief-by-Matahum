@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 [CreateAssetMenu(menuName = "Nuno/Nuno Abilities/Meteor Shower")]
 public class MeteorShower_NunoAbility : Nuno_Ability

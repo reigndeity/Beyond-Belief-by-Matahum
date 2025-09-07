@@ -29,12 +29,33 @@ public class BB_QuestManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); // Optional: persist across scenes
-            allQuests = new List<BB_Quest>(Resources.LoadAll<BB_Quest>("Quests")); //Loads all available quests
+
+            // Load all available quests
+            allQuests = new List<BB_Quest>(Resources.LoadAll<BB_Quest>("Quests"));
+
+            // Attach save system
             saveSystem = gameObject.AddComponent<BB_QuestSaveSystem>();
             savePath = Path.Combine(Application.persistentDataPath, "quests.json");
+
+            // ✅ Only reset quest states if no save file exists
+            if (!File.Exists(savePath))
+            {
+                foreach (var quest in allQuests)
+                {
+                    quest.state = QuestState.Inactive;
+                    quest.isBeingTracked = false;
+
+                    foreach (var mission in quest.missions)
+                        mission.currentAmount = 0;
+                }
+            }
         }
-        else Destroy(gameObject);
+        else
+        {
+            Destroy(gameObject);
+        }
     }
+
     private void Start()
     {
         //saveSystem.LoadQuests(allQuests);

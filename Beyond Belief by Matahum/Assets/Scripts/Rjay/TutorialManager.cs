@@ -143,23 +143,7 @@ public class TutorialManager : MonoBehaviour
     {
         PlayerCamera.Instance.HardLockCamera();
     }
-    void Update()
-    {
-        // FOR TESTING ONLY
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            BB_QuestManager.Instance.DebugCompleteAndClaimTrackedQuest();
-        }
-        // FOR TESTING ONLY
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            BB_QuestManager.Instance.AcceptQuestByID("A0_Q12_PamanaTraining_P1");
-        }
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            BB_QuestManager.Instance.AcceptQuestByID("A1_Q2_NewsFromTupas");
-        }
-    }
+
     public void AllowTemporaryBooleans()
     {
         tutorial_canCameraDirection = true;
@@ -445,6 +429,7 @@ public class TutorialManager : MonoBehaviour
                 agimatOneTH.onClick.AddListener(AgimatTutorial);
                 break;
             case 1:
+                agimatOneTH.GetComponent<TutorialHighlight>().enabled = false;
                 agimatOneTH.onClick.RemoveListener(AgimatTutorial);
                 agimatTutorialText.text = "Select the ngipin ng kidlat agimat";
                 agimatInventoryTH.enabled = true;

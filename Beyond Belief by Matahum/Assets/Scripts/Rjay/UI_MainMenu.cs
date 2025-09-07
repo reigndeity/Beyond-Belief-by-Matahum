@@ -11,6 +11,6 @@ public class UI_MainMenu : MonoBehaviour
     }
     private void OnClickStart()
     {
-        Loader.Load(3);
+        Loader.Load(4);
     }
 }

@@ -141,4 +141,9 @@ public class BB_Quest_ButtonManager : MonoBehaviour
         questHud.SetActive(true);
     }
     #endregion
+
+    public bool IsJournalOpen()
+    {
+        return questJournal.activeSelf;
+    }
 }

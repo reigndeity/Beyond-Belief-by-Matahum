@@ -23,7 +23,7 @@ public class UI_Game : MonoBehaviour
     [SerializeField] private R_CharacterDetailsPanel m_characterDetailsPanel;
     [SerializeField] private Player m_player;
     [SerializeField] private PlayerMovement m_playerMovement;
-    
+
     [Header("UI Game Behavior")]
     private bool isUIHidden = false;
 
@@ -135,7 +135,7 @@ public class UI_Game : MonoBehaviour
         else
         {
             closeMapButton.gameObject.SetActive(false);
-        }   
+        }
     }
 
     #region MAP
@@ -153,7 +153,7 @@ public class UI_Game : MonoBehaviour
         PlayerMinimap.instance.CloseMap();
     }
     #endregion
-    
+
     #region INVENTORY
     private void SetActiveFilter(FilterButton selected)
     {
@@ -241,7 +241,7 @@ public class UI_Game : MonoBehaviour
         SetActiveFilter(rawIngredientsFilter);
     }
     #endregion
-    
+
     #region CHARACTER DETAILS
     public void OnClickOpenCharacterDetails()
     {
@@ -321,7 +321,7 @@ public class UI_Game : MonoBehaviour
     }
 
     #endregion
-    
+
     #region QUEST JOURNAL
     public void OnClickOpenQuestJournal()
     {
@@ -424,7 +424,7 @@ public class UI_Game : MonoBehaviour
         canvasGroup.blocksRaycasts = (toAlpha >= 1f);
     }
     #endregion
-    
+
     #region GAME BEHAVIOR
     public void PauseGame()
     {
@@ -445,4 +445,14 @@ public class UI_Game : MonoBehaviour
         return Time.timeScale == 0f;
     }
     #endregion
+
+
+    public bool IsAnyMajorPanelOpen()
+    {
+        return inventoryPanel.activeSelf ||
+            characterDetailPanel.activeSelf ||
+            m_questButtonManager.IsJournalOpen() ||
+            m_archiveButtonManager.IsArchiveOpen();
+    }
+
 }

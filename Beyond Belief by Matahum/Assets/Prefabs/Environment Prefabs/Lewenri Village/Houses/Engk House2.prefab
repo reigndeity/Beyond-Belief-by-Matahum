@@ -5581,9 +5581,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactName: Interact with Door
-  icon: {fileID: 0}
+  icon: {fileID: -1608509866, guid: c81ee1a5fc10bca41b29f10fae3b44e3, type: 3}
   interactKey: 102
   isInRange: 0
+  useInteractCooldown: 0
+  interactCooldown: 1
   doorPivot: {fileID: 3771308464124336028}
   closedAngleY: 0
   openAngleY: 90
@@ -5594,6 +5596,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   openSfx: {fileID: 0}
   closeSfx: {fileID: 0}
+  isOpen: 0
 --- !u!1 &7207262222393259167
 GameObject:
   m_ObjectHideFlags: 0

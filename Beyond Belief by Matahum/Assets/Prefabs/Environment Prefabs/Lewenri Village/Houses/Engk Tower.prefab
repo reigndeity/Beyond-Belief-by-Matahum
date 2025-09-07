@@ -2575,6 +2575,7 @@ GameObject:
   - component: {fileID: 7903920446141594353}
   - component: {fileID: 6186779969735047208}
   - component: {fileID: 8341460152207683883}
+  - component: {fileID: 1043862446738220030}
   m_Layer: 14
   m_Name: Posts.003
   m_TagString: Untagged
@@ -2650,6 +2651,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1043862446738220030
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3743131474105833226}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4605610149879908436, guid: a9ea735ab2dc44c4fa90bbd31650b49a, type: 3}
 --- !u!1 &3782805280674878609
 GameObject:
   m_ObjectHideFlags: 0
@@ -4108,7 +4131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactName: Interact with Door
-  icon: {fileID: 0}
+  icon: {fileID: -1608509866, guid: c81ee1a5fc10bca41b29f10fae3b44e3, type: 3}
   interactKey: 102
   isInRange: 0
   useInteractCooldown: 0

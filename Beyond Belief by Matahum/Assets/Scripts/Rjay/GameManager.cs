@@ -55,26 +55,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    async void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftBracket))
-        {
-            await SaveAll();
-        }
-        if (Input.GetKeyDown(KeyCode.RightBracket))
-        {
-            await LoadAll();
-        }
-        if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            DeleteAll();
-        }
-    }
-
     IEnumerator LoadPlayer()
     {
-        StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
-        yield return new WaitForSeconds(1f);
         var loadTask = LoadAll();
         yield return new WaitUntil(() => loadTask.IsCompleted);
         yield return new WaitForSeconds(1f);

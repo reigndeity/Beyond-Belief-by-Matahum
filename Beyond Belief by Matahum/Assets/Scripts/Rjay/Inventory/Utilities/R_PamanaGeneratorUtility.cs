@@ -1,8 +1,9 @@
-
 using UnityEngine;
-using UnityEditor;
-using System.IO;
 using System.Collections.Generic;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public static class R_PamanaGeneratorUtility
 {
@@ -26,9 +27,11 @@ public static class R_PamanaGeneratorUtility
         for (int i = 0; i < subCount; i++)
         {
             R_StatType subType;
-            do {
+            do
+            {
                 subType = GetRandomSubstatType();
-            } while (subType == pamanaData.mainStatType || pamanaData.substats.Exists(s => s.statType == subType));
+            }
+            while (subType == pamanaData.mainStatType || pamanaData.substats.Exists(s => s.statType == subType));
 
             var sub = new R_PamanaData.Substat
             {
@@ -38,6 +41,7 @@ public static class R_PamanaGeneratorUtility
             pamanaData.substats.Add(sub);
         }
 
+#if UNITY_EDITOR
         string path = "Assets/Scripts/Rjay/Inventory/Item Data/Item Database/Pamana Datas";
         EnsureFolderPathExists(path);
 
@@ -46,6 +50,7 @@ public static class R_PamanaGeneratorUtility
         AssetDatabase.CreateAsset(pamanaData, fullPath);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+#endif
 
         return pamanaData;
     }
@@ -90,6 +95,7 @@ public static class R_PamanaGeneratorUtility
         };
     }
 
+#if UNITY_EDITOR
     private static void EnsureFolderPathExists(string fullPath)
     {
         string[] folders = fullPath.Split('/');
@@ -104,4 +110,5 @@ public static class R_PamanaGeneratorUtility
             currentPath = nextPath;
         }
     }
+#endif
 }

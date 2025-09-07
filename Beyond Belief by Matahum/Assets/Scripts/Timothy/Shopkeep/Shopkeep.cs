@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using System;
-using static UnityEditor.Progress;
 using Unity.VisualScripting;
 
 public class Shopkeep : MonoBehaviour

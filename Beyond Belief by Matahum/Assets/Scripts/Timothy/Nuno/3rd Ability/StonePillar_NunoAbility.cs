@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
+
 
 [CreateAssetMenu(menuName = "Nuno/Nuno Abilities/Stone Pillar")]
 public class StonePillar_NunoAbility : Nuno_Ability

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 [CreateAssetMenu(menuName = "Nuno/Nuno Abilities/Earth Fall")]
 public class EarthFall_NunoAbility : Nuno_Ability

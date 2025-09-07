@@ -24,7 +24,7 @@ public class UI_TransitionController : MonoBehaviour
     {
         if (fadeGroup)
         {
-            fadeGroup.alpha = 0f;
+            fadeGroup.alpha = 1f;
             fadeGroup.blocksRaycasts = false;
             fadeGroup.interactable = false;
         }
