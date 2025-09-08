@@ -43,6 +43,8 @@ public class BeyondBelief_DebugTool : MonoBehaviour
         loadProgressButton.onClick.AddListener(OnClickLoadProgress);
         deleteProgressButton.onClick.AddListener(OnClickDeleteProgress);
         restartGameButton.onClick.AddListener(OnClickRestartGame);
+
+        enablePlayerAcess.onClick.AddListener(OnClickEnablePlayerAccess);
     }
 
     void Update()

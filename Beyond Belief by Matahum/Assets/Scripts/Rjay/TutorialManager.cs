@@ -163,6 +163,9 @@ public class TutorialManager : MonoBehaviour
         ShowCharacterDetails();
         ShowAgimatOne();
         ShowAgimatTwo();
+
+        PlayerCamera.Instance.HardUnlockCamera();
+        PlayerCamera.Instance.AdjustCamera();
     }
 
     private void OnEnable()
