@@ -295,6 +295,8 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.ShowAgimatOne();
                     TutorialManager.instance.ShowAgimatTwo();
 
+                    TutorialManager.instance.AllowTemporaryBooleans();
+
                     normalTrainingAreaMode.SetActive(true);
                     trainingAreaMode.SetActive(false);
                     break;

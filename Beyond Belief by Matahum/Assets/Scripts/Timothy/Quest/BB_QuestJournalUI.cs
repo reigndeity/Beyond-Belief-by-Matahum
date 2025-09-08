@@ -447,7 +447,7 @@ public class BB_QuestJournalUI : MonoBehaviour
     {
         foreach (BB_Quest quest in BB_QuestManager.Instance.allQuests)
         {
-            if (quest.state == QuestState.Claimed && !IsInCompletedPanel(quest))
+            if (quest.state == QuestState.Claimed && !quest.isInCompletedPanel )//&& !IsInCompletedPanel(quest))
             {
                 MoveQuestToCompletedPanel(quest);
             }
@@ -457,6 +457,8 @@ public class BB_QuestJournalUI : MonoBehaviour
     public void MoveQuestToCompletedPanel(BB_Quest quest)
     {
         string actKey = $"{quest.questType}_{quest.actNumber}";
+
+        quest.isInCompletedPanel = true ;
 
         // Try to get the Act Group in main or side quests
         if (!actGroups.TryGetValue(actKey, out Transform actGroup)) return;
@@ -536,6 +538,8 @@ public class BB_QuestJournalUI : MonoBehaviour
         {
             ClearDetails();
         }
+
+        Debug.Log($"Added {quest.questID} to completed quest");
     }
     private bool IsInCompletedPanel(BB_Quest quest)
     {

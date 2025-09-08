@@ -246,9 +246,21 @@ public class BB_QuestManager : MonoBehaviour
     {
         foreach (var quest in allQuests)
         {
+            quest.isInCompletedPanel = false;
+
             if (quest.state != QuestState.Inactive)
             {
                 BB_QuestJournalUI.instance.AddQuestToJournal(quest);
+
+                switch (quest.questType)
+                {
+                    case BB_QuestType.Main:
+                        activeMainQuests.Add(quest);
+                        break;
+                    case BB_QuestType.Side:
+                        activeSideQuests.Add(quest);
+                        break;
+                }
 
                 if (quest.state == QuestState.Claimed)
                     BB_QuestJournalUI.instance.MoveQuestToCompletedPanel(quest);
