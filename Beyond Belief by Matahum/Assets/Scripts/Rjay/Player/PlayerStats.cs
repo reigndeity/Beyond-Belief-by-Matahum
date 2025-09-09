@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -53,7 +54,15 @@ public class PlayerStats : MonoBehaviour
     }
     void Start()
     {
+        // RecalculateStats();
+        // p_currentHealth = p_maxHealth;
+        StartCoroutine(IntializeStats());
+    }
+
+    IEnumerator IntializeStats()
+    {
         RecalculateStats();
+        yield return new WaitForSeconds(0.25f);
         p_currentHealth = p_maxHealth;
     }
 
