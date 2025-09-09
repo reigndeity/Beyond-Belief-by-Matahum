@@ -366,6 +366,7 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 2:
                 BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q8_QuestJournal");
+                BB_QuestJournalUI.instance.ChangeTrackerButtonDisplay(BB_QuestJournalUI.instance.currentSelectedQuest);
                 nextJournalTutorialCanvasGroup.FadeOut(0.25f);
                 nextJournalTutorialTH.enabled = false;
                 nextJournalTutorialButton.enabled = false;

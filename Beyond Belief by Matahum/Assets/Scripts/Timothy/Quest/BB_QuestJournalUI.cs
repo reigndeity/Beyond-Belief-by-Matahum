@@ -72,35 +72,6 @@ public class BB_QuestJournalUI : MonoBehaviour
         BB_QuestManager.Instance.OnQuestUpdate += HandleQuestUpdate;
     }
 
-    public void RefreshJournalUI()
-    {
-        foreach (BB_Quest quest in BB_QuestManager.Instance.allQuests)
-        {
-            // Skip inactive quests (they shouldn't be in the journal UI)
-            if (quest.state == QuestState.Inactive)
-                continue;
-
-            // If claimed but not already in completed panel → move it
-            if (quest.state == QuestState.Claimed && !IsInCompletedPanel(quest))
-            {
-                MoveQuestToCompletedPanel(quest);
-                continue; // it's already handled
-            }
-
-            // If quest is still active/completed but in main/side lists → update its position
-            if (quest.state == QuestState.Active || quest.state == QuestState.Completed)
-            {
-                ChangeSiblingArrangement(quest);
-            }
-
-            // Update buttons only for the currently selected quest
-            if (quest == currentSelectedQuest)
-            {
-                ChangeTrackerButtonDisplay(quest);
-            }
-        }
-    }
-
     public void OnOpenJournal(params Transform[] questPanels)
     {
         List<Transform> allQuestLists = new List<Transform>();
@@ -152,28 +123,6 @@ public class BB_QuestJournalUI : MonoBehaviour
                 }
             }
         }
-    }
-
-    private Button FindTrackedQuestButton(Transform questList)
-    {
-        if (questList == null) return null;
-
-        foreach (Transform child in questList)
-        {
-            BB_QuestMetaData meta = child.GetComponent<BB_QuestMetaData>();
-            if (meta != null)
-            {
-                BB_Quest matchingQuest = BB_QuestManager.Instance.allQuests
-                    .FirstOrDefault(q => q.questTitle == child.name);
-
-                if (matchingQuest != null && matchingQuest.isBeingTracked)
-                {
-                    return child.GetComponent<Button>();
-                }
-            }
-        }
-
-        return null;
     }
 
     public void AddQuestToJournal(BB_Quest quest)
@@ -251,7 +200,7 @@ public class BB_QuestJournalUI : MonoBehaviour
         // Show quest details
         ShowQuestDetails(quest);
     }
-
+    #region QUEST DETAILS
     public void ShowQuestDetails(BB_Quest quest)
     {
         currentSelectedQuest = quest;
@@ -351,7 +300,30 @@ public class BB_QuestJournalUI : MonoBehaviour
         bool isActive = isObjectActive.gameObject.activeSelf;
         isObjectActive.gameObject.SetActive(!isActive);
     }
+    #endregion
 
+    #region QUEST TRACKING
+    private Button FindTrackedQuestButton(Transform questList)
+    {
+        if (questList == null) return null;
+
+        foreach (Transform child in questList)
+        {
+            BB_QuestMetaData meta = child.GetComponent<BB_QuestMetaData>();
+            if (meta != null)
+            {
+                BB_Quest matchingQuest = BB_QuestManager.Instance.allQuests
+                    .FirstOrDefault(q => q.questTitle == child.name);
+
+                if (matchingQuest != null && matchingQuest.isBeingTracked)
+                {
+                    return child.GetComponent<Button>();
+                }
+            }
+        }
+
+        return null;
+    }
     public void ChangeSiblingArrangement(BB_Quest quest)
     {
         // Get the list container for the current quest
@@ -442,7 +414,9 @@ public class BB_QuestJournalUI : MonoBehaviour
         buttonManager.questUntrackButton.gameObject.SetActive(quest.isBeingTracked);
 
     }
+    #endregion
 
+    #region QUEST STATE CHECKING
     private void HandleQuestUpdate()
     {
         foreach (BB_Quest quest in BB_QuestManager.Instance.allQuests)
@@ -550,5 +524,5 @@ public class BB_QuestJournalUI : MonoBehaviour
         }
         return false;
     }
-
+    #endregion
 }
