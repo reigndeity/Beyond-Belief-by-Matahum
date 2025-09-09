@@ -7,7 +7,7 @@ public class EarthFall_Bullet : MonoBehaviour
     public float bulletSpeed = 30;
     public bool startFalling;
     private Rigidbody rb;
-    private Nuno_Stats stats;
+    private EnemyStats stats;
 
     public FractureObject fractObj;
     public GameObject smokeVFX;
@@ -15,8 +15,8 @@ public class EarthFall_Bullet : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        stats = FindFirstObjectByType<Nuno_Stats>();
-        bulletDamage = (stats.n_attack * (bulletDamagePercentage / 100));
+        stats = FindFirstObjectByType<Nuno>().GetComponent<EnemyStats>();
+        bulletDamage = (stats.e_attack * (bulletDamagePercentage / 100));
     }
 
     // Update is called once per frame

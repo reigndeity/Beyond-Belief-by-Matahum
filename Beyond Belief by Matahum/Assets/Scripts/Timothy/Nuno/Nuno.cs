@@ -11,7 +11,7 @@ public class Nuno : MonoBehaviour, IDamageable
 {
     private Player m_player;
     private PlayerStats m_playerStats;
-    private Nuno_Stats nunoStats;
+    private EnemyStats nunoStats;
     private Nuno_Animations animator;
     private Rigidbody m_rigidbody;
     public bool isVulnerable = true;
@@ -24,7 +24,7 @@ public class Nuno : MonoBehaviour, IDamageable
     {
         m_playerStats = FindFirstObjectByType<PlayerStats>();
         m_player = FindFirstObjectByType<Player>();
-        nunoStats = GetComponent<Nuno_Stats>();
+        nunoStats = GetComponent<EnemyStats>();
         animator = GetComponent<Nuno_Animations>();
         m_rigidbody = GetComponent<Rigidbody>();
     }
@@ -37,7 +37,7 @@ public class Nuno : MonoBehaviour, IDamageable
             GetHit();
 
             bool isCriticalHit = UnityEngine.Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
-            float damageReduction = nunoStats.n_defense * 0.66f; // Defense Scaling
+            float damageReduction = nunoStats.e_defense * 0.66f; // Defense Scaling
             float reducedDamage = damage - damageReduction;
             if (isCriticalHit)
                 reducedDamage *= (1f + (m_playerStats.p_criticalDamage / 100f));
@@ -51,12 +51,12 @@ public class Nuno : MonoBehaviour, IDamageable
             if (isCriticalHit)
             {
                 DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.red);
-                Debug.Log($"💥 CRITICAL HIT! Nuno took {finalDamage} damage. Current Health: {nunoStats.n_currentHealth}");
+                Debug.Log($"💥 CRITICAL HIT! Nuno took {finalDamage} damage. Current Health: {nunoStats.e_currentHealth}");
             }
             else
             {
                 DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.white);
-                Debug.Log($"Nuno took {finalDamage} damage. Current Health: {nunoStats.n_currentHealth}");
+                Debug.Log($"Nuno took {finalDamage} damage. Current Health: {nunoStats.e_currentHealth}");
             }
 
             if (died) Death();

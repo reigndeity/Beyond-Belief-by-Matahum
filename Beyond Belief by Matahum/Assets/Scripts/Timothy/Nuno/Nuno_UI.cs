@@ -4,7 +4,7 @@ using TMPro;
 
 public class Nuno_UI : MonoBehaviour
 {
-    private Nuno_Stats nunoStats;
+    private EnemyStats nunoStats;
     private Nuno nuno;
 
     [Header("Health UI Properties")]
@@ -16,7 +16,7 @@ public class Nuno_UI : MonoBehaviour
     private void Start()
     {
         nuno = GetComponent<Nuno>();
-        nunoStats = GetComponent<Nuno_Stats>();
+        nunoStats = GetComponent<EnemyStats>();
     }
 
     private void Update()
@@ -25,8 +25,8 @@ public class Nuno_UI : MonoBehaviour
     }
     void UIHealthUpdate()
     {
-        float current = nunoStats.n_currentHealth;
-        float max = nunoStats.n_maxHealth;
+        float current = nunoStats.e_currentHealth;
+        float max = nunoStats.e_maxHealth;
 
         float targetFill = current / max;
 

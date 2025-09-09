@@ -9,15 +9,15 @@ public class RockBullet_Bullet : MonoBehaviour
     public float bulletSpeed;
     public bool canShoot;
 
-    private Nuno_Stats stats;
+    private EnemyStats stats;
     public GameObject explosionVFX;
 
     // Update is called once per frame
 
     private void Start()
     {
-        stats = FindFirstObjectByType<Nuno_Stats>();
-        bulletDamage = (stats.n_attack * (bulletDamagePercentage / 100));
+        stats = FindFirstObjectByType<Nuno>().GetComponent<EnemyStats>();
+        bulletDamage = (stats.e_attack * (bulletDamagePercentage / 100));
     }
     void Update()
     {

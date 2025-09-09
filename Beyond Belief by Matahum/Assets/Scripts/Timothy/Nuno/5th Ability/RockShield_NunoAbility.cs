@@ -36,7 +36,8 @@ public class RockShield_NunoAbility : Nuno_Ability
 
         // Call initialize manually BEFORE ResetShield
         var nuno = Object.FindFirstObjectByType<Nuno>();
-        var stats = Object.FindFirstObjectByType<Nuno_Stats>();
+        var stats = Object.FindFirstObjectByType<Nuno>().GetComponent<EnemyStats>();
+
         activeShieldHolder.Initialize(nuno, stats, shieldToNunoHealthRatio, shieldCooldown);
 
         activeShieldHolder.ResetShield();

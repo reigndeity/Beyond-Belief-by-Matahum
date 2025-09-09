@@ -8,15 +8,15 @@ public class MeteorShower_MeteorBullet : MonoBehaviour
     public float meteorSpeed = 30;
     [HideInInspector]public bool startFalling;
     private Rigidbody rb;
-    private Nuno_Stats stats;
+    private EnemyStats stats;
 
     public FractureObject fractObj;
     public GameObject smokeVFX;
 
     private void Start()
     {
-        stats = FindFirstObjectByType<Nuno_Stats>();
-        meteorDamage = (stats.n_attack * (meteorDamagePercentage / 100));
+        stats = FindFirstObjectByType<Nuno>().GetComponent<EnemyStats>();
+        meteorDamage = (stats.e_attack * (meteorDamagePercentage / 100));
         rb = GetComponent<Rigidbody>();
     }
 

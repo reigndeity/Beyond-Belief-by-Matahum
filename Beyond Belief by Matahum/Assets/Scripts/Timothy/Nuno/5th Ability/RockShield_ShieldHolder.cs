@@ -6,7 +6,7 @@ public class RockShield_ShieldHolder : MonoBehaviour
     public RockShield_Shield[] shieldPrefab; // 4 shields in inspector
     public GameObject invulnerableShield;
     [HideInInspector] public Nuno nuno;
-    [HideInInspector] public Nuno_Stats stats;
+    [HideInInspector] public EnemyStats stats;
 
     [HideInInspector] public float shieldHealth;
     [HideInInspector] public float shieldToHealthRatio;
@@ -25,14 +25,14 @@ public class RockShield_ShieldHolder : MonoBehaviour
         }
     }
 
-    public void Initialize(Nuno nuno, Nuno_Stats stats, float shieldToHealthRatio, int cooldown)
+    public void Initialize(Nuno nuno, EnemyStats stats, float shieldToHealthRatio, int cooldown)
     {
         this.nuno = nuno;
         this.stats = stats;
         this.shieldToHealthRatio = shieldToHealthRatio;
         this.shieldCooldown = cooldown;
 
-        shieldHealth = stats.n_maxHealth * (shieldToHealthRatio / 100);
+        shieldHealth = stats.e_maxHealth * (shieldToHealthRatio / 100);
     }
 
     public void ResetShield()

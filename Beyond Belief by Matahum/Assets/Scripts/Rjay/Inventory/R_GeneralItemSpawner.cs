@@ -40,10 +40,10 @@ public class R_GeneralItemSpawner : MonoBehaviour
             R_PamanaSpawnerUtility.SpawnRandomPamanaFromPool(pamanaTemplates, inventory, inventoryUI, simulatedPlayerLevel, visualConfig);
         }
 
-        // if (Input.GetKeyDown(KeyCode.O))
-        // {
-
-        // }
+         if (Input.GetKeyDown(KeyCode.O))
+         {
+            SpawnRandomAgimatFromTemplate();
+         }
     }
 
     #region PAMANA SPAWNING

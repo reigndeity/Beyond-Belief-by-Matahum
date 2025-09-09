@@ -9,12 +9,12 @@ public class StonePillar_Pillar : MonoBehaviour
     public float risingDuration = 0.25f;
     public float fallingDuration = 0.5f;
     private bool dealtDamageAlready = false;
-    private Nuno_Stats stats;
+    private EnemyStats stats;
 
     private void Start()
     {
-        stats = FindFirstObjectByType<Nuno_Stats>();
-        pillarDamage = (stats.n_attack * (pillarDamagePercentage / 100));
+        stats = FindFirstObjectByType<Nuno>().GetComponent<EnemyStats>();
+        pillarDamage = (stats.e_attack * (pillarDamagePercentage / 100));
         StartCoroutine(StartRising());
     }
     public IEnumerator StartRising()
