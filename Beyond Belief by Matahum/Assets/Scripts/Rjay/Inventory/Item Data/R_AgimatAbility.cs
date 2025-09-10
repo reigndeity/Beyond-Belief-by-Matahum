@@ -25,4 +25,9 @@ public abstract class R_AgimatAbility : ScriptableObject
         // Optional: scale based on rarity
         return baseCooldown;
     }
+
+    public virtual void Deactivate(GameObject user)
+    {
+
+    }
 }

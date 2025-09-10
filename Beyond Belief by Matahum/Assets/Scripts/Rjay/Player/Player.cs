@@ -28,6 +28,7 @@ public class Player : MonoBehaviour, IDamageable
     [Header("Player States")]
     public PlayerState currentState;
     public bool isDead = false;
+    public bool isInvulnerable = false;
 
     [Header("Inventory Properties")]
     public R_Inventory playerInventory;
@@ -194,7 +195,7 @@ public class Player : MonoBehaviour, IDamageable
     #region DAMAGE / HEAL FUNCTIONS
     public void TakeDamage(float damage)
     {
-        if (m_playerSkills.isUsingUltimateSkill) return;
+        if (m_playerSkills.isUsingUltimateSkill || isInvulnerable) return;
         
         bool isCriticalHit = Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
         float damageReduction = m_playerStats.p_defense * 0.66f; // Defense Scaling
@@ -421,9 +422,15 @@ public class Player : MonoBehaviour, IDamageable
     public void UnequipAgimat(int slotIndex)
     {
         if (slotIndex == 1)
+        {
+            equippedAgimatSlot1.itemData.slot1Ability.Deactivate(gameObject);
             equippedAgimatSlot1 = null;
+        }
         else if (slotIndex == 2)
+        {
+            equippedAgimatSlot2.itemData.slot2Ability.Deactivate(gameObject);
             equippedAgimatSlot2 = null;
+        }
     }
 
     public R_ItemRarity GetAgimatRarity(int slot)
