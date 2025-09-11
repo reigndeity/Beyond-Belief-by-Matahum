@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Agimat/Abilities/NgipinNgKidlat_S1")]
+[CreateAssetMenu(menuName = "Agimat/Abilities/NgipinNgKidlat/NgipinNgKidlat_S1")]
 public class NgipinNgKidlat_S1 : R_AgimatAbility
 {
     [Header("AOE Settings")]

@@ -1,6 +1,6 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgKalamansi_S2")]
+[CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgKalamansi/MutyaNgKalamansi_S2")]
 public class MutyaNgKalamansi_S2 : R_AgimatAbility
 {
     [HideInInspector] public float damagePercentage;

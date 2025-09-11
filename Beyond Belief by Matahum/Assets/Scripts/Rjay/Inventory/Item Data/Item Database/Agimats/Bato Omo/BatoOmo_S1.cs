@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Agimat/Abilities/BatoOmo_S1")]
+[CreateAssetMenu(menuName = "Agimat/Abilities/BatoOmo/BatoOmo_S1")]
 public class BatoOmo_S1 : R_AgimatAbility
 {
     [HideInInspector] public float shieldDuration = 0;

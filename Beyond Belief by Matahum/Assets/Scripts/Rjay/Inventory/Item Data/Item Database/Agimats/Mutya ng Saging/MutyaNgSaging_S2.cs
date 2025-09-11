@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgSaging_S2")]
+[CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgSaging/MutyaNgSaging_S2")]
 public class MutyaNgSaging_S2 : R_AgimatAbility
 {
     public GameObject bulletPrefab;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgMais_S1")]
+[CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgMais/MutyaNgMais_S1")]
 public class MutyaNgMais_S1 : R_AgimatAbility
 {
     [HideInInspector] public float cachedHealPercent;

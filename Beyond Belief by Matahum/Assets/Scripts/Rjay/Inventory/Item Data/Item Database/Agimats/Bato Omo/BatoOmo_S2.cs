@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
-[CreateAssetMenu(menuName = "Agimat/Abilities/BatoOmo_S2")]
+[CreateAssetMenu(menuName = "Agimat/Abilities/BatoOmo/BatoOmo_S2")]
 
 public class BatoOmo_S2 : R_AgimatAbility
 {

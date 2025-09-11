@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Agimat/Abilities/NgipinNgKidlat_S2")]
+[CreateAssetMenu(menuName = "Agimat/Abilities/NgipinNgKidlat/NgipinNgKidlat_S2")]
 public class NgipinNgKidlat_S2 : R_AgimatAbility
 {
     [Header("Strike Settings")]

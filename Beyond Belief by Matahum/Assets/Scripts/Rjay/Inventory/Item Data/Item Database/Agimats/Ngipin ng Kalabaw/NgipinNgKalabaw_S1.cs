@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Agimat/Abilities/NgipinNgKalabaw_S1")]
+[CreateAssetMenu(menuName = "Agimat/Abilities/NgipinNgKalabaw/NgipinNgKalabaw_S1")]
 public class NgipinNgKalabawS1 : R_AgimatAbility
 {
     public float increaseStats;

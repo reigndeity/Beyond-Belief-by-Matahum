@@ -1,5 +1,5 @@
 using UnityEngine;
-[CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgSaging_S1")]
+[CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgSaging/MutyaNgSaging_S1")]
 public class MutyaNgSaging_S1 : R_AgimatAbility
 {
     public GameObject bananaTurret;

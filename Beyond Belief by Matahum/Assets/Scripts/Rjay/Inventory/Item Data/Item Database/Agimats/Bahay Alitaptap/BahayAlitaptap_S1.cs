@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Agimat/Abilities/BahayAlitaptap_S1")]
+[CreateAssetMenu(menuName = "Agimat/Abilities/BahayAlitaptap/BahayAlitaptap_S1")]
 public class BahayAlitaptap_S1 : R_AgimatAbility
 {
     [HideInInspector] public float increasedDamage;

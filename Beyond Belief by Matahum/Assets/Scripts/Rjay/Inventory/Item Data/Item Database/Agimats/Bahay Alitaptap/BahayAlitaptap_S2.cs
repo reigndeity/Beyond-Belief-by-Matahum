@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Agimat/Abilities/BahayAlitaptap_S2")]
+[CreateAssetMenu(menuName = "Agimat/Abilities/BahayAlitaptap/BahayAlitaptap_S2")]
 public class BahayAlitaptap_S2 : R_AgimatAbility
 {
     public override string GetDescription(R_ItemRarity rarity)
