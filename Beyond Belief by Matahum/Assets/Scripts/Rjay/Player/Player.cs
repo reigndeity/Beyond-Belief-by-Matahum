@@ -35,14 +35,12 @@ public class Player : MonoBehaviour, IDamageable
 
     [HideInInspector] public bool suppressInputUntilNextFrame = false;
 
-    
+
     void Awake()
     {
         foreach (R_PamanaSlotType slot in System.Enum.GetValues(typeof(R_PamanaSlotType)))
             equippedPamanaSet[slot] = null;
-    }
-    void Start()
-    {
+        
         m_playerAnimator = GetComponent<PlayerAnimator>();
         m_playerMovement = GetComponent<PlayerMovement>();
         m_playerInput = GetComponent<PlayerInput>();

@@ -49,6 +49,16 @@ public class SceneAutoSaveController : MonoBehaviour
         var file = SlotFile;
         ES3AutoSaveMgr.Current.settings.path = file;
 
+        // 🟢 Debug log so you always know which file is being used
+        Debug.Log($"[AutoSave] Attempting to load from: {file}");
+
+        // ✅ prevent crash if save file does not exist
+        if (!ES3.FileExists(file))
+        {
+            Debug.LogWarning($"[AutoSave] No ES3 file found at {file}. Starting fresh.");
+            yield break;
+        }
+
         // 1) Ensure we're in the right scene
         if (ES3.KeyExists("Meta.ActiveScene", file))
         {
@@ -61,6 +71,7 @@ public class SceneAutoSaveController : MonoBehaviour
         }
 
         // 2) Load autosave objects
+        ES3AutoSaveMgr.Current.settings.path = file;
         ES3AutoSaveMgr.Current.Load();
 
         // 3) Restore revealed fog
@@ -77,7 +88,7 @@ public class SceneAutoSaveController : MonoBehaviour
         // 4) Restore unlocked teleports
         if (ES3.KeyExists("Teleport.Unlocked", file))
         {
-            var unlocked = ES3.Load<List<string>>(file) ?? new List<string>();
+            var unlocked = ES3.Load<List<string>>("Teleport.Unlocked", file) ?? new List<string>();
             var statues = FindObjectsByType<TeleportInteractable>(FindObjectsSortMode.None);
             foreach (var s in statues)
             {
