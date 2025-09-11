@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using SaveSystemDTO;   // from InventoryDTOs.cs (InvItemDTO / InventoryDTO)
+using SaveSystemDTO;   // from InventoryDTOs.cs
+using Object = UnityEngine.Object; // resolve ambiguity
 
 [DefaultExecutionOrder(-50)] // restore inventory before equipment
 [DisallowMultipleComponent]
@@ -34,39 +35,46 @@ public class InventorySaver : MonoBehaviour, ISaveable
 
                 if (data.isStackable)
                 {
-                    // one stacked record
-                    list.Add(new InvItemDTO
+                    var dto = new InvItemDTO
                     {
                         uid         = null,
                         count       = slot.quantity,
                         soType      = data.GetType().AssemblyQualifiedName,
                         soJson      = JsonUtility.ToJson(data, false),
                         displayName = data.itemName
-                    });
+                    };
+                    list.Add(dto);
                 }
                 else
                 {
-                    // one record per instance
                     if (string.IsNullOrEmpty(slot.runtimeID))
                         slot.runtimeID = Guid.NewGuid().ToString();
 
                     for (int i = 0; i < slot.quantity; i++)
                     {
-                        list.Add(new InvItemDTO
+                        var dto = new InvItemDTO
                         {
                             uid         = (i == 0) ? slot.runtimeID : Guid.NewGuid().ToString(),
                             count       = 1,
                             soType      = data.GetType().AssemblyQualifiedName,
                             soJson      = JsonUtility.ToJson(data, false),
                             displayName = data.itemName
-                        });
+                        };
+
+                        // ✅ Save pamanaData if this is a Pamana
+                        if (data.itemType == R_ItemType.Pamana && data.pamanaData != null)
+                        {
+                            dto.pamanaJson = JsonUtility.ToJson(data.pamanaData, false);
+                        }
+
+                        list.Add(dto);
                     }
                 }
             }
         }
 
-        var dto = new InventoryDTO { items = list.ToArray() };
-        return JsonUtility.ToJson(dto, true);
+        var dtoWrapper = new InventoryDTO { items = list.ToArray() };
+        return JsonUtility.ToJson(dtoWrapper, true);
     }
 
     public void RestoreFromJson(string json)
@@ -78,13 +86,11 @@ public class InventorySaver : MonoBehaviour, ISaveable
 
         inventory.items.Clear();
 
-        // Track UIDs we’ve assigned to avoid duplicating them
         var assigned = new HashSet<string>();
 
         foreach (var it in dto.items)
         {
-            // Rebuild a ScriptableObject instance from the saved type + JSON
-            var itemData = RebuildItemData(it.soType, it.soJson);
+            var itemData = RebuildItemData(it, it.soType, it.soJson);
             if (itemData == null)
             {
                 Debug.LogWarning($"[InventorySaver] Rebuild failed: {it.displayName} ({it.soType})");
@@ -97,33 +103,29 @@ public class InventorySaver : MonoBehaviour, ISaveable
             }
             else
             {
-                // Non-stackable: add 1-by-1, then overwrite the runtimeID with the saved UID
                 int count = Mathf.Max(1, it.count);
                 for (int i = 0; i < count; i++)
                 {
-                    // Create a fresh instance per non-stackable item to avoid shared state
-                    var perItemData = (count == 1) ? itemData : RebuildItemData(it.soType, it.soJson);
+                    var perItemData = (count == 1) ? itemData : RebuildItemData(it, it.soType, it.soJson);
                     inventory.AddItem(perItemData, 1);
 
                     var slot = FindNextUnassignedInstance(inventory, perItemData, assigned);
                     if (slot != null)
                     {
+                        // ✅ Always preserve saved UID for EquipmentSaver
                         var uidToUse = (i == 0 && !string.IsNullOrEmpty(it.uid))
                                        ? it.uid
                                        : Guid.NewGuid().ToString();
 
-                        slot.runtimeID = uidToUse; // overwrite whatever constructor set
+                        slot.runtimeID = uidToUse;
                         assigned.Add(uidToUse);
                     }
                 }
             }
         }
-
-        // If your UI doesn't auto-refresh on AddItem, trigger it here.
-        // e.g., R_InventoryUI.Instance?.Refresh();
     }
 
-    static R_ItemData RebuildItemData(string typeName, string dataJson)
+    static R_ItemData RebuildItemData(InvItemDTO dto, string typeName, string dataJson)
     {
         if (string.IsNullOrEmpty(typeName) || string.IsNullOrEmpty(dataJson)) return null;
 
@@ -135,17 +137,84 @@ public class InventorySaver : MonoBehaviour, ISaveable
 
         JsonUtility.FromJsonOverwrite(dataJson, instance);
 
-        // 🔹 Attempt to reload original asset for references like itemIcon
-        var original = Resources.Load<R_ItemData>($"Items/{instance.itemName}");
-        if (original != null)
+        // Lookup original from ItemRegistry
+        if (ItemRegistry.TryGetByAnyId(instance.itemName, out var original))
         {
+            // Restore base visuals + description
             instance.itemIcon = original.itemIcon;
-            // copy other reference fields if needed (prefabs, etc.)
+            instance.description = original.description;
+
+            switch (instance.itemType)
+            {
+                case R_ItemType.Pamana:
+                    instance.set = original.set;
+                    instance.pamanaSlot = original.pamanaSlot;
+                    instance.twoPieceBonusDescription = original.twoPieceBonusDescription;
+                    instance.threePieceBonusDescription = original.threePieceBonusDescription;
+
+                    // 🔹 Restore saved PamanaData if available
+                    if (!string.IsNullOrEmpty(dto.pamanaJson))
+                    {
+                        var pamanaClone = ScriptableObject.CreateInstance<R_PamanaData>();
+                        JsonUtility.FromJsonOverwrite(dto.pamanaJson, pamanaClone);
+                        instance.pamanaData = pamanaClone;
+                    }
+                    else
+                    {
+                        // fallback for old saves
+                        instance.pamanaData = R_PamanaGeneratorUtility.GenerateFrom(instance);
+                    }
+
+                    // Reapply visuals
+                    var pamanaConfig = Resources.Load<R_PamanaVisualConfig>("Item Database/PamanaVisualConfig");
+                    if (pamanaConfig != null)
+                    {
+                        var visuals = pamanaConfig.GetVisuals(instance.rarity);
+                        if (visuals != null)
+                        {
+                            instance.itemBackdropIcon = visuals.itemBackdropIcon;
+                            instance.inventoryHeaderImage = visuals.inventoryHeaderImage;
+                            instance.inventoryBackdropImage = visuals.inventoryBackdropImage;
+                        }
+                    }
+                    break;
+
+                case R_ItemType.Agimat:
+                    if (original.slot1Ability != null)
+                        instance.slot1Ability = Object.Instantiate(original.slot1Ability);
+                    if (original.slot2Ability != null)
+                        instance.slot2Ability = Object.Instantiate(original.slot2Ability);
+
+                    var agimatConfig = Resources.Load<R_AgimatVisualConfig>("Item Database/AgimatVisualConfig");
+                    if (agimatConfig != null)
+                    {
+                        var set = agimatConfig.GetVisualSet(instance.rarity);
+                        if (set != null)
+                        {
+                            instance.itemBackdropIcon = set.itemBackdropIcon;
+                            instance.inventoryHeaderImage = set.inventoryHeaderImage;
+                            instance.inventoryBackdropImage = set.inventoryBackdropImage;
+                        }
+                    }
+                    break;
+
+                case R_ItemType.Consumable:
+                    instance.consumableEffect = original.consumableEffect;
+                    instance.effectText = original.effectText;
+                    break;
+
+                case R_ItemType.UpgradeMaterial:
+                    instance.upgradeMaterialType = original.upgradeMaterialType;
+                    break;
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"[InventorySaver] Could not find item {instance.itemName} in ItemRegistry.");
         }
 
         return instance;
     }
-
 
     static R_InventoryItem FindNextUnassignedInstance(R_Inventory inv, R_ItemData data, HashSet<string> assigned)
     {
@@ -155,7 +224,6 @@ public class InventorySaver : MonoBehaviour, ISaveable
         {
             if (s == null || s.itemData != data) continue;
 
-            // Either no UID yet, or a UID we haven't set during this restore pass
             if (string.IsNullOrEmpty(s.runtimeID) || !assigned.Contains(s.runtimeID))
                 return s;
         }
