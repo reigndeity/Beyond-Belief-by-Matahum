@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using FIMSpace.FProceduralAnimation;
 
-public class Enemy : MonoBehaviour, IDamageable
+public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
 {
     private Player m_player;
     private PlayerStats m_playerStats;
@@ -198,7 +198,7 @@ public class Enemy : MonoBehaviour, IDamageable
         EnableAllRagdollParts();
         m_blazeAI.Death();
         IgnorePlayerLayer();
-        OnDeath.Invoke();
+        OnDeath?.Invoke();
         yield return new WaitForSeconds(0.5f);
     }
     #endregion

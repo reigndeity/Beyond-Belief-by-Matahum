@@ -7,7 +7,7 @@ using FIMSpace.FProceduralAnimation;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 
-public class Nuno : MonoBehaviour, IDamageable
+public class Nuno : MonoBehaviour, IDamageable, IDeathHandler
 {
     private Player m_player;
     private PlayerStats m_playerStats;
