@@ -38,9 +38,10 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
     }
     #region DAMAGE
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, bool hitAnimOn)
     {
-        GetHit();
+        if(hitAnimOn)
+            GetHit();
 
         bool isCriticalHit = UnityEngine.Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
         float damageReduction = m_enemyStats.e_defense * 0.66f; // Defense Scaling

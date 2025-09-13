@@ -30,7 +30,7 @@ public class Nuno : MonoBehaviour, IDamageable, IDeathHandler
     }
     #region DAMAGE
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, bool hitAnimOn)
     {
         if (isVulnerable && !isDead)
         {

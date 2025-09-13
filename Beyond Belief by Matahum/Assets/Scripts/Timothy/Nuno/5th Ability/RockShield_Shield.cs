@@ -23,7 +23,7 @@ public class RockShield_Shield : MonoBehaviour, IDamageable
         
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, bool hitAnimOn = true)
     {
         shieldHealth -= damage;
 

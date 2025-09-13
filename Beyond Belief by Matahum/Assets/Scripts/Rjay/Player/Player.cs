@@ -191,7 +191,7 @@ public class Player : MonoBehaviour, IDamageable
 
 
     #region DAMAGE / HEAL FUNCTIONS
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, bool hitAnimOn = true)
     {
         if (m_playerSkills.isUsingUltimateSkill || isInvulnerable) return;
         
@@ -226,7 +226,9 @@ public class Player : MonoBehaviour, IDamageable
             HandleDeath();
         }
         if (m_playerSkills.isUsingNormalSkill) return;
-        m_playerAnimator.GetHit();
+
+        if(hitAnimOn)
+            m_playerAnimator.GetHit();
     }
     public void Heal(float amount)
     {

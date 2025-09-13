@@ -33,7 +33,7 @@ public class BatoOmo_S2 : R_AgimatAbility
         if (buffCoroutine != null)
             CoroutineRunner.Instance.StopCoroutine(buffCoroutine);
 
-        buffCoroutine = CoroutineRunner.Instance.StartCoroutine(CheckBuff(stats, threshold));
+        buffCoroutine = CoroutineRunner.Instance.RunCoroutine(CheckBuff(stats, threshold));
     }
 
     public override void Deactivate(GameObject user)
