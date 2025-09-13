@@ -36,6 +36,7 @@ public class DialogueQuestLinker : MonoBehaviour
     private float lastMarkerTime = -999f;
 
     [Header("Act 0 Components")]
+    [SerializeField] GameObject movementTutorialPopUp;
     [SerializeField] GameObject A0_Q0_InitialTalk_NQP;
     [SerializeField] private Transform SwordTrainingDummies;
     [SerializeField] Collider playerWeaponCollider;
@@ -122,6 +123,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     ApplyStates(bakal, amihanGuard);
                     A0_Q0_InitialTalk_NQP.SetActive(true);
                     TutorialManager.instance.cutsceneTriggerOne.SetActive(true);
+                    movementTutorialPopUp.SetActive(true);
                     break;
 
                 case "A0_Q1_FindAndTalkToTupas":
@@ -312,6 +314,10 @@ public class DialogueQuestLinker : MonoBehaviour
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P1");
                     ApplyStates(tupas);
                     AddActiveMarker(currentQuestID, tracked);
+                    break;
+                case "A1_Q1.1_Amihan'sOrder_P1":
+                    amihanGuard.SetDialogueState("A1_Q1.1_Amihan'sOrder_P1");
+                    ApplyStates(amihanGuard);
                     break;
                 case "A1_Q1_Tupas'Request_P2":
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P2");

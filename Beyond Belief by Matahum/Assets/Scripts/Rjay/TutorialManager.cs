@@ -57,6 +57,7 @@ public class TutorialManager : MonoBehaviour
     [Header("Other Variables")]
     public bool tutorial_isFirstStatueInteract = true;
     public bool tutorial_isGateOpen = true;
+    public bool tutorial_isFirstSaveStatueInteract = true;
 
     [Header("UI Tutorial")]
     public TutorialFadeImage tutorialFadeImage; // default smoothness is 0.0005
@@ -127,6 +128,11 @@ public class TutorialManager : MonoBehaviour
     public TutorialHighlight inventoryItemImageTH;
     public TutorialHighlight inventoryDescriptionTH;
     public Button closeInventoryButtonTH;
+
+    [Header("Save Tutorial")]
+    public TutorialHighlight confirmationSaveTH;
+    public Button yesSaveButtonTH;
+    public Button closeSaveButtonTH;
 
     private void Awake()
     {
@@ -205,7 +211,13 @@ public class TutorialManager : MonoBehaviour
             {
                 lewenriGate.Close();
             }
-            
+
+            // Tupas House
+            tupasHouseStairs.SetActive(true);
+            temporaryCollider.SetActive(false);
+            tupasHouseDoor.interactCooldown = 1;
+            cutsceneBakalNPC.SetActive(false);
+
         }
 
         nextJournalTutorialButton.onClick.AddListener(QuestJournalTutorial);
@@ -787,6 +799,19 @@ public class TutorialManager : MonoBehaviour
         m_uiGame.inventoryButton.onClick.RemoveListener(EnableInventoryTutorial);
         BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q13_Backpack");
         isTutorialDone = true;
+    }
+
+    public void EnableSaveTutorial()
+    {
+        tutorialFadeImage.enabled = true;
+        confirmationSaveTH.enabled = true;
+        yesSaveButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+    }
+    public void CloseSaveAndAcceptMainQuest()
+    {
+        tutorialFadeImage.enabled = false;
+        confirmationSaveTH.enabled = false;
+        yesSaveButtonTH.GetComponent<TutorialHighlight>().enabled = false;
     }
     #endregion
 }

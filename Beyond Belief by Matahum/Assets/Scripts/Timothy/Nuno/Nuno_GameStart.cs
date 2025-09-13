@@ -14,7 +14,7 @@ public class Nuno_GameStart : MonoBehaviour
     private async Task CustomLoadPlayer()
     {
         // Fade in
-        questHudCanvasGroup.FadeOut(0.25f);
+        //questHudCanvasGroup.FadeOut(0.25f);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
         await Task.Delay(1000);
 
