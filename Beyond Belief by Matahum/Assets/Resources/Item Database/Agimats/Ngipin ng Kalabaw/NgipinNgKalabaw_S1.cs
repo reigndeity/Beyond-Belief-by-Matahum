@@ -13,7 +13,7 @@ public class NgipinNgKalabawS1 : R_AgimatAbility
         if (increaseStats == 0f)
             increaseStats = GetRandomFlatDamage(rarity);
 
-        return $"Gains {increaseStats:F1} for {duration} seconds then push back surrounding enemies.";
+        return $"Gains additional {increaseStats:F1}% of attack for {duration} seconds then push back surrounding enemies, damaging them.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity)

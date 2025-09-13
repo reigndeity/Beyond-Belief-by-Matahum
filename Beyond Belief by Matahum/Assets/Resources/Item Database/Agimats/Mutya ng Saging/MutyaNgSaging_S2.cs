@@ -15,7 +15,7 @@ public class MutyaNgSaging_S2 : R_AgimatAbility
         if (bulletDamage == 0f)
             bulletDamage = GetRandomDamage(rarity);
 
-        return $"Shoots {bulletCount} in quick succession.";
+        return $"Shoots {bulletCount} banana bullets in quick succession.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity)

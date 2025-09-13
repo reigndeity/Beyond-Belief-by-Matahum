@@ -19,7 +19,7 @@ public class MutyaNgKalamansi_S2 : R_AgimatAbility
         if (armorReduction == 0)
             armorReduction = GetRandomDamageReductionPercent(rarity);
 
-        return $"Throws a kalamansi that deals {damagePercentage:F1} and reduces enemy defenses by {armorReduction:F1}% for 5 seconds. \n\n Deals 150% more damage against Aswang";
+        return $"Throws a kalamansi that deals {damagePercentage:F1} and reduces enemy defenses by {armorReduction:F1}% for 5 seconds. \n\n Deals 50% more damage against Aswang";
     }
     public override void Activate(GameObject user, R_ItemRarity rarity)
     {

@@ -17,7 +17,7 @@ public class MutyaNgSaging_S1 : R_AgimatAbility
         if (bulletDamage == 0f)
             bulletDamage = GetRandomDamage(rarity);
 
-        return $"Plants a banana turret that attacks for {bulletCount} times, dealing {bulletDamage} each. Turret dies after attacking {bulletCount} or after {turretDuration} seconds.";
+        return $"Plants a banana turret that attacks for {bulletCount} times, dealing {bulletDamage} each. Turret dies after attacking {bulletCount} times or after {turretDuration} seconds.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity)
