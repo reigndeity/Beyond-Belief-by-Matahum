@@ -14,6 +14,7 @@ public class Nuno_AttackManager : MonoBehaviour
     [HideInInspector] public bool isAttacking = false;
     private bool canAttack = true;
     public bool isStunned = false;
+    public int stunAmount = 3;
 
     [Header("Skill 1 Properties")]
     public Transform[] bulletPosition;
@@ -81,7 +82,7 @@ public class Nuno_AttackManager : MonoBehaviour
         if (isStunned)
         {
             Debug.Log("Nuno is Stunned");
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(stunAmount);
             isStunned = false;
         }
 
