@@ -318,6 +318,12 @@ public class DialogueQuestLinker : MonoBehaviour
                 case "A1_Q1.1_Amihan'sOrder_P1":
                     amihanGuard.SetDialogueState("A1_Q1.1_Amihan'sOrder_P1");
                     ApplyStates(amihanGuard);
+                    TutorialManager.instance.EnableSaveTutorial();
+                    break;
+                case "A1_Q1.1_Amihan'sOrder_P2":
+                    amihanGuard.SetDialogueState("A1_Q1.1_Amihan'sOrder_P2");
+                    ApplyStates(amihanGuard);
+                    TutorialManager.instance.saveStatue.gameObject.layer = LayerMask.NameToLayer("Save Statue");
                     break;
                 case "A1_Q1_Tupas'Request_P2":
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P2");
@@ -325,6 +331,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     ApplyStates(tupas, amihanGuard);
                     AddActiveMarker(currentQuestID, tracked);
                     duwendeAreaMap.RevealNow();
+                    TutorialManager.instance.DisableSaveTutorial();
                     break;
                 case "A1_Q1_Tupas'Request_P3": // SAVED POINT - must always setdialogue state of other npcs
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P3");

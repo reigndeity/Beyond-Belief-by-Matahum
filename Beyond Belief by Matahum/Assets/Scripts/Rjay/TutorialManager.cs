@@ -38,6 +38,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject cutsceneTriggerOne;
     public GameObject cutsceneBakalNPC;
     public GameObject lewenriSacredStatue;
+    public GameObject saveStatue;
 
     [Header("Player Variables")]
     public bool tutorial_canMovementToggle = true;
@@ -130,9 +131,8 @@ public class TutorialManager : MonoBehaviour
     public Button closeInventoryButtonTH;
 
     [Header("Save Tutorial")]
-    public TutorialHighlight confirmationSaveTH;
-    public Button yesSaveButtonTH;
-    public Button closeSaveButtonTH;
+    public Button noSaveButton;
+    public Button closeSaveButton;
 
     private void Awake()
     {
@@ -201,6 +201,7 @@ public class TutorialManager : MonoBehaviour
         {
             cutsceneBakalNPC.SetActive(false);
             tutorial_isFirstStatueInteract = false;
+            tutorial_isFirstSaveStatueInteract = false;
             PlayerCamera.Instance.HardUnlockCamera();
             PlayerCamera.Instance.AdjustCamera();
             if (tutorial_isGateOpen == true)
@@ -265,6 +266,8 @@ public class TutorialManager : MonoBehaviour
 
         // Misc
         lewenriSacredStatue.gameObject.layer = LayerMask.NameToLayer("Default");
+        saveStatue.gameObject.layer = LayerMask.NameToLayer("Default");
+
 
         // Player Variables
         tutorial_canMovementToggle = false;
@@ -800,18 +803,23 @@ public class TutorialManager : MonoBehaviour
         BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q13_Backpack");
         isTutorialDone = true;
     }
+    #endregion
 
+    #region  SAVE TUTORIAL
+    public void SaveTutorial()
+    {
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q1.1_Statue");
+    }
     public void EnableSaveTutorial()
     {
-        tutorialFadeImage.enabled = true;
-        confirmationSaveTH.enabled = true;
-        yesSaveButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+        noSaveButton.interactable = false;
+        closeSaveButton.onClick.AddListener(SaveTutorial);
+
     }
-    public void CloseSaveAndAcceptMainQuest()
+    public void DisableSaveTutorial()
     {
-        tutorialFadeImage.enabled = false;
-        confirmationSaveTH.enabled = false;
-        yesSaveButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+        noSaveButton.interactable = true;
+        closeSaveButton.onClick.RemoveListener(SaveTutorial);
     }
     #endregion
 }
