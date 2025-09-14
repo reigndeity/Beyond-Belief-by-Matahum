@@ -70,7 +70,7 @@ public class Mangkukulam_AttackManager : MonoBehaviour
 
         int skillIndex = Random.Range(0, abilityList.Count + 1);
 
-        if (skillIndex < abilityList.Count)
+        if (skillIndex < abilityList.Count && abilityList[skillIndex].CanBeUsed())
         {
             isAttacking = true;
             castingCurrentAbility = abilityList[skillIndex];

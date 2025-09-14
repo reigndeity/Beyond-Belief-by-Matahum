@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class Mangkukulam_Ability : ScriptableObject
 {
-    public abstract Coroutine AbilityActivate();
+    public abstract bool CanBeUsed();
     public virtual float Cooldown()
     {
         return Cooldown();

@@ -7,14 +7,16 @@ using DissolveExample;
 public class NeedleBarrage : Mangkukulam_Ability
 {
     public Coroutine currentCoroutine;
+    public bool canBeUsed = true;
     public float cooldown;
 
     public GameObject needleBarrageHolderPrefab;
-    public override Coroutine AbilityActivate() => currentCoroutine;
+    public override bool CanBeUsed() => canBeUsed;
     public override float Cooldown() => cooldown;
     public override void Activate(GameObject user)
     {
         CoroutineRunner.Instance.RunCoroutine(StartSpinning(user));
+        CoroutineRunner.Instance.RunCoroutine(StartCooldown());
     }
     IEnumerator StartSpinning(GameObject user)
     {
@@ -34,5 +36,13 @@ public class NeedleBarrage : Mangkukulam_Ability
         );
 
         NeedleBarrageHolder holderScript = needleHolderPrefab.GetComponent<NeedleBarrageHolder>();
+        
+    }
+
+    IEnumerator StartCooldown()
+    {
+        canBeUsed = false;
+        yield return new WaitForSeconds(Cooldown());
+        canBeUsed = true;
     }
 }
