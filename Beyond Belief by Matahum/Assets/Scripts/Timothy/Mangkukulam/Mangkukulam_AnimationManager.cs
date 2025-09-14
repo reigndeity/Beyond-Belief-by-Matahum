@@ -21,16 +21,16 @@ public class Mangkukulam_AnimationManager : MonoBehaviour
     {
         if (isHit) return;
 
-        if (atkMngr.isStunned)
+        if (mangkukulam.isStunned)
         {
             ChangeAnimationState("Nuno_Down_Idle");
         }
 
-        if (!atkMngr.isAttacking && !atkMngr.isStunned)
+        if (!atkMngr.isAttacking && !mangkukulam.isStunned)
         {
             ChangeAnimationState("Nuno_Idle");
         }
-        else if (atkMngr.isAttacking && !atkMngr.isStunned)
+        else if (atkMngr.isAttacking && !mangkukulam.isStunned)
         {
             for (int i = 0; i < atkMngr.abilityList.Count; i++)
             {

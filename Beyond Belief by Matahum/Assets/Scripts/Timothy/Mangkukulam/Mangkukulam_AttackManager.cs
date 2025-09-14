@@ -12,12 +12,7 @@ public class Mangkukulam_AttackManager : MonoBehaviour
     
     [HideInInspector] public bool isAttacking = false;
     private bool canAttack = true;
-    public bool isStunned = false;
     public int stunAmount = 3;
-
-    [Header("Skill 1 Properties")]
-    public Transform[] bulletPosition;
-    public Transform bulletHolder;
 
     private Player player;
     private Animator anim;
@@ -39,15 +34,9 @@ public class Mangkukulam_AttackManager : MonoBehaviour
 
     private void Update()
     {
-        if (mangkukulam.isDead) return;
+        if (mangkukulam.IsDead()) return;
 
         //animator.HandleAnimations();
-
-        if (!mangkukulam.isBattleStart)
-        {
-            Invoke("BattleStart", 2);
-            return;
-        }
 
         if (canAttack)
         {
@@ -86,7 +75,7 @@ public class Mangkukulam_AttackManager : MonoBehaviour
             isAttacking = true;
             castingCurrentAbility = abilityList[skillIndex];
 
-            abilityList[skillIndex].Activate();
+            abilityList[skillIndex].Activate(gameObject);
             Debug.Log($"Attacking with {abilityList[skillIndex].name}");
 
             // ✅ Wait until animator is actually in the right state
@@ -97,7 +86,7 @@ public class Mangkukulam_AttackManager : MonoBehaviour
             float animLength = anim.GetCurrentAnimatorStateInfo(0).length;
             //Debug.Log($"Playing {expectedState} for {animLength} seconds");
 
-            yield return new WaitForSeconds(3);//animLength);
+            yield return new WaitForSeconds(5);//animLength);
         }
         else
         {
