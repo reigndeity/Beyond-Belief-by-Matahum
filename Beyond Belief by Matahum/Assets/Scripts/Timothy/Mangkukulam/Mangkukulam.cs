@@ -17,7 +17,8 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
     private EnemyStats stats;
     private PlayerStats m_playerStats;
 
-    public event System.Action OnDeath; 
+    public event System.Action OnDeath;
+    public event System.Action OnHit;
 
     void Awake()
     {
@@ -50,6 +51,7 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
         if (isVulnerable && !isDead)
         {
             //GetHit();
+            OnHit?.Invoke();
 
             bool isCriticalHit = Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
             float damageReduction = stats.e_defense * 0.66f; // Defense Scaling

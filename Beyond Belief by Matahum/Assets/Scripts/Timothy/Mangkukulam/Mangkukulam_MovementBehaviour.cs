@@ -30,14 +30,14 @@ public class Mangkukulam_MovementBehaviour : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        if (atkMngr.isAttacking)
+        if (atkMngr.isAttacking || Mangkukulam.instance.isDead || Mangkukulam.instance.isStunned)
         {
-            agent.isStopped = true;
-            agent.updateRotation = false;
+            agent.enabled = false;
             return;
         }
         else
         {
+            agent.enabled = true;
             agent.isStopped = false;
             agent.updateRotation = true;
         }

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09820c58aa207f247837119ced1bdcca, type: 3}
+  m_Name: Potion Blitz
+  m_EditorClassIdentifier: 
+  setPositionPrefab: {fileID: 2551677481135809896, guid: 6de623aa891559347af24792b3a15953, type: 3}
+  moveTime: 3
+  cooldown: 10
+  canBeUsed: 0
+  potionPrefab: {fileID: 6855997438848593665, guid: a18bd4d6947231644999f0fa849c46d5, type: 3}
+  throwForce: 10
+  upwardForce: 5
+  rotationSpeed: 15

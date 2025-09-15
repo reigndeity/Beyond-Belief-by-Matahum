@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine.AI;
 
 public class Mangkukulam_AttackManager : MonoBehaviour
 {
@@ -10,9 +11,9 @@ public class Mangkukulam_AttackManager : MonoBehaviour
     public List<Mangkukulam_Ability> abilityList = new List<Mangkukulam_Ability>();
     public Mangkukulam_Ability castingCurrentAbility;
     
-    [HideInInspector] public bool isAttacking = false;
-    private bool canAttack = true;
-    public int stunAmount = 3;
+    public bool isAttacking = false;
+    public bool canAttack = true;
+    public int stunDuration = 3;
 
     private Player player;
     private Animator anim;
@@ -52,7 +53,7 @@ public class Mangkukulam_AttackManager : MonoBehaviour
         {
             Debug.Log("Mangkukulam is Stunned");
 
-            yield return new WaitForSeconds(stunAmount);
+            yield return new WaitForSeconds(stunDuration);
             mangkukulam.isStunned = false;
         }
 
@@ -78,25 +79,27 @@ public class Mangkukulam_AttackManager : MonoBehaviour
             abilityList[skillIndex].Activate(gameObject);
             Debug.Log($"Attacking with {abilityList[skillIndex].name}");
 
-            // ✅ Wait until animator is actually in the right state
-            /*string expectedState = $"Mangkukulam_Skill_{skillIndex + 1}";
-            yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsName(expectedState));*/
-
-            // ✅ Now get the correct animation length
-            float animLength = anim.GetCurrentAnimatorStateInfo(0).length;
-            //Debug.Log($"Playing {expectedState} for {animLength} seconds");
-
-            yield return new WaitForSeconds(5);//animLength);
+            // Only wait if the skill is NOT indefinite
+            if (!(abilityList[skillIndex] is PotionBlitz_MangkukulamAbility))
+            {
+                yield return new WaitForSeconds(5);
+                isAttacking = false;
+                canAttack = true;
+                castingCurrentAbility = null;
+            }
+            else
+            {
+                // Let Potion Blitz control itself
+                yield break;
+            }
         }
         else
         {
-            Debug.Log("Mangkukulam is not attacking");
+            Debug.Log("Mangkukulam continues walking");
+            canAttack = true;
         }
 
-        // ✅ Allow next attack
-        isAttacking = false;
-        canAttack = true;
-        castingCurrentAbility = null;
+        GetComponent<NavMeshAgent>().enabled = true;
     }
 
 }
