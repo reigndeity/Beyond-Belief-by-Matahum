@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PersistentGuid))]
-public class FogAreaReveal : MonoBehaviour, ISaveable
+public class FogAreaReveal : MonoBehaviour
 {
     [Tooltip("IDs of map areas to reveal when triggered.")]
     [SerializeField] private string[] revealAreaIds;
@@ -12,12 +12,6 @@ public class FogAreaReveal : MonoBehaviour, ISaveable
     private void Awake()
     {
         persistentGuid = GetComponent<PersistentGuid>();
-        SaveManager.Instance.Register(this);
-    }
-
-    private void OnDestroy()
-    {
-        SaveManager.Instance?.Unregister(this);
     }
 
     /// <summary>
@@ -39,28 +33,9 @@ public class FogAreaReveal : MonoBehaviour, ISaveable
         }
     }
 
-    // ---------------- SAVE SYSTEM HOOKS ----------------
-
-    public string SaveId => $"FogArea.{persistentGuid.Guid}";
-
-    [System.Serializable]
-    private class DTO
-    {
-        public bool revealed;
-    }
-
-    public string CaptureJson()
-    {
-        return JsonUtility.ToJson(new DTO { revealed = hasBeenRevealed });
-    }
-
-    public void RestoreFromJson(string json)
-    {
-        if (string.IsNullOrEmpty(json)) return;
-        var dto = JsonUtility.FromJson<DTO>(json);
-        if (dto != null && dto.revealed)
-        {
-            RevealNow(); // auto-reveal on load if it was already revealed
-        }
-    }
+    /// <summary>
+    /// Check if this fog area has been revealed already.
+    /// (Optional helper if you need to query state).
+    /// </summary>
+    public bool IsRevealed() => hasBeenRevealed;
 }

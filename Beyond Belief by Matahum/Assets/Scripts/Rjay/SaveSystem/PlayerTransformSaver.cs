@@ -1,5 +1,5 @@
 using UnityEngine;
-
+[DefaultExecutionOrder(-70)]
 [DisallowMultipleComponent]
 public class PlayerTransformSaver : MonoBehaviour, ISaveable
 {

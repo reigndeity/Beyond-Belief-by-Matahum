@@ -193,6 +193,7 @@ public class TutorialManager : MonoBehaviour
     }
     public void TutorialCheck()
     {
+        Debug.Log("DOING A TUTORIAL CHECK");
         if (!isTutorialDone)
         {
             StartTutorial();
