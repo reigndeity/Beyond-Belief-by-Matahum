@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 using Abu;
 using TMPro;
 using UnityEngine;
@@ -219,6 +220,8 @@ public class TutorialManager : MonoBehaviour
             temporaryCollider.SetActive(false);
             tupasHouseDoor.interactCooldown = 1;
             cutsceneBakalNPC.SetActive(false);
+
+            saveStatue.gameObject.layer = LayerMask.NameToLayer("Save Statue");
 
         }
 
@@ -811,16 +814,21 @@ public class TutorialManager : MonoBehaviour
     {
         BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q1.1_Statue");
     }
-    public void EnableSaveTutorial()
+    public void ContinueQuestAfterSave()
     {
-        noSaveButton.interactable = false;
-        closeSaveButton.onClick.AddListener(SaveTutorial);
-
+        StartCoroutine(ContinueQuestAfterSaving());
     }
-    public void DisableSaveTutorial()
+    public IEnumerator ContinueQuestAfterSaving()
     {
-        noSaveButton.interactable = true;
-        closeSaveButton.onClick.RemoveListener(SaveTutorial);
+        BB_QuestManager.Instance.ClaimRewardsByID("A1_Q1.1_Amihan'sOrder_P2");
+        yield return new WaitForSeconds(1f);
+        BB_QuestManager.Instance.AcceptQuestByID("A1_Q1_Tupas'Request_P2");
+        yield return new WaitForSeconds(1f);
+        _ = SaveProgressAsync();
+    }
+    async Task SaveProgressAsync()
+    {
+        await GameManager.instance.SaveAll();
     }
     #endregion
 }

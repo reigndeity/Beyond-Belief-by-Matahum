@@ -79,7 +79,7 @@ public class BeyondBelief_DebugTool : MonoBehaviour
         BB_QuestManager.Instance.DebugCompleteAndClaimTrackedQuest();
     }
 
-    void OnClickSaveProgress()
+    public void OnClickSaveProgress()
     {
         _ = SaveProgressAsync();
     }

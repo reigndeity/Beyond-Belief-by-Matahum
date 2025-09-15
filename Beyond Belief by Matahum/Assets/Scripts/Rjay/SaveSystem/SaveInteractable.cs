@@ -1,18 +1,26 @@
 using System.Collections;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class SaveInteractable : Interactable
 {
     private Player m_player;
-    [Header("Save UI References")]
-    public GameObject savePanel;           // The confirmation panel
-    public Button yesButton;               // "Yes" button
-    public Button noButton;                // "No" button
-    public Button closeButton;
-    public TextMeshProUGUI feedbackText;              // Feedback text (optional, can be in the panel)
 
+    [Header("Save UI References")]
+    public GameObject savePanel;           
+    public Button yesButton;               
+    public Button noButton;                
+    public Button closeButton;
+    public TextMeshProUGUI feedbackText;   
+
+    [Header("Events")]
+    public UnityEvent onInteract;      // Fired when interacted
+    public UnityEvent onSaveStarted;   // Fired when save begins
+    public UnityEvent onSaveFinished;  // Fired when save ends
+    public UnityEvent onSaveCancelled; // Fired when player presses "No"
 
     private bool isSaving = false;
 
@@ -20,6 +28,7 @@ public class SaveInteractable : Interactable
     {
         m_player = FindFirstObjectByType<Player>();
     }
+
     private void Start()
     {
         if (savePanel != null) savePanel.SetActive(false);
@@ -35,13 +44,11 @@ public class SaveInteractable : Interactable
 
     public override void OnInteract()
     {
-        // Block if saving already or cooldown active
         if (useInteractCooldown && IsOnCooldown()) return;
         if (isSaving) return;
 
-        base.OnInteract(); // triggers cooldown coroutine
+        base.OnInteract();
 
-        // Open confirmation panel
         if (savePanel != null) savePanel.SetActive(true);
         if (feedbackText != null) feedbackText.text = "Do you want to save your progress?";
         LockPlayer();
@@ -49,6 +56,8 @@ public class SaveInteractable : Interactable
         yesButton.gameObject.SetActive(true);
         noButton.gameObject.SetActive(true);
 
+        // 🔹 Invoke UnityEvent
+        onInteract?.Invoke();
     }
 
     private void OnYesClicked()
@@ -62,6 +71,9 @@ public class SaveInteractable : Interactable
         if (savePanel != null) savePanel.SetActive(false);
         PlayerCamera.Instance.SetCursorVisibility(false);
         UnlockPlayer();
+
+        // 🔹 Invoke UnityEvent
+        onSaveCancelled?.Invoke();
     }
 
     private IEnumerator SaveRoutine()
@@ -73,12 +85,17 @@ public class SaveInteractable : Interactable
         yesButton.gameObject.SetActive(false);
         noButton.gameObject.SetActive(false);
 
-        // Call GameManager to save
-        yield return GameManager.instance.SaveAll().AsIEnumerator();
+        // 🔹 Event: save started
+        onSaveStarted?.Invoke();
+
+        yield return SaveProgressAsync().AsIEnumerator();
 
         if (feedbackText != null) feedbackText.text = "Your progress has been saved!";
         closeButton.interactable = true;
         isSaving = false;
+
+        // 🔹 Event: save finished
+        onSaveFinished?.Invoke();
     }
 
     public void LockPlayer()
@@ -100,6 +117,10 @@ public class SaveInteractable : Interactable
         UnlockPlayer();
     }
 
+    async Task SaveProgressAsync()
+    {
+        await GameManager.instance.SaveAll();
+    }
 }
 
 // Helper extension so async Tasks can be awaited in Coroutines

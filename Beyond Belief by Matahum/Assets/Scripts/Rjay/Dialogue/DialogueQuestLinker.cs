@@ -63,6 +63,7 @@ public class DialogueQuestLinker : MonoBehaviour
     public TimelineAsset A0_Q12_PamanaTraining_P2_Cutscene;
     [SerializeField] GameObject inventoryPopUp;
     [Header("Act 1 Components")]
+    [SerializeField] SaveInteractable lewenriSaveInteractable;
     public GameObject duwendeCamp;
     public GameObject garlicParent;
     public MinimapItem garlicHighlight;
@@ -318,12 +319,14 @@ public class DialogueQuestLinker : MonoBehaviour
                 case "A1_Q1.1_Amihan'sOrder_P1":
                     amihanGuard.SetDialogueState("A1_Q1.1_Amihan'sOrder_P1");
                     ApplyStates(amihanGuard);
-                    TutorialManager.instance.EnableSaveTutorial();
                     break;
                 case "A1_Q1.1_Amihan'sOrder_P2":
                     amihanGuard.SetDialogueState("A1_Q1.1_Amihan'sOrder_P2");
                     ApplyStates(amihanGuard);
                     TutorialManager.instance.saveStatue.gameObject.layer = LayerMask.NameToLayer("Save Statue");
+                    lewenriSaveInteractable.onInteract.AddListener(TutorialManager.instance.SaveTutorial);
+                    TutorialManager.instance.closeSaveButton.onClick.AddListener(TutorialManager.instance.ContinueQuestAfterSave);
+                    TutorialManager.instance.noSaveButton.onClick.AddListener(TutorialManager.instance.ContinueQuestAfterSave);
                     break;
                 case "A1_Q1_Tupas'Request_P2":
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P2");
@@ -331,7 +334,10 @@ public class DialogueQuestLinker : MonoBehaviour
                     ApplyStates(tupas, amihanGuard);
                     AddActiveMarker(currentQuestID, tracked);
                     duwendeAreaMap.RevealNow();
-                    TutorialManager.instance.DisableSaveTutorial();
+                    lewenriSaveInteractable.onInteract.RemoveListener(TutorialManager.instance.SaveTutorial);
+
+                    TutorialManager.instance.closeSaveButton.onClick.RemoveListener(TutorialManager.instance.ContinueQuestAfterSave);
+                    TutorialManager.instance.noSaveButton.onClick.RemoveListener(TutorialManager.instance.ContinueQuestAfterSave);
                     break;
                 case "A1_Q1_Tupas'Request_P3": // SAVED POINT - must always setdialogue state of other npcs
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P3");
@@ -647,6 +653,8 @@ public class DialogueQuestLinker : MonoBehaviour
             case "A0_Q10_ReturnToBangkaw": return bangkaw.transform;
             case "A0_Q12_PamanaTraining_P2": return tupas.transform;
             case "A1_Q1_Tupas'Request_P1": return tupas.transform;
+            case "A1_Q1.1_Amihan'sOrder_P1": return amihanGuard.transform;
+            case "A1_Q1.1_Amihan'sOrder_P2": return lewenriSaveInteractable.transform;
             case "A1_Q1_Tupas'Request_P2": return amihanGuard.transform;
             case "A1_Q1_Tupas'Request_P3": return garlicParent.transform; 
             case "A1_Q2_NewsFromTupas": return tupas.transform;
