@@ -150,10 +150,11 @@ public class MapManager : MonoBehaviour
         }
         else
         {
-            // 👇 New check: already at teleporter
+            // Check if player is already near teleporter
             Vector3 playerPos = playerTransform.position;
-            Vector3 tpPos = (teleporter.teleportTarget != null ? teleporter.teleportTarget.position : teleporter.transform.position);
-            tpPos.y = playerPos.y;
+            Vector3 tpPos = (teleporter.teleportTarget != null ?
+                             teleporter.teleportTarget.position :
+                             teleporter.transform.position);
 
             if (Vector3.Distance(playerPos, tpPos) < minTeleportDistance)
             {
@@ -194,9 +195,10 @@ public class MapManager : MonoBehaviour
             return;
         }
 
-        // 👇 Block if player is already near
-        Vector3 tpPos = (currentTeleporter.teleportTarget != null ? currentTeleporter.teleportTarget.position : currentTeleporter.transform.position);
-        tpPos.y = playerTransform.position.y;
+        // Destination is the teleporter's target (full XYZ, no Y override)
+        Vector3 tpPos = (currentTeleporter.teleportTarget != null ?
+                         currentTeleporter.teleportTarget.position :
+                         currentTeleporter.transform.position);
 
         if (Vector3.Distance(playerTransform.position, tpPos) < minTeleportDistance)
         {
@@ -204,7 +206,6 @@ public class MapManager : MonoBehaviour
             return;
         }
 
-        var teleporterRef = currentTeleporter;
         Vector3 targetPos = tpPos;
 
         if (transition != null)
