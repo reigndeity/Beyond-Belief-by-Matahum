@@ -49,7 +49,8 @@ public class R_PamanaSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             backdropImage.enabled = backdropImage.sprite != null;
 
             int level = item.itemData.pamanaData?.currentLevel ?? 0;
-            levelText.text = $"+{level}";
+            //levelText.text = $"+{level}"; this is the original
+            levelText.text = $"1"; // this is the compromise cuz i had to remove levels
 
             bool isEquipped = panel.IsItemEquipped(item);
             equippedLabel.SetActive(isEquipped);

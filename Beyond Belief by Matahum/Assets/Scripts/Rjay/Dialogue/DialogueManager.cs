@@ -21,11 +21,15 @@ public class DialogueManager : MonoBehaviour
     public AudioSource voiceSource;
 
     [Header("Typewriter Settings")]
-    public float characterDelay = 0.03f;
+    public float characterDelay = 0.01f;
 
     [Header("Input Settings")]
     public KeyCode continueKey = KeyCode.Space;
     public KeyCode fastForwardKey = KeyCode.Mouse0;
+
+    [Header("Input Delay Settings")]
+    [Tooltip("Time (in seconds) before another skip input is allowed.")]
+    public float inputDelaySeconds = 0.15f;
 
     [Header("Choice Settings")]
     public GameObject choicePanel;
@@ -53,6 +57,13 @@ public class DialogueManager : MonoBehaviour
 
     private DialogueStateHolder activeStateHolder;
 
+    // 🔹 Prevent double-ending
+    private bool isEndingDialogue = false;
+
+    // 🔹 Input sequence control
+    private KeyCode lastInputKey = KeyCode.None;
+    private float nextInputAllowedTime = 0f;
+
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -63,10 +74,26 @@ public class DialogueManager : MonoBehaviour
     {
         if (!isPlaying) return;
 
-        if ((Input.GetKeyDown(continueKey) || Input.GetKeyDown(fastForwardKey)) && 
-            !waitingForChoice && 
-            !inputCooldown && 
-            flattenedLines[currentIndex].skippable)
+        // Input delay lockout
+        if (Time.time < nextInputAllowedTime) return;
+
+        bool spacePressed = Input.GetKeyDown(continueKey);
+        bool mousePressed = Input.GetKeyDown(fastForwardKey);
+
+        // Block if both pressed at the same frame
+        if (spacePressed && mousePressed) return;
+
+        KeyCode currentKey = KeyCode.None;
+        if (spacePressed) currentKey = continueKey;
+        if (mousePressed) currentKey = fastForwardKey;
+
+        if (currentKey == KeyCode.None) return; // nothing pressed
+
+        // ✅ Allow same-key spamming, just enforce delay
+        lastInputKey = currentKey;
+        nextInputAllowedTime = Time.time + inputDelaySeconds;
+
+        if (!waitingForChoice && !inputCooldown && flattenedLines[currentIndex].skippable)
         {
             if (!textFullyRevealed)
             {
@@ -94,13 +121,12 @@ public class DialogueManager : MonoBehaviour
         if (activeStateHolder != null)
         {
             debugCurrentDialogueState = activeStateHolder.currentState;
-            // ✅ Trigger enter event for the current state so animations or events play
             activeStateHolder.TriggerStateEnter(activeStateHolder.currentState);
         }
 
         foreach (var group in currentSequence.groups)
         {
-            if (group.dialogueState == (activeStateHolder != null ? activeStateHolder.currentState : "Default") 
+            if (group.dialogueState == (activeStateHolder != null ? activeStateHolder.currentState : "Default")
                 || string.IsNullOrEmpty(group.dialogueState))
             {
                 flattenedLines.AddRange(group.lines);
@@ -123,7 +149,7 @@ public class DialogueManager : MonoBehaviour
             currentIndex++;
             DialogueLine line = flattenedLines[currentIndex];
 
-            // 🔹 Animation Handling — only for active NPCs
+            // 🔹 Animation Handling
             if (activeStateHolder != null)
             {
                 NPC npc = activeStateHolder.GetComponent<NPC>();
@@ -146,12 +172,12 @@ public class DialogueManager : MonoBehaviour
 
             if (typewriterRoutine != null) StopCoroutine(typewriterRoutine);
 
-            onLineStart?.Invoke();   // 🔹 Fire line start event
+            onLineStart?.Invoke();
             typewriterRoutine = StartCoroutine(TypeText(line.dialogueText, line));
             return;
         }
 
-        EndDialogue(); // ✅ Only ends if no valid lines remain
+        EndDialogue();
     }
 
     private IEnumerator TypeText(string text, DialogueLine line)
@@ -159,20 +185,37 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = "";
         textFullyRevealed = false;
 
-        foreach (char c in text)
+        int i = 0;
+        while (i < text.Length)
         {
-            dialogueText.text += c;
+            // Handle TMP rich text tags instantly
+            if (text[i] == '<')
+            {
+                int closingIndex = text.IndexOf('>', i);
+                if (closingIndex != -1)
+                {
+                    string tag = text.Substring(i, closingIndex - i + 1);
+                    dialogueText.text += tag;
+                    i = closingIndex + 1;
+                    continue; // skip delay for tags
+                }
+            }
+
+            // Normal character with delay
+            dialogueText.text += text[i];
+            i++;
             yield return new WaitForSeconds(characterDelay);
         }
 
         textFullyRevealed = true;
-        onLineFinish?.Invoke();   // 🔹 Fire line finish event
+        onLineFinish?.Invoke();
 
         if (line.isChoiceLine && line.choices != null && line.choices.Length > 0)
         {
             DisplayChoices(line.choices);
         }
     }
+
 
     private void SkipTypewriter()
     {
@@ -184,7 +227,15 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = flattenedLines[currentIndex].dialogueText;
         textFullyRevealed = true;
 
-        onLineFinish?.Invoke();   // 🔹 Ensure finish event fires when skipped
+        onLineFinish?.Invoke();
+
+        // ✅ If this was the last line, end dialogue safely
+        if (currentIndex >= flattenedLines.Count - 1)
+        {
+            EndDialogue();
+            return;
+        }
+
         StartCoroutine(InputCooldownRoutine());
     }
 
@@ -237,6 +288,9 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+        if (isEndingDialogue) return;
+        isEndingDialogue = true;
+
         if (activeStateHolder != null)
         {
             activeStateHolder.TriggerStateExit(activeStateHolder.currentState);
@@ -259,6 +313,8 @@ public class DialogueManager : MonoBehaviour
 
         onDialogueEnd?.Invoke();
         FindFirstObjectByType<Player>().suppressInputUntilNextFrame = true;
+
+        isEndingDialogue = false;
     }
 
     public void SetDialogueState(string newState)
@@ -280,6 +336,7 @@ public class DialogueManager : MonoBehaviour
     public void ForceEndDialogue()
     {
         if (!isPlaying) return;
-        EndDialogue();
+
+        EndDialogue(); // ✅ Always call EndDialogue so state exits properly
     }
 }
