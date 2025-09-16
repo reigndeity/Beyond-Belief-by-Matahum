@@ -85,18 +85,20 @@ public class SaveInteractable : Interactable
         yesButton.gameObject.SetActive(false);
         noButton.gameObject.SetActive(false);
 
-        // 🔹 Event: save started
         onSaveStarted?.Invoke();
 
-        yield return SaveProgressAsync().AsIEnumerator();
+        // ✅ Await Task directly instead of bridging
+        var task = SaveProgressAsync();
+        while (!task.IsCompleted) yield return null;
+        if (task.Exception != null) throw task.Exception;
 
         if (feedbackText != null) feedbackText.text = "Your progress has been saved!";
         closeButton.interactable = true;
         isSaving = false;
 
-        // 🔹 Event: save finished
         onSaveFinished?.Invoke();
     }
+
 
     public void LockPlayer()
     {

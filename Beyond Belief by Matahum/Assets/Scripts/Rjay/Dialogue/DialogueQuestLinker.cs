@@ -13,6 +13,7 @@ public class DialogueQuestLinker : MonoBehaviour
     private PlayerInput m_playerInput;
     [SerializeField] R_Inventory inventory;
     [SerializeField] R_InventoryUI inventoryUI;
+    private PlayerSkills m_playerSkills;
 
     [Header("All NPCs Dialogue State Holders")]
     public DialogueStateHolder layag;
@@ -89,6 +90,7 @@ public class DialogueQuestLinker : MonoBehaviour
     void Awake()
     {
         m_playerInput = FindFirstObjectByType<PlayerInput>();
+        m_playerSkills = FindFirstObjectByType<PlayerSkills>();
     }
 
     void Update()
@@ -157,6 +159,8 @@ public class DialogueQuestLinker : MonoBehaviour
 
                     TutorialManager.instance.tutorial_canAttack = false;
                     CutsceneManager.Instance.StartCutscene(A0_Q3_BangkawTraining_P2_Cutscene);
+
+                    m_playerSkills.normalSkillCooldown = 5;
                     break;
 
                 case "A0_Q3_Bangkaw'sTraining_P3":
@@ -167,6 +171,8 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.tutorial_canNormalSkill = false;
                     TutorialManager.instance.HideNormalSkill();
                     CutsceneManager.Instance.StartCutscene(A0_Q3_BangkawTraining_P3_Cutscene);
+
+                    m_playerSkills.ultimateSkillCooldown = 5;
                     break;
 
                 case "A0_Q3_Bangkaw'sTraining_P4":
@@ -182,6 +188,9 @@ public class DialogueQuestLinker : MonoBehaviour
                     bangkaw.SetDialogueState("A0_Q4_TrainingWithBangkaw");
                     ApplyStates(bangkaw);
                     CutsceneManager.Instance.StartCutscene(A0_Q4_TrainingWithBangkaw_Cutscene);
+
+                    m_playerSkills.normalSkillCooldown = 12;
+                    m_playerSkills.ultimateSkillCooldown = 30;
                     break;
 
                 case "A0_Q5_ReturnToTupas":

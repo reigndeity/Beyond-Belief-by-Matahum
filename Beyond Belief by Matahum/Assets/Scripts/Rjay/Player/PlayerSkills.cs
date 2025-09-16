@@ -8,9 +8,10 @@ public class PlayerSkills : MonoBehaviour
     private PlayerAnimator m_playerAnimator;
     private PlayerCombat m_playerCombat;
     private PlayerWeapon m_playerWeapon;
+    private PlayerStats m_playerStats;   // ✅ added reference
 
     [Header("Normal Skill")]
-    public float normalSkillCooldown = 3f;
+    public float normalSkillCooldown = 12;
     private float normalSkillTimer = 0f;
     public bool isUsingNormalSkill = false;
     [SerializeField] GameObject normalSkill;
@@ -20,7 +21,7 @@ public class PlayerSkills : MonoBehaviour
 
     [Header("Ultimate Skill")]
     [SerializeField] Animator weaponAnimator;
-    public float ultimateSkillCooldown = 10f;
+    public float ultimateSkillCooldown = 30f;
     private float ultimateSkillTimer = 0f;
     public bool isUsingUltimateSkill = false;
     [SerializeField] GameObject ultimateCharge;
@@ -31,6 +32,7 @@ public class PlayerSkills : MonoBehaviour
         m_playerAnimator = GetComponent<PlayerAnimator>();
         m_playerCombat = GetComponent<PlayerCombat>();
         m_playerWeapon = GetComponentInChildren<PlayerWeapon>();
+        m_playerStats = GetComponent<PlayerStats>();   // ✅ assign
     }
 
     public void HandleSkills()
@@ -56,19 +58,20 @@ public class PlayerSkills : MonoBehaviour
         }
     }
 
-
     void ActivateNormalSkill()
     {
         if (!TutorialManager.instance.tutorial_canNormalSkill) return;
 
         isUsingNormalSkill = true;
         m_playerAnimator.ChangeAnimationState("player_normalSkill");
-        normalSkillTimer = normalSkillCooldown;
+
+        // ✅ apply cooldown reduction
+        float cdrMultiplier = 1f - (m_playerStats.p_cooldownReduction / 100f);
+        normalSkillTimer = normalSkillCooldown * Mathf.Max(0.1f, cdrMultiplier);
 
         Transform enemy = m_playerCombat.GetNearestEnemy();
         m_playerCombat.FaceTarget(enemy);
     }
-
 
     void ActivateUltimateSkill()
     {
@@ -77,21 +80,36 @@ public class PlayerSkills : MonoBehaviour
         isUsingUltimateSkill = true;
         m_playerAnimator.ChangeAnimationState("player_ultimateSkill");
         weaponAnimator.SetTrigger("isUltimate");
-        ultimateSkillTimer = ultimateSkillCooldown;
+
+        // ✅ apply cooldown reduction
+        float cdrMultiplier = 1f - (m_playerStats.p_cooldownReduction / 100f);
+        ultimateSkillTimer = ultimateSkillCooldown * Mathf.Max(0.1f, cdrMultiplier);
     }
+
+    // ---------------- UI Support ----------------
     public float GetNormalSkillCooldownRemaining() => normalSkillTimer;
     public float GetUltimateSkillCooldownRemaining() => ultimateSkillTimer;
 
-    public float GetNormalSkillCooldown() => normalSkillCooldown;
-    public float GetUltimateSkillCooldown() => ultimateSkillCooldown;
+    public float GetNormalSkillCooldown()
+    {
+        float cdrMultiplier = 1f - (m_playerStats.p_cooldownReduction / 100f);
+        return normalSkillCooldown * Mathf.Max(0.1f, cdrMultiplier);
+    }
 
-    // ANIMATOR EVENT SYSTEM
+    public float GetUltimateSkillCooldown()
+    {
+        float cdrMultiplier = 1f - (m_playerStats.p_cooldownReduction / 100f);
+        return ultimateSkillCooldown * Mathf.Max(0.1f, cdrMultiplier);
+    }
+
+    // ---------------- Animator Event System ----------------
     public void StartNormalSkill()
     {
         m_playerCombat.isAttacking = false;
         m_playerCombat.canMoveDuringAttack = true;
         m_playerCombat.ShowWeapon();
     }
+
     void SpawnNormalSkill()
     {
         Vector3 forwardDirection = normalSkillSpawnPoint.forward;
@@ -112,12 +130,13 @@ public class PlayerSkills : MonoBehaviour
         m_playerCombat.HideWeapon();
         m_playerCombat.ShowWeaponParticle();
     }
+
     public void StartUltimateSkill()
     {
         m_playerCombat.isAttacking = false;
         m_playerCombat.canMoveDuringAttack = true;
         m_playerCombat.ShowWeapon();
-        
+
         StartCoroutine(UltimateBlade());
         StartUltimateSkillVFX();
     }
@@ -145,19 +164,18 @@ public class PlayerSkills : MonoBehaviour
     public void EndUltimateSkillVFX()
     {
         ultimateCharge.SetActive(false);
-    } 
+    }
 
     public void ForceStopSkills()
     {
         if (isUsingNormalSkill)
         {
-            EndNormalSkill(); // your existing cleanup function
+            EndNormalSkill();
         }
 
         if (isUsingUltimateSkill)
         {
-            EndUltimateSkill(); // your existing cleanup function
+            EndUltimateSkill();
         }
     }
-
 }

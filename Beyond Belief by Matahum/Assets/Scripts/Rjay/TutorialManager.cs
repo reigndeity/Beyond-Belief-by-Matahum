@@ -247,7 +247,7 @@ public class TutorialManager : MonoBehaviour
         // UI Visibility
         characterDetailsButton.FadeOut(0);
         inventoryButton.FadeOut(0);
-        //archiveButton.FadeOut(0);
+        archiveButton.FadeOut(0);
         questButton.FadeOut(0);
         minimap.FadeOut(0);
         normalSkill.FadeOut(0);
@@ -259,7 +259,7 @@ public class TutorialManager : MonoBehaviour
         // Button State
         characterDetailsButton.GetComponent<Button>().enabled = false;
         inventoryButton.GetComponent<Button>().enabled = false;
-        //archiveButton.GetComponent<Button>().enabled = false;
+        archiveButton.GetComponent<Button>().enabled = false;
 
 
         // Tupas House
@@ -284,6 +284,7 @@ public class TutorialManager : MonoBehaviour
         tutorial_canUltimateSkill = false;
         tutorial_canOpenMap = false;
         tutorial_canToggleMouse = false;
+        tutorial_canArchives = false;
         playerMovement.ToggleWalk();
 
         // Other Variables
