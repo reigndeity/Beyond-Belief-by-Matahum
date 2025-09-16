@@ -74,6 +74,16 @@ public class UI_Game : MonoBehaviour
     public Button closeMapButton;
     public static event Action OnCloseTeleportPanel;
 
+    [Header("Pause Menu")]
+    [SerializeField] private GameObject pauseMenuPanel;
+    [SerializeField] private Button resumeButton;
+    [SerializeField] private Button settingsButton;
+    [SerializeField] private Button returnToMenuButton;
+    [SerializeField] private GameObject confirmReturnPanel;
+    [SerializeField] private Button confirmYesButton;
+    [SerializeField] private Button confirmNoButton;
+
+
     [Header("UI Animation")]
     [SerializeField] GameObject topUIObj;
     [SerializeField] GameObject bottomUIObj;
@@ -84,7 +94,7 @@ public class UI_Game : MonoBehaviour
     Vector3 bottomOriginalPos;
     private CanvasGroup topCanvasGroup;
     private CanvasGroup bottomCanvasGroup;
-
+    [SerializeField] UI_CanvasGroup interactionCanvasGroup;
     private FilterButton activeFilterButton;
 
     void Awake()
@@ -125,7 +135,41 @@ public class UI_Game : MonoBehaviour
 
         archiveButton.onClick.AddListener(OnClickOpenArchive);
         closeArchiveButton.onClick.AddListener(OnClickCloseArchive);
+
+        //PAUSE
+        resumeButton.onClick.AddListener(OnClickResumeGame);
+        settingsButton.onClick.AddListener(OnClickSettings);
+        returnToMenuButton.onClick.AddListener(OnClickReturnToMenu);
+
+        confirmYesButton.onClick.AddListener(OnConfirmReturnYes);
+        confirmNoButton.onClick.AddListener(OnConfirmReturnNo);
+
     }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (PlayerMinimap.instance.IsMapOpen())
+            {   
+                OnClickCloseMapButton();
+            }
+            else if (IsAnyMajorPanelOpen())
+            {
+                // Close whichever panel is open (your existing close functions)
+                if (inventoryPanel.activeSelf) OnClickCloseInventory();
+                else if (characterDetailPanel.activeSelf) OnClickCloseCharacterDetails();
+                else if (m_questButtonManager.IsJournalOpen()) OnClickCloseQuestJournal();
+                else if (m_archiveButtonManager.IsArchiveOpen()) OnClickCloseArchive();
+            }
+            else
+            {
+                // Toggle pause menu
+                if (pauseMenuPanel.activeSelf) OnClickResumeGame();
+                else OpenPauseMenu();
+            }
+        }
+    }
+
     void LateUpdate()
     {
         if (PlayerMinimap.instance.IsMapOpen())
@@ -352,6 +396,55 @@ public class UI_Game : MonoBehaviour
     }
     #endregion
 
+    #region  PAUSE
+    private void OpenPauseMenu()
+    {
+        PlayerCamera.Instance.SetCursorVisibility(true);
+        pauseMenuPanel.SetActive(true);
+        HideUI();
+        PauseGame();
+    }
+
+    private void OnClickResumeGame()
+    {
+        PlayerCamera.Instance.SetCursorVisibility(false);
+        pauseMenuPanel.SetActive(false);
+        ShowUI();
+        ResumeGame();
+    }
+
+    private void OnClickSettings()
+    {
+        // Leave empty for now
+        Debug.Log("Settings menu clicked (not implemented yet).");
+    }
+
+    private void OnClickReturnToMenu()
+    {
+        confirmReturnPanel.SetActive(true);
+    }
+
+    private void OnConfirmReturnYes()
+    {
+        Time.timeScale = 1f; // restore normal speed before scene change
+        StartCoroutine(ReturningToMenu());
+    }
+
+    IEnumerator ReturningToMenu()
+    {
+        UI_TransitionController.instance.Fade(0, 1, 0.5f);
+        yield return new WaitForSeconds(1f);
+        Loader.Load(0);
+
+    }
+
+    private void OnConfirmReturnNo()
+    {
+        confirmReturnPanel.SetActive(false);
+    }
+    #endregion
+
+
     #region UI ANIMATION
     public void HideUI()
     {
@@ -362,6 +455,8 @@ public class UI_Game : MonoBehaviour
 
         StartCoroutine(AnimateUI_Fade(topCanvasGroup, topCanvasGroup.alpha, 0f));
         StartCoroutine(AnimateUI_Fade(bottomCanvasGroup, bottomCanvasGroup.alpha, 0f));
+
+        interactionCanvasGroup.FadeOut(0.25f);
     }
     public void ShowUI()
     {
@@ -372,6 +467,8 @@ public class UI_Game : MonoBehaviour
 
         StartCoroutine(AnimateUI_Fade(topCanvasGroup, topCanvasGroup.alpha, 1f));
         StartCoroutine(AnimateUI_Fade(bottomCanvasGroup, bottomCanvasGroup.alpha, 1f));
+
+        interactionCanvasGroup.FadeIn(0.25f);
     }
     private IEnumerator AnimateUI_Movement(GameObject uiObj, Vector3 fromPos, Vector3 toPos)
     {
@@ -444,8 +541,6 @@ public class UI_Game : MonoBehaviour
     {
         return Time.timeScale == 0f;
     }
-    #endregion
-
 
     public bool IsAnyMajorPanelOpen()
     {
@@ -454,5 +549,6 @@ public class UI_Game : MonoBehaviour
             m_questButtonManager.IsJournalOpen() ||
             m_archiveButtonManager.IsArchiveOpen();
     }
+    #endregion
 
 }
