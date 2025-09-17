@@ -15,7 +15,7 @@ public class R_GeneralItemSpawner : MonoBehaviour
     [SerializeField] private R_ItemData[] agimatTemplates;
     [SerializeField] private R_AgimatVisualConfig agimatVisualConfig;
 
-    [SerializeField] private int simulatedPlayerLevel = 1;
+    public int simulatedPlayerLevel = 1;
 
     void Awake()
     {
@@ -29,22 +29,10 @@ public class R_GeneralItemSpawner : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-
-        simulatedPlayerLevel = playerStats.currentLevel;
-
-        // // Testing Purposes
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            R_PamanaSpawnerUtility.SpawnRandomPamanaFromPool(pamanaTemplates, inventory, inventoryUI, simulatedPlayerLevel, visualConfig);
-        }
-
-         if (Input.GetKeyDown(KeyCode.O))
-         {
-            SpawnRandomAgimatFromTemplate();
-         }
-    }
+    // private void Update()
+    // {
+    //     simulatedPlayerLevel = playerStats.currentLevel;
+    // }
 
     #region PAMANA SPAWNING
     public void SpawnRandomPamanaFromTemplate()

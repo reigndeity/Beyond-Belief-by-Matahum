@@ -29,6 +29,12 @@ public class BeyondBelief_DebugTool : MonoBehaviour
     public Button infiniteStaminaButton;
     public Button enablePlayerAcess;
 
+    [Header("Misc Properties")]
+    public Button resumeTimelineButton;
+    public TMP_InputField debugLevelInputField; // 🆕 input for simulated level
+    public Button spawnAgimatButton;
+    public Button spawnPamanaButton;
+
     void Start()
     {
         closeButton.onClick.AddListener(OnClickCloseDebugTool);
@@ -45,6 +51,16 @@ public class BeyondBelief_DebugTool : MonoBehaviour
         restartGameButton.onClick.AddListener(OnClickRestartGame);
 
         enablePlayerAcess.onClick.AddListener(OnClickEnablePlayerAccess);
+
+        resumeTimelineButton.onClick.AddListener(OnClickResumeTimeline);
+        spawnAgimatButton.onClick.AddListener(OnClickSpawnAgimat);
+        spawnPamanaButton.onClick.AddListener(OnClickSpawnPamana);
+
+        // 🆕 apply simulated level when value changes
+        debugLevelInputField.onEndEdit.AddListener(OnSimulatedLevelChanged);
+
+        // set default at startup
+        OnSimulatedLevelChanged(debugLevelInputField.text);
     }
 
     void Update()
@@ -60,57 +76,41 @@ public class BeyondBelief_DebugTool : MonoBehaviour
         loadQuestButton.interactable = !string.IsNullOrEmpty(value);
     }
 
-    void OnClickCloseDebugTool()
-    {
-        debugToolPanel.SetActive(false);
-    }
+    void OnClickCloseDebugTool() => debugToolPanel.SetActive(false);
 
     void OnClickLoadQuestID()
     {
         string questID = questIdInputField.text;
         if (!string.IsNullOrEmpty(questID))
-        {
             BB_QuestManager.Instance.AcceptQuestByID(questID);
+    }
+
+    void OnClickCompleteQuest() => BB_QuestManager.Instance.DebugCompleteAndClaimTrackedQuest();
+
+    public void OnClickSaveProgress() => _ = SaveProgressAsync();
+    async Task SaveProgressAsync() => await GameManager.instance.SaveAll();
+
+    void OnClickLoadProgress() => _ = LoadProgressAsync();
+    async Task LoadProgressAsync() => await GameManager.instance.LoadAll();
+
+    void OnClickDeleteProgress() => GameManager.instance.DeleteAll();
+    void OnClickRestartGame() => Loader.Load(4);
+    void OnClickEnablePlayerAccess() => TutorialManager.instance.AllowTemporaryBooleans();
+    void OnClickResumeTimeline() => CutsceneManager.Instance.ResumeTimeline();
+    void OnClickSpawnAgimat() => R_GeneralItemSpawner.instance.SpawnRandomAgimatFromTemplate();
+    void OnClickSpawnPamana() => R_GeneralItemSpawner.instance.SpawnRandomPamanaFromTemplate();
+
+    // 🆕 simulated level handler
+    void OnSimulatedLevelChanged(string value)
+    {
+        int level = 1; // default fallback
+        if (!string.IsNullOrEmpty(value))
+        {
+            if (!int.TryParse(value, out level))
+                level = 1; // fallback if invalid
         }
-    }
 
-    void OnClickCompleteQuest()
-    {
-        BB_QuestManager.Instance.DebugCompleteAndClaimTrackedQuest();
-    }
-
-    public void OnClickSaveProgress()
-    {
-        _ = SaveProgressAsync();
-    }
-
-    async Task SaveProgressAsync()
-    {
-        await GameManager.instance.SaveAll();
-    }
-
-    void OnClickLoadProgress()
-    {
-        _ = LoadProgressAsync();
-    }
-
-    async Task LoadProgressAsync()
-    {
-        await GameManager.instance.LoadAll();
-    }
-
-    void OnClickDeleteProgress()
-    {
-        GameManager.instance.DeleteAll();
-    }
-
-    void OnClickRestartGame()
-    {
-        Loader.Load(4);
-    }
-
-    void OnClickEnablePlayerAccess()
-    { 
-        TutorialManager.instance.AllowTemporaryBooleans();
+        R_GeneralItemSpawner.instance.simulatedPlayerLevel = Mathf.Max(1, level); // enforce >= 1
+        Debug.Log($"[DebugTool] Simulated Player Level set to {R_GeneralItemSpawner.instance.simulatedPlayerLevel}");
     }
 }

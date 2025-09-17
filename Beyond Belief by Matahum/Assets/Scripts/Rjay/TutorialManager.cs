@@ -170,6 +170,7 @@ public class TutorialManager : MonoBehaviour
         ShowCharacterDetails();
         ShowAgimatOne();
         ShowAgimatTwo();
+        ShowInventory();
 
         PlayerCamera.Instance.HardUnlockCamera();
         PlayerCamera.Instance.AdjustCamera();
