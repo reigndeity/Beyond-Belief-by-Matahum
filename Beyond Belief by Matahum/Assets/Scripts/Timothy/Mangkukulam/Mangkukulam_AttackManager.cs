@@ -80,7 +80,8 @@ public class Mangkukulam_AttackManager : MonoBehaviour
             Debug.Log($"Attacking with {abilityList[skillIndex].name}");
 
             // Only wait if the skill is NOT indefinite
-            if (!(abilityList[skillIndex] is PotionBlitz_MangkukulamAbility))
+            if (!(abilityList[skillIndex] is PotionBlitz_MangkukulamAbility) &&
+                !(abilityList[skillIndex] is DemonicRitual_MangkukulamAbility))
             {
                 yield return new WaitForSeconds(5);
                 isAttacking = false;

@@ -12,7 +12,7 @@ public class CoroutineRunner : MonoBehaviour
             {
                 GameObject obj = new GameObject("CoroutineRunner");
                 _instance = obj.AddComponent<CoroutineRunner>();
-                DontDestroyOnLoad(obj);
+                DontDestroyOnLoad(obj); // keep across scenes
             }
             return _instance;
         }
@@ -21,5 +21,21 @@ public class CoroutineRunner : MonoBehaviour
     public Coroutine RunCoroutine(IEnumerator routine)
     {
         return StartCoroutine(routine);
+    }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        _instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (_instance == this)
+            _instance = null;
     }
 }

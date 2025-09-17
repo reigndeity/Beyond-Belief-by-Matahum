@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 
 public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
 {
@@ -78,6 +77,24 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
 
             if (died) Death();
         }
+    }
+
+    public void Heal(float amount)
+    {
+        if (amount <= 0f || isDead)
+            return;
+
+        float maxHP = stats.e_maxHealth;
+        float oldHP = stats.e_currentHealth;
+
+        stats.e_currentHealth = Mathf.Min(oldHP + amount, maxHP);
+
+        int displayAmount = Mathf.Max(1, Mathf.FloorToInt(amount));
+
+        Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
+        DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, displayAmount.ToString(), Color.green);
+
+        Debug.Log($"💚 Mangkukulam Healed {amount} HP. Current Health: {stats.e_currentHealth} / {maxHP}");
     }
 
     public void Death()
