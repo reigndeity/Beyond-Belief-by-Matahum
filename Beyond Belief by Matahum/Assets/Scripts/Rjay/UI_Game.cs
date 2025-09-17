@@ -94,7 +94,6 @@ public class UI_Game : MonoBehaviour
     Vector3 bottomOriginalPos;
     private CanvasGroup topCanvasGroup;
     private CanvasGroup bottomCanvasGroup;
-    [SerializeField] UI_CanvasGroup interactionCanvasGroup;
     private FilterButton activeFilterButton;
 
     void Awake()
@@ -150,16 +149,20 @@ public class UI_Game : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (PlayerMinimap.instance.IsMapOpen())
-            {   
+            {
                 OnClickCloseMapButton();
             }
             else if (IsAnyMajorPanelOpen())
             {
-                // Close whichever panel is open (your existing close functions)
                 if (inventoryPanel.activeSelf) OnClickCloseInventory();
                 else if (characterDetailPanel.activeSelf) OnClickCloseCharacterDetails();
                 else if (m_questButtonManager.IsJournalOpen()) OnClickCloseQuestJournal();
                 else if (m_archiveButtonManager.IsArchiveOpen()) OnClickCloseArchive();
+            }
+            else if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialoguePlaying())
+            {
+                // ✅ Ignore ESC while in dialogue
+                Debug.Log("Pause blocked: dialogue is active.");
             }
             else
             {
@@ -168,6 +171,7 @@ public class UI_Game : MonoBehaviour
                 else OpenPauseMenu();
             }
         }
+
     }
 
     void LateUpdate()
@@ -455,8 +459,7 @@ public class UI_Game : MonoBehaviour
 
         StartCoroutine(AnimateUI_Fade(topCanvasGroup, topCanvasGroup.alpha, 0f));
         StartCoroutine(AnimateUI_Fade(bottomCanvasGroup, bottomCanvasGroup.alpha, 0f));
-
-        interactionCanvasGroup.FadeOut(0.25f);
+        InteractionCanvasUI.Instance.HideInteractionPromptUI();
     }
     public void ShowUI()
     {
@@ -467,8 +470,7 @@ public class UI_Game : MonoBehaviour
 
         StartCoroutine(AnimateUI_Fade(topCanvasGroup, topCanvasGroup.alpha, 1f));
         StartCoroutine(AnimateUI_Fade(bottomCanvasGroup, bottomCanvasGroup.alpha, 1f));
-
-        interactionCanvasGroup.FadeIn(0.25f);
+        InteractionCanvasUI.Instance.ResetToAutomatic();
     }
     private IEnumerator AnimateUI_Movement(GameObject uiObj, Vector3 fromPos, Vector3 toPos)
     {

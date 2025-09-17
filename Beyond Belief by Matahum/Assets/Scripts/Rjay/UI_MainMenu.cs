@@ -62,7 +62,7 @@ public class UI_MainMenu : MonoBehaviour
         GameManager.instance.DeleteAll();
         StartCoroutine(UI_TransitionController.instance.Fade(0, 1, 1f));
         yield return new WaitForSeconds(1f);
-        Loader.Load(4);
+        Loader.Load(3);
     }
 
     private void OnClickContinueGame() => StartCoroutine(ContinueGame());

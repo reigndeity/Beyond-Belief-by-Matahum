@@ -21,7 +21,7 @@ public class DialogueManager : MonoBehaviour
     public AudioSource voiceSource;
 
     [Header("Typewriter Settings")]
-    public float characterDelay = 0.01f;
+    public float characterDelay = 0.03f;
 
     [Header("Input Settings")]
     public KeyCode continueKey = KeyCode.Space;
@@ -29,7 +29,7 @@ public class DialogueManager : MonoBehaviour
 
     [Header("Input Delay Settings")]
     [Tooltip("Time (in seconds) before another skip input is allowed.")]
-    public float inputDelaySeconds = 0.15f;
+    public float inputDelaySeconds = 0.25f;
 
     [Header("Choice Settings")]
     public GameObject choicePanel;
@@ -57,10 +57,7 @@ public class DialogueManager : MonoBehaviour
 
     private DialogueStateHolder activeStateHolder;
 
-    // 🔹 Prevent double-ending
     private bool isEndingDialogue = false;
-
-    // 🔹 Input sequence control
     private KeyCode lastInputKey = KeyCode.None;
     private float nextInputAllowedTime = 0f;
 
@@ -73,23 +70,18 @@ public class DialogueManager : MonoBehaviour
     void Update()
     {
         if (!isPlaying) return;
-
-        // Input delay lockout
         if (Time.time < nextInputAllowedTime) return;
 
         bool spacePressed = Input.GetKeyDown(continueKey);
         bool mousePressed = Input.GetKeyDown(fastForwardKey);
 
-        // Block if both pressed at the same frame
         if (spacePressed && mousePressed) return;
 
         KeyCode currentKey = KeyCode.None;
         if (spacePressed) currentKey = continueKey;
         if (mousePressed) currentKey = fastForwardKey;
+        if (currentKey == KeyCode.None) return;
 
-        if (currentKey == KeyCode.None) return; // nothing pressed
-
-        // ✅ Allow same-key spamming, just enforce delay
         lastInputKey = currentKey;
         nextInputAllowedTime = Time.time + inputDelaySeconds;
 
@@ -101,7 +93,11 @@ public class DialogueManager : MonoBehaviour
             }
             else
             {
-                ShowNextLine();
+                // ✅ If last line, end; otherwise show next
+                if (currentIndex >= flattenedLines.Count - 1)
+                    EndDialogue();
+                else
+                    ShowNextLine();
             }
         }
     }
@@ -149,7 +145,7 @@ public class DialogueManager : MonoBehaviour
             currentIndex++;
             DialogueLine line = flattenedLines[currentIndex];
 
-            // 🔹 Animation Handling
+            // Animation Handling
             if (activeStateHolder != null)
             {
                 NPC npc = activeStateHolder.GetComponent<NPC>();
@@ -188,7 +184,6 @@ public class DialogueManager : MonoBehaviour
         int i = 0;
         while (i < text.Length)
         {
-            // Handle TMP rich text tags instantly
             if (text[i] == '<')
             {
                 int closingIndex = text.IndexOf('>', i);
@@ -197,11 +192,10 @@ public class DialogueManager : MonoBehaviour
                     string tag = text.Substring(i, closingIndex - i + 1);
                     dialogueText.text += tag;
                     i = closingIndex + 1;
-                    continue; // skip delay for tags
+                    continue;
                 }
             }
 
-            // Normal character with delay
             dialogueText.text += text[i];
             i++;
             yield return new WaitForSeconds(characterDelay);
@@ -216,7 +210,6 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-
     private void SkipTypewriter()
     {
         if (typewriterRoutine != null)
@@ -226,16 +219,9 @@ public class DialogueManager : MonoBehaviour
 
         dialogueText.text = flattenedLines[currentIndex].dialogueText;
         textFullyRevealed = true;
-
         onLineFinish?.Invoke();
 
-        // ✅ If this was the last line, end dialogue safely
-        if (currentIndex >= flattenedLines.Count - 1)
-        {
-            EndDialogue();
-            return;
-        }
-
+        // ✅ No auto EndDialogue here anymore — wait for next input if it's the last line
         StartCoroutine(InputCooldownRoutine());
     }
 
@@ -336,7 +322,6 @@ public class DialogueManager : MonoBehaviour
     public void ForceEndDialogue()
     {
         if (!isPlaying) return;
-
-        EndDialogue(); // ✅ Always call EndDialogue so state exits properly
+        EndDialogue();
     }
 }
