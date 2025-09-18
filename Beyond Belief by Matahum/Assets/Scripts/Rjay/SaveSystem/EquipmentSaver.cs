@@ -72,7 +72,7 @@ public class EquipmentSaver : MonoBehaviour, ISaveable
         if (string.IsNullOrEmpty(uid)) { player.UnequipAgimat(slotIndex); return; }
         var match = FindByUid(uid);
         if (match != null) player.EquipAgimat(match, slotIndex);
-        else Debug.LogWarning($"[EquipmentSaver] Agimat UID not found: {uid}");
+        else Debug.LogWarning($"[EquipmentSaver] Agimat UID not found: {uid}. Inventory count: {inventory.items.Count}");
     }
 
     R_InventoryItem FindByUid(string uid)

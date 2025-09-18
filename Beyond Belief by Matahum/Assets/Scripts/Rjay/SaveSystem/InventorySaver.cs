@@ -185,6 +185,10 @@ public class InventorySaver : MonoBehaviour, ISaveable
                     if (original.slot2Ability != null)
                         instance.slot2Ability = Object.Instantiate(original.slot2Ability);
 
+                    // 🔹 Tag the Agimat with its saved UID for debugging
+                    if (!string.IsNullOrEmpty(dto.uid))
+                        instance.name = $"Agimat_{dto.uid}";
+
                     var agimatConfig = Resources.Load<R_AgimatVisualConfig>("Item Database/AgimatVisualConfig");
                     if (agimatConfig != null)
                     {

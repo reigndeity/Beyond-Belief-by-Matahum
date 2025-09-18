@@ -423,15 +423,22 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (slotIndex == 1)
         {
-            equippedAgimatSlot1.itemData.slot1Ability.Deactivate(gameObject);
+            if (equippedAgimatSlot1 != null && equippedAgimatSlot1.itemData?.slot1Ability != null)
+            {
+                equippedAgimatSlot1.itemData.slot1Ability.Deactivate(gameObject);
+            }
             equippedAgimatSlot1 = null;
         }
         else if (slotIndex == 2)
         {
-            equippedAgimatSlot2.itemData.slot2Ability.Deactivate(gameObject);
+            if (equippedAgimatSlot2 != null && equippedAgimatSlot2.itemData?.slot2Ability != null)
+            {
+                equippedAgimatSlot2.itemData.slot2Ability.Deactivate(gameObject);
+            }
             equippedAgimatSlot2 = null;
         }
     }
+
 
     public R_ItemRarity GetAgimatRarity(int slot)
     {

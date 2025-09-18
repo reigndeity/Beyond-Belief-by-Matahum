@@ -21,7 +21,12 @@ public static class R_PamanaGeneratorUtility
         pamanaData.SetupByRarity();
 
         pamanaData.mainStatType = GetValidMainStat(itemData.pamanaSlot);
-        pamanaData.mainStatValue = R_MainStatCurveTable.GetMainStatValue(pamanaData.mainStatType, 0);
+
+        // ❌ Old leveling-based curve system (keep for later upgrades)
+        // pamanaData.mainStatValue = R_MainStatCurveTable.GetMainStatValue(pamanaData.mainStatType, 0);
+
+        // ✅ New rarity-based roll from real curve table
+        pamanaData.mainStatValue = GetMainStatRoll(pamanaData.slot, pamanaData.rarity, pamanaData.mainStatType);
 
         int subCount = GetRandomSubstatCount(itemData.rarity);
         for (int i = 0; i < subCount; i++)
@@ -66,6 +71,32 @@ public static class R_PamanaGeneratorUtility
             R_StatType[] valid = { R_StatType.PercentATK, R_StatType.PercentDEF, R_StatType.PercentHP, R_StatType.CooldownReduction };
             return valid[Random.Range(0, valid.Length)];
         }
+    }
+
+    private static float GetMainStatRoll(R_PamanaSlotType slot, R_ItemRarity rarity, R_StatType statType)
+    {
+        if (!R_MainStatCurveTable.MainStatCurves.TryGetValue(statType, out var curve))
+        {
+            Debug.LogWarning($"No curve defined for {statType}");
+            return 0f;
+        }
+
+        // Map rarity → index ranges
+        (int minIndex, int maxIndex) = rarity switch
+        {
+            R_ItemRarity.Common    => (0, 1),
+            R_ItemRarity.Rare      => (2, 3),
+            R_ItemRarity.Epic      => (4, 5),
+            R_ItemRarity.Legendary => (6, 7),
+            _ => (0, 0)
+        };
+
+        float min = curve[minIndex];
+        float max = curve[maxIndex];
+        float roll = Random.Range(min, max);
+
+        // ✅ Always clamp to 1 decimal place
+        return (float)System.Math.Round(roll, 1);
     }
 
     private static R_StatType GetRandomSubstatType()
