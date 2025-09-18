@@ -66,27 +66,29 @@ public class R_ItemData : ScriptableObject
     public R_PamanaSet set;
     public R_PamanaSlotType pamanaSlot;
 
-    [TextArea]
-    public string twoPieceBonusDescription;
+    [TextArea] public string twoPieceBonusDescription;
+    [TextArea] public string threePieceBonusDescription;
 
-    [TextArea]
-    public string threePieceBonusDescription;
+    // Abilities
     public R_AgimatAbility slot1Ability;
     public R_AgimatAbility slot2Ability;
 
-    [TextArea]
-    public string effectText; // UI-only, displayed in info panel
+    // ✅ Rolled values per instance
+    public float slot1RollValue;
+    public float slot2RollValue;
+
+    [TextArea] public string effectText; // UI-only
     public R_ConsumableEffect consumableEffect; // Logic-only
     public R_UpgradeMaterialType upgradeMaterialType;
     public int xpValue;
     public int itemCost;
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     private void OnValidate()
     {
         // Assign once; never change after you ship content or you’ll break old saves.
         if (string.IsNullOrEmpty(itemId))
             itemId = Guid.NewGuid().ToString("N");
     }
-    #endif
+#endif
 }

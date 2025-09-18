@@ -52,4 +52,9 @@ public class R_GeneralItemSpawner : MonoBehaviour
         R_AgimatSpawnerUtility.SpawnRandomAgimatFromPool(agimatTemplates, inventory, inventoryUI, simulatedPlayerLevel, agimatVisualConfig);
     }
     #endregion
+
+    public void SetSimulatedLevel(int level)
+    {
+        simulatedPlayerLevel = Mathf.Max(1, level); // enforce minimum level 1
+    }
 }

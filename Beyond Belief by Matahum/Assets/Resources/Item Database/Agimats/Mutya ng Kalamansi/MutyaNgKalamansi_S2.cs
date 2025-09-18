@@ -1,56 +1,50 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
+
 [CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgKalamansi/MutyaNgKalamansi_S2")]
 public class MutyaNgKalamansi_S2 : R_AgimatAbility
 {
-    [HideInInspector] public float damagePercentage;
-    [HideInInspector] public float armorReduction;
     public GameObject kalamansi_BulletPrefab;
     public float bulletRange = 10f;
 
     [Header("Throw Settings")]
-    public float throwForce = 10f;        // Base throw strength
-    public float upwardForce = 5f;        // Extra arc height
-    public override string GetDescription(R_ItemRarity rarity)
+    public float throwForce = 10f;
+    public float upwardForce = 5f;
+
+    public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        if (damagePercentage == 0)
-            damagePercentage = GetRandomDamagePercent(rarity);
+        float damagePercentage = itemData.slot1RollValue;
+        float armorReduction = itemData.slot2RollValue;
 
-        if (armorReduction == 0)
-            armorReduction = GetRandomDamageReductionPercent(rarity);
-
-        return $"Throws a kalamansi that deals {damagePercentage:F1} and reduces enemy defenses by {armorReduction:F1}% for 5 seconds. \n\n Deals 50% more damage against Aswang";
+        return $"Throws a kalamansi that deals {damagePercentage:F1}% ATK and reduces enemy defenses by {armorReduction:F1}% for 5s.\n\nDeals 50% more damage against Aswang.";
     }
-    public override void Activate(GameObject user, R_ItemRarity rarity)
+
+    public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
+        float damagePercentage = itemData.slot1RollValue;
+        float armorReduction = itemData.slot2RollValue;
+
         Vector3 throwPoint = user.transform.position + user.transform.forward * 1f + Vector3.up * 0.5f;
         GameObject projectile = Instantiate(kalamansi_BulletPrefab, throwPoint, Quaternion.identity);
 
-        // Setup bullet stats
         Kalamansi_Bullet bullet = projectile.GetComponent<Kalamansi_Bullet>();
         float atk = user.GetComponent<PlayerStats>().p_attack;
         bullet.debuffType = Kalamansi_DebuffType.ArmorDebuff;
         bullet.bulletDamage = atk * (damagePercentage / 100f);
         bullet.debuffValue = armorReduction;
 
-        // Find enemies in range
+        // Aim assist
         Collider[] hits = Physics.OverlapSphere(user.transform.position, bulletRange);
         Transform target = null;
-
-        if (hits.Length > 0)
+        float minDist = Mathf.Infinity;
+        foreach (var hit in hits)
         {
-            // Pick the closest enemy
-            float minDist = Mathf.Infinity;
-            foreach (var hit in hits)
+            if (hit.gameObject.GetComponent<EnemyStats>())
             {
-                if (hit.gameObject.GetComponent<EnemyStats>())
+                float dist = Vector3.Distance(user.transform.position, hit.transform.position);
+                if (dist < minDist)
                 {
-                    float dist = Vector3.Distance(user.transform.position, hit.transform.position);
-                    if (dist < minDist)
-                    {
-                        minDist = dist;
-                        target = hit.transform;
-                    }
+                    minDist = dist;
+                    target = hit.transform;
                 }
             }
         }
@@ -59,26 +53,20 @@ public class MutyaNgKalamansi_S2 : R_AgimatAbility
         if (rb != null)
         {
             Vector3 forceDir;
-
             if (target != null)
             {
-                // Aim at the enemy's last known position
                 Vector3 dirToEnemy = (target.position - throwPoint).normalized;
                 forceDir = dirToEnemy * throwForce + Vector3.up * upwardForce;
             }
             else
             {
-                // No enemy → just throw forward
                 forceDir = user.transform.forward * throwForce + Vector3.up * upwardForce;
             }
-
             rb.AddForce(forceDir, ForceMode.Impulse);
         }
     }
 
-
-    #region RANDOM VALUE GENERATOR
-    private float GetRandomDamagePercent(R_ItemRarity rarity)
+    public override float GetRandomDamagePercent(R_ItemRarity rarity)
     {
         return rarity switch
         {
@@ -90,7 +78,7 @@ public class MutyaNgKalamansi_S2 : R_AgimatAbility
         };
     }
 
-    private float GetRandomDamageReductionPercent(R_ItemRarity rarity)
+    public float GetRandomDamageReductionPercent(R_ItemRarity rarity)
     {
         return rarity switch
         {
@@ -101,5 +89,4 @@ public class MutyaNgKalamansi_S2 : R_AgimatAbility
             _ => 30f
         };
     }
-    #endregion
 }

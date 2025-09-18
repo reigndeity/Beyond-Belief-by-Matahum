@@ -20,7 +20,7 @@ public class Player : MonoBehaviour, IDamageable
     private PlayerCombat m_playerCombat;
     private PlayerSkills m_playerSkills;
     private PlayerStats m_playerStats;
-    
+
     private PlayerMinimap m_playerMinimap;
     private PlayerCamera m_playerCamera;
     private PlayerPamanaSetBonus m_setBonus;
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         foreach (R_PamanaSlotType slot in System.Enum.GetValues(typeof(R_PamanaSlotType)))
             equippedPamanaSet[slot] = null;
-        
+
         m_playerAnimator = GetComponent<PlayerAnimator>();
         m_playerMovement = GetComponent<PlayerMovement>();
         m_playerInput = GetComponent<PlayerInput>();
@@ -53,9 +53,9 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     void Update()
-    {   
+    {
         if (UI_TransitionController.instance.isTeleporting) return;
-        
+
         // Player Camera
         m_playerCamera.HandleMouseLock();
         if (Cursor.lockState == CursorLockMode.Locked)
@@ -74,7 +74,7 @@ public class Player : MonoBehaviour, IDamageable
         m_playerMinimap.ProjectionRotation();
         m_playerMinimap.HandleMapToggle();
         m_playerMinimap.ZoomControl();
-        
+
         if (!isLocked && !m_playerMinimap.IsMapOpen() && !DialogueManager.Instance.isDialoguePlaying)
         {
             m_playerMovement.HandleMovement();
@@ -83,7 +83,7 @@ public class Player : MonoBehaviour, IDamageable
             m_playerCombat.HandleAttack();
             m_playerSkills.HandleSkills();
             HandleGrassInteraction();
-            
+
         }
 
 
@@ -194,7 +194,7 @@ public class Player : MonoBehaviour, IDamageable
     public void TakeDamage(float damage, bool hitAnimOn = true)
     {
         if (m_playerSkills.isUsingUltimateSkill || isInvulnerable) return;
-        
+
         bool isCriticalHit = Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
         float damageReduction = m_playerStats.p_defense * 0.66f; // Defense Scaling
         float reducedDamage = damage - damageReduction; // Damage after Defense
@@ -207,7 +207,7 @@ public class Player : MonoBehaviour, IDamageable
         m_playerStats.p_currentHealth -= finalDamage; // Final Damage
         m_playerStats.p_currentHealth = Mathf.Clamp(m_playerStats.p_currentHealth, 0f, m_playerStats.p_maxHealth); // Health cannot go below 0
 
-        Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f),Random.Range(0f, 0.25f),Random.Range(0f, 0.25f));
+        Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
         if (isCriticalHit) // Damage Pop Up Here
         {
             DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.red);
@@ -215,7 +215,7 @@ public class Player : MonoBehaviour, IDamageable
         }
         else
         {
-            
+
             DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.white);
             Debug.Log($"Player took {finalDamage} damage. Current Health: {m_playerStats.p_currentHealth}");
         }
@@ -227,7 +227,7 @@ public class Player : MonoBehaviour, IDamageable
         }
         if (m_playerSkills.isUsingNormalSkill) return;
 
-        if(hitAnimOn)
+        if (hitAnimOn)
             m_playerAnimator.GetHit();
     }
     public void Heal(float amount)
@@ -242,7 +242,7 @@ public class Player : MonoBehaviour, IDamageable
 
         int displayAmount = Mathf.Max(1, Mathf.FloorToInt(amount));
 
-        Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f),Random.Range(0f, 0.25f),Random.Range(0f, 0.25f));
+        Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
         DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, displayAmount.ToString(), Color.green);
 
         Debug.Log($"💚 Healed {amount} HP. Current Health: {m_playerStats.p_currentHealth} / {maxHP}");
@@ -368,7 +368,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (equippedPamanaSet.ContainsKey(slot))
             equippedPamanaSet[slot] = null;
-        
+
         ReapplyPamanaBonuses();
     }
 
@@ -446,7 +446,13 @@ public class Player : MonoBehaviour, IDamageable
 
         return slot == 1 ? item.itemData.slot1Ability : item.itemData.slot2Ability;
     }
-
+    public R_ItemData GetAgimatItemData(int slot)
+    {
+        var item = GetEquippedAgimat(slot);
+        return item?.itemData;
+    }
     #endregion
+
+
 
 }

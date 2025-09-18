@@ -1,39 +1,32 @@
 using UnityEngine;
 using System.Collections;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 [CreateAssetMenu(menuName = "Agimat/Abilities/BatoOmo/BatoOmo_S2")]
-
 public class BatoOmo_S2 : R_AgimatAbility
 {
-    [HideInInspector] public float increasedDefenses;
-    [HideInInspector] public float healthThreshold;
-
-    public float originalValue = 0;
-    public bool isBuffActive = false;
     private Coroutine buffCoroutine;
+    private bool isBuffActive = false;
+    private float originalValue = 0;
 
-    public override string GetDescription(R_ItemRarity rarity)
+    public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        if (increasedDefenses == 0)
-            increasedDefenses = GetRandomIncreasedDefense(rarity);
-
-        if(healthThreshold == 0)
-            healthThreshold = GetRandomHealthThreshold(rarity);
-
-        return $"When HP is below {healthThreshold:F1}, gain {increasedDefenses:F1}% of defense.";
+        float increasedDefenses = itemData.slot1RollValue;
+        float healthThreshold = itemData.slot2RollValue;
+        return $"When HP is below {healthThreshold:F1}%, gain {increasedDefenses:F1}% defense.";
     }
 
-    public override void Activate(GameObject user, R_ItemRarity rarity)
+    public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
+        float increasedDefenses = itemData.slot1RollValue;
+        float healthThreshold = itemData.slot2RollValue;
+
         PlayerStats stats = user.GetComponent<PlayerStats>();
         float threshold = stats.p_maxHealth * (healthThreshold / 100f);
 
-        // Stop previous coroutine before starting a new one
         if (buffCoroutine != null)
             CoroutineRunner.Instance.StopCoroutine(buffCoroutine);
 
-        buffCoroutine = CoroutineRunner.Instance.RunCoroutine(CheckBuff(stats, threshold));
+        buffCoroutine = CoroutineRunner.Instance.RunCoroutine(CheckBuff(stats, threshold, increasedDefenses));
     }
 
     public override void Deactivate(GameObject user)
@@ -41,11 +34,17 @@ public class BatoOmo_S2 : R_AgimatAbility
         isBuffActive = false;
         PlayerStats stats = user.GetComponent<PlayerStats>();
         stats.p_defense = originalValue;
+
+        if (buffCoroutine != null)
+        {
+            CoroutineRunner.Instance.StopCoroutine(buffCoroutine);
+            buffCoroutine = null;
+        }
     }
 
-    private IEnumerator CheckBuff(PlayerStats stats, float threshold)
+    private IEnumerator CheckBuff(PlayerStats stats, float threshold, float increasedDefenses)
     {
-        while (true) // keep checking every interval
+        while (true)
         {
             if (stats.p_currentHealth <= threshold)
             {
@@ -69,9 +68,9 @@ public class BatoOmo_S2 : R_AgimatAbility
         }
     }
 
-    #region RANDOM VALUE GENERATOR
-    private float GetRandomIncreasedDefense(R_ItemRarity rarity)
+    public override float GetRandomDamagePercent(R_ItemRarity rarity)
     {
+        // Treat as increased defense roll
         return rarity switch
         {
             R_ItemRarity.Common => Random.Range(15f, 40f),
@@ -82,7 +81,7 @@ public class BatoOmo_S2 : R_AgimatAbility
         };
     }
 
-    private float GetRandomHealthThreshold(R_ItemRarity rarity)
+    public float GetRandomHealthThreshold(R_ItemRarity rarity)
     {
         return rarity switch
         {
@@ -93,5 +92,4 @@ public class BatoOmo_S2 : R_AgimatAbility
             _ => 20f
         };
     }
-    #endregion
 }

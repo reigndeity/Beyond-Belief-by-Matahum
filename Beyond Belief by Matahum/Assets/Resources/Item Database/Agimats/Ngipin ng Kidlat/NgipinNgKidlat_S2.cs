@@ -11,23 +11,17 @@ public class NgipinNgKidlat_S2 : R_AgimatAbility
     [SerializeField] private GameObject lightningVFXPrefab;
     [SerializeField] private float vfxYOffset = 0f;
 
-    [HideInInspector] public float cachedDamagePercent;
-
-    public override string GetDescription(R_ItemRarity rarity)
+    public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        if (cachedDamagePercent == 0f)
-            cachedDamagePercent = GetRandomDamagePercent(rarity);
-
-        return $"Calls down a thunder strike on the nearest target, dealing {cachedDamagePercent:F1}% of ATK. Nearby targets within {strikeRadius}m are also damaged.";
+        float roll = itemData.slot2RollValue;
+        return $"Calls down a thunder strike on the nearest target, dealing {roll:F1}% of ATK. Nearby targets within {strikeRadius}m are also damaged.";
     }
 
-    public override void Activate(GameObject user, R_ItemRarity rarity)
+    public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        if (cachedDamagePercent == 0f)
-            cachedDamagePercent = GetRandomDamagePercent(rarity);
-
         float atk = user.GetComponent<PlayerStats>().p_attack;
-        float damage = atk + (atk * (cachedDamagePercent / 100f));
+        float roll = itemData.slot2RollValue;
+        float damage = atk + (atk * (roll / 100f));
 
         // 1️⃣ Find the closest valid target
         IDamageable mainTarget = FindNearestTarget(user, user.transform.position, searchRadius);
@@ -37,7 +31,7 @@ public class NgipinNgKidlat_S2 : R_AgimatAbility
             Vector3 strikePoint = (mainTarget as MonoBehaviour).transform.position;
 
             mainTarget.TakeDamage(damage);
-            Debug.Log($"⚡ Ngipin Ng Kidlat S2 struck {strikePoint} for {damage:F1} damage (ATK + {cachedDamagePercent:F1}% of ATK).");
+            Debug.Log($"⚡ Ngipin Ng Kidlat S2 struck {strikePoint} for {damage:F1} dmg (ATK + {roll:F1}% of ATK).");
 
             if (lightningVFXPrefab != null)
                 SpawnAndDestroyVFX(strikePoint);
@@ -47,10 +41,10 @@ public class NgipinNgKidlat_S2 : R_AgimatAbility
             foreach (Collider col in hits)
             {
                 IDamageable dmg = col.GetComponent<IDamageable>();
-                if (dmg != null && dmg != mainTarget && !dmg.IsDead() && col.gameObject != user) // ✅ skip self
+                if (dmg != null && dmg != mainTarget && !dmg.IsDead() && col.gameObject != user)
                 {
                     dmg.TakeDamage(damage);
-                    Debug.Log($"⚡ AoE splash hit {col.name} for {damage:F1} damage.");
+                    Debug.Log($"⚡ AoE splash hit {col.name} for {damage:F1} dmg.");
                 }
             }
         }
@@ -69,7 +63,7 @@ public class NgipinNgKidlat_S2 : R_AgimatAbility
         foreach (Collider col in hits)
         {
             IDamageable dmg = col.GetComponent<IDamageable>();
-            if (dmg != null && !dmg.IsDead() && col.gameObject != caster) // ✅ skip self
+            if (dmg != null && !dmg.IsDead() && col.gameObject != caster)
             {
                 float dist = Vector3.Distance(origin, (dmg as MonoBehaviour).transform.position);
                 if (dist < closestDist)
@@ -95,7 +89,7 @@ public class NgipinNgKidlat_S2 : R_AgimatAbility
             GameObject.Destroy(vfx, 2f);
     }
 
-    private float GetRandomDamagePercent(R_ItemRarity rarity)
+    public override float GetRandomDamagePercent(R_ItemRarity rarity)
     {
         return rarity switch
         {

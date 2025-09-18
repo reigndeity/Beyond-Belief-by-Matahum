@@ -4,7 +4,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Agimat/Abilities/BahayAlitaptap/BahayAlitaptap_S1")]
 public class BahayAlitaptap_S1 : R_AgimatAbility
 {
-    [HideInInspector] public float increasedDamage;
     [Header("Skill Prefabs")]
     public GameObject orbPrefab;
     public GameObject pulsePrefab;
@@ -13,18 +12,18 @@ public class BahayAlitaptap_S1 : R_AgimatAbility
     public float pulseInterval = 2f;
     public float pulseExpansionDuration = 0.25f;
     public float pulseDuration = 1;
-    public override string GetDescription(R_ItemRarity rarity)
-    {
-        if (increasedDamage == 0)
-            increasedDamage = GetRandomDamage(rarity);
 
-        return $"Place an orb on the ground that pulses 3 times. First pulse deals {increasedDamage:F1}% of attack, increasing by 50% per pulse.";
+    public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
+    {
+        float increasedDamage = itemData.slot1RollValue;
+        return $"Place an orb on the ground that pulses 3 times. First pulse deals {increasedDamage:F1}% of ATK, increasing by 50% per pulse.";
     }
 
-    public override void Activate(GameObject user, R_ItemRarity rarity)
+    public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        float percent = increasedDamage / 100;
-        float calculatedDamage = percent * user.GetComponent<PlayerStats>().p_attack;
+        float increasedDamage = itemData.slot1RollValue;
+        float atk = user.GetComponent<PlayerStats>().p_attack;
+        float calculatedDamage = (increasedDamage / 100f) * atk;
 
         Vector3 spawnPoint = user.transform.position + user.transform.forward * 2f + Vector3.up * 0.5f;
         GameObject orbObj = Instantiate(orbPrefab, spawnPoint, Quaternion.identity);
@@ -32,18 +31,17 @@ public class BahayAlitaptap_S1 : R_AgimatAbility
         CoroutineRunner.Instance.RunCoroutine(PulseInterval(orbObj, calculatedDamage));
     }
 
-    IEnumerator PulseInterval(GameObject pulseSpawnPoint, float calculatedDamage)
+    private IEnumerator PulseInterval(GameObject pulseSpawnPoint, float calculatedDamage)
     {
         yield return new WaitForSeconds(1f);
 
         float currentDamage = calculatedDamage;
 
-        for (int i = 0; i < 3;  i++)
+        for (int i = 0; i < 3; i++)
         {
             GameObject pulseObj = Instantiate(pulsePrefab, pulseSpawnPoint.transform.position, Quaternion.identity);
 
             CoroutineRunner.Instance.RunCoroutine(ShowPulseVFX(pulseObj, i, currentDamage));
-
             currentDamage *= 1.5f;
 
             yield return new WaitForSeconds(pulseInterval);
@@ -51,21 +49,17 @@ public class BahayAlitaptap_S1 : R_AgimatAbility
 
         yield return new WaitForSeconds(1.5f);
         Destroy(pulseSpawnPoint);
-
     }
 
-    IEnumerator ShowPulseVFX(GameObject pulseObj, int i, float currentDamage)
+    private IEnumerator ShowPulseVFX(GameObject pulseObj, int i, float currentDamage)
     {
         BahayAlitaptap_PulseDamage pulseDamage = pulseObj.GetComponent<BahayAlitaptap_PulseDamage>();
-
         pulseDamage.pulseDamage = currentDamage;
 
         Vector3 pulseSize = new Vector3(i + 2, 0.25f, i + 2);
-
         float elapsed = 0f;
         float scaleDuration = 0.25f;
 
-        // Scale in
         while (elapsed < scaleDuration)
         {
             elapsed += Time.deltaTime;
@@ -73,11 +67,12 @@ public class BahayAlitaptap_S1 : R_AgimatAbility
             pulseObj.transform.localScale = Vector3.Lerp(Vector3.zero, pulseSize, t);
             yield return null;
         }
+
         yield return new WaitForSeconds(1f);
         Destroy(pulseObj);
     }
 
-    private float GetRandomDamage(R_ItemRarity rarity)
+    public override float GetRandomDamagePercent(R_ItemRarity rarity)
     {
         return rarity switch
         {

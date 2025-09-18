@@ -31,24 +31,22 @@ public class R_InfoPanel_Agimat : R_ItemInfoDisplay
         itemType.text = itemData.itemType.ToString();
         nameText.text = itemData.itemName;
 
-        // 🔹 Format slots
-        string slot1Text = FormatAbilityBlock("Slot 1", itemData.slot1Ability, itemData.rarity, 1);
-        string slot2Text = FormatAbilityBlock("Slot 2", itemData.slot2Ability, itemData.rarity, 2);
+        string slot1Text = FormatAbilityBlock("Slot 1", itemData.slot1Ability, itemData.rarity, itemData, 1);
+        string slot2Text = FormatAbilityBlock("Slot 2", itemData.slot2Ability, itemData.rarity, itemData, 2);
         string descriptionBlock = $"<size=36>{itemData.description}</size>";
 
         agimatCondensedBodyText.text = slot1Text + "\n" + slot2Text + "\n\n" + descriptionBlock;
     }
 
-    private string FormatAbilityBlock(string slotLabel, R_AgimatAbility ability, R_ItemRarity rarity, int slot)
+    private string FormatAbilityBlock(string slotLabel, R_AgimatAbility ability, R_ItemRarity rarity, R_ItemData itemData, int slot)
     {
         if (ability == null)
             return $"<size=36>{slotLabel}: None</size>";
 
         string typeLabel = ability.isPassive ? "Passive" : "Active";
-        string description = ability.GetDescription(rarity);
+        string description = ability.GetDescription(rarity, itemData);
         string slotLine = $"{slotLabel}: {ability.abilityName}";
 
-        // 🔸 Highlight if equipped
         if (IsAgimatActive(ability, slot))
             slotLine = $"<wave><color=#FFA500>{slotLine}</color></wave>";
 

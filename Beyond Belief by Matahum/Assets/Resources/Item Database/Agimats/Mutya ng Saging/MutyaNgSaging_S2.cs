@@ -1,48 +1,48 @@
 using System.Collections;
 using UnityEngine;
+
 [CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgSaging/MutyaNgSaging_S2")]
 public class MutyaNgSaging_S2 : R_AgimatAbility
 {
     public GameObject bulletPrefab;
-    [HideInInspector] public int bulletCount;
-    [HideInInspector] public float bulletDamage;
 
-    public override string GetDescription(R_ItemRarity rarity)
+    public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        if (bulletCount == 0f)
-            bulletCount = GetBulletCount(rarity);
+        int bulletCount = Mathf.RoundToInt(itemData.slot1RollValue);
+        float bulletDamage = itemData.slot2RollValue;
 
-        if (bulletDamage == 0f)
-            bulletDamage = GetRandomDamage(rarity);
-
-        return $"Shoots {bulletCount} banana bullets in quick succession.";
+        return $"Shoots {bulletCount} banana bullets in quick succession, each dealing {bulletDamage:F1}% of ATK.";
     }
 
-    public override void Activate(GameObject user, R_ItemRarity rarity)
+    public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        CoroutineRunner.Instance.StartCoroutine(ShootBullets(user, rarity));
+        int bulletCount = Mathf.RoundToInt(itemData.slot1RollValue);
+        float bulletDamage = itemData.slot2RollValue;
 
-        Debug.Log($"Shot {bulletCount} bullets.");
+        CoroutineRunner.Instance.StartCoroutine(ShootBullets(user, bulletCount, bulletDamage));
+        Debug.Log($"🍌 Shot {bulletCount} bullets at {bulletDamage:F1}% ATK each.");
     }
 
-    IEnumerator ShootBullets(GameObject user, R_ItemRarity rarity)
+    private IEnumerator ShootBullets(GameObject user, int bulletCount, float bulletDamage)
     {
-        for(int i = 0; i < bulletCount; i++)
+        for (int i = 0; i < bulletCount; i++)
         {
             Vector3 spawnPoint = user.transform.position + user.transform.forward * 0.5f + Vector3.up * 1f;
             GameObject bulletObj = Instantiate(bulletPrefab, spawnPoint, user.transform.rotation);
             bulletObj.transform.localScale = Vector3.one;
 
             MutyaNgSaging_Bullet bullet = bulletObj.GetComponent<MutyaNgSaging_Bullet>();
-            bullet.bulletDamage = user.GetComponent<PlayerStats>().p_attack * .75f; //75% of player attack
+            float atk = user.GetComponent<PlayerStats>().p_attack;
+            bullet.bulletDamage = atk * (bulletDamage / 100f); // scale by ATK %
             bullet.SetDirection(user.transform.forward);
 
             yield return new WaitForSeconds(0.5f);
         }
     }
 
-    private float GetRandomDamage(R_ItemRarity rarity)
+    public override float GetRandomDamagePercent(R_ItemRarity rarity)
     {
+        // Slot2 = bullet damage
         return rarity switch
         {
             R_ItemRarity.Common => Random.Range(39, 65),
@@ -53,7 +53,7 @@ public class MutyaNgSaging_S2 : R_AgimatAbility
         };
     }
 
-    private int GetBulletCount(R_ItemRarity rarity)
+    public int GetBulletCount(R_ItemRarity rarity)
     {
         return rarity switch
         {

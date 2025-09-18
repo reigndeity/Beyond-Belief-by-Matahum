@@ -4,30 +4,22 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgLinta/MutyaNgLinta_S2")]
 public class MutyaNgLinta_S2 : R_AgimatAbility
 {
-    [HideInInspector] public float lifeStealValue = 0;
-
     private Coroutine buffCoroutine;
 
-    public override string GetDescription(R_ItemRarity rarity)
+    public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        if (lifeStealValue == 0)
-            lifeStealValue = GetRandomLifeStealPercentage(rarity);
-
-        return $"Heal a small amount of {lifeStealValue:F1}% of damage dealt with attacks to enemies.";
+        float lifeStealValue = itemData.slot1RollValue;
+        return $"Heal {lifeStealValue:F1}% of damage dealt with attacks to enemies.";
     }
 
-    public override void Activate(GameObject user, R_ItemRarity rarity)
+    public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        // Ensure lifesteal value is set
-        if (lifeStealValue == 0)
-            lifeStealValue = GetRandomLifeStealPercentage(rarity);
+        float lifeStealValue = itemData.slot1RollValue;
 
-        // Stop any old coroutine
         if (buffCoroutine != null)
             CoroutineRunner.Instance.StopCoroutine(buffCoroutine);
 
-        // Start passive effect
-        buffCoroutine = CoroutineRunner.Instance.RunCoroutine(ApplyPassive(user));
+        buffCoroutine = CoroutineRunner.Instance.RunCoroutine(ApplyPassive(user, lifeStealValue));
     }
 
     public override void Deactivate(GameObject user)
@@ -43,11 +35,10 @@ public class MutyaNgLinta_S2 : R_AgimatAbility
             Object.Destroy(lifesteal);
     }
 
-    private IEnumerator ApplyPassive(GameObject user)
+    private IEnumerator ApplyPassive(GameObject user, float lifeStealValue)
     {
         Player player = user.GetComponent<Player>();
 
-        // Ensure lifesteal component exists
         MutyaNgLinta_Lifesteal lifesteal = user.GetComponent<MutyaNgLinta_Lifesteal>();
         if (lifesteal == null)
             lifesteal = user.AddComponent<MutyaNgLinta_Lifesteal>();
@@ -56,15 +47,11 @@ public class MutyaNgLinta_S2 : R_AgimatAbility
         lifesteal.lifeStealPercent = lifeStealValue / 100f;
         lifesteal.enabled = true;
 
-        // Passive: just wait until deactivated
         while (true)
-        {
             yield return null;
-        }
     }
 
-    #region RANDOM VALUE GENERATOR
-    private float GetRandomLifeStealPercentage(R_ItemRarity rarity)
+    public float GetRandomLifeStealPercentage(R_ItemRarity rarity)
     {
         return rarity switch
         {
@@ -75,5 +62,9 @@ public class MutyaNgLinta_S2 : R_AgimatAbility
             _ => 5f
         };
     }
-    #endregion
+
+    public override float GetRandomDamagePercent(R_ItemRarity rarity)
+    {
+        return GetRandomLifeStealPercentage(rarity);
+    }
 }

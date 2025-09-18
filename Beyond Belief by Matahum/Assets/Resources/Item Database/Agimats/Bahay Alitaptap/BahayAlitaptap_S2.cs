@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+
 [CreateAssetMenu(menuName = "Agimat/Abilities/BahayAlitaptap/BahayAlitaptap_S2")]
 public class BahayAlitaptap_S2 : R_AgimatAbility
 {
-    public override string GetDescription(R_ItemRarity rarity)
+    public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
         return $"Undiscovered Creatures, Locations, Wildlife, and Plants have visual indicators.";
     }
 
-    public override void Activate(GameObject user, R_ItemRarity rarity)
+    public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
         BB_ArchiveTracker[] allTrackers = Resources.FindObjectsOfTypeAll<BB_ArchiveTracker>();
         List<BB_ArchiveTracker> sceneTrackers = new List<BB_ArchiveTracker>();
@@ -29,28 +29,24 @@ public class BahayAlitaptap_S2 : R_AgimatAbility
         }
     }
 
-    IEnumerator DiscoverablePopUp(BB_ArchiveTracker tracker)
+    private IEnumerator DiscoverablePopUp(BB_ArchiveTracker tracker)
     {
-        // If already discovered, make sure it's hidden and exit
         if (tracker.archiveData.isDiscovered)
         {
             tracker.canvasGroup.alpha = 0f;
             yield break;
         }
 
-        // Instantly show
         tracker.canvasGroup.alpha = 1f;
 
-        // Wait visible duration
         yield return new WaitForSeconds(5f);
 
-        // Fade out over 3 seconds
         float fadeDuration = 3f;
         float elapsed = 0f;
 
         while (elapsed < fadeDuration)
         {
-            if (tracker.archiveData.isDiscovered) // check mid-fade
+            if (tracker.archiveData.isDiscovered)
             {
                 tracker.canvasGroup.alpha = 0f;
                 yield break;
@@ -61,7 +57,12 @@ public class BahayAlitaptap_S2 : R_AgimatAbility
             yield return null;
         }
 
-        tracker.canvasGroup.alpha = 0f; // ensure fully hidden
+        tracker.canvasGroup.alpha = 0f;
     }
 
+    public override float GetRandomDamagePercent(R_ItemRarity rarity)
+    {
+        // This ability doesn’t use rolls
+        return 0f;
+    }
 }

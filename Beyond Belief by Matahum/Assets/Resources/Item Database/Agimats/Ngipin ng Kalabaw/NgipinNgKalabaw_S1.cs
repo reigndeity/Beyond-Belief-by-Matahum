@@ -4,21 +4,19 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Agimat/Abilities/NgipinNgKalabaw/NgipinNgKalabaw_S1")]
 public class NgipinNgKalabawS1 : R_AgimatAbility
 {
-    public float increaseStats;
     public float duration;
     public GameObject buffVFX;
 
-    public override string GetDescription(R_ItemRarity rarity)
+    public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        if (increaseStats == 0f)
-            increaseStats = GetRandomFlatDamage(rarity);
-
-        return $"Gains additional {increaseStats:F1}% of attack for {duration} seconds then push back surrounding enemies, damaging them.";
+        float roll = itemData.slot1RollValue;
+        return $"Gains additional {roll:F1}% of attack for {duration} seconds then push back surrounding enemies, damaging them.";
     }
 
-    public override void Activate(GameObject user, R_ItemRarity rarity)
+    public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        float percent = increaseStats / 100f;
+        float roll = itemData.slot1RollValue;
+        float percent = roll / 100f;
         float atkPrcnt = user.GetComponent<PlayerStats>().p_attack;
         float amountToIncrease = atkPrcnt * percent;
 
@@ -49,7 +47,6 @@ public class NgipinNgKalabawS1 : R_AgimatAbility
     IEnumerator ShowBuffVFX(GameObject user)
     {
         Vector3 offset = new Vector3(0, 1, 0);
-        // Spawn VFX on player
         GameObject vfxInstance = Instantiate(buffVFX, user.transform.position + offset, Quaternion.identity, user.transform);
         vfxInstance.transform.localScale = Vector3.zero;
 
@@ -58,7 +55,6 @@ public class NgipinNgKalabawS1 : R_AgimatAbility
         knockback.damage = user.GetComponent<PlayerStats>().p_attack / 2;
 
         Vector3 buffSize = new Vector3(2, 2, 2);
-
         float elapsed = 0f;
         float scaleDuration = 0.25f;
 
@@ -72,7 +68,6 @@ public class NgipinNgKalabawS1 : R_AgimatAbility
         }
 
         knockback.canDamage = false;
-        // Keep full size until buff duration ends (minus fade out time)
         yield return new WaitForSeconds(duration - scaleDuration * 2);
 
         // Scale out
@@ -88,7 +83,7 @@ public class NgipinNgKalabawS1 : R_AgimatAbility
         Destroy(vfxInstance);
     }
 
-    private float GetRandomFlatDamage(R_ItemRarity rarity)
+    public override float GetRandomDamagePercent(R_ItemRarity rarity)
     {
         return rarity switch
         {

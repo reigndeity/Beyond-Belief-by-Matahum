@@ -18,7 +18,7 @@ public class PlayerAgimatManager : MonoBehaviour
     {
         m_player = GetComponent<Player>();
         m_input = GetComponent<PlayerInput>();
-        m_playerStats = GetComponent<PlayerStats>();   // ✅ grab stats
+        m_playerStats = GetComponent<PlayerStats>();
     }
 
     void Update()
@@ -42,26 +42,26 @@ public class PlayerAgimatManager : MonoBehaviour
     {
         var agimat1 = m_player.GetAgimatAbility(1);
         var rarity1 = m_player.GetAgimatRarity(1);
+        var data1 = m_player.GetAgimatItemData(1);
 
         if (agimat1 != null && !agimat1.isPassive && agimat1CooldownRemaining <= 0f &&
             Input.GetKeyDown(m_input.agimatOneKey))
         {
-            agimat1.Activate(gameObject, rarity1);
+            agimat1.Activate(gameObject, rarity1, data1);
 
-            // ✅ Apply CDR
             float cdrMultiplier = 1f - (m_playerStats.p_cooldownReduction / 100f);
             agimat1CooldownRemaining = agimat1.GetCooldown(rarity1) * Mathf.Max(0.1f, cdrMultiplier);
         }
 
         var agimat2 = m_player.GetAgimatAbility(2);
         var rarity2 = m_player.GetAgimatRarity(2);
+        var data2 = m_player.GetAgimatItemData(2);
 
         if (agimat2 != null && !agimat2.isPassive && agimat2CooldownRemaining <= 0f &&
             Input.GetKeyDown(m_input.agimatTwoKey))
         {
-            agimat2.Activate(gameObject, rarity2);
+            agimat2.Activate(gameObject, rarity2, data2);
 
-            // ✅ Apply CDR
             float cdrMultiplier = 1f - (m_playerStats.p_cooldownReduction / 100f);
             agimat2CooldownRemaining = agimat2.GetCooldown(rarity2) * Mathf.Max(0.1f, cdrMultiplier);
         }
@@ -71,11 +71,11 @@ public class PlayerAgimatManager : MonoBehaviour
     {
         var agimat = m_player.GetAgimatAbility(slot);
         var rarity = m_player.GetAgimatRarity(slot);
+        var data = m_player.GetAgimatItemData(slot);
 
         if (agimat == null || !agimat.isPassive)
             return;
 
-        // ✅ Apply CDR also to passive interval
         float cdrMultiplier = 1f - (m_playerStats.p_cooldownReduction / 100f);
         float interval = agimat.GetCooldown(rarity) * Mathf.Max(0.1f, cdrMultiplier);
         float delay = agimat.passiveTriggerDelay;
@@ -90,7 +90,7 @@ public class PlayerAgimatManager : MonoBehaviour
 
                 if (passive1Buffer >= delay)
                 {
-                    agimat.Activate(gameObject, rarity);
+                    agimat.Activate(gameObject, rarity, data);
                     passive1Timer = 0f;
                     passive1Buffer = 0f;
                 }
@@ -106,7 +106,7 @@ public class PlayerAgimatManager : MonoBehaviour
 
                 if (passive2Buffer >= delay)
                 {
-                    agimat.Activate(gameObject, rarity);
+                    agimat.Activate(gameObject, rarity, data);
                     passive2Timer = 0f;
                     passive2Buffer = 0f;
                 }
@@ -136,7 +136,6 @@ public class PlayerAgimatManager : MonoBehaviour
         var rarity = m_player.GetAgimatRarity(slot);
         if (ability == null) return 0f;
 
-        // ✅ Apply CDR so UI also shows reduced cooldown
         float cdrMultiplier = 1f - (m_playerStats.p_cooldownReduction / 100f);
         return ability.GetCooldown(rarity) * Mathf.Max(0.1f, cdrMultiplier);
     }

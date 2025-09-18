@@ -110,7 +110,7 @@ public class BeyondBelief_DebugTool : MonoBehaviour
                 level = 1; // fallback if invalid
         }
 
-        R_GeneralItemSpawner.instance.simulatedPlayerLevel = Mathf.Max(1, level); // enforce >= 1
-        Debug.Log($"[DebugTool] Simulated Player Level set to {R_GeneralItemSpawner.instance.simulatedPlayerLevel}");
+        R_GeneralItemSpawner.instance.SetSimulatedLevel(level);
     }
+
 }

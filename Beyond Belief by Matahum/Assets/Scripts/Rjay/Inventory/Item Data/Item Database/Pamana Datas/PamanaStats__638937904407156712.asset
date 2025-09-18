@@ -10,15 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a812e72aa14af0498d7edc305dd8e22, type: 3}
-  m_Name: PamanaStats__638936726052289341
+  m_Name: PamanaStats__638937904407156712
   m_EditorClassIdentifier: 
   set: 0
   slot: 1
-  rarity: 0
+  rarity: 2
   currentLevel: 0
   currentExp: 0
-  mainStatType: 4
-  mainStatValue: 717
-  substats: []
-  maxLevel: 5
-  maxExp: 11000
+  mainStatType: 2
+  mainStatValue: 47
+  substats:
+  - statType: 3
+    value: 34.73
+  - statType: 1
+    value: 11.66
+  - statType: 0
+    value: 5.84
+  maxLevel: 15
+  maxExp: 95000

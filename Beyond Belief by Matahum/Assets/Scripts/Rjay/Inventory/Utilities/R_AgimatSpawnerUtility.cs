@@ -11,10 +11,10 @@ public static class R_AgimatSpawnerUtility
     {
         var template = agimatTemplates[Random.Range(0, agimatTemplates.Length)];
 
-        // ✅ Deep clone to prevent shared reference issues
         var spawned = ScriptableObject.CreateInstance<R_ItemData>();
 
         // Copy metadata
+        spawned.name = template.name; // keep inspector clean
         spawned.itemName = template.itemName;
         spawned.itemIcon = template.itemIcon;
         spawned.itemBackdropIcon = template.itemBackdropIcon;
@@ -25,10 +25,17 @@ public static class R_AgimatSpawnerUtility
         spawned.itemType = R_ItemType.Agimat;
         spawned.rarity = R_LootTable.GetRandomRarityFromLevel(playerLevel);
 
+        // Instantiate abilities
         spawned.slot1Ability = Object.Instantiate(template.slot1Ability);
         spawned.slot2Ability = Object.Instantiate(template.slot2Ability);
 
-        // 🔹 Assign visuals based on rarity
+        // ✅ Roll ability values immediately
+        if (spawned.slot1Ability != null)
+            spawned.slot1RollValue = spawned.slot1Ability.GetRandomDamagePercent(spawned.rarity);
+        if (spawned.slot2Ability != null)
+            spawned.slot2RollValue = spawned.slot2Ability.GetRandomDamagePercent(spawned.rarity);
+
+        // Assign visuals
         if (visualConfig != null)
         {
             R_AgimatVisualSet visuals = visualConfig.GetVisualSet(spawned.rarity);
@@ -41,7 +48,7 @@ public static class R_AgimatSpawnerUtility
         inventory.AddItem(spawned, 1);
         inventoryUI.RefreshUI();
 
-        Debug.Log($"🎉 Spawned Agimat: {spawned.itemName} ({spawned.rarity}) with visuals: " +
-                  $"{spawned.itemBackdropIcon?.name}, {spawned.inventoryHeaderImage?.name}, {spawned.inventoryBackdropImage?.name}");
+        Debug.Log($"🎉 Spawned Agimat: {spawned.itemName} ({spawned.rarity}) " +
+                  $"[Slot1={spawned.slot1RollValue:F1}%, Slot2={spawned.slot2RollValue:F1}%]");
     }
 }

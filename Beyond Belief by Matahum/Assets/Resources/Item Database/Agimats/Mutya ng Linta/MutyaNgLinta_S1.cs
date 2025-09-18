@@ -1,48 +1,44 @@
 using System.Collections;
 using UnityEngine;
+
 [CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgLinta/MutyaNgLinta_S1")]
 public class MutyaNgLinta_S1 : R_AgimatAbility
 {
-    [HideInInspector] public float selfDamage = 0;
-    [HideInInspector] public float lifeStealValue = 0;
-    public override string GetDescription(R_ItemRarity rarity)
+    public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        if (selfDamage == 0)
-            selfDamage = GetRandomSelfDamagePercentage(rarity);
+        float selfDamage = itemData.slot1RollValue;
+        float lifeStealValue = itemData.slot2RollValue;
 
-        if(lifeStealValue == 0)
-            lifeStealValue = GetRandomLifeStealPercentage(rarity);
-
-        return $"Deal damage to self equal to {selfDamage:F1}% of health. For 5 seconds, heal {lifeStealValue:F1}% of damage dealt with attacks to enemies.";
+        return $"Deal damage to self equal to {selfDamage:F1}% of health. " +
+               $"For 5 seconds, heal {lifeStealValue:F1}% of damage dealt with attacks to enemies.";
     }
-    public override void Activate(GameObject user, R_ItemRarity rarity)
+
+    public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        CoroutineRunner.Instance.RunCoroutine(Lifesteal(user));
+        float selfDamage = itemData.slot1RollValue;
+        float lifeStealValue = itemData.slot2RollValue;
+        CoroutineRunner.Instance.RunCoroutine(Lifesteal(user, selfDamage, lifeStealValue));
     }
 
     public override void Deactivate(GameObject user)
     {
-        CoroutineRunner.Instance.StopCoroutine(Lifesteal(user));
-        Destroy(user.GetComponent<MutyaNgLinta_Lifesteal>(), 1);
+        MutyaNgLinta_Lifesteal lifesteal = user.GetComponent<MutyaNgLinta_Lifesteal>();
+        if (lifesteal != null)
+            Object.Destroy(lifesteal, 1);
     }
 
-    IEnumerator Lifesteal(GameObject user)
+    IEnumerator Lifesteal(GameObject user, float selfDamage, float lifeStealValue)
     {
         Player player = user.GetComponent<Player>();
         PlayerStats stats = user.GetComponent<PlayerStats>();
 
-        // Calculate self-damage based on defense reduction and percentage
         float damageReduction = stats.p_defense * 0.66f;
         float damageToSelf = damageReduction + (stats.p_currentHealth * (selfDamage / 100f));
 
-        // Ensure player will not go below 10 HP
         float totalHealth = stats.p_currentHealth - damageToSelf;
         if (totalHealth <= 10f)
-        {
             damageToSelf = stats.p_currentHealth - 10f;
-        }
 
-        // Apply damage
         player.TakeDamage(damageToSelf, false);
 
         MutyaNgLinta_Lifesteal lifesteal = user.GetComponent<MutyaNgLinta_Lifesteal>();
@@ -51,15 +47,15 @@ public class MutyaNgLinta_S1 : R_AgimatAbility
 
         lifesteal.player = player;
         lifesteal.enabled = true;
-        lifesteal.lifeStealPercent = lifeStealValue / 100;
+        lifesteal.lifeStealPercent = lifeStealValue / 100f;
 
         yield return new WaitForSeconds(5f);
 
         lifesteal.enabled = false;
     }
 
-    #region RANDOM VALUE GENERATOR
-    private float GetRandomSelfDamagePercentage(R_ItemRarity rarity)
+    // Self damage roll
+    public float GetRandomSelfDamagePercentage(R_ItemRarity rarity)
     {
         return rarity switch
         {
@@ -71,7 +67,8 @@ public class MutyaNgLinta_S1 : R_AgimatAbility
         };
     }
 
-    private float GetRandomLifeStealPercentage(R_ItemRarity rarity)
+    // Lifesteal roll
+    public float GetRandomLifeStealPercentage(R_ItemRarity rarity)
     {
         return rarity switch
         {
@@ -82,5 +79,10 @@ public class MutyaNgLinta_S1 : R_AgimatAbility
             _ => 25f
         };
     }
-    #endregion
+
+    public override float GetRandomDamagePercent(R_ItemRarity rarity)
+    {
+        // default to self-damage for compatibility
+        return GetRandomSelfDamagePercentage(rarity);
+    }
 }

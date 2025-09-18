@@ -3,29 +3,25 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgMais/MutyaNgMais_S1")]
 public class MutyaNgMais_S1 : R_AgimatAbility
 {
-    [HideInInspector] public float cachedHealPercent;
-
     [Header("Visual Effect")]
     [SerializeField] private GameObject healVFXPrefab;
     [SerializeField] private float vfxYOffset = 0f;
 
-    public override string GetDescription(R_ItemRarity rarity)
+    public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        if (cachedHealPercent == 0f)
-            cachedHealPercent = GetRandomHealPercent(rarity);
-
-        return $"Heals {cachedHealPercent:F1}% of the player's HP.";
+        float roll = itemData.slot1RollValue;
+        return $"Heals {roll:F1}% of the player's HP.";
     }
 
-    public override void Activate(GameObject user, R_ItemRarity rarity)
+    public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        float percent = cachedHealPercent / 100f;
+        float roll = itemData.slot1RollValue;
+        float percent = roll / 100f;
         float maxHP = user.GetComponent<PlayerStats>().p_maxHealth;
         float amountToHeal = maxHP * percent;
 
         user.GetComponent<Player>().Heal(amountToHeal);
-
-        Debug.Log($"🌽 Healing for {percent * 100}% of HP.");
+        Debug.Log($"🌽 Healing for {roll:F1}% of HP → {amountToHeal:F1} HP.");
 
         if (healVFXPrefab != null)
             SpawnAndDestroyVFX(user.transform.position);
@@ -43,7 +39,7 @@ public class MutyaNgMais_S1 : R_AgimatAbility
             GameObject.Destroy(vfx, 2f);
     }
 
-    private float GetRandomHealPercent(R_ItemRarity rarity)
+    public override float GetRandomDamagePercent(R_ItemRarity rarity)
     {
         return rarity switch
         {

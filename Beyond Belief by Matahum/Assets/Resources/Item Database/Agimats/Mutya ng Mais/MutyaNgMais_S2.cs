@@ -3,34 +3,28 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgMais/MutyaNgMais_S2")]
 public class MutyaNgMais_S2 : R_AgimatAbility
 {
-    [HideInInspector] public float cachedFlatHeal;
-
     [Header("Visual Effect")]
     [SerializeField] private GameObject regenVFXPrefab;
     [SerializeField] private float vfxYOffset = 0f;
 
-    public override string GetDescription(R_ItemRarity rarity)
+    public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        if (cachedFlatHeal == 0f)
-            cachedFlatHeal = GetRandomFlatHeal(rarity);
-
-        return $"Regenerates {cachedFlatHeal:F1} HP every {baseCooldown:F1} seconds.";
+        float roll = itemData.slot2RollValue;
+        return $"Regenerates {roll:F1} HP every {baseCooldown:F1} seconds.";
     }
 
-    public override void Activate(GameObject user, R_ItemRarity rarity)
+    public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        if (cachedFlatHeal == 0f)
-            cachedFlatHeal = GetRandomFlatHeal(rarity);
+        float roll = itemData.slot2RollValue;
 
         var stats = user.GetComponent<PlayerStats>();
         var player = user.GetComponent<Player>();
 
-        // ✅ Only heal if not already at full HP
         if (stats.p_currentHealth < stats.p_maxHealth)
         {
-            player.Heal(cachedFlatHeal);
+            player.Heal(roll);
 
-            Debug.Log($"🌽 Passive heal: +{cachedFlatHeal:F1} HP every {baseCooldown:F1}s");
+            Debug.Log($"🌽 Passive heal: +{roll:F1} HP every {baseCooldown:F1}s");
             Debug.Log($"🌽 [PASSIVE] MutyaNgMais_S2 activated at {Time.time:F2}s");
 
             if (regenVFXPrefab != null)
@@ -54,8 +48,9 @@ public class MutyaNgMais_S2 : R_AgimatAbility
             GameObject.Destroy(vfx, 2f);
     }
 
-    private float GetRandomFlatHeal(R_ItemRarity rarity)
+    public override float GetRandomDamagePercent(R_ItemRarity rarity)
     {
+        // For S2 we’re treating “damage percent” as flat heal roll
         return rarity switch
         {
             R_ItemRarity.Common => Random.Range(2f, 3f),

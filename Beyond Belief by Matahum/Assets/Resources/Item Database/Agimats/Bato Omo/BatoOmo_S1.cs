@@ -1,24 +1,25 @@
 using System.Collections;
 using UnityEngine;
+
 [CreateAssetMenu(menuName = "Agimat/Abilities/BatoOmo/BatoOmo_S1")]
 public class BatoOmo_S1 : R_AgimatAbility
 {
-    [HideInInspector] public float shieldDuration = 0;
     public GameObject shieldPrefab;
-    public override string GetDescription(R_ItemRarity rarity)
-    {
-        if (shieldDuration == 0)
-            shieldDuration = GetRandomDuration(rarity);
 
-        return $"Gain a barrier that blocks any damage for {shieldDuration} seconds.";
-    }
-    public override void Activate(GameObject user, R_ItemRarity rarity)
+    public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        Player player = FindFirstObjectByType<Player>();
-        CoroutineRunner.Instance.RunCoroutine(SpawnShield(player));
+        float shieldDuration = itemData.slot1RollValue;
+        return $"Gain a barrier that blocks any damage for {shieldDuration:F1} seconds.";
     }
 
-    IEnumerator SpawnShield(Player player)
+    public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
+    {
+        float shieldDuration = itemData.slot1RollValue;
+        Player player = user.GetComponent<Player>();
+        CoroutineRunner.Instance.RunCoroutine(SpawnShield(player, shieldDuration));
+    }
+
+    private IEnumerator SpawnShield(Player player, float shieldDuration)
     {
         Vector3 offset = new Vector3(0, 1, 0);
         GameObject shieldObj = Instantiate(shieldPrefab, player.transform.position + offset, Quaternion.identity, player.transform);
@@ -28,9 +29,9 @@ public class BatoOmo_S1 : R_AgimatAbility
         Destroy(shieldObj);
     }
 
-    #region RANDOM VALUE GENERATOR
-    private float GetRandomDuration(R_ItemRarity rarity)
+    public override float GetRandomDamagePercent(R_ItemRarity rarity)
     {
+        // Treat as duration roll
         return rarity switch
         {
             R_ItemRarity.Common => Random.Range(0.75f, 1.5f),
@@ -40,5 +41,4 @@ public class BatoOmo_S1 : R_AgimatAbility
             _ => 0.75f
         };
     }
-    #endregion
 }
