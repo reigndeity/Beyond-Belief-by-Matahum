@@ -24,6 +24,7 @@ public class Nuno_AttackManager : MonoBehaviour
     private Animator anim;
     private Nuno nuno;
     private Nuno_Animations animator;
+    [HideInInspector] public Boss_UICanvas uiCanvas;
 
     private void Awake()
     {
@@ -35,7 +36,7 @@ public class Nuno_AttackManager : MonoBehaviour
         player = FindFirstObjectByType<Player>();
         nuno = GetComponent<Nuno>();
         animator = GetComponent<Nuno_Animations>();
-        //anim = GetComponent<Animator>();
+        uiCanvas = GetComponent<Boss_UICanvas>();
     }
 
     private void Update()
@@ -50,6 +51,10 @@ public class Nuno_AttackManager : MonoBehaviour
             return;
         }
 
+        if (isStunned)
+        {
+            uiCanvas.currentCastingSkillTxt.text = "Nuno is Stunned!";
+        }
         // Get direction to player but ignore Y axis
         Vector3 direction = player.transform.position - transform.position;
         direction.y = 0f; // prevents looking up/down
@@ -114,6 +119,8 @@ public class Nuno_AttackManager : MonoBehaviour
             castingCurrentAbility = abilityList[skillIndex];
 
             abilityList[skillIndex].Activate();
+            uiCanvas.currentCastingSkillTxt.text = $"Casting {abilityList[skillIndex].name} . . .";
+
             Debug.Log($"Attacking with {abilityList[skillIndex].name}");
 
             // ✅ Wait until animator is actually in the right state
@@ -126,15 +133,12 @@ public class Nuno_AttackManager : MonoBehaviour
 
             yield return new WaitForSeconds(animLength);
         }
-        else
-        {
-            Debug.Log("Nuno is Idle");
-        }
 
         // ✅ Allow next attack
         isAttacking = false;
         canAttack = true;
         castingCurrentAbility = null;
+        uiCanvas.currentCastingSkillTxt.text = " ";
     }
 
 }
