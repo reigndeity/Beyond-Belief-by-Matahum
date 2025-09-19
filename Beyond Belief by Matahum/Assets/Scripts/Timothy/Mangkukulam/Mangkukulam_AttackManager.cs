@@ -83,35 +83,14 @@ public class Mangkukulam_AttackManager : MonoBehaviour
 
             abilityList[skillIndex].Activate(gameObject);
             Debug.Log($"Attacking with {abilityList[skillIndex].name}");
-
-            // Only wait if the skill is NOT indefinite
-            /*if (!(abilityList[skillIndex] is PotionBlitz_MangkukulamAbility) &&
-                !(abilityList[skillIndex] is DemonicRitual_MangkukulamAbility))
-            {
-                string expectedState = $"Mangkukulam_Skill_{skillIndex + 1}_{abilityList[skillIndex].name}";
-                yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsName(expectedState));
-
-                float animationLength = animator.GetAnimationLength(expectedState);
-                Debug.Log(expectedState);
-                Debug.Log($"{abilityList[skillIndex].name} animation length is {animationLength}");
-                yield return new WaitForSeconds(animationLength);
-                isAttacking = false;
-                canAttack = true;
-                castingCurrentAbility = null;
-            }
-            else
-            {
-                // Let Potion Blitz control itself
-                yield break;
-            }*/
+            //Enemy UI: "Casting Skill abilityList[skillIndex].name"
         }
         else
         {
+            //Enemy UI: " "
             Debug.Log("Mangkukulam continues walking");
             canAttack = true;
         }
-
-        //GetComponent<NavMeshAgent>().enabled = true;
     }
 
 }

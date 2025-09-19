@@ -55,7 +55,6 @@ public class PotionBlitz_MangkukulamAbility : Mangkukulam_Ability
 
         Mangkukulam.instance.isFlying = true;
         Mangkukulam_AnimationManager animator = user.GetComponent<Mangkukulam_AnimationManager>();
-        Animator anim = user.GetComponent<Animator>();
 
         while (true)
         {

@@ -39,9 +39,9 @@ public class NeedleBarrage : Mangkukulam_Ability
             randomizeRotation, //rotation
             user.transform.parent //parent
         );
-
+        NeedleBarrageHolder holderScript = needleHolderPrefab.GetComponent<NeedleBarrageHolder>();
+        float additionalTime = holderScript.spinDuration;
         float animLength = user.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length;
-        Debug.Log("Needle Barrage animation length is: " + animLength);
         yield return new WaitForSeconds(animLength);
 
         Mangkukulam_AttackManager atkMngr = user.GetComponent<Mangkukulam_AttackManager>();
@@ -49,8 +49,7 @@ public class NeedleBarrage : Mangkukulam_Ability
         atkMngr.canAttack = true;
         atkMngr.castingCurrentAbility = null;
 
-        NeedleBarrageHolder holderScript = needleHolderPrefab.GetComponent<NeedleBarrageHolder>();
-        CoroutineRunner.Instance.RunCoroutine(StartCooldown(holderScript));
+        CoroutineRunner.Instance.RunCoroutine(StartCooldown(additionalTime));
     }
 
     IEnumerator SetRotation(GameObject user)
@@ -79,9 +78,9 @@ public class NeedleBarrage : Mangkukulam_Ability
         } 
     }
 
-    IEnumerator StartCooldown(NeedleBarrageHolder holderScript)
+    IEnumerator StartCooldown(float additionalTime)
     {
-        yield return new WaitForSeconds(Cooldown() + holderScript.spinDuration);
+        yield return new WaitForSeconds(Cooldown() + additionalTime);
         canBeUsed = true;
     }
 }
