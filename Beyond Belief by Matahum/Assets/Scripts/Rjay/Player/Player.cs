@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using FIMSpace.FProceduralAnimation;
 using Unity.VisualScripting;
 using UnityEngine;
 public enum PlayerState 
@@ -14,6 +15,7 @@ public enum PlayerState
 }
 public class Player : MonoBehaviour, IDamageable
 {
+    private UI_Game m_uiGame;
     private PlayerAnimator m_playerAnimator;
     private PlayerMovement m_playerMovement;
     private PlayerInput m_playerInput;
@@ -50,6 +52,7 @@ public class Player : MonoBehaviour, IDamageable
         m_playerMinimap = GetComponentInChildren<PlayerMinimap>();
         m_playerCamera = FindFirstObjectByType<PlayerCamera>();
         m_setBonus = GetComponent<PlayerPamanaSetBonus>();
+        m_uiGame = FindFirstObjectByType<UI_Game>();
     }
 
     void Update()
@@ -121,15 +124,7 @@ public class Player : MonoBehaviour, IDamageable
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            TakeDamage(50);
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            GainXP(5000);
-        }
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            GainWeaponXP(500);
+            TakeDamage(100);
         }
 
         if (suppressInputUntilNextFrame)
@@ -247,24 +242,24 @@ public class Player : MonoBehaviour, IDamageable
 
         Debug.Log($"💚 Healed {amount} HP. Current Health: {m_playerStats.p_currentHealth} / {maxHP}");
     }
+    #endregion
     #region DEATH
     public async void HandleDeath()
     {
         if (isDead) return;
         isDead = true;
-
         Debug.Log("💀 Player has died.");
-
-        // Play death animation if you have one
         SetPlayerLocked(true);
-        m_playerAnimator.ChangeAnimationState("player_death");
+        m_playerAnimator.animator.applyRootMotion = true;
+        GetComponent<LegsAnimator>().enabled = false;
+        m_uiGame.HideUI();
+        m_playerAnimator.PlayDeathAnimation();
+        Debug.Log($"Current anim: {m_playerAnimator.animator.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
+        await System.Threading.Tasks.Task.Delay(1800);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
         await System.Threading.Tasks.Task.Delay(1000);
         Loader.Load(4);
-        // Fade back in
     }
-    #endregion
-
     #endregion
 
     #region PLAYER EXP

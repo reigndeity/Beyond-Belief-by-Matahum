@@ -37,6 +37,7 @@ public class PlayerAnimator : MonoBehaviour
 
     [Header("Hit Properties")]
     public bool isHit;
+    public bool isDead;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private float faceEnemyRadius = 10f;
     [SerializeField] private float rotationSmoothness = 10f; // Degrees per second
@@ -63,6 +64,11 @@ public class PlayerAnimator : MonoBehaviour
 
     public void HandleAnimations()
     {
+        if (isDead)
+        {
+            ChangeAnimationState("player_death"); 
+            return;
+        }
         if (isHit) return;
         if (m_playerMovement.IsDashing()) return;
 
@@ -462,6 +468,7 @@ public class PlayerAnimator : MonoBehaviour
     }
     public void ForceIdleState()
     {
+        if (isDead) return;
         StopAllCoroutines();
         isHit = false;
 
@@ -471,5 +478,11 @@ public class PlayerAnimator : MonoBehaviour
         isPlayingStopAnimation = false;
 
         ChangeAnimationState("player_idle_1");
+    }
+
+    public void PlayDeathAnimation()
+    {
+        isDead = true;
+        ChangeAnimationState("player_death");
     }
 }

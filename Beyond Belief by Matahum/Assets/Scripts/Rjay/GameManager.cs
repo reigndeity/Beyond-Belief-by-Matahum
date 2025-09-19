@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
         m_sceneAutoSaveController = FindFirstObjectByType<SceneAutoSaveController>();
+
+        Time.timeScale = 1;
     }
     void Start()
     {
