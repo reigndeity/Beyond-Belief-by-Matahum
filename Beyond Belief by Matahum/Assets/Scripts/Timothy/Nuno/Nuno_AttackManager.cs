@@ -14,11 +14,7 @@ public class Nuno_AttackManager : MonoBehaviour
     [HideInInspector] public bool isAttacking = false;
     private bool canAttack = true;
     public bool isStunned = false;
-    public int stunAmount = 3;
-
-    [Header("Skill 1 Properties")]
-    public Transform[] bulletPosition;
-    public Transform bulletHolder;
+    public int stunAmount = 3;    
 
     private Player player;
     private Animator anim;
@@ -54,6 +50,10 @@ public class Nuno_AttackManager : MonoBehaviour
         if (isStunned)
         {
             uiCanvas.currentCastingSkillTxt.text = "Nuno is Stunned!";
+            foreach (var ability in abilityList)
+            {
+                ability.Deactivate();
+            }
         }
         // Get direction to player but ignore Y axis
         Vector3 direction = player.transform.position - transform.position;

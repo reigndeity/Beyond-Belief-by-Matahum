@@ -7,10 +7,20 @@ public class EarthFall_NunoAbility : Nuno_Ability
 {
     public GameObject earthFallHolderPrefab;
     public float earthFallObjLifetime;
+    private Coroutine runningCoroutine;
 
     public override void Activate()
     {
-        CoroutineRunner.Instance.RunCoroutine(SpawnEarthFall());
+        runningCoroutine = CoroutineRunner.Instance.RunCoroutine(SpawnEarthFall());
+    }
+
+    public override void Deactivate()
+    {
+        if (runningCoroutine != null)
+        {
+            CoroutineRunner.Instance.StopCoroutine(runningCoroutine);
+            runningCoroutine = null;
+        }
     }
 
     IEnumerator SpawnEarthFall()

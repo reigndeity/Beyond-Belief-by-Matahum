@@ -130,7 +130,7 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
         isDead = true;
         OnDeath?.Invoke();
 
-        animator.ChangeAnimationState("Mangkukulam_Stun_Idle");
+        animator.ChangeAnimationState("Mangkukulam_Skill_3_Demonic Ritual");
         hpCanvas.FadeOut(1f);
         await Task.Delay(2500);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));

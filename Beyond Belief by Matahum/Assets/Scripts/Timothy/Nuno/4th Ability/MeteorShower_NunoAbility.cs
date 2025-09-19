@@ -6,46 +6,81 @@ using UnityEngine;
 public class MeteorShower_NunoAbility : Nuno_Ability
 {
     public GameObject meteorShowerPrefab;
-    [HideInInspector]public Transform center; // The middle point to spawn around
-    public float radius = 5f; // Radius around the center
-    public int spawnCount = 10; // How many meteors to spawn
-    public float minDistanceBetween = 1f; // Prevent overlapping
+    [HideInInspector] public Transform center;
+    public float radius = 5f;
+    public int spawnCount = 10;
+    public float minDistanceBetween = 1f;
     public float meteorLifetime;
-
-    [HideInInspector] public Vector3[] areaToSpawn; // Store positions instead of transforms
     public float startMovingDelay = 3f;
+
+    [HideInInspector] public Vector3[] areaToSpawn;
+
+    private Coroutine runningCoroutine;
+    private List<Coroutine> meteorCoroutines = new List<Coroutine>();
+    private List<GameObject> spawnedMeteors = new List<GameObject>();
 
     public override void Activate()
     {
         center = FindFirstObjectByType<Nuno_AttackManager>().transform;
-        // Generate random positions each time we activate
         GenerateSpawnPositions();
 
-        float delay = 0;
-        foreach (Vector3 pos in areaToSpawn)
+        // Run one master coroutine that handles the whole sequence
+        runningCoroutine = CoroutineRunner.Instance.RunCoroutine(SpawnAllMeteors());
+    }
+
+    public override void Deactivate()
+    {
+        if (runningCoroutine != null)
         {
-            delay += 0.1f;
-            CoroutineRunner.Instance.RunCoroutine(DelaySpawn(pos, delay));
+            CoroutineRunner.Instance.StopCoroutine(runningCoroutine);
+            runningCoroutine = null;
+        }
+
+        foreach (var c in meteorCoroutines)
+        {
+            if (c != null)
+                CoroutineRunner.Instance.StopCoroutine(c);
+        }
+        meteorCoroutines.Clear();
+
+        foreach (var m in spawnedMeteors)
+        {
+            if (m != null) Destroy(m);
+        }
+        spawnedMeteors.Clear();
+    }
+
+    private IEnumerator SpawnAllMeteors()
+    {
+        float delayBetween = 0.1f;
+
+        for (int i = 0; i < areaToSpawn.Length; i++)
+        {
+            yield return new WaitForSeconds(delayBetween);
+            CoroutineRunner.Instance.RunCoroutine(SpawnMeteor(areaToSpawn[i]));
         }
     }
 
-    IEnumerator DelaySpawn(Vector3 pos, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        CoroutineRunner.Instance.RunCoroutine(SpawnMeteor(pos));
-    }
-
-    IEnumerator SpawnMeteor(Vector3 position)
+    private IEnumerator SpawnMeteor(Vector3 position)
     {
         yield return new WaitForSeconds(2f);
-        GameObject meteorObj = Instantiate(meteorShowerPrefab, position, Quaternion.identity, Nuno_AttackManager.Instance.transform.parent);
+
+        GameObject meteorObj = Instantiate(
+            meteorShowerPrefab,
+            position,
+            Quaternion.identity,
+            Nuno_AttackManager.Instance.transform.parent
+        );
+        spawnedMeteors.Add(meteorObj);
+
         MeteorShower_Holder meteorHolder = meteorObj.GetComponent<MeteorShower_Holder>();
         meteorHolder.transform.position = position;
-        Vector3 initialSize = new Vector3(0, 1, 0);
 
+        Vector3 initialSize = new Vector3(0, 1, 0);
         float elapsed = 0f;
         float scaleDuration = 1;
-        // Scale in
+
+        // Scale in smoothly
         while (elapsed < scaleDuration)
         {
             elapsed += Time.deltaTime;
@@ -55,7 +90,10 @@ public class MeteorShower_NunoAbility : Nuno_Ability
         }
 
         yield return new WaitForSeconds(startMovingDelay);
+
+        // Start falling
         meteorHolder.meteorObj.GetComponent<MeteorShower_MeteorBullet>().startFalling = true;
+
         Destroy(meteorObj, meteorLifetime);
     }
 
@@ -68,12 +106,11 @@ public class MeteorShower_NunoAbility : Nuno_Ability
             Vector3 newPos;
             int safety = 0;
 
-            // Try finding a non-overlapping position
             do
             {
                 newPos = RandomPosition(center);
                 safety++;
-                if (safety > 100) break; // Prevent infinite loops if radius is too small
+                if (safety > 100) break;
             }
             while (!IsValidPosition(newPos, positions));
 
@@ -85,11 +122,8 @@ public class MeteorShower_NunoAbility : Nuno_Ability
 
     private Vector3 RandomPosition(Transform center)
     {
-        // Pick a random point inside a circle (2D) or sphere (3D)
         Vector2 randomCircle = Random.insideUnitCircle * radius;
-        Vector3 targetPos = center.position + new Vector3(randomCircle.x, -0.65f, randomCircle.y);
-
-        return targetPos;
+        return center.position + new Vector3(randomCircle.x, -0.65f, randomCircle.y);
     }
 
     private bool IsValidPosition(Vector3 newPos, List<Vector3> existing)

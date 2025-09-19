@@ -16,6 +16,8 @@ public class RockShield_NunoAbility : Nuno_Ability
         CoroutineRunner.Instance.RunCoroutine(DelaySpawnShield());
     }
 
+    public override void Deactivate() { Debug.Log("Do Nothing. This basically is the cause why everything will stop"); }
+
     IEnumerator DelaySpawnShield()
     {
         yield return new WaitForSeconds(4f);

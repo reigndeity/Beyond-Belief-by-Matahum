@@ -3,4 +3,5 @@
 public abstract class Nuno_Ability : ScriptableObject
 {
     public abstract void Activate();
+    public abstract void Deactivate();
 }
