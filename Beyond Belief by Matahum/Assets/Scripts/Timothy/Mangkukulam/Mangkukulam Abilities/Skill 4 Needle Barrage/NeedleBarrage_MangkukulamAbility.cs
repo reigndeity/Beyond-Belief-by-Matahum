@@ -48,6 +48,7 @@ public class NeedleBarrage : Mangkukulam_Ability
         atkMngr.isAttacking = false;
         atkMngr.canAttack = true;
         atkMngr.castingCurrentAbility = null;
+        Mangkukulam.instance.uiCanvas.currentCastingSkillTxt.text = $" ";
 
         CoroutineRunner.Instance.RunCoroutine(StartCooldown(additionalTime));
     }

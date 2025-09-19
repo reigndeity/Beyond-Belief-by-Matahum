@@ -19,6 +19,7 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
     private EnemyStats stats;
     private PlayerStats m_playerStats;
     private Mangkukulam_AnimationManager animator;
+    [HideInInspector] public Boss_UICanvas uiCanvas;
 
     public event System.Action OnDeath;
     public event System.Action OnHit;
@@ -35,6 +36,9 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
         stats = GetComponent<EnemyStats>();
         m_playerStats = FindFirstObjectByType<PlayerStats>();
         animator = GetComponent<Mangkukulam_AnimationManager>();
+        uiCanvas = GetComponent<Boss_UICanvas>();
+
+        uiCanvas.currentCastingSkillTxt.text = " ";
     }
 
     private void Update()
@@ -44,6 +48,9 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
             Invoke("BattleStart", 2);
             return;
         }
+
+        if (isStunned)
+            uiCanvas.currentCastingSkillTxt.text = "Mangkukulam is stunned!";
     }
 
     void BattleStart()

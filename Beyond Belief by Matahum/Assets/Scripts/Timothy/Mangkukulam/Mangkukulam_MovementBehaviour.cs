@@ -49,6 +49,8 @@ public class Mangkukulam_MovementBehaviour : MonoBehaviour
                 animator.ChangeAnimationState("Mangkukulam_Idle");
             else
                 animator.ChangeAnimationState("Mangkukulam_Angry_Walk");
+
+            Mangkukulam.instance.uiCanvas.currentCastingSkillTxt.text = " ";
             
         }
 

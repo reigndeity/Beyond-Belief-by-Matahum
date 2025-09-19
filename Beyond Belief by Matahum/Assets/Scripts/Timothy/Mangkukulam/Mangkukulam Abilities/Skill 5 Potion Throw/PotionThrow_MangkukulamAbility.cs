@@ -54,6 +54,7 @@ public class PotionThrow_MangkukulamAbility : Mangkukulam_Ability
         atkMngr.isAttacking = false;
         atkMngr.canAttack = true;
         atkMngr.castingCurrentAbility = null;
+        Mangkukulam.instance.uiCanvas.currentCastingSkillTxt.text = $" ";
     }
     void ThrowPotions(GameObject user, Transform target)
     {

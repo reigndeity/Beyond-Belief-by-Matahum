@@ -56,20 +56,17 @@ public class Mangkukulam_AttackManager : MonoBehaviour
         // If stunned, pause attack logic
         if (mangkukulam.isStunned)
         {
-            Debug.Log("Mangkukulam is Stunned");
-
             yield return new WaitForSeconds(stunDuration);
             mangkukulam.isStunned = false;
         }
 
         // Random pre-attack delay
-        float cooldown = Random.Range(2f, 5f);
+        float cooldown = Random.Range(1f, 3f);
         yield return new WaitForSeconds(cooldown);
 
         // Skip attacking if stunned during cooldown
         if (mangkukulam.isStunned)
         {
-            Debug.Log("Attack interrupted because of stun");
             canAttack = true;
             yield break;
         }
@@ -83,11 +80,11 @@ public class Mangkukulam_AttackManager : MonoBehaviour
 
             abilityList[skillIndex].Activate(gameObject);
             Debug.Log($"Attacking with {abilityList[skillIndex].name}");
-            //Enemy UI: "Casting Skill abilityList[skillIndex].name"
+            mangkukulam.uiCanvas.currentCastingSkillTxt.text = $"Casting {abilityList[skillIndex].name} . . .";
         }
         else
         {
-            //Enemy UI: " "
+            mangkukulam.uiCanvas.currentCastingSkillTxt.text = $" ";
             Debug.Log("Mangkukulam continues walking");
             canAttack = true;
         }
