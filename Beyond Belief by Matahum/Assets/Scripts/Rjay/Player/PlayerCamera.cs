@@ -107,16 +107,31 @@ public class PlayerCamera : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(currentRotation);
         Vector3 desiredCameraPos = targetPosition - (rotation * Vector3.forward * desiredDistance);
 
+        float targetDistance = desiredDistance;
+
+        // Check along the path (spherecast)
         if (Physics.SphereCast(targetPosition, cameraRadius, desiredCameraPos - targetPosition, out RaycastHit hit, desiredDistance, collisionLayers))
         {
-            float adjustedDistance = Mathf.Max(hit.distance - 0.1f, minDistance);
-            currentDistance = Mathf.SmoothDamp(currentDistance, adjustedDistance, ref distanceSmoothVelocity, 1f / collisionSmoothSpeed);
+            targetDistance = Mathf.Clamp(hit.distance - 0.1f, minDistance, desiredDistance);
         }
-        else
+
+        // Smooth transition
+        currentDistance = Mathf.SmoothDamp(currentDistance, targetDistance, ref distanceSmoothVelocity, 1f / collisionSmoothSpeed);
+
+        // --- Extra safeguard: check final camera position ---
+        Vector3 finalCameraPos = targetPosition - (rotation * Vector3.forward * currentDistance);
+
+        if (Physics.CheckSphere(finalCameraPos, cameraRadius, collisionLayers))
         {
-            currentDistance = Mathf.SmoothDamp(currentDistance, desiredDistance, ref distanceSmoothVelocity, 1f / collisionSmoothSpeed);
+            // Push camera out of walls
+            if (Physics.Raycast(targetPosition, (finalCameraPos - targetPosition).normalized, out RaycastHit pushHit, currentDistance, collisionLayers))
+            {
+                currentDistance = Mathf.Clamp(pushHit.distance - 0.05f, minDistance, currentDistance);
+            }
         }
     }
+
+
 
     void UpdateCameraPosition(Vector3 targetPosition)
     {
