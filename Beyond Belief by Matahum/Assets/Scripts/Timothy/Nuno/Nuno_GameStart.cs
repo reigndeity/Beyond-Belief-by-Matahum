@@ -15,7 +15,6 @@ public class Nuno_GameStart : MonoBehaviour
     {
         // Fade in
         //questHudCanvasGroup.FadeOut(0.25f);
-        StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
         await Task.Delay(1000);
 
         // Setup
