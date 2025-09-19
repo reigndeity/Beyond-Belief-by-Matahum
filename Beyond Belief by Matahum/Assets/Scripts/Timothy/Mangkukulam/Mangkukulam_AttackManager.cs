@@ -30,14 +30,19 @@ public class Mangkukulam_AttackManager : MonoBehaviour
         player = FindFirstObjectByType<Player>();
         mangkukulam = GetComponent<Mangkukulam>();
         animator = GetComponent<Mangkukulam_AnimationManager>();
-        //anim = GetComponent<Animator>();
+
+        foreach (var ability in abilityList)
+        {
+            ability.Initialize();
+        }
     }
 
     private void Update()
     {
         if (mangkukulam.IsDead()) return;
+        if (mangkukulam.isFlying) return;
 
-        //animator.HandleAnimations();
+        animator.HandleAnimations();
 
         if (canAttack)
         {
@@ -51,20 +56,17 @@ public class Mangkukulam_AttackManager : MonoBehaviour
         // If stunned, pause attack logic
         if (mangkukulam.isStunned)
         {
-            Debug.Log("Mangkukulam is Stunned");
-
             yield return new WaitForSeconds(stunDuration);
             mangkukulam.isStunned = false;
         }
 
         // Random pre-attack delay
-        float cooldown = Random.Range(2f, 5f);
+        float cooldown = Random.Range(1f, 3f);
         yield return new WaitForSeconds(cooldown);
 
         // Skip attacking if stunned during cooldown
         if (mangkukulam.isStunned)
         {
-            Debug.Log("Attack interrupted because of stun");
             canAttack = true;
             yield break;
         }
@@ -78,29 +80,14 @@ public class Mangkukulam_AttackManager : MonoBehaviour
 
             abilityList[skillIndex].Activate(gameObject);
             Debug.Log($"Attacking with {abilityList[skillIndex].name}");
-
-            // Only wait if the skill is NOT indefinite
-            if (!(abilityList[skillIndex] is PotionBlitz_MangkukulamAbility) &&
-                !(abilityList[skillIndex] is DemonicRitual_MangkukulamAbility))
-            {
-                yield return new WaitForSeconds(5);
-                isAttacking = false;
-                canAttack = true;
-                castingCurrentAbility = null;
-            }
-            else
-            {
-                // Let Potion Blitz control itself
-                yield break;
-            }
+            mangkukulam.uiCanvas.currentCastingSkillTxt.text = $"Casting {abilityList[skillIndex].name} . . .";
         }
         else
         {
+            mangkukulam.uiCanvas.currentCastingSkillTxt.text = $" ";
             Debug.Log("Mangkukulam continues walking");
             canAttack = true;
         }
-
-        GetComponent<NavMeshAgent>().enabled = true;
     }
 
 }

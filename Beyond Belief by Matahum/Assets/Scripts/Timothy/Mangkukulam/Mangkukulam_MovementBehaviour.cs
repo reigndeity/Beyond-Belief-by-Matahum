@@ -1,11 +1,14 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
+using System.Collections;
 
 public class Mangkukulam_MovementBehaviour : MonoBehaviour
 {
     [Header("References")]
     private Mangkukulam_AttackManager atkMngr;
+    private Mangkukulam_AnimationManager animator;
 
     public float wanderRadius = 10f;      // Radius to wander around the center
     public float wanderInterval = 3f;     // Time between picking new points
@@ -18,6 +21,7 @@ public class Mangkukulam_MovementBehaviour : MonoBehaviour
     void Start()
     {
         atkMngr = GetComponent<Mangkukulam_AttackManager>();
+        animator = GetComponent<Mangkukulam_AnimationManager>();
 
         agent = GetComponent<NavMeshAgent>();
         timer = wanderInterval;
@@ -40,6 +44,14 @@ public class Mangkukulam_MovementBehaviour : MonoBehaviour
             agent.enabled = true;
             agent.isStopped = false;
             agent.updateRotation = true;
+
+            if (HasReachedDestination())
+                animator.ChangeAnimationState("Mangkukulam_Idle");
+            else
+                animator.ChangeAnimationState("Mangkukulam_Angry_Walk");
+
+            Mangkukulam.instance.uiCanvas.currentCastingSkillTxt.text = " ";
+            
         }
 
         if (timer >= wanderInterval)
@@ -48,6 +60,21 @@ public class Mangkukulam_MovementBehaviour : MonoBehaviour
             agent.SetDestination(newPos);
             timer = 0;
         }
+    }
+
+    private bool HasReachedDestination()
+    {
+        if (!agent.pathPending) // agent has a path
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance) // close enough
+            {
+                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f) // actually stopped
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     // Get a random point on the NavMesh inside a radius from a center point

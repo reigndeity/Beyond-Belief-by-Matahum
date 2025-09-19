@@ -20,7 +20,7 @@ public class PotionBlitz_MangkukulamAbility : Mangkukulam_Ability
     public float throwForce = 10f;        // Base throw strength
     public float upwardForce = 5f;        // Extra arc height
     public float rotationSpeed = 180;
-
+    public override void Initialize() => canBeUsed = true;
     public override float Cooldown() => cooldown;
     public override bool CanBeUsed() => canBeUsed;
 
@@ -53,6 +53,9 @@ public class PotionBlitz_MangkukulamAbility : Mangkukulam_Ability
         NavMeshAgent agent = user.GetComponent<NavMeshAgent>();
         agent.enabled = false;
 
+        Mangkukulam.instance.isFlying = true;
+        Mangkukulam_AnimationManager animator = user.GetComponent<Mangkukulam_AnimationManager>();
+
         while (true)
         {
             // Safety check
@@ -70,8 +73,20 @@ public class PotionBlitz_MangkukulamAbility : Mangkukulam_Ability
             Vector3 mid = start + Vector3.up * 3f; // little flying arc
             Vector3 end = target.position;
 
-            // Fly animation
+            // Rotate towards the destination when preparing to fly
             float t = 0f;
+            while (t < animator.GetAnimationLength("Mangkukulam_StartFly"))
+            {
+                t += Time.deltaTime;
+                animator.ChangeAnimationState("Mangkukulam_StartFly");
+
+                SetRotation(user, target);
+
+                yield return null;
+            }
+
+            // Fly animation
+            t = 0f;
             while (t < 1f)
             {
                 t += Time.deltaTime / moveTime;
@@ -79,18 +94,26 @@ public class PotionBlitz_MangkukulamAbility : Mangkukulam_Ability
 
                 SetRotation(user, target);
 
+                animator.ChangeAnimationState("Mangkukulam_Flying");
+
                 Mangkukulam.instance.isVulnerable = false; // invulnerable during flight
                 yield return null;
             }
 
             // Skill trigger at destination
-            Debug.Log("Potion Blitz attack triggered!");
             Mangkukulam.instance.isVulnerable = true;
 
-            CoroutineRunner.Instance.RunCoroutine(AttackWithPotion(user));
+            animator.ChangeAnimationState("Mangkukulam_Landing");
+            yield return new WaitForSeconds(animator.GetAnimationLength("Mangkukulam_Landing"));
+            Mangkukulam.instance.isFlying = false;
 
+            animator.ChangeAnimationState("Mangkukulam_Skill_1_Potion Blitz");
+            yield return new WaitForSeconds(0.2f);
+            CoroutineRunner.Instance.RunCoroutine(AttackWithPotion(user));
+            yield return new WaitForSeconds(1.2f);
+            animator.ChangeAnimationState("Mangkukulam_Idle");
             // Wait before flying again
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(3f);
 
             // If stunned → stop looping
             if (Mangkukulam.instance.isStunned)
@@ -113,8 +136,6 @@ public class PotionBlitz_MangkukulamAbility : Mangkukulam_Ability
 
     IEnumerator AttackWithPotion(GameObject user)
     {
-        yield return new WaitForSeconds(1f);
-
         Transform target = GameObject.FindGameObjectWithTag("Player")?.transform;
 
         if (target == null)
@@ -131,15 +152,35 @@ public class PotionBlitz_MangkukulamAbility : Mangkukulam_Ability
             yield return null;
         }
 
-        Vector3 throwPoint = user.transform.position + user.transform.forward * 1f + Vector3.up * 0.5f;
-        GameObject projectile = Instantiate(potionPrefab, throwPoint, Quaternion.identity);
+        ThrowPotions(user, target);
+    }
 
-        Rigidbody rb = projectile.GetComponent<Rigidbody>();
-        if (rb != null)
+    void ThrowPotions(GameObject user, Transform target)
+    {
+        Vector3 throwPoint = user.transform.position + user.transform.forward * 1f + Vector3.up * 1f;
+
+        // Define spread angles (in degrees)
+        float spreadAngle = 15f; // adjust for wider/narrower cone
+
+        for (int i = -1; i <= 1; i++) // -1 = left, 0 = center, 1 = right
         {
-            Vector3 targetPos = target.position + Vector3.up * 1f; // aim at chest/head height
-            Vector3 velocity = CalculateLaunchVelocity(throwPoint, targetPos, 1.5f); // 1.5s flight time
-            rb.linearVelocity = velocity;
+            // Base target position (center shot)
+            Vector3 targetPos = target.position + Vector3.up * 1f;
+
+            // Calculate base velocity towards target
+            Vector3 velocity = CalculateLaunchVelocity(throwPoint, targetPos, 1.5f);
+
+            // Rotate velocity left/right around Y for cone spread
+            Quaternion spreadRotation = Quaternion.AngleAxis(i * spreadAngle, Vector3.up);
+            Vector3 spreadVelocity = spreadRotation * velocity;
+
+            // Spawn projectile
+            GameObject projectile = Instantiate(potionPrefab, throwPoint, Quaternion.identity);
+            Rigidbody rb = projectile.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.linearVelocity = spreadVelocity;
+            }
         }
     }
 
@@ -163,6 +204,7 @@ public class PotionBlitz_MangkukulamAbility : Mangkukulam_Ability
 
         return result;
     }
+
 
     void SetRotation(GameObject user, Transform target)
     {

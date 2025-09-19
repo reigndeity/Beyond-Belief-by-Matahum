@@ -28,7 +28,13 @@ public class PotionBottle : MonoBehaviour
 
             damageable.TakeDamage(bulletDamage);
         }
-        Destroy(gameObject);
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player") ||
+            other.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+        {
+            Destroy(gameObject);
+        }
+        
     }
 
     void CheckForDebuffType(PlayerStats stats)
