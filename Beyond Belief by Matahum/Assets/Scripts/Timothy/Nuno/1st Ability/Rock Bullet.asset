@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef16d2b2cd40cbb4b912004b908f36c7, type: 3}
-  m_Name: Rock Shield_Nuno Ability
+  m_Script: {fileID: 11500000, guid: a04a42a15d71bcb469494bb66e1a4ebb, type: 3}
+  m_Name: Rock Bullet
   m_EditorClassIdentifier: 
-  shieldHolderPrefab: {fileID: 2420236698447673580, guid: 6802d0e6cd7e6e3439406cbe2c2513b6, type: 3}
-  shieldToNunoHealthRatio: 10
-  shieldCooldown: 20
+  bulletPrefab: {fileID: 3112690722619620622, guid: 4fff34c857d98734eaf8af5534f10744, type: 3}
+  bulletPosition:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
