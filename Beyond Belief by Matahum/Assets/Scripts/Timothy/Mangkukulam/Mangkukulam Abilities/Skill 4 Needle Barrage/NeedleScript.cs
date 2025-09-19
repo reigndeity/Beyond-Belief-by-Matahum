@@ -38,11 +38,13 @@ public class NeedleScript : MonoBehaviour
         if (damageable != null)
         {
             damageable.TakeDamage(damage);
-
-            //GameObject explosionObj = Instantiate(explosionVFX, gameObject.transform.position, Quaternion.identity);
-            //Destroy(explosionObj, 2);
         }
 
-        Destroy(gameObject);
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player") ||
+            other.gameObject.layer == LayerMask.NameToLayer("Terrain") ||
+            other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            Destroy(gameObject);
+        }
     }
 }

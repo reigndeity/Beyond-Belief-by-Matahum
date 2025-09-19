@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
 {
@@ -11,13 +12,18 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
     public bool isDead;
     public bool isVulnerable;
     public bool isBattleStart = false;
+    public bool isMoving;
+    public bool isFlying;
 
     [Header("References")]
     private EnemyStats stats;
     private PlayerStats m_playerStats;
+    private Mangkukulam_AnimationManager animator;
 
     public event System.Action OnDeath;
     public event System.Action OnHit;
+
+    [SerializeField] UI_CanvasGroup hpCanvas;
 
     void Awake()
     {
@@ -28,6 +34,7 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
     {
         stats = GetComponent<EnemyStats>();
         m_playerStats = FindFirstObjectByType<PlayerStats>();
+        animator = GetComponent<Mangkukulam_AnimationManager>();
     }
 
     private void Update()
@@ -49,7 +56,7 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
     {
         if (isVulnerable && !isDead)
         {
-            //GetHit();
+            GetHit();
             OnHit?.Invoke();
 
             bool isCriticalHit = Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
@@ -67,16 +74,22 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
             if (isCriticalHit)
             {
                 DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.red);
-                Debug.Log($"💥 CRITICAL HIT! Mangkukulam took {finalDamage} damage. Current Health: {stats.e_currentHealth}");
             }
             else
             {
                 DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.white);
-                Debug.Log($"Mangkukulam took {finalDamage} damage. Current Health: {stats.e_currentHealth}");
             }
 
             if (died) Death();
         }
+    }
+
+    public void GetHit()
+    {
+        FindFirstObjectByType<PlayerCamera>().CameraShake(0.1f, 1f);
+        HitStop.Instance.TriggerHitStop(0.05f);
+
+        if (isStunned) animator.GetHit();
     }
 
     public void Heal(float amount)
@@ -99,30 +112,26 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
 
     public void Death()
     {
-        //_ = Dying();
+        _ = Dying();
         Debug.Log("Mangkukulam is defeated");
         isDead = true;
         OnDeath?.Invoke();
     }
     public bool IsDead() => isDead;
-    /*private async Task Dying()
+    private async Task Dying()
     {
         isDead = true;
         OnDeath?.Invoke();
 
-        animator.ChangeAnimationState("Nuno_Death");
+        animator.ChangeAnimationState("Mangkukulam_Stun_Idle");
         hpCanvas.FadeOut(1f);
-        BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q6_Nuno");
         await Task.Delay(2500);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
-        BB_QuestManager.Instance.ClaimRewardsByID("A1_Q6_NunoAnger");
-        await Task.Delay(500);
-        BB_QuestManager.Instance.AcceptQuestByID("A1_Q7_LessonFromNuno");
         await Task.Delay(500);
         await GameManager.instance.SavePlayerCoreData();
         await Task.Delay(500);
         Loader.Load(4);
-    }*/
+    }
 
     #endregion
 }

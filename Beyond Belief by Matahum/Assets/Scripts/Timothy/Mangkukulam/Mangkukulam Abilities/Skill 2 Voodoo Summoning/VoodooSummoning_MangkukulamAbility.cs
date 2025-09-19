@@ -13,11 +13,12 @@ public class VoodooSummoning_MangkukulamAbility : Mangkukulam_Ability
 
     [Header("Cooldown")]
     public float cooldown;
+
     public override float Cooldown() => cooldown;
 
     public bool canBeUsed = true;
     public override bool CanBeUsed() => canBeUsed;
-    private void OnEnable() => canBeUsed = true;
+    public override void Initialize() => canBeUsed = true;
 
     private void OnDisable() => spawnedVoodoos.Clear();
     public override void Activate(GameObject user)
@@ -28,6 +29,9 @@ public class VoodooSummoning_MangkukulamAbility : Mangkukulam_Ability
 
     IEnumerator SummonVoodoo(GameObject user)
     {
+        Mangkukulam_AnimationManager animator = user.GetComponent<Mangkukulam_AnimationManager>();
+        animator.ChangeAnimationState("Mangkukulam_Skill_2_Voodoo Summoning");
+        CoroutineRunner.Instance.RunCoroutine(SetRotation(user));
         yield return new WaitForSeconds(2.5f);
 
         for (int i = 0; i < voodooCount; i++)
@@ -48,6 +52,39 @@ public class VoodooSummoning_MangkukulamAbility : Mangkukulam_Ability
 
                 enemy.OnDeath += () => OnEnemyDeath(enemy);
             }
+        }
+
+        yield return new WaitForSeconds(animator.GetAnimationLength("Mangkukulam_Skill_2_Voodoo Summoning"));
+
+        Mangkukulam_AttackManager atkMngr = user.GetComponent<Mangkukulam_AttackManager>();
+        atkMngr.isAttacking = false;
+        atkMngr.canAttack = true;
+        atkMngr.castingCurrentAbility = null;
+    }
+
+    IEnumerator SetRotation(GameObject user)
+    {
+        Transform target = GameObject.FindGameObjectWithTag("Player").transform;
+        // Get the direction to target, but only in XZ plane
+        Vector3 dir = target.position - user.transform.position;
+        dir.y = 0f; // remove vertical difference
+
+        float t = 0;
+        while (t < 0.5f)
+        {
+            t += Time.deltaTime;
+
+            if (dir != Vector3.zero)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(dir);
+                user.transform.rotation = Quaternion.Lerp(
+                    user.transform.rotation,
+                    targetRot,
+                    15 * Time.deltaTime
+                );
+            }
+
+            yield return null;
         }
     }
 

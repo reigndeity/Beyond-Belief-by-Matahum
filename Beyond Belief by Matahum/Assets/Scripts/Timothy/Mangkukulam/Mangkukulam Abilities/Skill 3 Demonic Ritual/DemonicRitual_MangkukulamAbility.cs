@@ -19,10 +19,7 @@ public class DemonicRitual_MangkukulamAbility : Mangkukulam_Ability
     public bool canBeUsed = true;
     public override bool CanBeUsed() => canBeUsed;
 
-    private void OnEnable()
-    {
-        canBeUsed = true;
-    }
+    public override void Initialize() => canBeUsed = true;
 
     private void OnDisable()
     {
@@ -47,6 +44,11 @@ public class DemonicRitual_MangkukulamAbility : Mangkukulam_Ability
         NavMeshAgent agent = user.GetComponent<NavMeshAgent>();
         if (agent != null) agent.enabled = false;
 
+        Mangkukulam.instance.isFlying = true;
+        Mangkukulam_AnimationManager animator = user.GetComponent<Mangkukulam_AnimationManager>();
+        animator.ChangeAnimationState("Mangkukulam_StartFly");
+        yield return new WaitForSeconds(animator.GetAnimationLength("Mangkukulam_StartFly"));
+
         // Move target = parent (center of arena?)
         Transform target = user.transform.parent;
 
@@ -63,12 +65,18 @@ public class DemonicRitual_MangkukulamAbility : Mangkukulam_Ability
 
             SetRotation(user, target);
 
+            animator.ChangeAnimationState("Mangkukulam_Flying");
+
             Mangkukulam.instance.isVulnerable = false;
             yield return null;
         }
 
         // Reached center
         Mangkukulam.instance.isVulnerable = true;
+
+        animator.ChangeAnimationState("Mangkukulam_Landing");
+        yield return new WaitForSeconds(animator.GetAnimationLength("Mangkukulam_Landing"));
+        Mangkukulam.instance.isFlying = false;
 
         // Spawn candle holder
         CandleHolder holder = Instantiate(
@@ -86,22 +94,28 @@ public class DemonicRitual_MangkukulamAbility : Mangkukulam_Ability
 
         holder.SpawnCandles();
 
+        animator.ChangeAnimationState("Mangkukulam_Skill_3_Demonic Ritual");
+        yield return new WaitForSeconds(animator.GetAnimationLength("Mangkukulam_Skill_3_Demonic Ritual"));
+
         // --- Ritual loop indefinitely ---
         while (holder != null) // keep looping until candles destroyed
         {
-            RitualAnimation(user); // here you can trigger anim, particles, etc.
+            animator.ChangeAnimationState("Demonic Ritual_Idle");
             yield return null;
         }
         Debug.Log("Ritual has ended");
         // Ritual ended externally (candles destroyed)
-        CoroutineRunner.Instance.RunCoroutine(DemonicRitualOnCooldown());
+        CoroutineRunner.Instance.RunCoroutine(DemonicRitualOnCooldown(animator));
         // Restore ground movement
         agent.enabled = true;
         agent.Warp(user.transform.position);
     }
 
-    IEnumerator DemonicRitualOnCooldown()
+    IEnumerator DemonicRitualOnCooldown(Mangkukulam_AnimationManager animator)
     {
+        animator.ChangeAnimationState("Mangkukulam_Stun_Start");
+        yield return new WaitForSeconds(animator.GetAnimationLength("Mangkukulam_Stun_Start"));
+
         Mangkukulam.instance.isStunned = true;
         Mangkukulam_AttackManager.Instance.isAttacking = false;
         Mangkukulam_AttackManager.Instance.canAttack = true;
@@ -132,10 +146,5 @@ public class DemonicRitual_MangkukulamAbility : Mangkukulam_Ability
         Vector3 ab = Vector3.Lerp(a, b, t);
         Vector3 bc = Vector3.Lerp(b, c, t);
         return Vector3.Lerp(ab, bc, t);
-    }
-
-    private void RitualAnimation(GameObject user)
-    {
-        Debug.Log("Doing a ritual");
     }
 }

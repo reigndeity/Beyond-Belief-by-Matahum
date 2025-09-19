@@ -7,7 +7,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mangkukulam_SummoningVoodoo
+  m_Name: Mangkukulam_Skill_2_Voodoo Summoning
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -211,7 +211,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mangkukulam_Ritual_Idle
+  m_Name: Demonic Ritual_Idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -289,7 +289,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mangkukulam_Needle_Barrage
+  m_Name: Mangkukulam_Skill_4_Needle Barrage
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -367,7 +367,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mangkukulam_Potion_Throw
+  m_Name: Mangkukulam_Skill_1_Potion Blitz
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -471,7 +471,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mangkukulam_Ritual_Start/Down
+  m_Name: Mangkukulam_Skill_3_Demonic Ritual
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -501,58 +501,58 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 7612384301425958064}
-    m_Position: {x: -80, y: 200, z: 0}
+    m_Position: {x: 220, y: 280, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3310991995207958227}
-    m_Position: {x: 300, y: -160, z: 0}
+    m_Position: {x: 360, y: -110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4548030811336356232}
-    m_Position: {x: 300, y: -100, z: 0}
+    m_Position: {x: 350, y: 130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3028569841969475808}
-    m_Position: {x: 190, y: 80, z: 0}
+    m_Position: {x: 240, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1412091132818935654}
-    m_Position: {x: 410, y: 80, z: 0}
+    m_Position: {x: 460, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8345470446908513487}
     m_Position: {x: -80, y: 130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6596947346570364921}
-    m_Position: {x: 520, y: -100, z: 0}
+    m_Position: {x: 570, y: 130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4517246391979869830}
-    m_Position: {x: 140, y: 260, z: 0}
+    m_Position: {x: 480, y: 280, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6320538146336530464}
-    m_Position: {x: 360, y: 260, z: 0}
+    m_Position: {x: 220, y: 200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1439131084763058551}
-    m_Position: {x: -80, y: 260, z: 0}
+    m_Position: {x: 220, y: 340, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6336746241071808151}
-    m_Position: {x: 520, y: -160, z: 0}
+    m_Position: {x: 580, y: -110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6733398656421205399}
-    m_Position: {x: 80, y: -100, z: 0}
+    m_Position: {x: 130, y: 130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2068498481461796023}
-    m_Position: {x: 410, y: -40, z: 0}
+    m_Position: {x: 460, y: -50, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5816906489160696230}
-    m_Position: {x: 190, y: -40, z: 0}
+    m_Position: {x: 240, y: -50, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1842923078372645528}
-    m_Position: {x: 190, y: 20, z: 0}
+    m_Position: {x: 240, y: 10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6533093030368939880}
-    m_Position: {x: 410, y: 20, z: 0}
+    m_Position: {x: 460, y: 10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -9146037318347568338}
-    m_Position: {x: 580, y: 260, z: 0}
+    m_Position: {x: 480, y: 200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6460576917995806340}
-    m_Position: {x: 80, y: -160, z: 0}
+    m_Position: {x: 140, y: -110, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []

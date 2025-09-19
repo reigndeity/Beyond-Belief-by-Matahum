@@ -12,7 +12,7 @@ public class CoroutineRunner : MonoBehaviour
             {
                 GameObject obj = new GameObject("CoroutineRunner");
                 _instance = obj.AddComponent<CoroutineRunner>();
-                DontDestroyOnLoad(obj); // keep across scenes
+                //DontDestroyOnLoad(obj); // keep across scenes
             }
             return _instance;
         }
@@ -35,7 +35,6 @@ public class CoroutineRunner : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_instance == this)
-            _instance = null;
+        CoroutineRunner.Instance.StopAllCoroutines();
     }
 }

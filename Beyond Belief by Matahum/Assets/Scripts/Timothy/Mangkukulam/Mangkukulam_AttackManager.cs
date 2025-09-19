@@ -30,14 +30,19 @@ public class Mangkukulam_AttackManager : MonoBehaviour
         player = FindFirstObjectByType<Player>();
         mangkukulam = GetComponent<Mangkukulam>();
         animator = GetComponent<Mangkukulam_AnimationManager>();
-        //anim = GetComponent<Animator>();
+
+        foreach (var ability in abilityList)
+        {
+            ability.Initialize();
+        }
     }
 
     private void Update()
     {
         if (mangkukulam.IsDead()) return;
+        if (mangkukulam.isFlying) return;
 
-        //animator.HandleAnimations();
+        animator.HandleAnimations();
 
         if (canAttack)
         {
@@ -80,10 +85,16 @@ public class Mangkukulam_AttackManager : MonoBehaviour
             Debug.Log($"Attacking with {abilityList[skillIndex].name}");
 
             // Only wait if the skill is NOT indefinite
-            if (!(abilityList[skillIndex] is PotionBlitz_MangkukulamAbility) &&
+            /*if (!(abilityList[skillIndex] is PotionBlitz_MangkukulamAbility) &&
                 !(abilityList[skillIndex] is DemonicRitual_MangkukulamAbility))
             {
-                yield return new WaitForSeconds(5);
+                string expectedState = $"Mangkukulam_Skill_{skillIndex + 1}_{abilityList[skillIndex].name}";
+                yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsName(expectedState));
+
+                float animationLength = animator.GetAnimationLength(expectedState);
+                Debug.Log(expectedState);
+                Debug.Log($"{abilityList[skillIndex].name} animation length is {animationLength}");
+                yield return new WaitForSeconds(animationLength);
                 isAttacking = false;
                 canAttack = true;
                 castingCurrentAbility = null;
@@ -92,7 +103,7 @@ public class Mangkukulam_AttackManager : MonoBehaviour
             {
                 // Let Potion Blitz control itself
                 yield break;
-            }
+            }*/
         }
         else
         {
@@ -100,7 +111,7 @@ public class Mangkukulam_AttackManager : MonoBehaviour
             canAttack = true;
         }
 
-        GetComponent<NavMeshAgent>().enabled = true;
+        //GetComponent<NavMeshAgent>().enabled = true;
     }
 
 }
