@@ -30,6 +30,7 @@ public class RockBullet_NunoAbility : Nuno_Ability
         if(currentHolder != null) 
         {
             currentHolder.StopAllCoroutines();
+            Destroy(currentHolder.gameObject);
             currentHolder = null;
         }
             

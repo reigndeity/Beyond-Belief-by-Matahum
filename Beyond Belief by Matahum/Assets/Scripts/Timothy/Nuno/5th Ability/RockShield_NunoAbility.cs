@@ -23,10 +23,11 @@ public class RockShield_NunoAbility : Nuno_Ability
         yield return new WaitForSeconds(4f);
 
         // Look for existing shieldHolder
-        activeShieldHolder = Object.FindFirstObjectByType<RockShield_ShieldHolder>();
+        //activeShieldHolder = Object.FindFirstObjectByType<RockShield_ShieldHolder>();
 
         if (activeShieldHolder == null)
         {
+            Debug.Log("Shield not existing, Instantiating a new one...");
             Vector3 offset = new Vector3(0, 0.5f, 0);
             activeShieldHolder = Instantiate(
                 shieldHolderPrefab,
@@ -35,10 +36,11 @@ public class RockShield_NunoAbility : Nuno_Ability
                 Nuno_AttackManager.Instance.transform.parent
             );
         }
+        else Debug.Log("Shield exists...");
 
         // Call initialize manually BEFORE ResetShield
-        var nuno = Object.FindFirstObjectByType<Nuno>();
-        var stats = Object.FindFirstObjectByType<Nuno>().GetComponent<EnemyStats>();
+        var nuno = Nuno_AttackManager.Instance.GetComponent<Nuno>();
+        var stats = Nuno_AttackManager.Instance.GetComponent<EnemyStats>();
 
         activeShieldHolder.Initialize(nuno, stats, shieldToNunoHealthRatio, shieldCooldown);
 

@@ -188,7 +188,7 @@ public class Player : MonoBehaviour, IDamageable
     #region DAMAGE / HEAL FUNCTIONS
     public void TakeDamage(float damage, bool hitAnimOn = true)
     {
-        if (m_playerSkills.isUsingUltimateSkill || isInvulnerable) return;
+        if (m_playerSkills.isUsingUltimateSkill || isInvulnerable || isDead) return;
 
         bool isCriticalHit = Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
         float damageReduction = m_playerStats.p_defense * 0.66f; // Defense Scaling

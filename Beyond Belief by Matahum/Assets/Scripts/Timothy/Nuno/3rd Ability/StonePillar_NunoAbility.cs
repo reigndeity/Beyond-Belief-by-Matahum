@@ -11,6 +11,8 @@ public class StonePillar_NunoAbility : Nuno_Ability
     public float spawnInterval = 0.25f;
     private Coroutine runningCoroutine;
 
+    private List<GameObject> pillarList = new List<GameObject>();
+
     public override void Activate()
     {
         runningCoroutine = CoroutineRunner.Instance.RunCoroutine(SpawnAllPillars());
@@ -22,6 +24,14 @@ public class StonePillar_NunoAbility : Nuno_Ability
         {
             CoroutineRunner.Instance.StopCoroutine(runningCoroutine);
             runningCoroutine = null;
+
+            foreach (var pillar in pillarList)
+            {
+                if (pillar != null)
+                    Destroy(pillar);
+            }
+
+            pillarList.Clear();
         }
     }
 
@@ -31,7 +41,8 @@ public class StonePillar_NunoAbility : Nuno_Ability
         for (int i = 0; i < maxPillarCount; i++)
         {
             yield return new WaitForSeconds(delay);
-            Instantiate(stonePillarHolderPrefab, FindPlayerPosition(), Quaternion.identity, Nuno_AttackManager.Instance.transform.parent);
+            GameObject pillar = Instantiate(stonePillarHolderPrefab, FindPlayerPosition(), Quaternion.identity, Nuno_AttackManager.Instance.transform.parent);
+            pillarList.Add(pillar);
             delay = spawnInterval; // after first spawn, use spawnInterval
         }
     }

@@ -57,7 +57,8 @@ public class MeteorShower_NunoAbility : Nuno_Ability
         for (int i = 0; i < areaToSpawn.Length; i++)
         {
             yield return new WaitForSeconds(delayBetween);
-            CoroutineRunner.Instance.RunCoroutine(SpawnMeteor(areaToSpawn[i]));
+            Coroutine meteorCoroutine = CoroutineRunner.Instance.RunCoroutine(SpawnMeteor(areaToSpawn[i]));
+            meteorCoroutines.Add(meteorCoroutine);
         }
     }
 

@@ -86,6 +86,11 @@ public class Nuno : MonoBehaviour, IDamageable, IDeathHandler
         isDead = true;
         OnDeath?.Invoke();
 
+        foreach (var ability in Nuno_AttackManager.Instance.abilityList)
+        {
+            ability.Deactivate();
+        }
+
         animator.ChangeAnimationState("Nuno_Death");
         hpCanvas.FadeOut(1f);
         BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q6_Nuno");

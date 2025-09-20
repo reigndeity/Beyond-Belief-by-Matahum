@@ -33,6 +33,8 @@ public class Nuno_AttackManager : MonoBehaviour
         nuno = GetComponent<Nuno>();
         animator = GetComponent<Nuno_Animations>();
         uiCanvas = GetComponent<Boss_UICanvas>();
+
+        uiCanvas.currentCastingSkillTxt.text = " ";
     }
 
     private void Update()
@@ -88,6 +90,7 @@ public class Nuno_AttackManager : MonoBehaviour
         {
             Debug.Log("Nuno is Stunned");
             yield return new WaitForSeconds(stunAmount);
+            uiCanvas.currentCastingSkillTxt.text = " ";
             isStunned = false;
         }
 
@@ -100,10 +103,11 @@ public class Nuno_AttackManager : MonoBehaviour
         {
             Debug.Log("Attack interrupted because of stun");
             canAttack = true;
+            uiCanvas.currentCastingSkillTxt.text = " ";
             yield break;
         }
 
-        int skillIndex = Random.Range(0, abilityList.Count + 1);
+        int skillIndex = Random.Range(0, abilityList.Count);
 
         // ⛔ If shield picked but Nuno is not vulnerable, retry
         if (skillIndex == 4 && !nuno.isVulnerable)
