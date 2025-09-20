@@ -63,8 +63,9 @@ public class UI_TransitionController : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.25f);
         isTeleporting = true;
         yield return PlayLoading();
-        yield return Fade(1f, 0f, fadeDuration);
         isTeleporting = false;
+        yield return new WaitForSecondsRealtime(0.5f);
+        yield return Fade(1f, 0f, 0.5f);
     }
     /// <summary>
     /// Same as TeleportTransition, but more custom values

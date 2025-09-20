@@ -410,7 +410,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     break;
                 case "A1_Q8_ReturnToTheVillage":
                     tupas.SetDialogueState("A1_Q8_ReturnToTheVillage");
-                    nunoSaPunso.SetDialogueState("A1_Q8_ReturnToTheVillage");
+                    nunoSaPunso.SetDialogueState("Default");
                     ApplyStates(tupas, nunoSaPunso);
                     nunoSaPunsoCharacter.GetComponent<BlazeAI>().IgnoreStayIdle();
                     break;
