@@ -120,6 +120,7 @@ public class DialogueQuestLinker : MonoBehaviour
 
             switch (currentQuestID)
             {
+                #region ACT 0 QUESTS
                 case "A0_Q0_InitialTalk":
                     bakal.SetDialogueState("A0_Q0_InitialTalk");
                     amihanGuard.SetDialogueState("A0_Q0_InitialTalk");
@@ -320,6 +321,9 @@ public class DialogueQuestLinker : MonoBehaviour
                     inventoryPopUp.SetActive(true);
                     m_uiGame.inventoryButton.onClick.AddListener(TutorialManager.instance.EnableInventoryTutorial);
                     break;
+                #endregion
+
+                #region ACT 1 QUESTS
                 case "A1_Q1_Tupas'Request_P1":
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P1");
                     ApplyStates(tupas);
@@ -351,7 +355,7 @@ public class DialogueQuestLinker : MonoBehaviour
                 case "A1_Q1_Tupas'Request_P3": // SAVED POINT - must always setdialogue state of other npcs
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P3");
                     amihanGuard.SetDialogueState("Default");
-                    ApplyStates(tupas, amihanGuard,bakal, bangkaw);
+                    ApplyStates(tupas, amihanGuard, bakal, bangkaw);
                     AddActiveMarker(currentQuestID, tracked);
                     duwendeCamp.SetActive(true);
                     garlicParent.SetActive(true);
@@ -402,8 +406,22 @@ public class DialogueQuestLinker : MonoBehaviour
                     BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q6_Nuno");
                     BB_QuestManager.Instance.ClaimRewardsByID("A1_Q6_NunoAnger");
                     ApplyStates(nunoSaPunso);
+                    nunoSaPunsoCharacter.GetComponent<BlazeAI>().StayIdle();
                     break;
+                case "A1_Q8_ReturnToTheVillage":
+                    tupas.SetDialogueState("A1_Q8_ReturnToTheVillage");
+                    nunoSaPunso.SetDialogueState("A1_Q8_ReturnToTheVillage");
+                    ApplyStates(tupas, nunoSaPunso);
+                    nunoSaPunsoCharacter.GetComponent<BlazeAI>().IgnoreStayIdle();
+                    break;
+                #endregion
 
+                #region ACT 2 QUESTS
+                case "A2_Q1_FindAlbularyo'sHut":
+                    tupas.SetDialogueState("A2_Q1_FindAlbularyo'sHut");
+                    ApplyStates(tupas);
+                break;
+                #endregion
             }
         }
 
@@ -665,10 +683,11 @@ public class DialogueQuestLinker : MonoBehaviour
             case "A1_Q1.1_Amihan'sOrder_P1": return amihanGuard.transform;
             case "A1_Q1.1_Amihan'sOrder_P2": return lewenriSaveInteractable.transform;
             case "A1_Q1_Tupas'Request_P2": return amihanGuard.transform;
-            case "A1_Q1_Tupas'Request_P3": return garlicParent.transform; 
+            case "A1_Q1_Tupas'Request_P3": return garlicParent.transform;
             case "A1_Q2_NewsFromTupas": return tupas.transform;
             case "A1_Q3_BesikTheScout": return besik.transform;
             case "A1_Q5_TimeToRest": return nunoMound.transform;
+            case "A1_Q8_ReturnToTheVillage": return tupas.transform;
         }
         return null;
     }

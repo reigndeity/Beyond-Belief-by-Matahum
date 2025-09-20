@@ -498,3 +498,134 @@ MonoBehaviour:
       isChoiceLine: 0
       choices: []
       animationName: 
+  - dialogueState: A1_Q8_ReturnToTheVillage
+    lines:
+    - speakerName: Tupas
+      dialogueText: Hello!
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: I encountered someone
+        dialogueState: A1_Q8_ReturnToTheVillage_Iencounter
+      animationName: 
+  - dialogueState: A1_Q8_ReturnToTheVillage_Iencounter
+    lines:
+    - speakerName: Tupas
+      dialogueText: 'Ahh Nuno sa punso? '
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: He's an old nice creature.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: As long as you don't mess with him, he won't mess with you.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: He gets really angry though if you trample over his mound.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: Other than that, you should have nothing to worry about!
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: About that...
+        dialogueState: A1_Q8_ReturnToTheVillage_Aboutthat
+      animationName: 
+  - dialogueState: A1_Q8_ReturnToTheVillage_Aboutthat
+    lines:
+    - speakerName: Tupas
+      dialogueText: YOU WHAT?!
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: Oh my goodness!
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: Phew. I'm surprise you two managed to sort it out.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: Please be careful.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: Remeber, you are in our world now.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: That is unless we finally get you home.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: Now let's see where the map is pointing.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: It seems you need to go to this direction.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: Be careful on your journey.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+  - dialogueState: A2_Q1_FindAlbularyo'sHut
+    lines:
+    - speakerName: Tupas
+      dialogueText: The map should show where you must go.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: Be careful on your journey.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
