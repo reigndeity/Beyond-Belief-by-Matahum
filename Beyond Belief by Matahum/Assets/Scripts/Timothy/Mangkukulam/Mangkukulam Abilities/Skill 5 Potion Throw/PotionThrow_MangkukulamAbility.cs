@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEditor.Experimental.GraphView;
 
 [CreateAssetMenu(menuName = "Mangkukulam/Mangkukulam Abilities/Potion Throw")]
 public class PotionThrow_MangkukulamAbility : Mangkukulam_Ability

@@ -120,13 +120,7 @@ public class Player : MonoBehaviour, IDamageable
         {
             currentState = PlayerState.IDLE;
         }
-
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            TakeDamage(100);
-        }
-
+        
         if (suppressInputUntilNextFrame)
             suppressInputUntilNextFrame = false;
     }
