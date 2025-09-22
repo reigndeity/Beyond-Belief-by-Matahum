@@ -61,7 +61,7 @@ public class Mangkukulam_AttackManager : MonoBehaviour
         }
 
         // Random pre-attack delay
-        float cooldown = Random.Range(1f, 3f);
+        float cooldown = Random.Range(1f, 2f);
         yield return new WaitForSeconds(cooldown);
 
         // Skip attacking if stunned during cooldown
@@ -71,9 +71,9 @@ public class Mangkukulam_AttackManager : MonoBehaviour
             yield break;
         }
 
-        int skillIndex = Random.Range(0, abilityList.Count + 1);
+        int skillIndex = Random.Range(0, abilityList.Count);
 
-        if (skillIndex < abilityList.Count && abilityList[skillIndex].CanBeUsed())
+        if (abilityList[skillIndex].CanBeUsed())
         {
             isAttacking = true;
             castingCurrentAbility = abilityList[skillIndex];

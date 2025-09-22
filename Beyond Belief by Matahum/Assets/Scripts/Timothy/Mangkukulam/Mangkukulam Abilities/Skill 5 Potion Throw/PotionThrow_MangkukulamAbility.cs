@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 [CreateAssetMenu(menuName = "Mangkukulam/Mangkukulam Abilities/Potion Throw")]
@@ -59,6 +59,7 @@ public class PotionThrow_MangkukulamAbility : Mangkukulam_Ability
     {
         Vector3 throwPoint = user.transform.position + user.transform.forward * 1f + Vector3.up * 1f;
         GameObject projectile = Instantiate(potionPrefab, throwPoint, Quaternion.identity);
+        projectile.GetComponent<PotionBottle>().bulletDamage = user.GetComponent<EnemyStats>().e_attack * 0.5f;
 
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
         if (rb != null)

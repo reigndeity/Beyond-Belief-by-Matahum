@@ -81,6 +81,7 @@ public class PotionBlitz_MangkukulamAbility : Mangkukulam_Ability
                 animator.ChangeAnimationState("Mangkukulam_StartFly");
 
                 SetRotation(user, target);
+                Mangkukulam.instance.isVulnerable = false;
 
                 yield return null;
             }
@@ -96,7 +97,6 @@ public class PotionBlitz_MangkukulamAbility : Mangkukulam_Ability
 
                 animator.ChangeAnimationState("Mangkukulam_Flying");
 
-                Mangkukulam.instance.isVulnerable = false; // invulnerable during flight
                 yield return null;
             }
 
@@ -159,30 +159,40 @@ public class PotionBlitz_MangkukulamAbility : Mangkukulam_Ability
     {
         Vector3 throwPoint = user.transform.position + user.transform.forward * 1f + Vector3.up * 1f;
 
-        // Define spread angles (in degrees)
-        float spreadAngle = 15f; // adjust for wider/narrower cone
+        // 🎯 1 direct shot at player
+        Vector3 directTarget = target.position + Vector3.up * 1f;
+        Vector3 directVelocity = CalculateLaunchVelocity(throwPoint, directTarget, 1.5f);
 
-        for (int i = -1; i <= 1; i++) // -1 = left, 0 = center, 1 = right
+        GameObject directProjectile = Instantiate(potionPrefab, throwPoint, Quaternion.identity);
+        Rigidbody rbDirect = directProjectile.GetComponent<Rigidbody>();
+        if (rbDirect != null)
         {
-            // Base target position (center shot)
-            Vector3 targetPos = target.position + Vector3.up * 1f;
+            rbDirect.linearVelocity = directVelocity;
+        }
 
-            // Calculate base velocity towards target
-            Vector3 velocity = CalculateLaunchVelocity(throwPoint, targetPos, 1.5f);
+        // 🎲 9 random scatter shots
+        int scatterCount = 9;
+        float scatterRadius = 10f; // how far around the player the scatter can land
+        for (int i = 0; i < scatterCount; i++)
+        {
+            // Pick a random point around the player
+            Vector2 randomCircle = Random.insideUnitCircle * scatterRadius;
+            Vector3 randomTarget = target.position + new Vector3(randomCircle.x, 0, randomCircle.y);
+            randomTarget.y += 1f; // aim a little higher (like chest height)
 
-            // Rotate velocity left/right around Y for cone spread
-            Quaternion spreadRotation = Quaternion.AngleAxis(i * spreadAngle, Vector3.up);
-            Vector3 spreadVelocity = spreadRotation * velocity;
+            // Calculate velocity
+            Vector3 velocity = CalculateLaunchVelocity(throwPoint, randomTarget, 1.5f);
 
             // Spawn projectile
             GameObject projectile = Instantiate(potionPrefab, throwPoint, Quaternion.identity);
             Rigidbody rb = projectile.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.linearVelocity = spreadVelocity;
+                rb.linearVelocity = velocity;
             }
         }
     }
+
 
     Vector3 CalculateLaunchVelocity(Vector3 origin, Vector3 target, float timeToTarget)
     {
