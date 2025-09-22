@@ -7,6 +7,7 @@ public class NeedleScript : MonoBehaviour
     [HideInInspector] private float damage;
     [HideInInspector] public float speed;
     [HideInInspector] public bool canShoot;
+    public GameObject particleFX;
 
     private EnemyStats stats;
     //public GameObject explosionVFX;
@@ -24,11 +25,13 @@ public class NeedleScript : MonoBehaviour
         if (canShoot)
         {
             transform.position += lastPlayerPosition * speed * Time.deltaTime;
+            particleFX.SetActive(true);
         }
         else if (!canShoot)
         {
             Vector3 direction = FindFirstObjectByType<Player>().transform.position - transform.position;
             transform.rotation = Quaternion.LookRotation(direction.normalized);
+            particleFX.SetActive(false);
         }
     }
 

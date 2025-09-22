@@ -4,6 +4,7 @@ public class PotionBottle : MonoBehaviour
 {
     public float bulletDamage;
     public GameObject poisonArea;
+    public GameObject explosionVFX;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -22,11 +23,8 @@ public class PotionBottle : MonoBehaviour
             poison.RestartPoison();
         }
 
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
-        {
-            Destroy(gameObject);
-        }
-        if (other.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player") ||
+            other.gameObject.layer == LayerMask.NameToLayer("Terrain"))
         {
             Vector3 offset = new Vector3(0, 0.1f, 0);
             Instantiate(poisonArea, transform.position + offset, Quaternion.identity);
