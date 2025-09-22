@@ -2465,6 +2465,7 @@ GameObject:
   - component: {fileID: 8844980290122712835}
   - component: {fileID: 172911411520301898}
   - component: {fileID: 4218386632985804935}
+  - component: {fileID: 3719208837383558283}
   m_Layer: 5
   m_Name: Health Text
   m_TagString: Untagged
@@ -2590,6 +2591,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!225 &3719208837383558283
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2550711917941611438}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2649787015562324121
 GameObject:
   m_ObjectHideFlags: 0
@@ -7808,7 +7821,7 @@ Transform:
   m_GameObject: {fileID: 7698705091295870630}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.9993191, z: -0, w: 0.03689882}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.89, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7971,14 +7984,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a8fd36fe45707b48ba8743309594cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  definition: {fileID: 11400000, guid: 9376899f47e37394e8074a7da5723dad, type: 2}
-  e_level: 10
-  e_currentHealth: 0
-  e_maxHealth: 0
-  e_attack: 0
-  e_defense: 0
-  e_criticalRate: 0
-  e_criticalDamage: 0
+  definition: {fileID: 0}
+  e_level: 1
+  e_currentHealth: 5000
+  e_maxHealth: 5000
+  e_attack: 150
+  e_defense: 50
+  e_criticalRate: 10
+  e_criticalDamage: 50
 --- !u!114 &4972423354899671812
 MonoBehaviour:
   m_ObjectHideFlags: 0

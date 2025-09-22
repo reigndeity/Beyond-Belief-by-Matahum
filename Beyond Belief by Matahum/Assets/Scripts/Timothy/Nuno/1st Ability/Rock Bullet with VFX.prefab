@@ -112,6 +112,10 @@ MonoBehaviour:
   bulletSpeed: 50
   canShoot: 0
   explosionVFX: {fileID: 1745393915338153345, guid: ef3dbb6a396003d43a10f897552eca5b, type: 3}
+  bulletAssetObject: {fileID: 6646689055593416730}
+  startSpinSpeed: 0
+  endSpinSpeed: 720
+  spinDuration: 5
 --- !u!1001 &7470465480665117561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -172,5 +176,10 @@ PrefabInstance:
 --- !u!4 &1579538990595423823 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8234773170382245174, guid: 6f98927f3ee094444964b94b18412fe9, type: 3}
+  m_PrefabInstance: {fileID: 7470465480665117561}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6646689055593416730 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4292393050355006307, guid: 6f98927f3ee094444964b94b18412fe9, type: 3}
   m_PrefabInstance: {fileID: 7470465480665117561}
   m_PrefabAsset: {fileID: 0}
