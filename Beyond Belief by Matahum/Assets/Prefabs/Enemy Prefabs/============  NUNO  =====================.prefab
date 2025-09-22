@@ -6131,14 +6131,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a8fd36fe45707b48ba8743309594cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  definition: {fileID: 11400000, guid: 99763b60924ba2440aea72266f3e72e9, type: 2}
-  e_level: 10
-  e_currentHealth: 0
-  e_maxHealth: 0
-  e_attack: 0
-  e_defense: 0
-  e_criticalRate: 0
-  e_criticalDamage: 0
+  definition: {fileID: 0}
+  e_level: 1
+  e_currentHealth: 3000
+  e_maxHealth: 3000
+  e_attack: 100
+  e_defense: 50
+  e_criticalRate: 10
+  e_criticalDamage: 50
 --- !u!114 &9005666721099968452
 MonoBehaviour:
   m_ObjectHideFlags: 0

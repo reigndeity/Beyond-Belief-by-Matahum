@@ -14,7 +14,7 @@ public class VoodooStats : MonoBehaviour
 
     private void Initialize()
     {
-        enemyStats.e_maxHealth = playerStats.p_maxHealth * (statMultiplier / 100);
+        enemyStats.e_maxHealth = 250;
         enemyStats.e_attack = playerStats.p_attack * (statMultiplier / 100);
         enemyStats.e_defense = playerStats.p_defense * (statMultiplier / 100);
         enemyStats.e_criticalRate = playerStats.p_critRate * 0.5f;

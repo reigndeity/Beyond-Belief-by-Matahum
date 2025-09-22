@@ -40,6 +40,7 @@ public class DemonicRitual_MangkukulamAbility : Mangkukulam_Ability
 
     IEnumerator FlyToCenter(GameObject user)
     {
+        Mangkukulam.instance.isVulnerable = false;
         canBeUsed = false;
         NavMeshAgent agent = user.GetComponent<NavMeshAgent>();
         if (agent != null) agent.enabled = false;
@@ -67,12 +68,8 @@ public class DemonicRitual_MangkukulamAbility : Mangkukulam_Ability
 
             animator.ChangeAnimationState("Mangkukulam_Flying");
 
-            Mangkukulam.instance.isVulnerable = false;
             yield return null;
         }
-
-        // Reached center
-        Mangkukulam.instance.isVulnerable = true;
 
         animator.ChangeAnimationState("Mangkukulam_Landing");
         yield return new WaitForSeconds(animator.GetAnimationLength("Mangkukulam_Landing"));
@@ -120,6 +117,7 @@ public class DemonicRitual_MangkukulamAbility : Mangkukulam_Ability
         Mangkukulam_AttackManager.Instance.isAttacking = false;
         Mangkukulam_AttackManager.Instance.canAttack = true;
         Mangkukulam_AttackManager.Instance.castingCurrentAbility = null;
+        Mangkukulam.instance.isVulnerable = true;
         runningRoutine = null;
         yield return new WaitForSeconds(Cooldown());
         canBeUsed = true;

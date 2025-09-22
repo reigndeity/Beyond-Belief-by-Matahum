@@ -43,7 +43,7 @@ public class CandlePulseExpansion : MonoBehaviour
             colliders.Add(col.transform);
 
             CandlePulseDamage pulseDamage = col.GetComponent<CandlePulseDamage>();
-            pulseDamage.damage = enemyStats.e_attack * 0.33f;
+            pulseDamage.damage = enemyStats.e_attack * 0.50f;
             pulseDamage.candlePulseExpansion = this;
         }
     }
