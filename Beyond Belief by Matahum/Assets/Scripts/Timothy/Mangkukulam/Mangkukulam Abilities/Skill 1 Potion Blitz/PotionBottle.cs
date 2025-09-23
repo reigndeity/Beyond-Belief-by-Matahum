@@ -12,15 +12,6 @@ public class PotionBottle : MonoBehaviour
         if (damageable != null && other.CompareTag("Player"))
         {
             damageable.TakeDamage(bulletDamage);
-
-            PoisonEffect poison = other.GetComponent<PoisonEffect>();
-            if (poison == null)
-            {
-                poison = other.gameObject.AddComponent<PoisonEffect>();
-            }
-
-            // Refresh poison
-            poison.RestartPoison();
         }
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Player") ||

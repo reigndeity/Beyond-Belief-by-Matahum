@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public class PoisonEffect : MonoBehaviour
 {
@@ -8,7 +7,6 @@ public class PoisonEffect : MonoBehaviour
     public float poisonDuration = 5f;
     public float tickRate = 1f; // seconds per tick
 
-    private float elapsed;
     private float lastRefreshTime;
     private Coroutine poisonRoutine;
 
@@ -17,8 +15,8 @@ public class PoisonEffect : MonoBehaviour
 
     void Awake()
     {
-        damageable = GetComponent<IDamageable>();
-        playerStats = GetComponent<PlayerStats>();
+        playerStats = GetComponentInParent<PlayerStats>();
+        damageable = playerStats.GetComponent<IDamageable>();
     }
 
     public void RestartPoison()
@@ -46,7 +44,13 @@ public class PoisonEffect : MonoBehaviour
             }
             yield return new WaitForSeconds(tickRate);
         }
-
-        Destroy(this); // remove poison effect after it expires
+        float t = 0;
+        while (t < 1)
+        {
+            t += Time.deltaTime;
+            transform.localScale = Vector3.Slerp(transform.localScale, Vector3.zero, t);
+            yield return null;
+        }
+        Destroy(gameObject); // remove poison effect after it expires
     }
 }
