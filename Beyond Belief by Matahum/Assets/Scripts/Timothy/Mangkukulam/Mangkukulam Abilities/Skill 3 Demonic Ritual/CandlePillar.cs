@@ -40,9 +40,16 @@ public class CandlePillar : MonoBehaviour, IDamageable, IDeathHandler
 
     public void SpawnPulse()
     {
-        Vector3 offset = new Vector3(0, -1f, 0);
-        CandlePulseExpansion candlePulseExpansion = Instantiate(candlePulse, transform.position + offset, Quaternion.identity, transform).GetComponent<CandlePulseExpansion>();
-        candlePulseExpansion.enemyStats = enemyStats;
+        CandlePulseExpansion candlePulseExpansion = GetComponentInChildren<CandlePulseExpansion>();
+        if (candlePulseExpansion == null)
+        {
+            Vector3 offset = new Vector3(0, -1f, 0);
+            candlePulseExpansion = Instantiate(candlePulse, transform.position + offset, Quaternion.identity, transform).GetComponent<CandlePulseExpansion>();
+            candlePulseExpansion.enemyStats = enemyStats;
+            candlePulseExpansion.PrewarmPool();
+        }
+
+        candlePulseExpansion.StartExpanding();
     }
 
     public bool IsDead() => candleHealth <= 0;

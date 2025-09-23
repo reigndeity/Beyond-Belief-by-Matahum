@@ -100,6 +100,7 @@ public class DemonicRitual_MangkukulamAbility : Mangkukulam_Ability
             animator.ChangeAnimationState("Demonic Ritual_Idle");
             yield return null;
         }
+
         Debug.Log("Ritual has ended");
         // Ritual ended externally (candles destroyed)
         CoroutineRunner.Instance.RunCoroutine(DemonicRitualOnCooldown(animator));

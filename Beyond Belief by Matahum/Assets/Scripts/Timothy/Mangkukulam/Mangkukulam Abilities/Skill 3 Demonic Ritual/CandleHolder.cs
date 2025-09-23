@@ -22,6 +22,8 @@ public class CandleHolder : MonoBehaviour
     [Header("Healing / Damage Phases")]
     public float healPercentPerCandle = 1f; // heal % per candle per second
     public bool isHealing = true;
+    public GameObject damageAuraVFX;
+    public GameObject healingAuraVFX;
 
     private Coroutine phaseRoutine;
 
@@ -30,6 +32,9 @@ public class CandleHolder : MonoBehaviour
         this.mangkukulam = mangkukulam;
         this.stats = stats;
         this.candleToHealthRatio = candleToHealthRatio;
+
+        damageAuraVFX.SetActive(false);
+        healingAuraVFX.SetActive(false);
 
         candleHealth = stats.e_maxHealth * (candleToHealthRatio / 100);
     }
@@ -44,7 +49,7 @@ public class CandleHolder : MonoBehaviour
         }
 
         // Start phase loop
-        phaseRoutine = StartCoroutine(PhaseLoop(delay));
+        phaseRoutine = StartCoroutine(PhaseLoop(delay + 1));
     }
 
     IEnumerator DelaySpawn(float delay, int index)
@@ -80,6 +85,10 @@ public class CandleHolder : MonoBehaviour
         {
             // --- Healing phase (5s) ---
             isHealing = true;
+
+            damageAuraVFX.SetActive(!isHealing);
+            healingAuraVFX.SetActive(isHealing);
+
             float healDuration = 5f;
             float healTimer = 0f;
 
@@ -92,6 +101,10 @@ public class CandleHolder : MonoBehaviour
 
             // --- Damage phase (10s) ---
             isHealing = false;
+
+            damageAuraVFX.SetActive(!isHealing);
+            healingAuraVFX.SetActive(isHealing);
+
             foreach (var candle in candles)
             {
                 candle.SpawnPulse(); // activate candle attack
