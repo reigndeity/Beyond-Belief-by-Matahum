@@ -4,6 +4,7 @@ using UnityEngine;
 public class PoisonArea : MonoBehaviour
 {
     public float areaDuration;
+    public GameObject poisonEffectObj;
     private void Start()
     {
         StartCoroutine(ScaleToSize());        
@@ -40,10 +41,11 @@ public class PoisonArea : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PoisonEffect poison = other.GetComponent<PoisonEffect>();
+            PoisonEffect poison = other.GetComponentInChildren<PoisonEffect>();
             if (poison == null)
             {
-                poison = other.gameObject.AddComponent<PoisonEffect>();
+                Vector3 offset = new Vector3(0, 1, 0);
+                poison = Instantiate(poisonEffectObj, other.transform.position + offset, Quaternion.identity, other.transform).GetComponent<PoisonEffect>();
             }
 
             // Refresh poison
