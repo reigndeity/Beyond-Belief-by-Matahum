@@ -3,7 +3,7 @@ using MTAssets.EasyMinimapSystem;
 using System.Collections;
 
 [RequireComponent(typeof(PersistentGuid))]
-public class TeleportInteractable : Interactable
+public class TeleportInteractable : Interactable, ISaveable
 {
     [Header("Statue Type")]
     [SerializeField] private bool isSacredStatue = false;
@@ -14,6 +14,7 @@ public class TeleportInteractable : Interactable
 
     [Header("State")]
     [SerializeField] private bool isUnlocked = false;
+    private bool wasPreviouslyUnlocked = false;
 
     [Header("Prompt Icon (world interaction prompt)")]
     [SerializeField] private Sprite lockedPromptIcon;
@@ -36,29 +37,37 @@ public class TeleportInteractable : Interactable
     [SerializeField] private float idleBobSpeed = 2f;
     [SerializeField] private float idleRockAngle = 5f;
     [SerializeField] private float idleRockSpeed = 2f;
-    [SerializeField] private float blendDuration = 1.0f; // ✅ new inspector field
+    [SerializeField] private float blendDuration = 1.0f;
 
     private Coroutine boatRoutine;
-    private bool wasPreviouslyUnlocked = false;
+    private bool appliedOnceThisEnable = false;
 
     private PlayerMinimap playerMinimap;
-    private bool appliedOnceThisEnable = false;
     private PersistentGuid persistentGuid;
 
+    // ---- LIFECYCLE ----
     private void Awake()
     {
         playerMinimap = FindFirstObjectByType<PlayerMinimap>();
         persistentGuid = GetComponent<PersistentGuid>();
-        ApplyAll();
+
+        // NEW: register with SaveManager so each statue persists by GUID in save.json
+        SaveManager.Instance.Register(this);
+    }
+
+    private void OnDestroy()
+    {
+        // NEW: unregister on destroy
+        SaveManager.Instance?.Unregister(this);
     }
 
     private void OnEnable()
     {
         appliedOnceThisEnable = false;
-        ApplyAll();
-        StartCoroutine(ApplyIconNextFrame());
+        // ApplyAll will run after save restore
     }
 
+    // ---- INTERACTION ----
     public override void OnInteract()
     {
         if (useInteractCooldown && IsOnCooldown()) return;
@@ -78,7 +87,6 @@ public class TeleportInteractable : Interactable
     {
         if (isSacredStatue)
         {
-            // Run unlock flow including boat animation + map reveal
             StartCoroutine(UnlockSequence());
         }
         else
@@ -98,6 +106,7 @@ public class TeleportInteractable : Interactable
             Debug.LogWarning("PlayerMinimap not found in scene.");
     }
 
+    // ---- STATE ----
     public void SetUnlocked(bool value)
     {
         if (isUnlocked == value && appliedOnceThisEnable) return;
@@ -112,13 +121,13 @@ public class TeleportInteractable : Interactable
         {
             if (!wasPreviouslyUnlocked)
             {
-                // ✅ First unlock → play animation
+                // First unlock → play animation
                 boatRoutine = StartCoroutine(PlayUnlockAnimation());
                 wasPreviouslyUnlocked = true;
             }
             else
             {
-                // ✅ Already unlocked (on load) → idle directly
+                // Already unlocked on load → idle loop
                 if (boatObject != null) boatRoutine = StartCoroutine(BoatIdleLoop());
             }
         }
@@ -164,33 +173,57 @@ public class TeleportInteractable : Interactable
         appliedOnceThisEnable = true;
     }
 
-    // --- Save system hooks ---
+    // ---- SAVE SYSTEM ----
+    public string SaveId => persistentGuid != null ? persistentGuid.Guid : null;
+
+    [System.Serializable]
+    public class TeleportInteractableSaveData
+    {
+        public bool isUnlocked;
+        public bool wasPreviouslyUnlocked;
+    }
+
+    public string CaptureJson()
+    {
+        var saveData = new TeleportInteractableSaveData
+        {
+            isUnlocked = this.isUnlocked,
+            wasPreviouslyUnlocked = this.wasPreviouslyUnlocked
+        };
+        return JsonUtility.ToJson(saveData);
+    }
+
+    public void RestoreFromJson(string json)
+    {
+        var saveData = JsonUtility.FromJson<TeleportInteractableSaveData>(json);
+
+        wasPreviouslyUnlocked = saveData.wasPreviouslyUnlocked;
+
+        // Force apply regardless of appliedOnceThisEnable
+        appliedOnceThisEnable = false;
+        SetUnlocked(saveData.isUnlocked);
+    }
+
     public string GetGuid() => persistentGuid != null ? persistentGuid.Guid : null;
     public bool IsUnlocked() => isUnlocked;
     public void ForceUnlockSilent(bool value) => SetUnlocked(value);
 
+    // ---- SEQUENCES ----
     private IEnumerator UnlockSequence()
     {
-        // Mark as unlocked (but don’t open map yet)
         SetUnlocked(true);
-
-        // Wait for the boat animation to finish
         yield return StartCoroutine(PlayUnlockAnimation());
 
-        // ✅ Now open the map after animation
         if (playerMinimap == null)
             playerMinimap = FindFirstObjectByType<PlayerMinimap>();
 
         if (playerMinimap != null)
             playerMinimap.OpenMapAndCenter();
 
-        //yield return new WaitForSeconds(1f);
-
         MapManager.instance.RevealAreas(revealAreaIds);
     }
 
-
-    // --- Boat Animations ---
+    // ---- BOAT ANIMATIONS ----
     private IEnumerator PlayUnlockAnimation()
     {
         if (boatObject == null) yield break;
@@ -213,11 +246,8 @@ public class TeleportInteractable : Interactable
         }
 
         boatObject.localScale = endScale;
-
-        // Blend into idle
         yield return StartCoroutine(BlendIntoIdle());
     }
-
 
     private IEnumerator BlendIntoIdle()
     {
@@ -233,10 +263,8 @@ public class TeleportInteractable : Interactable
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / blendDuration);
 
-            // Ease out spin
             boatObject.Rotate(Vector3.up, Mathf.Lerp(unlockSpinSpeed, 0f, t) * Time.deltaTime, Space.Self);
 
-            // Blend into bob + rock
             float bobOffset = Mathf.Lerp(0, Mathf.Sin(Time.time * idleBobSpeed) * idleBobHeight, t);
             float rockAngle = Mathf.Lerp(0, Mathf.Sin(Time.time * idleRockSpeed) * idleRockAngle, t);
 
@@ -246,7 +274,6 @@ public class TeleportInteractable : Interactable
             yield return null;
         }
 
-        // ✅ Start idle loop
         boatRoutine = StartCoroutine(BoatIdleLoop());
     }
 
