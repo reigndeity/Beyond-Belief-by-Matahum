@@ -153,6 +153,7 @@ public class TutorialManager : MonoBehaviour
 
     public void AllowTemporaryBooleans()
     {
+        isTutorialDone = true;
         tutorial_canCameraDirection = true;
         tutorial_canCameraZoom = true;
         tutorial_canMovementToggle = true;

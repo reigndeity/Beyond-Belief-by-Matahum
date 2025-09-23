@@ -76,6 +76,11 @@ public class DialogueQuestLinker : MonoBehaviour
     public GameObject nunoBossFightTrigger;
     public GameObject nunoSaveTrigger;
     public GameObject nunoSaPunsoCharacter;
+    [Header("Act 2 Components")]
+    public GameObject mangkukulamHut;
+    public GameObject mangkukulamTriggers;
+    public GameObject mangkukulamNpc;
+
 
     void OnEnable()
     {
@@ -383,6 +388,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     besik.SetDialogueState("A1_Q4_AlbularyoHut");
                     ApplyStates(tupas, besik);
 
+                    RemoveActiveMarker();
                     break;
                 case "A1_Q5_TimeToRest":
                     besik.SetDialogueState("Default");
@@ -390,6 +396,8 @@ public class DialogueQuestLinker : MonoBehaviour
                     DialogueManager.Instance.StartDialogue(layagSequence, layag);
                     ApplyStates(besik, layag);
                     nunoMound.SetActive(true);
+
+                    AddActiveMarker(currentQuestID, tracked);
                     break;
                 case "A1_Q7_LessonFromNuno":
                     nunoBossFightTrigger.SetActive(false);
@@ -405,12 +413,16 @@ public class DialogueQuestLinker : MonoBehaviour
                     BB_QuestManager.Instance.ClaimRewardsByID("A1_Q6_NunoAnger");
                     ApplyStates(nunoSaPunso);
                     nunoSaPunsoCharacter.GetComponent<BlazeAI>().StayIdle();
+
+                    AddActiveMarker(currentQuestID, tracked, new Vector3(0, 1, 0));
                     break;
                 case "A1_Q8_ReturnToTheVillage":
                     tupas.SetDialogueState("A1_Q8_ReturnToTheVillage");
                     nunoSaPunso.SetDialogueState("Default");
                     ApplyStates(tupas, nunoSaPunso);
                     nunoSaPunsoCharacter.GetComponent<BlazeAI>().IgnoreStayIdle();
+
+                    AddActiveMarker(currentQuestID, tracked);
                     break;
                 #endregion
 
@@ -418,7 +430,15 @@ public class DialogueQuestLinker : MonoBehaviour
                 case "A2_Q1_FindAlbularyo'sHut":
                     tupas.SetDialogueState("A2_Q1_FindAlbularyo'sHut");
                     ApplyStates(tupas);
-                break;
+                    mangkukulamTriggers.SetActive(true);
+                    AddActiveMarker(currentQuestID, tracked);
+                    break;
+
+                case "A2_Q2_MysteriousWoman'sHut":
+                    tupas.SetDialogueState("default");
+                    ApplyStates(tupas);
+                    //AddActiveMarker(currentQuestID, tracked);
+                    break;
                 #endregion
             }
         }
@@ -685,7 +705,9 @@ public class DialogueQuestLinker : MonoBehaviour
             case "A1_Q2_NewsFromTupas": return tupas.transform;
             case "A1_Q3_BesikTheScout": return besik.transform;
             case "A1_Q5_TimeToRest": return nunoMound.transform;
+            case "A1_Q7_LessonFromNuno": return nunoSaPunsoCharacter.transform;
             case "A1_Q8_ReturnToTheVillage": return tupas.transform;
+            case "A2_Q1_FindAlbularyo'sHut": return mangkukulamHut.transform;
         }
         return null;
     }

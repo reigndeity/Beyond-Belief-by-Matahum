@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a962021d732214296807c0b79bcfcf, type: 3}
   m_Name: A2_Q3_DestroyThePillar
   m_EditorClassIdentifier: 
-  questID: A2_Q2_MysteriousWoman
+  questID: A2_Q3_DestroyThePillar
   questTitle: Talk to the Mysterious Woman
   actNumber: ACT 2
   questJournalDescription:
@@ -21,7 +21,7 @@ MonoBehaviour:
   - Upon reaching the Albularyo's hut, you find a mysterious woman nearby.
   questHudDescription: 
   questType: 0
-  state: 1
+  state: 0
   missions:
   - whatMustBeDone: Go to the pinned location
     targetID: A2_Q2_Albularyo'sHut
@@ -29,5 +29,5 @@ MonoBehaviour:
     requiredAmount: 1
     currentAmount: 0
   rewards: []
-  isBeingTracked: 1
+  isBeingTracked: 0
   isInCompletedPanel: 0

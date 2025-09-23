@@ -305,6 +305,8 @@ MonoBehaviour:
   icon: {fileID: 1422445364, guid: 9eb61d06ae4f33f4e81b1a0f5ac52ca3, type: 3}
   interactKey: 102
   isInRange: 0
+  useInteractCooldown: 0
+  interactCooldown: 1
   isSacredStatue: 1
   revealAreaIds:
   - LewenriVillage
@@ -316,6 +318,14 @@ MonoBehaviour:
   unlockedMinimapSprite: {fileID: -1021395934, guid: 9eb61d06ae4f33f4e81b1a0f5ac52ca3, type: 3}
   unlockLabel: Unlock Statue
   teleportLabel: Teleport
+  boatObject: {fileID: 0}
+  unlockScaleDuration: 1.5
+  unlockSpinSpeed: 360
+  idleBobHeight: 0.2
+  idleBobSpeed: 2
+  idleRockAngle: 5
+  idleRockSpeed: 2
+  blendDuration: 1
 --- !u!114 &3782673258327877158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,7 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14ec87d2c1db42c48a5fc9356d8aa89f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: a8a3d77d967246ecaa90fdadf3996734
+  guid: 0a2f3ec3c9a24f8ca0b97d4bab2ba1ab
 --- !u!1 &6902291392197438924
 GameObject:
   m_ObjectHideFlags: 0

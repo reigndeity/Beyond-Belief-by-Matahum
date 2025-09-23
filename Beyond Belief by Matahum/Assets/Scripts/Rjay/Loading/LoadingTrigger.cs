@@ -5,6 +5,8 @@ public class LoadingTrigger : MonoBehaviour
 {
     private Player m_player;
     public int sceneIndex;
+    public string updateQuest = "A1_Q5_NunoMound";
+    public string claimQuest = "A1_Q5_TimeToRest";
 
     void Start()
     {
@@ -26,9 +28,9 @@ public class LoadingTrigger : MonoBehaviour
         PlayerCamera.Instance.HardLockCamera();
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
         yield return new WaitForSeconds(1f);
-        BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q5_NunoMound");
+        BB_QuestManager.Instance.UpdateMissionProgressOnce(updateQuest);
         yield return new WaitForSeconds(0.1f);
-        BB_QuestManager.Instance.ClaimRewardsByID("A1_Q5_TimeToRest");
+        BB_QuestManager.Instance.ClaimRewardsByID(claimQuest);
         
         yield return new WaitForSeconds(1f);
         Loader.Load(sceneIndex);
