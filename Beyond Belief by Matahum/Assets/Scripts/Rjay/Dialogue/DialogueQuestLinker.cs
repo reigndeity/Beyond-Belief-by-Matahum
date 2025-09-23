@@ -24,6 +24,7 @@ public class DialogueQuestLinker : MonoBehaviour
     public DialogueStateHolder besik;
     public DialogueStateHolder tupas;
     public DialogueStateHolder nunoSaPunso;
+    public DialogueStateHolder mangkukulam;
     
 
     [Header("Quest Marker")]
@@ -434,10 +435,12 @@ public class DialogueQuestLinker : MonoBehaviour
                     AddActiveMarker(currentQuestID, tracked);
                     break;
 
-                case "A2_Q2_MysteriousWoman'sHut":
+                case "A2_Q2_MysteriousWoman":
+                    mangkukulamNpc.SetActive(true);
                     tupas.SetDialogueState("default");
-                    ApplyStates(tupas);
-                    //AddActiveMarker(currentQuestID, tracked);
+                    mangkukulam.SetDialogueState("A2_Q2_MysteriousWoman");
+                    ApplyStates(tupas,mangkukulam);
+                    AddActiveMarker(currentQuestID, tracked);
                     break;
                 #endregion
             }
@@ -708,6 +711,7 @@ public class DialogueQuestLinker : MonoBehaviour
             case "A1_Q7_LessonFromNuno": return nunoSaPunsoCharacter.transform;
             case "A1_Q8_ReturnToTheVillage": return tupas.transform;
             case "A2_Q1_FindAlbularyo'sHut": return mangkukulamHut.transform;
+            case "A2_Q2_MysteriousWoman": return mangkukulam.transform;
         }
         return null;
     }

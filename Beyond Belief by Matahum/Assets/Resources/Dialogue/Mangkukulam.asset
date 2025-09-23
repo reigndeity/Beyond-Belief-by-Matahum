@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96f6ae9bcd23cb64780b824aeb56a38a, type: 3}
+  m_Name: Mangkukulam
+  m_EditorClassIdentifier: 
+  groups:
+  - dialogueState: A2_Q2_MysteriousWoman
+    lines:
+    - speakerName: ?????
+      dialogueText: Hello child...
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: Are you the...
+        dialogueState: A2_Q2_MysteriousWoman_Areyouthe
+      animationName: 
+  - dialogueState: A2_Q2_MysteriousWoman_Areyouthe
+    lines:
+    - speakerName: ?????
+      dialogueText: Yes. I am the Albularyo.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: Hehehe.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: So you wanna get home?
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: Yes
+        dialogueState: A2_Q2_MysteriousWoman_Yes
+      animationName: 
+  - dialogueState: A2_Q2_MysteriousWoman_Yes
+    lines:
+    - speakerName: Albularyo
+      dialogueText: That is no problem!
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: But I can't get you home just yet.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: Unfortunately, my power has been weakened due to the creatures
+        creating structures that siphon the energy of this world.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: I am too frail to fix the problem on my own and since these things
+        are heavily guarded, an old lady like me can't fight them either.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: ' So please, human child, help me with this problem and once
+        I get my powers back, I can help you get back to your world.'
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 

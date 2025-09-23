@@ -10,24 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25a962021d732214296807c0b79bcfcf, type: 3}
-  m_Name: A2_Q3_DestroyThePillar
+  m_Name: A2_Q3_GoToTheFirstPillar
   m_EditorClassIdentifier: 
-  questID: A2_Q3_DestroyThePillar
-  questTitle: Talk to the Mysterious Woman
+  questID: A2_Q3_GoToTheFirstPillar
+  questTitle: Go to the First Pillar
   actNumber: ACT 2
   questJournalDescription:
-  - Upon reaching the Albularyo's hut, you find a mysterious woman nearby.
-  - Upon reaching the Albularyo's hut, you find a mysterious woman nearby.
-  - Upon reaching the Albularyo's hut, you find a mysterious woman nearby.
+  - Deez Nuts
+  - Deez Nuts
+  - Deez Nuts
   questHudDescription: 
   questType: 0
-  state: 0
+  state: 1
   missions:
-  - whatMustBeDone: Go to the pinned location
+  - whatMustBeDone: Go to the location
     targetID: A2_Q2_Albularyo'sHut
     hasCounter: 0
     requiredAmount: 1
     currentAmount: 0
   rewards: []
-  isBeingTracked: 0
+  isBeingTracked: 1
   isInCompletedPanel: 0
