@@ -102,11 +102,11 @@ public class PotionBlitz_MangkukulamAbility : Mangkukulam_Ability
 
             // Skill trigger at destination
             Mangkukulam.instance.isVulnerable = true;
-
+           
             animator.ChangeAnimationState("Mangkukulam_Landing");
             yield return new WaitForSeconds(animator.GetAnimationLength("Mangkukulam_Landing"));
             Mangkukulam.instance.isFlying = false;
-
+            if (Mangkukulam.instance.isStunned) break;
             animator.ChangeAnimationState("Mangkukulam_Skill_1_Potion Blitz");
             yield return new WaitForSeconds(0.2f);
             CoroutineRunner.Instance.RunCoroutine(AttackWithPotion(user));
@@ -115,12 +115,7 @@ public class PotionBlitz_MangkukulamAbility : Mangkukulam_Ability
             // Wait before flying again
             yield return new WaitForSeconds(3f);
 
-            // If stunned → stop looping
-            if (Mangkukulam.instance.isStunned)
-            {
-                Debug.Log("Potion Blitz cancelled due to stun!");
-                break;
-            }
+            if (Mangkukulam.instance.isStunned) break;
         }
 
         // Cooldown after finishing the loop
@@ -152,7 +147,8 @@ public class PotionBlitz_MangkukulamAbility : Mangkukulam_Ability
             yield return null;
         }
 
-        ThrowPotions(user, target);
+        if (!Mangkukulam.instance.isStunned)
+            ThrowPotions(user, target);
     }
 
     void ThrowPotions(GameObject user, Transform target)
