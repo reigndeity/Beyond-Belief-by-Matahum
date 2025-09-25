@@ -39,7 +39,7 @@ public class BahayAlitaptap_S1 : R_AgimatAbility
 
         for (int i = 0; i < 3; i++)
         {
-            GameObject pulseObj = Instantiate(pulsePrefab, pulseSpawnPoint.transform.position, Quaternion.identity);
+            GameObject pulseObj = Instantiate(pulsePrefab, pulseSpawnPoint.transform.position, pulsePrefab.transform.rotation);
 
             CoroutineRunner.Instance.RunCoroutine(ShowPulseVFX(pulseObj, i, currentDamage));
             currentDamage *= 1.5f;
@@ -47,7 +47,17 @@ public class BahayAlitaptap_S1 : R_AgimatAbility
             yield return new WaitForSeconds(pulseInterval);
         }
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
+
+        float elapsed = 0f;
+        float scaleDuration = 0.5f;
+        while (elapsed < scaleDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / scaleDuration;
+            pulseSpawnPoint.transform.localScale = Vector3.Lerp(pulseSpawnPoint.transform.localScale, Vector3.zero, t);
+            yield return null;
+        }
         Destroy(pulseSpawnPoint);
     }
 
@@ -56,15 +66,24 @@ public class BahayAlitaptap_S1 : R_AgimatAbility
         BahayAlitaptap_PulseDamage pulseDamage = pulseObj.GetComponent<BahayAlitaptap_PulseDamage>();
         pulseDamage.pulseDamage = currentDamage;
 
-        Vector3 pulseSize = new Vector3(i + 2, 0.25f, i + 2);
+        Vector3 pulseSize = new Vector3(i + 2, i + 2, 0.5f);
+        Vector3 originalSize = new Vector3(0, 0, 0.5f);
         float elapsed = 0f;
-        float scaleDuration = 0.25f;
+        float scaleDuration = 0.5f;
 
         while (elapsed < scaleDuration)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / scaleDuration;
-            pulseObj.transform.localScale = Vector3.Lerp(Vector3.zero, pulseSize, t);
+            pulseObj.transform.localScale = Vector3.Lerp(originalSize, pulseSize, t);
+            yield return null;
+        }
+        elapsed = 0f;
+        while (elapsed < scaleDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / scaleDuration;
+            pulseObj.transform.localScale = Vector3.Lerp(pulseSize, originalSize, t);
             yield return null;
         }
 

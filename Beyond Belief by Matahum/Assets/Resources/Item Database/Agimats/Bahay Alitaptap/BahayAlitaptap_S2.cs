@@ -5,6 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Agimat/Abilities/BahayAlitaptap/BahayAlitaptap_S2")]
 public class BahayAlitaptap_S2 : R_AgimatAbility
 {
+    public GameObject sparkleVFX;
+    private readonly List<GameObject> sparkleList = new List<GameObject>();
+
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
         return $"Undiscovered Creatures, Locations, Wildlife, and Plants have visual indicators.";
@@ -12,57 +15,78 @@ public class BahayAlitaptap_S2 : R_AgimatAbility
 
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        BB_ArchiveTracker[] allTrackers = Resources.FindObjectsOfTypeAll<BB_ArchiveTracker>();
-        List<BB_ArchiveTracker> sceneTrackers = new List<BB_ArchiveTracker>();
+        // Clean up old sparkles before adding new ones
+        foreach (var sparkle in sparkleList)
+        {
+            if (sparkle != null)
+                Destroy(sparkle);
+        }
+        sparkleList.Clear();
 
+        BB_ArchiveTracker[] allTrackers = Resources.FindObjectsOfTypeAll<BB_ArchiveTracker>();
         foreach (var tracker in allTrackers)
         {
             if (tracker.gameObject.scene.isLoaded) // ignore prefabs/assets
             {
-                sceneTrackers.Add(tracker);
+                CoroutineRunner.Instance.RunCoroutine(DiscoverablePopUp(tracker));
             }
         }
+    }
 
-        foreach (var tracker in sceneTrackers)
+    public override void Deactivate(GameObject user)
+    {
+        // Clean up old sparkles before adding new ones
+        foreach (var sparkle in sparkleList)
         {
-            CoroutineRunner.Instance.RunCoroutine(DiscoverablePopUp(tracker));
+            if (sparkle != null)
+                Destroy(sparkle);
         }
+        sparkleList.Clear();
     }
 
     private IEnumerator DiscoverablePopUp(BB_ArchiveTracker tracker)
     {
+        Vector3 offset = new Vector3(0, 1, 0);
+        GameObject sparkleObj = Instantiate(sparkleVFX, tracker.transform.position + offset, Quaternion.identity, tracker.transform);
+        sparkleList.Add(sparkleObj);
+
         if (tracker.archiveData.isDiscovered)
         {
-            tracker.canvasGroup.alpha = 0f;
+            Destroy(sparkleObj);
+            sparkleList.Remove(sparkleObj);
             yield break;
         }
-
-        tracker.canvasGroup.alpha = 1f;
 
         yield return new WaitForSeconds(5f);
 
         float fadeDuration = 3f;
         float elapsed = 0f;
+        CanvasGroup cg = tracker.canvasGroup;
 
         while (elapsed < fadeDuration)
         {
             if (tracker.archiveData.isDiscovered)
             {
-                tracker.canvasGroup.alpha = 0f;
+                if (cg != null) cg.alpha = 0f;
+                Destroy(sparkleObj);
+                sparkleList.Remove(sparkleObj);
                 yield break;
             }
 
             elapsed += Time.deltaTime;
-            tracker.canvasGroup.alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+            if (cg != null)
+                cg.alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+
             yield return null;
         }
 
-        tracker.canvasGroup.alpha = 0f;
+        Destroy(sparkleObj);
+        sparkleList.Remove(sparkleObj);
+        if (cg != null) cg.alpha = 0f;
     }
 
     public override float GetRandomDamagePercent(R_ItemRarity rarity)
     {
-        // This ability doesn’t use rolls
-        return 0f;
+        return 0f; // This ability doesn’t use rolls
     }
 }

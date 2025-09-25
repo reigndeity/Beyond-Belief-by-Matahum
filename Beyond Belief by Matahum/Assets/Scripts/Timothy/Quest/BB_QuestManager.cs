@@ -32,6 +32,7 @@ public class BB_QuestManager : MonoBehaviour
 
             // Load all available quests
             allQuests = new List<BB_Quest>(Resources.LoadAll<BB_Quest>("Quests"));
+            allQuests.Sort((a, b) => a.questID.CompareTo(b.questID));
 
             // Attach save system
             saveSystem = gameObject.AddComponent<BB_QuestSaveSystem>();

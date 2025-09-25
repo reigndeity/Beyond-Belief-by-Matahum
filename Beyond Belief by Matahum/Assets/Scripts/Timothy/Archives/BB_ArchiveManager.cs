@@ -79,4 +79,12 @@ public class BB_ArchiveManager : MonoBehaviour
         }
     }
 
+    public void ResetArchiveDiscovery()
+    {
+        foreach (var archive in allArchives)
+        {
+            archive.isDiscovered = false;
+            archive.isViewed = false;
+        }
+    }
 }
