@@ -38,7 +38,7 @@ public class MutyaNgKalamansi_S1 : R_AgimatAbility
         float minDist = Mathf.Infinity;
         foreach (var hit in hits)
         {
-            if (hit.gameObject.GetComponent<EnemyStats>())
+            if (hit.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
                 float dist = Vector3.Distance(user.transform.position, hit.transform.position);
                 if (dist < minDist)

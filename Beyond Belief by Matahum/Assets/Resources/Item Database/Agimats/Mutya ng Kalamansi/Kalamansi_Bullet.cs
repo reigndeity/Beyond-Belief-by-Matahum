@@ -15,25 +15,42 @@ public class Kalamansi_Bullet : MonoBehaviour
     public Kalamansi_DebuffType debuffType;
     public float debuffValue;
     public float debuffDuration = 5f;
-
+    public GameObject atkDown_xpld_VFX;
+    public GameObject defDown_xpld_VFX;
+    private GameObject vfxToSpawn;
 
     private void OnTriggerEnter(Collider other)
     {
-        EnemyStats stats = other.GetComponent<EnemyStats>();
+        
         IDamageable damageable = other.GetComponent<IDamageable>();
         if (damageable != null && other.gameObject.tag != "Player")
         {
-            CheckForDebuffType(stats);
+            EnemyStats stats = other.GetComponent<EnemyStats>();
+            if (stats != null)
+                CheckForDebuffType(stats);
 
-            if(other.gameObject.tag == "Aswang")
+            if (other.gameObject.tag == "Aswang")
                 damageable.TakeDamage(bulletDamage * 1.5f);
             else
                 damageable.TakeDamage(bulletDamage);
-
         }
+        CheckBuffForVFX(other.transform);
         Destroy(gameObject);
     }
 
+    void CheckBuffForVFX(Transform target)
+    {
+        if (debuffType == Kalamansi_DebuffType.DamageDebuff)
+        {
+            vfxToSpawn = Instantiate(atkDown_xpld_VFX, transform.position, Quaternion.identity, target.transform);
+        }
+        else if (debuffType == Kalamansi_DebuffType.ArmorDebuff)
+        {
+            vfxToSpawn = Instantiate(defDown_xpld_VFX, transform.position, Quaternion.identity, target.transform);
+        }
+        Debug.Log("Splish Splash");
+        Destroy(vfxToSpawn, 1);
+    }
     void CheckForDebuffType(EnemyStats stats)
     {
         if (debuffType == Kalamansi_DebuffType.DamageDebuff)

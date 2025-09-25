@@ -7,7 +7,7 @@ public class MutyaNgLinta_Lifesteal : MonoBehaviour
 
     public void OnDamageDealt(float damage)
     {
-        float healAmount = damage * lifeStealPercent;
+        float healAmount = (damage * 0.66f) * lifeStealPercent;
         player.Heal(healAmount);
     }
 }
