@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgLinta/MutyaNgLinta_S1")]
 public class MutyaNgLinta_S1 : R_AgimatAbility
 {
+    public GameObject selfDamageVFX;
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
         float selfDamage = itemData.slot1RollValue;
@@ -17,6 +18,11 @@ public class MutyaNgLinta_S1 : R_AgimatAbility
     {
         float selfDamage = itemData.slot1RollValue;
         float lifeStealValue = itemData.slot2RollValue;
+
+        Vector3 offset = new Vector3(0, 1, 0);
+        GameObject bloodSplashVFX = Instantiate(selfDamageVFX, user.transform.position + offset, Quaternion.identity, user.transform);       
+        Destroy(bloodSplashVFX, 2);
+
         CoroutineRunner.Instance.RunCoroutine(Lifesteal(user, selfDamage, lifeStealValue));
     }
 
