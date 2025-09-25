@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: b3bf098504aa7aa4ca69c723410f56ef
+guid: d09d8895dd40d794f820c1b29294dd59
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Meat_Albedo
+    second: {fileID: 2800000, guid: bfff608a98617ea4d83c97c6bf7b335f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Sticks_Base_color
+    second: {fileID: 2800000, guid: 701f886398205274f882454826ead5a3, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -30,10 +40,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.21
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -65,7 +75,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 1
+    useFileScale: 0
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
@@ -88,7 +98,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 0.21
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
