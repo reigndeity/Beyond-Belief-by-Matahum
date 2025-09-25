@@ -11,8 +11,15 @@ public class RockShield_NunoAbility : Nuno_Ability
     public float shieldToNunoHealthRatio;
     public int shieldCooldown = 10;
 
+    public bool canBeUsed = true;
+    public void OnEnable()
+    {
+        canBeUsed = true;
+    }
+    public override bool CanBeUsed() => canBeUsed;
     public override void Activate()
     {
+        canBeUsed = false;
         CoroutineRunner.Instance.RunCoroutine(DelaySpawnShield());
     }
 
@@ -42,9 +49,18 @@ public class RockShield_NunoAbility : Nuno_Ability
         var nuno = Nuno_AttackManager.Instance.GetComponent<Nuno>();
         var stats = Nuno_AttackManager.Instance.GetComponent<EnemyStats>();
 
-        activeShieldHolder.Initialize(nuno, stats, shieldToNunoHealthRatio, shieldCooldown);
+        activeShieldHolder.Initialize(nuno, stats, shieldToNunoHealthRatio, shieldCooldown, this);
 
         activeShieldHolder.ResetShield();
 
+    }
+    public void GoOnCooldown()
+    {
+        CoroutineRunner.Instance.RunCoroutine(ShieldOnCooldown());
+    }
+    IEnumerator ShieldOnCooldown()
+    {
+        yield return new WaitForSeconds(shieldCooldown);
+        canBeUsed = true;
     }
 }

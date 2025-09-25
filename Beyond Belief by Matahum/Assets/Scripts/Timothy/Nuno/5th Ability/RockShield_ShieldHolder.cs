@@ -7,12 +7,12 @@ public class RockShield_ShieldHolder : MonoBehaviour
     public GameObject invulnerableShield;
     [HideInInspector] public Nuno nuno;
     [HideInInspector] public EnemyStats stats;
+    [HideInInspector] public RockShield_NunoAbility ability;
 
     [HideInInspector] public float shieldHealth;
     [HideInInspector] public float shieldToHealthRatio;
     [HideInInspector] public int shieldCooldown = 10;
-    private bool canUseShield = true;
-    private int maxShields = 4;
+    public int maxShields = 4;
 
     public float orbitRadius = 2f;
     public float rotationSpeed = 30f;
@@ -25,20 +25,19 @@ public class RockShield_ShieldHolder : MonoBehaviour
         }
     }
 
-    public void Initialize(Nuno nuno, EnemyStats stats, float shieldToHealthRatio, int cooldown)
+    public void Initialize(Nuno nuno, EnemyStats stats, float shieldToHealthRatio, int cooldown, RockShield_NunoAbility ability)
     {
         this.nuno = nuno;
         this.stats = stats;
         this.shieldToHealthRatio = shieldToHealthRatio;
         this.shieldCooldown = cooldown;
+        this.ability = ability;
 
         shieldHealth = stats.e_maxHealth * (shieldToHealthRatio / 100);
     }
 
     public void ResetShield()
     {
-        if (nuno.isVulnerable == false || !canUseShield) return;
-
         nuno.isVulnerable = false;
         nuno.gameObject.layer = LayerMask.NameToLayer("Default");
         for (int i = 0; i < shieldPrefab.Length; i++)
@@ -60,12 +59,6 @@ public class RockShield_ShieldHolder : MonoBehaviour
         invulnerableShield.SetActive(!IsAllShieldDestroyed()); // only invulnerable if shields exist
     }
 
-    IEnumerator ShieldOnCooldown()
-    {
-        canUseShield = false;
-        yield return new WaitForSeconds(shieldCooldown);
-        canUseShield = true;
-    }
     public void OnShieldDestroyed()
     {
         if (IsAllShieldDestroyed() == true)
@@ -74,7 +67,7 @@ public class RockShield_ShieldHolder : MonoBehaviour
             nuno.isVulnerable = true;
             Nuno_AttackManager.Instance.isStunned = true;
             nuno.gameObject.layer = LayerMask.NameToLayer("Enemy");
-            StartCoroutine(ShieldOnCooldown());
+            ability.GoOnCooldown();
             Debug.Log("All shields destroyed → Boss vulnerable!");
         }
     }

@@ -3388,6 +3388,7 @@ GameObject:
   - component: {fileID: 6634085467183446090}
   - component: {fileID: 2345445500801423843}
   - component: {fileID: 5694589208624054708}
+  - component: {fileID: 2332689571683063096}
   m_Layer: 5
   m_Name: Health Text
   m_TagString: Untagged
@@ -3513,6 +3514,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!225 &2332689571683063096
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2791369398736027365}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2798607318632062371
 GameObject:
   m_ObjectHideFlags: 0
@@ -5428,7 +5441,6 @@ GameObject:
   - component: {fileID: 9043704156488555472}
   - component: {fileID: 3057949117333612657}
   - component: {fileID: 5699884941806021327}
-  - component: {fileID: 7677593347372799864}
   - component: {fileID: 6301268606664013338}
   - component: {fileID: 1067409430265172109}
   - component: {fileID: 8302936962976938742}
@@ -5509,24 +5521,6 @@ MonoBehaviour:
   isStunned: 0
   stunAmount: 3
   uiCanvas: {fileID: 0}
---- !u!114 &7677593347372799864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4101364822069647109}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0491874f21cbe9449ad330d3cbeb0dc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  n_currentHealth: 0
-  n_maxHealth: 1000
-  n_attack: 100
-  n_defense: 50
-  n_criticalRate: 10
-  n_criticalDamage: 10
 --- !u!114 &6301268606664013338
 MonoBehaviour:
   m_ObjectHideFlags: 0

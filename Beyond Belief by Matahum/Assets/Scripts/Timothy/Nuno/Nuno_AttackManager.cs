@@ -117,7 +117,7 @@ public class Nuno_AttackManager : MonoBehaviour
             yield break; // exit coroutine early → Update() will restart SkillRandomizer next frame
         }
 
-        if (skillIndex < abilityList.Count)
+        if (abilityList[skillIndex].CanBeUsed())
         {
             isAttacking = true;
             castingCurrentAbility = abilityList[skillIndex];
