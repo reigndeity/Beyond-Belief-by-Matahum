@@ -59,6 +59,75 @@ MonoBehaviour:
       scaleMaxUniformValue: {x: 1, y: 1, z: 1}
       scaleMinUniformValue: {x: 1, y: 1, z: 1}
       fixedScale: {x: 1, y: 1, z: 1}
+  - prefabToPaint: {fileID: 2881009009118159216, guid: 6581d00bfbfbdae41aa6dacc3b736359, type: 3}
+    selected: 1
+    customProps:
+      customName: 
+      useCustomPivotMode: 0
+      pivotMode: 0
+      useCustomOffset: 0
+      offsetMode: 0
+      offsetMinValue: {x: -0.2, y: -0.2, z: -0.2}
+      offsetMaxValue: {x: 0.2, y: 0.2, z: 0.2}
+      offsetFixedValue: {x: 0, y: 0, z: 0}
+      useCustomRotationMode: 0
+      rotationMode: 0
+      rotationMinValue: {x: 0, y: 0, z: 0}
+      rotationMaxValue: {x: 0, y: 360, z: 0}
+      fixedRotation: {x: 0, y: 0, z: 0}
+      useCustomScale: 0
+      scaleMode: 0
+      scaleMinValue: {x: 0.8, y: 0.8, z: 0.8}
+      scaleMaxValue: {x: 1.2, y: 1.2, z: 1.2}
+      scaleMaxUniformValue: {x: 1, y: 1, z: 1}
+      scaleMinUniformValue: {x: 1, y: 1, z: 1}
+      fixedScale: {x: 1, y: 1, z: 1}
+  - prefabToPaint: {fileID: 8637561342580472446, guid: 5c33b11521bccac4785382e73ba1e624, type: 3}
+    selected: 0
+    customProps:
+      customName: 
+      useCustomPivotMode: 0
+      pivotMode: 0
+      useCustomOffset: 0
+      offsetMode: 0
+      offsetMinValue: {x: -0.2, y: -0.2, z: -0.2}
+      offsetMaxValue: {x: 0.2, y: 0.2, z: 0.2}
+      offsetFixedValue: {x: 0, y: 0, z: 0}
+      useCustomRotationMode: 0
+      rotationMode: 0
+      rotationMinValue: {x: 0, y: 0, z: 0}
+      rotationMaxValue: {x: 0, y: 360, z: 0}
+      fixedRotation: {x: 0, y: 0, z: 0}
+      useCustomScale: 0
+      scaleMode: 0
+      scaleMinValue: {x: 0.8, y: 0.8, z: 0.8}
+      scaleMaxValue: {x: 1.2, y: 1.2, z: 1.2}
+      scaleMaxUniformValue: {x: 1, y: 1, z: 1}
+      scaleMinUniformValue: {x: 1, y: 1, z: 1}
+      fixedScale: {x: 1, y: 1, z: 1}
+  - prefabToPaint: {fileID: 3639577483575162441, guid: 6e00814cc4b39354aae200f572d1b786, type: 3}
+    selected: 0
+    customProps:
+      customName: 
+      useCustomPivotMode: 0
+      pivotMode: 0
+      useCustomOffset: 0
+      offsetMode: 0
+      offsetMinValue: {x: -0.2, y: -0.2, z: -0.2}
+      offsetMaxValue: {x: 0.2, y: 0.2, z: 0.2}
+      offsetFixedValue: {x: 0, y: 0, z: 0}
+      useCustomRotationMode: 0
+      rotationMode: 0
+      rotationMinValue: {x: 0, y: 0, z: 0}
+      rotationMaxValue: {x: 0, y: 360, z: 0}
+      fixedRotation: {x: 0, y: 0, z: 0}
+      useCustomScale: 0
+      scaleMode: 0
+      scaleMinValue: {x: 0.8, y: 0.8, z: 0.8}
+      scaleMaxValue: {x: 1.2, y: 1.2, z: 1.2}
+      scaleMaxUniformValue: {x: 1, y: 1, z: 1}
+      scaleMinUniformValue: {x: 1, y: 1, z: 1}
+      fixedScale: {x: 1, y: 1, z: 1}
   parentName: 
   allowedTextures: []
   parentObject: {fileID: 0}
@@ -69,24 +138,24 @@ MonoBehaviour:
   raycastMode: 0
   parentMode: 1
   rotationMode: 1
-  scaleMode: 0
+  scaleMode: 2
   offsetMode: 0
   impulseMode: 0
   physicsAffectMode: 0
   physicsSimulationMode: 0
   snapMode: 0
-  tagMask: -1
-  layerMask: -1
-  eraserMask: 0
-  eraserTagMask: 0
+  tagMask: 16255
+  layerMask: 33554303
+  eraserMask: -1
+  eraserTagMask: -1
   parentInstanceID: 0
   physicsCustomLayer: 0
   vertexSnapLayerMask: -1
   vertexSnapTagMask: -1
   brushSize: 10
-  brushStrength: 0.299
-  clippingStreght: 0.942
-  eraserSize: 0
+  brushStrength: 0.354
+  clippingStreght: 0.124
+  eraserSize: 2
   eraseClipping: 0
   fakePlaneYPosition: 0
   gridSnapValue: 0
@@ -121,7 +190,7 @@ MonoBehaviour:
   fixedOffset: {x: 0, y: 0, z: 0}
   maxRotation: {x: 0, y: 360, z: 0}
   minScale: {x: 0.8, y: 0.8, z: 0.8}
-  minScaleUniform: {x: 0, y: 0, z: 0}
+  minScaleUniform: {x: 1, y: 1, z: 1}
   angleLimits: {x: 0, y: 180}
   gridOffset: {x: 0, y: 0}
   fixedPhysicsImpulse: {x: 0, y: 0, z: 0}
@@ -134,7 +203,7 @@ MonoBehaviour:
   maxOffset: {x: 0, y: 0, z: 0}
   maxPhysicsImpulse: {x: 0, y: 0, z: 0}
   maxScale: {x: 1.2, y: 1.2, z: 1.2}
-  maxScaleUniform: {x: 0, y: 0, z: 0}
+  maxScaleUniform: {x: 1.3, y: 1.3, z: 1.3}
   minOffset: {x: 0, y: 0, z: 0}
   minPhysicsImpulse: {x: 0, y: 0, z: 0}
   minRotation: {x: 0, y: 0, z: 0}

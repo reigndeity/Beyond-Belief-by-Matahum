@@ -37,7 +37,7 @@ MonoBehaviour:
       scaleMinUniformValue: {x: 1, y: 1, z: 1}
       fixedScale: {x: 1, y: 1, z: 1}
   - prefabToPaint: {fileID: 3066671214896054935, guid: daa7c402ee3e15c4882ff45bcdfe6bb2, type: 3}
-    selected: 0
+    selected: 1
     customProps:
       customName: 
       useCustomPivotMode: 0
@@ -228,18 +228,18 @@ MonoBehaviour:
   pivotModeValue: 0
   paintMode: 0
   raycastMode: 0
-  parentMode: 0
-  rotationMode: 0
+  parentMode: 1
+  rotationMode: 1
   scaleMode: 0
   offsetMode: 0
   impulseMode: 0
   physicsAffectMode: 0
   physicsSimulationMode: 0
   snapMode: 0
-  tagMask: 0
-  layerMask: 0
-  eraserMask: 0
-  eraserTagMask: 0
+  tagMask: -1
+  layerMask: -1
+  eraserMask: -1
+  eraserTagMask: -1
   parentInstanceID: 0
   physicsCustomLayer: 0
   vertexSnapLayerMask: -1
@@ -280,7 +280,7 @@ MonoBehaviour:
   useImpulse: 0
   useTextureMask: 0
   fixedOffset: {x: 0, y: 0, z: 0}
-  maxRotation: {x: 0, y: 0, z: 0}
+  maxRotation: {x: 0, y: 360, z: 0}
   minScale: {x: 0.8, y: 0.8, z: 0.8}
   minScaleUniform: {x: 0, y: 0, z: 0}
   angleLimits: {x: 0, y: 180}
