@@ -47,6 +47,10 @@ public class R_GeneralItemSpawner : MonoBehaviour
     #endregion
 
     #region AGIMAT SPAWNING
+    public void SpawnSingleAgimat(R_ItemData[] itemData)
+    {
+        R_AgimatSpawnerUtility.SpawnRandomAgimatFromPool(itemData, inventory, inventoryUI, simulatedPlayerLevel, agimatVisualConfig);
+    }
     public void SpawnRandomAgimatFromTemplate()
     {
         R_AgimatSpawnerUtility.SpawnRandomAgimatFromPool(agimatTemplates, inventory, inventoryUI, simulatedPlayerLevel, agimatVisualConfig);

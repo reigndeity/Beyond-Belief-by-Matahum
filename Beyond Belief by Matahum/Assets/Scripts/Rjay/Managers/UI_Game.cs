@@ -148,30 +148,26 @@ public class UI_Game : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (PlayerMinimap.instance.IsMapOpen())
+            if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialoguePlaying())
             {
-                OnClickCloseMapButton();
-            }
-            else if (IsAnyMajorPanelOpen())
-            {
-                if (inventoryPanel.activeSelf) OnClickCloseInventory();
-                else if (characterDetailPanel.activeSelf) OnClickCloseCharacterDetails();
-                else if (m_questButtonManager.IsJournalOpen()) OnClickCloseQuestJournal();
-                else if (m_archiveButtonManager.IsArchiveOpen()) OnClickCloseArchive();
-            }
-            else if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialoguePlaying())
-            {
-                // ✅ Ignore ESC while in dialogue
                 Debug.Log("Pause blocked: dialogue is active.");
+                return;
+            }
+
+            if (IsAnyMajorPanelOpen())
+            {
+                return;
+            }
+            
+            if (pauseMenuPanel.activeSelf)
+            {
+                OnClickResumeGame();
             }
             else
             {
-                // Toggle pause menu
-                if (pauseMenuPanel.activeSelf) OnClickResumeGame();
-                else OpenPauseMenu();
+                OpenPauseMenu();
             }
         }
-
     }
 
     void LateUpdate()

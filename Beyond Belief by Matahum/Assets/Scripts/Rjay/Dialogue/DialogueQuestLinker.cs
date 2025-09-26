@@ -53,7 +53,7 @@ public class DialogueQuestLinker : MonoBehaviour
     public TimelineAsset A0_Q4_TrainingWithBangkaw_Cutscene;
     [SerializeField] private MinimapRenderer playerMinimapRenderer;
     [SerializeField] GameObject fullscreenMapPopUp;
-    public R_ItemData ngipinNgKidlatAgimat;
+    public R_ItemData[] ngipinNgKidlatAgimat;
     public TimelineAsset A0_Q11_AgimatTraining_P1_Cutscene;
     public TimelineAsset A0_Q11_AgimatTraining_P2_Cutscene;
     [SerializeField] private Transform agimatSkillOneTrainingDummies;
@@ -248,7 +248,9 @@ public class DialogueQuestLinker : MonoBehaviour
                 case "A0_Q11_AgimatTraining_P1":
                     bangkaw.SetDialogueState("A0_Q11_AgimatTraining_P1");
                     ApplyStates(bangkaw);
-                    inventory.AddItem(ngipinNgKidlatAgimat, 1);
+                    //inventory.AddItem(ngipinNgKidlatAgimat, 1);
+                    R_GeneralItemSpawner.instance.SpawnSingleAgimat(ngipinNgKidlatAgimat);
+
                     inventoryUI.RefreshUI();
                     m_uiGame.characterDetailsButton.onClick.AddListener(TutorialManager.instance.EnableAgimatSlotOneTutorial);
                     CutsceneManager.Instance.PlayCutscene(A0_Q11_AgimatTraining_P1_Cutscene);
