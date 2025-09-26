@@ -18,12 +18,17 @@ MonoBehaviour:
   itemBackdropIcon: {fileID: 893720754, guid: 0825dc48e0b0a6845bb5494652467a8b, type: 3}
   inventoryHeaderImage: {fileID: -470964083, guid: 0825dc48e0b0a6845bb5494652467a8b, type: 3}
   inventoryBackdropImage: {fileID: -195847220, guid: 0825dc48e0b0a6845bb5494652467a8b, type: 3}
-  description: The amulet "Ngipin ng Kidlat" is said to form when lightning strikes
+  description: 'The amulet "Ngipin ng Kidlat" is said to form when lightning strikes
     the ground, trees, or rocks. It can appear in various shapes and colors. This
     powerful mutya grants the bearer a commanding presence, enhanced strength and
     speed, increased charisma, and good fortune. It also offers protection against
     black magic and malevolent entities. Ngipin ng Kidlat is considered a high-grade
     mutya, as it embodies the raw power of an elemental force.
+
+
+    In game, this
+    agimat releases a surge of lightning that damages surrounding enemies, or enemies
+    in a group.'
   itemType: 5
   isStackable: 0
   maxStackSize: 1
@@ -36,6 +41,8 @@ MonoBehaviour:
   threePieceBonusDescription: 
   slot1Ability: {fileID: 11400000, guid: a4f7447b9428d4445a33db682d475cf6, type: 2}
   slot2Ability: {fileID: 11400000, guid: 9c192067b66d0424ebc74b2c9f95c68a, type: 2}
+  slot1RollValue: 0
+  slot2RollValue: 0
   effectText: 
   consumableEffect: {fileID: 0}
   upgradeMaterialType: 0
