@@ -25,14 +25,19 @@ public class Kalamansi_Bullet : MonoBehaviour
         IDamageable damageable = other.GetComponent<IDamageable>();
         if (damageable != null && other.gameObject.tag != "Player")
         {
+            float finalDamage = bulletDamage;
+
             EnemyStats stats = other.GetComponent<EnemyStats>();
             if (stats != null)
+            {
+                finalDamage += stats.e_defense * 0.66f;
                 CheckForDebuffType(stats);
+            }
 
             if (other.gameObject.tag == "Aswang")
-                damageable.TakeDamage(bulletDamage * 1.5f);
+                damageable.TakeDamage(finalDamage * 1.5f);
             else
-                damageable.TakeDamage(bulletDamage);
+                damageable.TakeDamage(finalDamage);
         }
         CheckBuffForVFX(other.transform);
         Destroy(gameObject);

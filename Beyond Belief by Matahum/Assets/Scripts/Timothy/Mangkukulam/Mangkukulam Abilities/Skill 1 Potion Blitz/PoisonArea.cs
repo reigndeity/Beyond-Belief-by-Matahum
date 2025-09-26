@@ -50,6 +50,7 @@ public class PoisonArea : MonoBehaviour
 
             // Refresh poison
             poison.RestartPoison();
+            poison.Initialize(false);
         }
     }
 }

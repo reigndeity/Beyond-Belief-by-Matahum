@@ -13,7 +13,15 @@ public class NgipinNgKalabaw_Knockback : MonoBehaviour
         IDamageable damageable = other.GetComponent<IDamageable>();
         if (damageable != null && canDamage && other.gameObject.tag != "Player")
         {
-            damageable.TakeDamage(damage);
+            float finalDamage = damage;
+
+            EnemyStats stats = other.GetComponent<EnemyStats>();
+            if (stats != null)
+            {
+                finalDamage += stats.e_defense * 0.66f;
+            }
+
+            damageable.TakeDamage(finalDamage);
 
             Enemy enemy = other.GetComponent<Enemy>();
             if(enemy != null) enemy.PushBackward(knockbackDistance);
