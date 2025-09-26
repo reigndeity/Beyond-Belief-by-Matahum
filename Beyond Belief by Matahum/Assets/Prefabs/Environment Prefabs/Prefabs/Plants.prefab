@@ -1,0 +1,2305 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7467927548194063396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3881746583255573215}
+  m_Layer: 0
+  m_Name: Plants
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3881746583255573215
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7467927548194063396}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8674355941331021920}
+  - {fileID: 5710249485128805888}
+  - {fileID: 7671528473847062927}
+  - {fileID: 8244365355929030638}
+  - {fileID: 2081269504443250573}
+  - {fileID: 9187343765258191946}
+  - {fileID: 5575132444780881603}
+  - {fileID: 8685184905373710712}
+  - {fileID: 7772275816992158202}
+  - {fileID: 8264210912931105292}
+  - {fileID: 4410662534990504472}
+  - {fileID: 1327122038334264460}
+  - {fileID: 7108528258223956342}
+  - {fileID: 2012842579859077949}
+  - {fileID: 3612401025452402789}
+  - {fileID: 1308838375332791915}
+  - {fileID: 8578589589815469074}
+  - {fileID: 2186568742139221632}
+  - {fileID: 2882517809689409307}
+  - {fileID: 3483414702853877114}
+  - {fileID: 6616079191261722343}
+  - {fileID: 599013147652068884}
+  - {fileID: 9170034201617105173}
+  - {fileID: 6926577060825766932}
+  - {fileID: 2150092617063644480}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &83932880764400955
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 165.7786
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.6342816
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 125.222595
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5758509
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.8175548
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3997412781467328061}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!4 &6926577060825766932 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 83932880764400955}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9198988800367235020 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 83932880764400955}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3997412781467328061
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9198988800367235020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!1001 &264733160071202905
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 140.32285
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5394292
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 123.499664
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.779806
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.6260212
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5766350302638888214}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!4 &7108528258223956342 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 264733160071202905}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9020686388119466670 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 264733160071202905}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5766350302638888214
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9020686388119466670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!1001 &781020547988412629
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 175.06555
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.6165171
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 144.69342
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.60620135
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7953113
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3753439194381696768}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!4 &7772275816992158202 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 781020547988412629}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8382836204330099234 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 781020547988412629}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3753439194381696768
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8382836204330099234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!1001 &827724592351971488
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0332963
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.0332963
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.0332963
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 188.85251
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.6275635
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 98.64072
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.026348367
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.99965286
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1063431216669883229}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!4 &7671528473847062927 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 827724592351971488}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8502730333660050007 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 827724592351971488}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1063431216669883229
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8502730333660050007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!1001 &1397183774745405121
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0695195
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.0695195
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.0695195
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 190.75098
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.6396093
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 101.785095
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.6928988
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7210349
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3002217680355052175}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &7917508655680052278 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 1397183774745405121}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3002217680355052175
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7917508655680052278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &8244365355929030638 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 1397183774745405121}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1421578013499597603
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 171.9729
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5057964
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 148.14062
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.94691324
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.32148913
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3114131793143787030}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &7870351210499693012 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 1421578013499597603}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3114131793143787030
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7870351210499693012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &8264210912931105292 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 1421578013499597603}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1587325793021513021
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 142.84665
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.6739807
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 107.094635
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.33342594
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9427763
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 475883409117234484}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &7531214261223995338 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 1587325793021513021}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &475883409117234484
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7531214261223995338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &8578589589815469074 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 1587325793021513021}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1831721933932714319
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1857004
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1857004
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1857004
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 194.02399
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.6029863
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 100.071655
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.08377104
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.99648505
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5972768024813097804}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &7487509761510450104 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 1831721933932714319}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5972768024813097804
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7487509761510450104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &8674355941331021920 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 1831721933932714319}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1841387333185572951
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 202.46506
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.476647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 130.978
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.75505537
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.65566105
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8433619605891111964}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &7426016974618913440 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 1841387333185572951}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8433619605891111964
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7426016974618913440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &8685184905373710712 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 1841387333185572951}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2182156904898127930
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 165.40701
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.586256
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 127.49747
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.2919922
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9564207
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3210061331911872444}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &6974944654120587981 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 2182156904898127930}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3210061331911872444
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6974944654120587981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &9170034201617105173 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 2182156904898127930}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2200595400691363173
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0320065
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.0320065
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.0320065
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 192.55978
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.6224852
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 102.44595
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.95973355
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.2809121
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5699417913456601760}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &6920197312259118994 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 2200595400691363173}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5699417913456601760
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6920197312259118994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &9187343765258191946 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 2200595400691363173}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3194403205142745068
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 201.47449
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.3649344
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 132.91272
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.74361265
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.6686107
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8169710727490537735}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!4 &5575132444780881603 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 3194403205142745068}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5969419994975925531 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 3194403205142745068}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8169710727490537735
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5969419994975925531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!1001 &3329554334613096239
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1755574
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1755574
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1755574
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 190.38626
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.621891
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 100.26987
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9975418
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.07007467
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4508060716548936010}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!4 &5710249485128805888 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 3329554334613096239}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5816287967709871576 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 3329554334613096239}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4508060716548936010
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5816287967709871576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!1001 &4241015743598976968
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 156.38452
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.534725
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 101.395294
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.8708944
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.49147034
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7966054767595378760}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &4924811848916542783 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 4241015743598976968}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7966054767595378760
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4924811848916542783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &6616079191261722343 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 4241015743598976968}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5263255566381899316
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 180.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5412121
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 90.88855
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.33485895
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.94226825
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4656518136226031712}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!4 &2882517809689409307 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 5263255566381899316}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4001932177515881667 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 5263255566381899316}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4656518136226031712
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4001932177515881667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!1001 &5862990271493833813
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 156.25427
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5403855
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 97.837494
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.39194366
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9199893
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4512425244633970756}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &3449451132147367586 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 5862990271493833813}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4512425244633970756
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3449451132147367586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &3483414702853877114 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 5862990271493833813}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5993101664936296778
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 142.92502
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.6576037
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 108.67297
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.63078296
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7759594
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3962015069955156473}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &3290065516472105917 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 5993101664936296778}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3962015069955156473
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3290065516472105917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &3612401025452402789 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 5993101664936296778}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6647251018645490487
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 172.26761
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5549507
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 149.47702
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.9971685
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.07520006
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3166916971560225282}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &2503060781281030592 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 6647251018645490487}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3166916971560225282
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2503060781281030592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &4410662534990504472 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 6647251018645490487}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7591392119820615483
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 156.70956
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5519605
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 98.997925
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5380181
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.8429333
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 88998526567848734}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!4 &599013147652068884 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 7591392119820615483}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1718516850806687180 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 7591392119820615483}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &88998526567848734
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718516850806687180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!1001 &8296747826190233412
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 141.92203
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.6472919
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 107.21689
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.04302059
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9990742
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5797073284994756697}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &981950888489801139 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 8296747826190233412}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5797073284994756697
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981950888489801139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &1308838375332791915 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 8296747826190233412}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8313917417626402211
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 139.98886
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5780425
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 125.60394
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.5510466
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.8344745
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1810079279792116325}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &1000811519951079252 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 8313917417626402211}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1810079279792116325
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000811519951079252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &1327122038334264460 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 8313917417626402211}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8855510667957604882
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 140.51437
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5983548
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 121.02124
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6533668
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7570415
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7568748896984530920}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &317071774242826469 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 8855510667957604882}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7568748896984530920
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317071774242826469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &2012842579859077949 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 8855510667957604882}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8997273371499091055
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 166.71704
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.602817
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 124.56058
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.84882927
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.52866715
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6322833246719247059}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &171087753604804248 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 8997273371499091055}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6322833246719247059
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171087753604804248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &2150092617063644480 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 8997273371499091055}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &9072556663612710562
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1165785
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1165785
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1165785
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 191.91205
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.568016
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 100.346466
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.61041737
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7920799
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6801532374343771321}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &246393024282453077 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 9072556663612710562}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6801532374343771321
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 246393024282453077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &2081269504443250573 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 9072556663612710562}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &9174488911221768111
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3881746583255573215}
+    m_Modifications:
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 168.73346
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.7128563
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 83.87497
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.19306439
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9811861
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      propertyPath: m_Name
+      value: Batwing Alocasia
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2503214431455626761}
+  m_SourcePrefab: {fileID: 100100000, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+--- !u!1 &130949771562206552 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9116252193765227255, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 9174488911221768111}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2503214431455626761
+MonoBehaviour:
+  m_ObjectHideFlags: 16
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130949771562206552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a771dfa03813c5a42afd08e27d6570eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  erasable: 1
+  meshClippingChecks: 1
+  customLayer: -1
+  addedCollider: {fileID: 0}
+  addedBody: {fileID: 0}
+--- !u!4 &2186568742139221632 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6992425155985959215, guid: 5ac607e96e8e469488818c4b620b2141, type: 3}
+  m_PrefabInstance: {fileID: 9174488911221768111}
+  m_PrefabAsset: {fileID: 0}

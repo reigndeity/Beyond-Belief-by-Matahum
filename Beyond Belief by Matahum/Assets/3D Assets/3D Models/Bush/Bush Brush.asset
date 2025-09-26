@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabs:
   - prefabToPaint: {fileID: 498694977156446032, guid: 1adde85fe34b09f4ba69858483d67a40, type: 3}
-    selected: 0
+    selected: 1
     customProps:
       customName: 
       useCustomPivotMode: 0
@@ -37,7 +37,7 @@ MonoBehaviour:
       scaleMinUniformValue: {x: 1, y: 1, z: 1}
       fixedScale: {x: 1, y: 1, z: 1}
   - prefabToPaint: {fileID: 7839082788250308832, guid: cf0b8fd7874bbee44a5297f5ba23c5f9, type: 3}
-    selected: 0
+    selected: 1
     customProps:
       customName: 
       useCustomPivotMode: 0
@@ -60,7 +60,7 @@ MonoBehaviour:
       scaleMinUniformValue: {x: 1, y: 1, z: 1}
       fixedScale: {x: 1, y: 1, z: 1}
   - prefabToPaint: {fileID: 2702162046013472174, guid: 17cd4c257c4d2ab4b8afaded93059232, type: 3}
-    selected: 0
+    selected: 1
     customProps:
       customName: 
       useCustomPivotMode: 0
@@ -98,8 +98,8 @@ MonoBehaviour:
   physicsAffectMode: 0
   physicsSimulationMode: 0
   snapMode: 0
-  tagMask: -1
-  layerMask: -1
+  tagMask: 16255
+  layerMask: 33554303
   eraserMask: 0
   eraserTagMask: 0
   parentInstanceID: 0
