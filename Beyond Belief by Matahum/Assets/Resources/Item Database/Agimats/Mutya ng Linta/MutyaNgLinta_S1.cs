@@ -7,8 +7,8 @@ public class MutyaNgLinta_S1 : R_AgimatAbility
     public GameObject selfDamageVFX;
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        float selfDamage = itemData.slot1RollValue;
-        float lifeStealValue = itemData.slot2RollValue;
+        float selfDamage = itemData.slot1RollValue[0];
+        float lifeStealValue = itemData.slot1RollValue[1];
 
         return $"Deal damage to self equal to {selfDamage:F1}% of health. " +
                $"For 5 seconds, heal {lifeStealValue:F1}% of damage dealt with attacks to enemies.";
@@ -16,8 +16,8 @@ public class MutyaNgLinta_S1 : R_AgimatAbility
 
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        float selfDamage = itemData.slot1RollValue;
-        float lifeStealValue = itemData.slot2RollValue;
+        float selfDamage = itemData.slot1RollValue[0];
+        float lifeStealValue = itemData.slot1RollValue[1];
 
         Vector3 offset = new Vector3(0, 1, 0);
         GameObject bloodSplashVFX = Instantiate(selfDamageVFX, user.transform.position + offset, Quaternion.identity, user.transform);       

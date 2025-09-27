@@ -9,13 +9,13 @@ public class MutyaNgMais_S1 : R_AgimatAbility
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        float roll = itemData.slot1RollValue;
+        float roll = itemData.slot1RollValue[0];
         return $"Heals {roll:F1}% of the player's HP.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        float roll = itemData.slot1RollValue;
+        float roll = itemData.slot1RollValue[0];
         float percent = roll / 100f;
         float maxHP = user.GetComponent<PlayerStats>().p_maxHealth;
         float amountToHeal = maxHP * percent;
@@ -39,7 +39,7 @@ public class MutyaNgMais_S1 : R_AgimatAbility
             GameObject.Destroy(vfx, 2f);
     }
 
-    public override float GetRandomDamagePercent(R_ItemRarity rarity)
+    public float GetRandomHealPercent(R_ItemRarity rarity)
     {
         return rarity switch
         {

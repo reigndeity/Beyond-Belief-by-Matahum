@@ -12,6 +12,8 @@ public static class R_AgimatSpawnerUtility
         var template = agimatTemplates[Random.Range(0, agimatTemplates.Length)];
 
         var spawned = ScriptableObject.CreateInstance<R_ItemData>();
+        spawned.slot1RollValue = new float[2]; // or larger if needed
+        spawned.slot2RollValue = new float[2];
 
         // Copy metadata
         spawned.name = template.name; // keep inspector clean
@@ -32,46 +34,89 @@ public static class R_AgimatSpawnerUtility
         // ✅ Roll ability values based on ability type
         if (spawned.slot1Ability != null)
         {
-            if (spawned.slot1Ability is MutyaNgSaging_S1 sagingS1)
+            if (spawned.slot1Ability is BahayAlitaptap_S1 alitaptap_S1)
             {
-                spawned.slot1RollValue = sagingS1.GetBulletCount(spawned.rarity);
-                spawned.slot2RollValue = sagingS1.GetRandomDamagePercent(spawned.rarity);
+                spawned.slot1RollValue[0] = alitaptap_S1.GetRandomDamagePercent(spawned.rarity);
             }
-            else if (spawned.slot1Ability is MutyaNgSaging_S2 sagingS2)
+            else if (spawned.slot1Ability is BatoOmo_S1 batoOmo_S1)
             {
-                spawned.slot1RollValue = sagingS2.GetBulletCount(spawned.rarity);
-                spawned.slot2RollValue = sagingS2.GetRandomDamagePercent(spawned.rarity);
+                spawned.slot1RollValue[0] = batoOmo_S1.GetRandomShieldDuration(spawned.rarity);
             }
-            else if (spawned.slot1Ability is MutyaNgKalamansi_S1 kalamansiS1)
+            else if (spawned.slot1Ability is MutyaNgKalamansi_S1 kalamansi_S1)
             {
-                spawned.slot1RollValue = kalamansiS1.GetRandomDamagePercent(spawned.rarity);
-                spawned.slot2RollValue = kalamansiS1.GetRandomDamageReductionPercent(spawned.rarity);
+                spawned.slot1RollValue[0] = kalamansi_S1.GetRandomDamagePercent(spawned.rarity);
+                spawned.slot1RollValue[1] = kalamansi_S1.GetRandomDamageReductionPercent(spawned.rarity);
             }
-            else if (spawned.slot1Ability is MutyaNgKalamansi_S2 kalamansiS2)
+            else if (spawned.slot1Ability is MutyaNgLinta_S1 linta_S1)
             {
-                spawned.slot1RollValue = kalamansiS2.GetRandomDamagePercent(spawned.rarity);
-                spawned.slot2RollValue = kalamansiS2.GetRandomDamageReductionPercent(spawned.rarity);
+                spawned.slot1RollValue[0] = linta_S1.GetRandomSelfDamagePercentage(spawned.rarity);
+                spawned.slot1RollValue[1] = linta_S1.GetRandomLifeStealPercentage(spawned.rarity);
             }
-            else if (spawned.slot1Ability is MutyaNgLinta_S1 lintaS1)
+            else if (spawned.slot1Ability is MutyaNgMais_S1 mais_S1)
             {
-                spawned.slot1RollValue = lintaS1.GetRandomSelfDamagePercentage(spawned.rarity);
-                spawned.slot2RollValue = lintaS1.GetRandomLifeStealPercentage(spawned.rarity);
+                spawned.slot1RollValue[0] = mais_S1.GetRandomHealPercent(spawned.rarity);
             }
-            else if (spawned.slot1Ability is MutyaNgLinta_S2 lintaS2)
+            else if (spawned.slot1Ability is MutyaNgSaging_S1 saging_S1)
             {
-                spawned.slot1RollValue = lintaS2.GetRandomLifeStealPercentage(spawned.rarity);
+                spawned.slot1RollValue[0] = saging_S1.GetBulletCount(spawned.rarity);
+                spawned.slot1RollValue[1] = saging_S1.GetRandomDamagePercent(spawned.rarity);
             }
-            else
+            else if (spawned.slot1Ability is MutyaNgSampalok_S1 sampalok_S1)
             {
-                // Default case (Ngipin Ng Kidlat, etc.)
-                spawned.slot1RollValue = spawned.slot1Ability.GetRandomDamagePercent(spawned.rarity);
+                spawned.slot1RollValue[0] = sampalok_S1.GetRandomDamagePercent(spawned.rarity);
+            }
+            else if (spawned.slot1Ability is NgipinNgKalabawS1 kalabaw_S1)
+            {
+                spawned.slot1RollValue[0] = kalabaw_S1.GetRandomIncreaseAttack(spawned.rarity);
+            }
+            else if (spawned.slot1Ability is NgipinNgKidlat_S1 kidlat_S1)
+            {
+                spawned.slot1RollValue[0] = kidlat_S1.GetRandomDamagePercent(spawned.rarity);
             }
         }
 
-        if (spawned.slot2Ability != null && spawned.slot2RollValue == 0f)
+        if (spawned.slot2Ability != null)
         {
-            // Default slot2 handling (if not already set by slot1’s special case)
-            spawned.slot2RollValue = spawned.slot2Ability.GetRandomDamagePercent(spawned.rarity);
+            if (spawned.slot2Ability is BahayAlitaptap_S2 alitaptap_S2)
+            {
+                //No values needed to be changed
+            }
+            else if (spawned.slot2Ability is BatoOmo_S2 batoOmo_S2)
+            {
+                spawned.slot2RollValue[0] = batoOmo_S2.GetRandomDefensePercent(spawned.rarity);
+                spawned.slot2RollValue[1] = batoOmo_S2.GetRandomHealthThreshold(spawned.rarity);
+            }
+            else if (spawned.slot2Ability is MutyaNgKalamansi_S2 kalamansi_S2)
+            {
+                spawned.slot2RollValue[0] = kalamansi_S2.GetRandomDamagePercent(spawned.rarity);
+                spawned.slot2RollValue[1] = kalamansi_S2.GetRandomDefenseReductionPercent(spawned.rarity);
+            }
+            else if (spawned.slot2Ability is MutyaNgLinta_S2 linta_S2)
+            {
+                spawned.slot2RollValue[0] = linta_S2.GetRandomLifeStealPercentage(spawned.rarity);
+            }
+            else if (spawned.slot2Ability is MutyaNgMais_S2 mais_S2)
+            {
+                spawned.slot2RollValue[0] = mais_S2.GetRandomHealPercent(spawned.rarity);
+            }
+            else if (spawned.slot2Ability is MutyaNgSaging_S2 saging_S2)
+            {
+                spawned.slot2RollValue[0] = saging_S2.GetBulletCount(spawned.rarity);
+                spawned.slot2RollValue[1] = saging_S2.GetRandomDamagePercent(spawned.rarity);
+            }
+            else if (spawned.slot2Ability is MutyaNgSampalok_S2 sampalok_S2)
+            {
+                spawned.slot2RollValue[0] = sampalok_S2.GetRandomHealthRestore(spawned.rarity);
+                spawned.slot2RollValue[1] = sampalok_S2.GetRandomStaminaRestore(spawned.rarity);
+            }
+            else if (spawned.slot2Ability is NgipinNgKalabawS2 kalabaw_S2)
+            {
+                spawned.slot2RollValue[0] = kalabaw_S2.GetRandomIncreaseDefense(spawned.rarity);
+            }   
+            else if (spawned.slot2Ability is NgipinNgKidlat_S2 kidlat_S2)
+            {
+                spawned.slot2RollValue[0] = kidlat_S2.GetRandomDamagePercent(spawned.rarity);
+            }
         }
 
         // Assign visuals
@@ -88,6 +133,8 @@ public static class R_AgimatSpawnerUtility
         inventoryUI.RefreshUI();
 
         Debug.Log($"🎉 Spawned Agimat: {spawned.itemName} ({spawned.rarity}) " +
-                  $"[Slot1={spawned.slot1RollValue:F1}, Slot2={spawned.slot2RollValue:F1}]");
+          $"[Slot1={string.Join(", ", spawned.slot1RollValue)}, " +
+          $"Slot2={string.Join(", ", spawned.slot2RollValue)}]");
+
     }
 }

@@ -8,16 +8,16 @@ public class MutyaNgSaging_S2 : R_AgimatAbility
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        int bulletCount = Mathf.RoundToInt(itemData.slot1RollValue);
-        float bulletDamage = itemData.slot2RollValue;
+        int bulletCount = Mathf.RoundToInt(itemData.slot2RollValue[0]);
+        float bulletDamage = itemData.slot2RollValue[1];
 
         return $"Shoots {bulletCount} banana bullets in quick succession, each dealing {bulletDamage:F1}% of ATK.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        int bulletCount = Mathf.RoundToInt(itemData.slot1RollValue);
-        float bulletDamage = itemData.slot2RollValue;
+        int bulletCount = Mathf.RoundToInt(itemData.slot2RollValue[0]);
+        float bulletDamage = itemData.slot2RollValue[1];
 
         CoroutineRunner.Instance.StartCoroutine(ShootBullets(user, bulletCount, bulletDamage));
         Debug.Log($"🍌 Shot {bulletCount} bullets at {bulletDamage:F1}% ATK each.");
@@ -39,6 +39,17 @@ public class MutyaNgSaging_S2 : R_AgimatAbility
             yield return new WaitForSeconds(0.5f);
         }
     }
+    public int GetBulletCount(R_ItemRarity rarity)
+    {
+        return rarity switch
+        {
+            R_ItemRarity.Common => 2,
+            R_ItemRarity.Rare => 3,
+            R_ItemRarity.Epic => 4,
+            R_ItemRarity.Legendary => 5,
+            _ => 2
+        };
+    }
 
     public override float GetRandomDamagePercent(R_ItemRarity rarity)
     {
@@ -49,19 +60,7 @@ public class MutyaNgSaging_S2 : R_AgimatAbility
             R_ItemRarity.Rare => Random.Range(46.5f, 71.5f),
             R_ItemRarity.Epic => Random.Range(54, 79),
             R_ItemRarity.Legendary => Random.Range(61.5f, 86.5f),
-            _ => 10f
-        };
-    }
-
-    public int GetBulletCount(R_ItemRarity rarity)
-    {
-        return rarity switch
-        {
-            R_ItemRarity.Common => 1,
-            R_ItemRarity.Rare => 2,
-            R_ItemRarity.Epic => 3,
-            R_ItemRarity.Legendary => 4,
-            _ => 3
+            _ => 39f
         };
     }
 }

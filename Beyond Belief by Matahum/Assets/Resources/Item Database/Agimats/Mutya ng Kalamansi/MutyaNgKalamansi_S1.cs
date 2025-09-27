@@ -12,16 +12,16 @@ public class MutyaNgKalamansi_S1 : R_AgimatAbility
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        float damagePercentage = itemData.slot1RollValue;
-        float damageReduction = itemData.slot2RollValue;
+        float damagePercentage = itemData.slot1RollValue[0];
+        float damageReduction = itemData.slot1RollValue[1];
 
         return $"Throws a kalamansi that deals {damagePercentage:F1}% ATK and reduces enemy damage by {damageReduction:F1}% for 5s.\n\nDeals 50% more damage against Aswang.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        float damagePercentage = itemData.slot1RollValue;
-        float damageReduction = itemData.slot2RollValue;
+        float damagePercentage = itemData.slot1RollValue[0];
+        float damageReduction = itemData.slot1RollValue[1];
 
         Vector3 throwPoint = user.transform.position + user.transform.forward * 1f + Vector3.up * 0.5f;
         GameObject projectile = Instantiate(kalamansi_BulletPrefab, throwPoint, Quaternion.identity);

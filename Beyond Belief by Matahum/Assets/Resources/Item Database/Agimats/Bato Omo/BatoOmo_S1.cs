@@ -8,13 +8,13 @@ public class BatoOmo_S1 : R_AgimatAbility
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        float shieldDuration = itemData.slot1RollValue + 0.5F;
+        float shieldDuration = itemData.slot1RollValue[0] + 0.5F;
         return $"Gain a barrier that blocks any damage for {shieldDuration:F1} seconds.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        float shieldDuration = itemData.slot1RollValue;
+        float shieldDuration = itemData.slot1RollValue[0] + 0.5F;
         Player player = user.GetComponent<Player>();
         CoroutineRunner.Instance.RunCoroutine(SpawnShield(player, shieldDuration));
     }
@@ -52,7 +52,7 @@ public class BatoOmo_S1 : R_AgimatAbility
         Destroy(shieldObj);
     }
 
-    public override float GetRandomDamagePercent(R_ItemRarity rarity)
+    public float GetRandomShieldDuration(R_ItemRarity rarity)
     {
         // Treat as duration roll
         return rarity switch

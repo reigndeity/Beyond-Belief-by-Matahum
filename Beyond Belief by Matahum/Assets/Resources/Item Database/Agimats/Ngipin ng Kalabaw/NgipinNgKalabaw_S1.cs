@@ -9,13 +9,13 @@ public class NgipinNgKalabawS1 : R_AgimatAbility
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        float roll = itemData.slot1RollValue;
+        float roll = itemData.slot1RollValue[0];
         return $"Gains additional {roll:F1}% of attack for {duration} seconds then push back surrounding enemies, damaging them.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        float roll = itemData.slot1RollValue;
+        float roll = itemData.slot1RollValue[0];
         float percent = roll / 100f;
         float atkPrcnt = user.GetComponent<PlayerStats>().p_attack;
         float amountToIncrease = atkPrcnt * percent;
@@ -83,7 +83,7 @@ public class NgipinNgKalabawS1 : R_AgimatAbility
         Destroy(vfxInstance);
     }
 
-    public override float GetRandomDamagePercent(R_ItemRarity rarity)
+    public float GetRandomIncreaseAttack(R_ItemRarity rarity)
     {
         return rarity switch
         {

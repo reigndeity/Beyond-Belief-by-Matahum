@@ -12,14 +12,14 @@ public class NgipinNgKidlat_S1 : R_AgimatAbility
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        float roll = itemData.slot1RollValue;
+        float roll = itemData.slot1RollValue[0];
         return $"Summons a lightning ball, instantly dealing {roll:F1}% of ATK to all targets within {strikeRadius}m.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
         float atk = user.GetComponent<PlayerStats>().p_attack;
-        float roll = itemData.slot1RollValue;
+        float roll = itemData.slot1RollValue[0];
         float damage = atk + (atk * (roll / 100f));
 
         Vector3 origin = user.transform.position;

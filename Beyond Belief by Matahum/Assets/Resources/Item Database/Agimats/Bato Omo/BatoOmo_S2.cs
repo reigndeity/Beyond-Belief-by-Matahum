@@ -12,15 +12,15 @@ public class BatoOmo_S2 : R_AgimatAbility
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        float increasedDefenses = itemData.slot1RollValue;
-        float healthThreshold = itemData.slot2RollValue;
+        float increasedDefenses = itemData.slot2RollValue[0];
+        float healthThreshold = itemData.slot2RollValue[1];
         return $"When HP is below {healthThreshold:F1}%, gain {increasedDefenses:F1}% defense.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        float increasedDefenses = itemData.slot1RollValue;
-        float healthThreshold = itemData.slot2RollValue;
+        float increasedDefenses = itemData.slot2RollValue[0];
+        float healthThreshold = itemData.slot2RollValue[1];
 
         PlayerStats stats = user.GetComponent<PlayerStats>();
         float threshold = stats.p_maxHealth * (healthThreshold / 100f);
@@ -81,7 +81,7 @@ public class BatoOmo_S2 : R_AgimatAbility
         }
     }
 
-    public override float GetRandomDamagePercent(R_ItemRarity rarity)
+    public float GetRandomDefensePercent(R_ItemRarity rarity)
     {
         // Treat as increased defense roll
         return rarity switch

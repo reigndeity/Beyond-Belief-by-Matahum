@@ -10,8 +10,8 @@ public class MutyaNgSampalok_S2 : R_AgimatAbility
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        float hpRoll = itemData.slot1RollValue;
-        float staminaRoll = itemData.slot2RollValue;
+        float hpRoll = itemData.slot2RollValue[0];
+        float staminaRoll = itemData.slot2RollValue[1];
 
         return $"Defeating an enemy restores {hpRoll:F1}% of health and {staminaRoll:F1} stamina.";
     }
@@ -51,8 +51,8 @@ public class MutyaNgSampalok_S2 : R_AgimatAbility
         Player player = user.GetComponent<Player>();
         if (stats == null || player == null) return;
 
-        float hpRoll = itemData.slot1RollValue;
-        float staminaRoll = itemData.slot2RollValue;
+        float hpRoll = itemData.slot2RollValue[0];
+        float staminaRoll = itemData.slot2RollValue[1];
 
         float healAmount = stats.p_maxHealth * (hpRoll / 100f);
         player.Heal(healAmount);
@@ -62,7 +62,7 @@ public class MutyaNgSampalok_S2 : R_AgimatAbility
         Debug.Log($"🌿 Restored {hpRoll:F1}% HP and {staminaRoll:F1} stamina on enemy death.");
     }
 
-    public override float GetRandomDamagePercent(R_ItemRarity rarity)
+    public float GetRandomHealthRestore(R_ItemRarity rarity)
     {
         // Slot1 = HP restore %, Slot2 = stamina restore
         // We'll default to HP restore here

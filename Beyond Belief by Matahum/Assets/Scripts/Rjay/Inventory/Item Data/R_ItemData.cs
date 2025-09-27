@@ -74,8 +74,8 @@ public class R_ItemData : ScriptableObject
     public R_AgimatAbility slot2Ability;
 
     // ✅ Rolled values per instance
-    public float slot1RollValue;
-    public float slot2RollValue;
+    public float[] slot1RollValue;
+    public float[] slot2RollValue;
 
     [TextArea] public string effectText; // UI-only
     public R_ConsumableEffect consumableEffect; // Logic-only

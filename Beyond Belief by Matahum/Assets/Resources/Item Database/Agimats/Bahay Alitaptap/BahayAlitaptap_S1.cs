@@ -15,13 +15,13 @@ public class BahayAlitaptap_S1 : R_AgimatAbility
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        float increasedDamage = itemData.slot1RollValue;
+        float increasedDamage = itemData.slot1RollValue[0];
         return $"Place an orb on the ground that pulses 3 times. First pulse deals {increasedDamage:F1}% of ATK, increasing by 50% per pulse.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        float increasedDamage = itemData.slot1RollValue;
+        float increasedDamage = itemData.slot1RollValue[0];
         float atk = user.GetComponent<PlayerStats>().p_attack;
         float calculatedDamage = (increasedDamage / 100f) * atk;
 

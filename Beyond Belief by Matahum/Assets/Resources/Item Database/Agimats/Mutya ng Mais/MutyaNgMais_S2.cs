@@ -9,13 +9,13 @@ public class MutyaNgMais_S2 : R_AgimatAbility
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        float roll = itemData.slot2RollValue;
+        float roll = itemData.slot2RollValue[0];
         return $"Regenerates {roll:F1} HP every {baseCooldown:F1} seconds.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        float roll = itemData.slot2RollValue;
+        float roll = itemData.slot2RollValue[0];
 
         var stats = user.GetComponent<PlayerStats>();
         var player = user.GetComponent<Player>();
@@ -48,7 +48,7 @@ public class MutyaNgMais_S2 : R_AgimatAbility
             GameObject.Destroy(vfx, 2f);
     }
 
-    public override float GetRandomDamagePercent(R_ItemRarity rarity)
+    public float GetRandomHealPercent(R_ItemRarity rarity)
     {
         // For S2 we’re treating “damage percent” as flat heal roll
         return rarity switch

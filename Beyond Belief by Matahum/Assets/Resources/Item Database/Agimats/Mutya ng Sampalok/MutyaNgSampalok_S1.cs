@@ -11,13 +11,13 @@ public class MutyaNgSampalok_S1 : R_AgimatAbility
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        float roll = itemData.slot1RollValue;
-        return $"Lashes out a vine in front, dealing {roll:F1}% of ATK to enemies hit in a cone.";
+        float roll = itemData.slot1RollValue[0];
+        return $"Lashes out a vine in front, dealing {roll:F1}% of ATK to enemies hit in a cone. Enemies hit get poisoned.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        float roll = itemData.slot1RollValue;
+        float roll = itemData.slot1RollValue[0];
         CoroutineRunner.Instance.RunCoroutine(StartSweeping(user, roll));
     }
 

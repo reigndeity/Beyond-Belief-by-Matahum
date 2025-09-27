@@ -13,14 +13,14 @@ public class NgipinNgKidlat_S2 : R_AgimatAbility
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        float roll = itemData.slot2RollValue;
+        float roll = itemData.slot2RollValue[0];
         return $"Calls down a thunder strike on the nearest target, dealing {roll:F1}% of ATK. Nearby targets within {strikeRadius}m are also damaged.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
         float atk = user.GetComponent<PlayerStats>().p_attack;
-        float roll = itemData.slot2RollValue;
+        float roll = itemData.slot2RollValue[0];
         float damage = atk + (atk * (roll / 100f));
 
         // 1️⃣ Find the closest valid target

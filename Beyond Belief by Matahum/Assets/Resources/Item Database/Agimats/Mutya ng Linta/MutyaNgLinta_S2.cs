@@ -8,13 +8,13 @@ public class MutyaNgLinta_S2 : R_AgimatAbility
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        float lifeStealValue = itemData.slot1RollValue;
+        float lifeStealValue = itemData.slot2RollValue[0];
         return $"Heal {lifeStealValue:F1}% of damage dealt with attacks to enemies.";
     }
 
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
-        float lifeStealValue = itemData.slot1RollValue;
+        float lifeStealValue = itemData.slot2RollValue[0];
 
         if (buffCoroutine != null)
             CoroutineRunner.Instance.StopCoroutine(buffCoroutine);
