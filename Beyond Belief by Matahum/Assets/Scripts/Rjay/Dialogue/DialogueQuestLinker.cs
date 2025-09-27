@@ -79,9 +79,12 @@ public class DialogueQuestLinker : MonoBehaviour
     public GameObject nunoSaPunsoCharacter;
     [Header("Act 2 Components")]
     public GameObject mangkukulamHut;
-    public GameObject mangkukulamTriggers;
+    public GameObject mangkukulamFirstTriggers;
     public GameObject mangkukulamNpc;
-
+    public GameObject firstFakeBaleteTree;
+    public GameObject secondFakeBaleteTree;
+    public GameObject thirdFakeBaleteTree;
+    public GameObject mangkukulamSecondTriggers;
 
     void OnEnable()
     {
@@ -433,7 +436,7 @@ public class DialogueQuestLinker : MonoBehaviour
                 case "A2_Q1_FindAlbularyo'sHut":
                     tupas.SetDialogueState("A2_Q1_FindAlbularyo'sHut");
                     ApplyStates(tupas);
-                    mangkukulamTriggers.SetActive(true);
+                    mangkukulamFirstTriggers.SetActive(true);
                     AddActiveMarker(currentQuestID, tracked);
                     break;
 
@@ -441,8 +444,27 @@ public class DialogueQuestLinker : MonoBehaviour
                     mangkukulamNpc.SetActive(true);
                     tupas.SetDialogueState("default");
                     mangkukulam.SetDialogueState("A2_Q2_MysteriousWoman");
-                    ApplyStates(tupas,mangkukulam);
+                    ApplyStates(tupas, mangkukulam);
                     AddActiveMarker(currentQuestID, tracked);
+                    break;
+
+                case "A2_Q3_TheFirstPillar_P1":
+                    mangkukulam.SetDialogueState("A2_Q3_TheFirstPillar_P1");
+                    ApplyStates(mangkukulam);
+                    AddActiveMarker(currentQuestID, tracked);
+                    firstFakeBaleteTree.gameObject.layer = LayerMask.NameToLayer("Fake Balete Tree Domain");
+                    break;
+                case "A2_Q3_TheSecondPillar_P1":
+                    AddActiveMarker(currentQuestID, tracked);
+                    secondFakeBaleteTree.gameObject.layer = LayerMask.NameToLayer("Fake Balete Tree Domain");
+                    break;
+                case "A2_Q3_TheThirdPillar_P1":
+                    AddActiveMarker(currentQuestID, tracked);
+                    thirdFakeBaleteTree.gameObject.layer = LayerMask.NameToLayer("Fake Balete Tree Domain");
+                    break;
+                case "A2_Q4_ReturnToTheAlbularyo":
+                    mangkukulamNpc.SetActive(false);
+                    mangkukulamSecondTriggers.SetActive(true);
                     break;
                 #endregion
             }
@@ -714,6 +736,10 @@ public class DialogueQuestLinker : MonoBehaviour
             case "A1_Q8_ReturnToTheVillage": return tupas.transform;
             case "A2_Q1_FindAlbularyo'sHut": return mangkukulamHut.transform;
             case "A2_Q2_MysteriousWoman": return mangkukulam.transform;
+            case "A2_Q3_TheFirstPillar_P1": return firstFakeBaleteTree.transform;
+            case "A2_Q3_TheSecondPillar_P1": return secondFakeBaleteTree.transform;
+            case "A2_Q3_TheThirdPillar_P1": return thirdFakeBaleteTree.transform;
+            case "A2_Q4_ReturnToTheAlbularyo": return mangkukulamHut.transform;
         }
         return null;
     }

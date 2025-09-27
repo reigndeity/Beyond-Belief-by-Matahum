@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Haligi : MonoBehaviour, IDamageable
@@ -29,6 +30,7 @@ public class Haligi : MonoBehaviour, IDamageable
     public string missionID;
     public GameObject fragment;
 
+    public UnityEvent onDestroy;
     private void Awake()
     {
         currentHealth = Mathf.Clamp(currentHealth <= 0 ? maxHealth : currentHealth, 0f, maxHealth);
@@ -109,6 +111,7 @@ public class Haligi : MonoBehaviour, IDamageable
 
         BB_QuestManager.Instance.UpdateMissionProgressOnce(missionID);
         fragment.SetActive(true);
+        onDestroy?.Invoke();
         Destroy(gameObject);
     }
 

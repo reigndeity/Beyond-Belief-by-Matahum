@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+    using System.Threading.Tasks;
 using UnityEngine;
 
 public class FakeBaleteTreeInteracatable : Interactable
@@ -9,9 +9,14 @@ public class FakeBaleteTreeInteracatable : Interactable
     public string acceptQuestID;
     public override void OnInteract()
     {
-        base.OnInteract();
+        // Check cooldown before doing anything
+        if (useInteractCooldown && IsOnCooldown())
+            return;
+
+        base.OnInteract();   // triggers cooldown if enabled
         LoadingToCutscene();
     }
+
 
     public void LoadingToCutscene()
     {
@@ -19,11 +24,14 @@ public class FakeBaleteTreeInteracatable : Interactable
     }
     private async Task Loading()
     {
-        //BB_QuestManager.Instance.UpdateMissionProgressOnce(missionID);
-        await Task.Delay(1000);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
-        //BB_QuestManager.Instance.ClaimRewardsByID(claimRewardsID);
-        await Task.Delay(500);
+        await Task.Delay(1000);
+        BB_QuestManager.Instance.UpdateMissionProgressOnce(missionID);
+        await Task.Delay(100);
+        BB_QuestManager.Instance.ClaimRewardsByID(claimRewardsID);
+        await Task.Delay(100);
+        BB_QuestManager.Instance.AcceptQuestByID(acceptQuestID);
+        await Task.Delay(100);
         await GameManager.instance.SaveAll();
         await Task.Delay(500);
         Loader.Load(sceneIndex);
