@@ -7,6 +7,8 @@ public class BatoOmo_S2 : R_AgimatAbility
     private Coroutine buffCoroutine;
     private bool isBuffActive = false;
     private float originalValue = 0;
+    public GameObject defUpVFX;
+    private GameObject activeVFX;
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
@@ -40,6 +42,8 @@ public class BatoOmo_S2 : R_AgimatAbility
             CoroutineRunner.Instance.StopCoroutine(buffCoroutine);
             buffCoroutine = null;
         }
+
+        if(activeVFX != null) Destroy(activeVFX);
     }
 
     private IEnumerator CheckBuff(PlayerStats stats, float threshold, float increasedDefenses)
@@ -53,6 +57,11 @@ public class BatoOmo_S2 : R_AgimatAbility
                     originalValue = stats.p_defense;
                     stats.p_defense = Mathf.RoundToInt(originalValue * (1f + (increasedDefenses / 100f)));
                     isBuffActive = true;
+
+                    Vector3 offset = new Vector3(0, 1, 0);
+                    if(activeVFX == null)
+                        activeVFX = Instantiate(defUpVFX, stats.transform.position + offset, Quaternion.identity, stats.transform);
+                    activeVFX.SetActive(true);
                 }
             }
             else
@@ -61,6 +70,10 @@ public class BatoOmo_S2 : R_AgimatAbility
                 {
                     stats.p_defense = originalValue;
                     isBuffActive = false;
+
+                    if (activeVFX != null)
+                        activeVFX.SetActive(false);
+
                 }
             }
 

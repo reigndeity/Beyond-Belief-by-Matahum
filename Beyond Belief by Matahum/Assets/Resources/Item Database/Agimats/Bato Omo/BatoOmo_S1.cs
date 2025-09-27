@@ -8,7 +8,7 @@ public class BatoOmo_S1 : R_AgimatAbility
 
     public override string GetDescription(R_ItemRarity rarity, R_ItemData itemData)
     {
-        float shieldDuration = itemData.slot1RollValue;
+        float shieldDuration = itemData.slot1RollValue + 0.5F;
         return $"Gain a barrier that blocks any damage for {shieldDuration:F1} seconds.";
     }
 
@@ -20,11 +20,34 @@ public class BatoOmo_S1 : R_AgimatAbility
     }
 
     private IEnumerator SpawnShield(Player player, float shieldDuration)
-    {
+    {    
+        player.isInvulnerable = true;
+
         Vector3 offset = new Vector3(0, 1, 0);
         GameObject shieldObj = Instantiate(shieldPrefab, player.transform.position + offset, Quaternion.identity, player.transform);
-        player.isInvulnerable = true;
+        //shieldObj.transform.localScale = Vector3.zero;
+
+        float t = 0;
+        float duration = 0.25f;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float normalized = t / duration;
+            shieldObj.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, normalized);
+            yield return null;
+        }
+
+
         yield return new WaitForSeconds(shieldDuration);
+
+        t = 0;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float normalized = t / duration;
+            shieldObj.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, normalized);
+            yield return null;
+        }
         player.isInvulnerable = false;
         Destroy(shieldObj);
     }
