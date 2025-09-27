@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 93644878450879262}
   - component: {fileID: 6710265396496143852}
   - component: {fileID: 4511418972457011953}
+  - component: {fileID: 1593523712284395510}
   m_Layer: 0
   m_Name: Camp Fire
   m_TagString: Untagged
@@ -26,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1167495952066381571}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.06763782, y: -0.46756417, z: -0.039828666, w: 0.88046724}
+  m_LocalRotation: {x: -0.06763837, y: -0.46756506, z: -0.039824862, w: 0.8804669}
   m_LocalPosition: {x: 2.420329, y: -0.0061622625, z: 0.050433733}
-  m_LocalScale: {x: 0.2032388, y: 0.20323883, z: 0.20323879}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -8.995, y: -55.909, z: -0.399}
 --- !u!33 &6710265396496143852
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -87,3 +88,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1593523712284395510
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167495952066381571}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 68956787070615361, guid: 2f2edf4944662c349a6202c69e77e856, type: 3}

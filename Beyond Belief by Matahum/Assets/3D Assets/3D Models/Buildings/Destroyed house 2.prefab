@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2002930698709897363}
   - component: {fileID: 1750502873810748822}
   - component: {fileID: 1617403845691078383}
+  - component: {fileID: 8645608778740125738}
   m_Layer: 0
   m_Name: Destroyed house 2
   m_TagString: Untagged
@@ -90,3 +91,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8645608778740125738
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6305382591853917468}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -6271771150507243994, guid: 25a4ee5ba2160ea4db139faef8cbab42, type: 3}
