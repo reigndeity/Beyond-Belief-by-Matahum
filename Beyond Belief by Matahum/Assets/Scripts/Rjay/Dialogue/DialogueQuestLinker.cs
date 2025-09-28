@@ -453,6 +453,8 @@ public class DialogueQuestLinker : MonoBehaviour
                     ApplyStates(mangkukulam);
                     AddActiveMarker(currentQuestID, tracked);
                     firstFakeBaleteTree.gameObject.layer = LayerMask.NameToLayer("Fake Balete Tree Domain");
+
+                    mangkukulamNpc.GetComponent<NPC>().interactName = "Talk to Albularyo";
                     break;
                 case "A2_Q3_TheSecondPillar_P1":
                     AddActiveMarker(currentQuestID, tracked);
