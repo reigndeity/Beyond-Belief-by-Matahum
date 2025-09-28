@@ -51,6 +51,18 @@ public class PlayerPamanaSetBonus : MonoBehaviour
             case R_PamanaSet.KatiwalaNgAraw:
                 playerStats.p_atkPrcnt += 10f;
                 break;
+            case R_PamanaSet.HinagpisNgDigmaan:
+                playerStats.p_critRate += 10f;
+                break;
+            case R_PamanaSet.KatiwalaNgBuwan:
+                playerStats.p_hpPrcnt += 10f;
+                break;
+            case R_PamanaSet.MalabulkangManiniil:
+                playerStats.p_atkPrcnt += 10f;
+                break;
+            case R_PamanaSet.TagapangasiwaNgLayog:
+                playerStats.p_hpPrcnt += 10f;
+                break;
         }
     }
 
@@ -59,7 +71,19 @@ public class PlayerPamanaSetBonus : MonoBehaviour
         switch (set)
         {
             case R_PamanaSet.KatiwalaNgAraw:
-                playerStats.p_atkPrcnt += 20f;
+                playerStats.p_atkPrcnt += 15f;
+                break;
+            case R_PamanaSet.HinagpisNgDigmaan:
+                playerStats.p_critDmg += 15f;
+                break;
+            case R_PamanaSet.KatiwalaNgBuwan:
+                playerStats.p_defPrcnt += 15f;
+                break;
+            case R_PamanaSet.MalabulkangManiniil:
+                playerStats.p_critRate += 15f;
+                break;
+            case R_PamanaSet.TagapangasiwaNgLayog:
+                playerStats.p_atkPrcnt += 15f;
                 break;
         }
     }
