@@ -7,6 +7,7 @@ public class Shopkeep_ButtonManager : MonoBehaviour
     [Header("Shop Category Filters")]
     public Button consumablesButton;
     public Button materialsButton;
+    public Button agimatsButton;
 
     [Header("Buying Item")]
     public Button buy_ConfirmationButton;
@@ -25,6 +26,7 @@ public class Shopkeep_ButtonManager : MonoBehaviour
 
         consumablesButton.onClick.AddListener(OnConsumableFilter);
         materialsButton.onClick.AddListener(OnMaterialFilter);
+        agimatsButton.onClick.AddListener(OnAgimatFilter);
 
         buy_ConfirmationButton.onClick.AddListener(AttemptToBuy);
         addQuantityButton.onClick.AddListener(AddAmount);
@@ -45,6 +47,10 @@ public class Shopkeep_ButtonManager : MonoBehaviour
     void OnMaterialFilter()
     {
         shopkeep.OnOpenShopDetails(R_ItemType.UpgradeMaterial);
+    }
+    void OnAgimatFilter()
+    {
+        shopkeep.OnOpenShopDetails(R_ItemType.Agimat);
     }
     #endregion
 
