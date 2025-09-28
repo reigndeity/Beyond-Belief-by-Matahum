@@ -154,10 +154,6 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
         {
             if (col.gameObject != gameObject) // skip main capsule
                 col.excludeLayers = playerLayerMask;
-            
-            
-            col.excludeLayers |= 1 << LayerMask.NameToLayer("Player");
-            col.excludeLayers |= 1 << LayerMask.NameToLayer("WeaponCollider");
         }
     }
     void DisableAllRagdollParts()
@@ -184,11 +180,8 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
 
         foreach (Collider col in GetComponentsInChildren<Collider>())
         {
-            if (col.gameObject != gameObject)
+            if (col.gameObject != gameObject) // skip main capsule
                 col.enabled = true;
-
-            col.excludeLayers |= 1 << LayerMask.NameToLayer("Player");
-            col.excludeLayers |= 1 << LayerMask.NameToLayer("WeaponCollider");
         }
     }
     public void Death()

@@ -110,7 +110,7 @@ public class DialogueQuestLinker : MonoBehaviour
         string currentQuestID = tracked.questID;
 
         // ==============================
-        // Press V â†’ Spawn / Replace quest marker
+        // Press V → Spawn / Replace quest marker
         // ==============================
         if (Input.GetKeyDown(m_playerInput.questGuideKey))
         {
@@ -453,8 +453,6 @@ public class DialogueQuestLinker : MonoBehaviour
                     ApplyStates(mangkukulam);
                     AddActiveMarker(currentQuestID, tracked);
                     firstFakeBaleteTree.gameObject.layer = LayerMask.NameToLayer("Fake Balete Tree Domain");
-
-                    mangkukulamNpc.GetComponent<NPC>().interactName = "Talk to Albularyo";
                     break;
                 case "A2_Q3_TheSecondPillar_P1":
                     AddActiveMarker(currentQuestID, tracked);
@@ -577,7 +575,7 @@ public class DialogueQuestLinker : MonoBehaviour
 
             if (!isDelayAccept)
             {
-                // âœ… Only add Tupas' Request if it's not already in progress/completed/claimed
+                // ✅ Only add Tupas' Request if it's not already in progress/completed/claimed
                 if (!BB_QuestManager.Instance.HasQuest("A1_Q1_Tupas'Request_P1"))
                 {
                     StartCoroutine(DelayAcceptQuestReward("A0_Q13_BackpackTraining"));
@@ -621,7 +619,7 @@ public class DialogueQuestLinker : MonoBehaviour
     }
     IEnumerator DelayAcceptQuestWithTimer(string questID, float delaySeconds)
     {
-        Debug.Log($"â± Timer started for {questID} ({delaySeconds}s)");
+        Debug.Log($"⏱ Timer started for {questID} ({delaySeconds}s)");
         yield return new WaitForSeconds(delaySeconds);
         BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q4_AlbularyoHut");
         BB_QuestManager.Instance.ClaimRewardsByID("A1_Q4_Albularyo'sHut");
@@ -630,7 +628,7 @@ public class DialogueQuestLinker : MonoBehaviour
         if (!BB_QuestManager.Instance.HasQuest(questID))
         {
             BB_QuestManager.Instance.AcceptQuestByID(questID);
-            Debug.Log($"âœ… Quest {questID} auto-accepted after {delaySeconds} seconds.");
+            Debug.Log($"✅ Quest {questID} auto-accepted after {delaySeconds} seconds.");
         }
     }
 
@@ -703,7 +701,7 @@ public class DialogueQuestLinker : MonoBehaviour
             activeMarker.target = questTarget;
             activeMarker.mainCamera = Camera.main;
 
-            // âœ… If custom offset is provided, override it
+            // ✅ If custom offset is provided, override it
             if (customOffset.HasValue)
                 activeMarker.SetOffset(customOffset.Value);
 
