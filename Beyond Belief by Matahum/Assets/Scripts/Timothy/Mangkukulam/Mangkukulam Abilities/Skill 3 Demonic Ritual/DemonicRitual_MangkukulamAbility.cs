@@ -41,6 +41,7 @@ public class DemonicRitual_MangkukulamAbility : Mangkukulam_Ability
     IEnumerator FlyToCenter(GameObject user)
     {
         Mangkukulam.instance.isVulnerable = false;
+        user.layer = LayerMask.NameToLayer("Default");
         canBeUsed = false;
         NavMeshAgent agent = user.GetComponent<NavMeshAgent>();
         if (agent != null) agent.enabled = false;
@@ -104,6 +105,7 @@ public class DemonicRitual_MangkukulamAbility : Mangkukulam_Ability
         Debug.Log("Ritual has ended");
         // Ritual ended externally (candles destroyed)
         CoroutineRunner.Instance.RunCoroutine(DemonicRitualOnCooldown(animator));
+        user.layer = LayerMask.NameToLayer("Enemy");
         // Restore ground movement
         agent.enabled = true;
         agent.Warp(user.transform.position);

@@ -229,7 +229,12 @@ public class Shopkeep : MonoBehaviour
         int itemQuantity = 0;
         foreach (R_InventoryItem inventoryItem in inventory.items)
         {
-            if (itemData == inventoryItem.itemData)
+            /*if (itemData == inventoryItem.itemData)
+            {
+                itemQuantity += inventoryItem.quantity;
+            }*/
+
+            if (itemData.itemName == inventoryItem.itemData.itemName)
             {
                 itemQuantity += inventoryItem.quantity;
             }
@@ -292,7 +297,8 @@ public class Shopkeep : MonoBehaviour
 
         if (selectedItemData.itemType == R_ItemType.Agimat)
         {
-            R_GeneralItemSpawner.instance.SpawnSingleAgimat(new R_ItemData[] { selectedItemData });
+            for(int i = 0; i < buying_itemQuantity; i++)
+                R_GeneralItemSpawner.instance.SpawnSingleAgimat(new R_ItemData[] { selectedItemData });
         }
         else
         {
