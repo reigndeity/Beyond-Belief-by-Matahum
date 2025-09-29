@@ -756,7 +756,8 @@ GameObject:
   - component: {fileID: 7714125669463458019}
   - component: {fileID: 8843727039306319567}
   - component: {fileID: 5145367368026653898}
-  m_Layer: 0
+  - component: {fileID: 7979181319864540370}
+  m_Layer: 14
   m_Name: Big_vines
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -831,6 +832,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7979181319864540370
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6466964612268027994}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5095255430588532701, guid: ebc9b42a68547de4a892751c7315b79a, type: 3}
 --- !u!1 &7185943836440704657
 GameObject:
   m_ObjectHideFlags: 0
@@ -1135,7 +1158,8 @@ GameObject:
   - component: {fileID: 28784205298045396}
   - component: {fileID: 2910034695723289073}
   - component: {fileID: 8100450000749058995}
-  m_Layer: 0
+  - component: {fileID: 9031560333608428977}
+  m_Layer: 14
   m_Name: Tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1210,6 +1234,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &9031560333608428977
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8573370106901823337}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2494185979427425891, guid: ebc9b42a68547de4a892751c7315b79a, type: 3}
 --- !u!1001 &807579256048028564
 PrefabInstance:
   m_ObjectHideFlags: 0

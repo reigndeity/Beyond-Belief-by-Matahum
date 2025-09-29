@@ -251,7 +251,6 @@ public class DialogueQuestLinker : MonoBehaviour
                 case "A0_Q11_AgimatTraining_P1":
                     bangkaw.SetDialogueState("A0_Q11_AgimatTraining_P1");
                     ApplyStates(bangkaw);
-                    //inventory.AddItem(ngipinNgKidlatAgimat, 1);
                     R_GeneralItemSpawner.instance.SpawnSingleAgimat(ngipinNgKidlatAgimat);
 
                     inventoryUI.RefreshUI();
