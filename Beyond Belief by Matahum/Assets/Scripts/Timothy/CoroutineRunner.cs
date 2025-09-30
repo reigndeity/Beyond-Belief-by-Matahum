@@ -35,6 +35,6 @@ public class CoroutineRunner : MonoBehaviour
 
     private void OnDestroy()
     {
-        CoroutineRunner.Instance.StopAllCoroutines();
+        StopAllCoroutines();
     }
 }

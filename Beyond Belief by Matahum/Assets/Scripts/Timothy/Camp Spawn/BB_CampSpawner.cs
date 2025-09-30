@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using BlazeAISpace;
 
 public class BB_CampSpawner : MonoBehaviour
 {
@@ -88,6 +89,15 @@ public class BB_CampSpawner : MonoBehaviour
                 }
 
                 enemyList.Add(enemyStats);
+
+
+                BlazeAI blazeAI = enemyGO.GetComponent<BlazeAI>();
+                blazeAI.deathCallRadius = 10;
+                blazeAI.agentLayersToDeathCall = LayerMask.GetMask("Enemy");
+
+                HitStateBehaviour hitState = enemyGO.GetComponent<HitStateBehaviour>();
+                hitState.callOthersRadius = 10;
+                hitState.agentLayersToCall = LayerMask.GetMask("Enemy");
             }
         }
 
