@@ -85,6 +85,7 @@ public class DialogueQuestLinker : MonoBehaviour
     public GameObject secondFakeBaleteTree;
     public GameObject thirdFakeBaleteTree;
     public GameObject mangkukulamSecondTriggers;
+    public Transform a2_q6_playerTransform;
 
     void OnEnable()
     {
@@ -466,6 +467,10 @@ public class DialogueQuestLinker : MonoBehaviour
                 case "A2_Q4_ReturnToTheAlbularyo":
                     mangkukulamNpc.SetActive(false);
                     mangkukulamSecondTriggers.SetActive(true);
+                    break;
+                case "A2_Q6_WhoAreYou?":
+                    CutsceneManager.Instance.MovePlayerToTarget(a2_q6_playerTransform);
+                    PlayerCamera.Instance.AdjustCamera();
                     break;
                 #endregion
             }
