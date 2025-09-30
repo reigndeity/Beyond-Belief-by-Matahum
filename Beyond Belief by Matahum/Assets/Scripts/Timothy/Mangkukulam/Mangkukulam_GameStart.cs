@@ -22,7 +22,7 @@ public class Mangkukulam_GameStart : MonoBehaviour
         PlayerCamera.Instance.AdjustCamera();
         await GameManager.instance.LoadPlayerNoQuest();
 
-        //DisableUI();
+        DisableUI();
 
         // Fade out
         await Task.Delay(1000);
