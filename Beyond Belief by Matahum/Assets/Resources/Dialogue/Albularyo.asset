@@ -1,0 +1,145 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96f6ae9bcd23cb64780b824aeb56a38a, type: 3}
+  m_Name: Albularyo
+  m_EditorClassIdentifier: 
+  groups:
+  - dialogueState: A2_Q7_TalkToTheWoman
+    lines:
+    - speakerName: ?????
+      dialogueText: Hello child.
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: Who are you?
+        dialogueState: A2_Q7_TalkToTheWoman_WhoAreYou?
+      animationName: 
+  - dialogueState: A2_Q7_TalkToTheWoman_WhoAreYou?
+    lines:
+    - speakerName: Albularyo
+      dialogueText: I am the Albularyo.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: I believe this is the first time we met
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: Why do you look so puzzled?
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: Oh no...
+        dialogueState: A2_Q7_TalkToTheWoman_OhNo
+      animationName: 
+  - dialogueState: A2_Q7_TalkToTheWoman_OhNo
+    lines:
+    - speakerName: Albularyo
+      dialogueText: I see.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: Whom you met child is no one else but the <color=red>Mangkukulam</color>.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: I knew something was off.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: I could feel it.
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: About that...
+        dialogueState: A2_Q7_TalkToTheWoman_AboutThat
+      animationName: 
+  - dialogueState: A2_Q7_TalkToTheWoman_AboutThat
+    lines:
+    - speakerName: Albularyo
+      dialogueText: YOU DESTROYED WHAT?!
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: Oh no!
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: Those Haligi you destroyed had a magical relic that were meant
+        to seal off this world from where you came from!
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: Now that those are gone and in her possession, terrible things
+        will happen!
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: We must go together and stop her!
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+  - dialogueState: A2_Q8_GoToMangkukulamWithAlbularyo
+    lines:
+    - speakerName: Albularyo
+      dialogueText: Hurry along.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: I'll catch up to you.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Albularyo
+      dialogueText: We must stop her at all cost!
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 

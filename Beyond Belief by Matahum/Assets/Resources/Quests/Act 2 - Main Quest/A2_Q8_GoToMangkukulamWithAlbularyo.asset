@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a962021d732214296807c0b79bcfcf, type: 3}
   m_Name: A2_Q8_GoToMangkukulamWithAlbularyo
   m_EditorClassIdentifier: 
-  questID: A2_Q6_GoToMangkukulamWithAlbularyo
+  questID: A2_Q8_GoToMangkukulamWithAlbularyo
   questTitle: What have I done?
   actNumber: ACT 2
   questJournalDescription:
@@ -21,13 +21,13 @@ MonoBehaviour:
   - You met the real Albularyo and she is not happy with what you did.
   questHudDescription: 
   questType: 0
-  state: 1
+  state: 0
   missions:
   - whatMustBeDone: Go to the Mangkukulam
-    targetID: A2_Q6_Mangkukulam
+    targetID: A2_Q8_MangkukulamHut
     hasCounter: 0
     requiredAmount: 1
     currentAmount: 0
   rewards: []
-  isBeingTracked: 1
+  isBeingTracked: 0
   isInCompletedPanel: 0

@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour
 
     private string SaveDir => Path.Combine(Application.persistentDataPath, "Saves");
     private string ES3File => $"Auto_{slotId}.es3";
+
+    [Header("A2_Q5_WhatHappened")]
+    public Transform forcedTeleportTarget;  // set this externally
+    public bool hasForcedTeleport = false;
     void Awake()
     {
         if (instance != null && instance != this)
@@ -93,7 +97,29 @@ public class GameManager : MonoBehaviour
         Debug.Log("📂 [GameSaveController] LoadAll complete.");
 
         TutorialManager.instance?.TutorialCheck();
+
+        // ✅ Apply forced teleport if requested
+        if (hasForcedTeleport && forcedTeleportTarget != null)
+        {
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player != null)
+            {
+                var cc = player.GetComponent<CharacterController>();
+                if (cc != null) cc.enabled = false;
+
+                player.transform.SetPositionAndRotation(
+                    forcedTeleportTarget.position,
+                    forcedTeleportTarget.rotation
+                );
+
+                if (cc != null) cc.enabled = true;
+            }
+
+            Debug.Log($"✅ Forced teleport applied to {forcedTeleportTarget.name}");
+            hasForcedTeleport = false;  // reset after use
+        }
     }
+
 
     public async Task LoadPlayerCoreData()
     {

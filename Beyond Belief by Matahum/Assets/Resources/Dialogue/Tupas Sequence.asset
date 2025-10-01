@@ -630,3 +630,79 @@ MonoBehaviour:
       isChoiceLine: 0
       choices: []
       animationName: 
+  - dialogueState: A2_Q6_AreYouOkay
+    lines:
+    - speakerName: Tupas
+      dialogueText: Are you okay?
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: I think so
+        dialogueState: A2_Q6_AreYouOkay_Ithinkso
+      animationName: 
+  - dialogueState: A2_Q6_AreYouOkay_Ithinkso
+    lines:
+    - speakerName: Tupas
+      dialogueText: Thank goodness!
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: I was worried sick!
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: Our scout found you in the forest unconcious.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: Thankfully nothing terrible happened to you!
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: Who is that old woman?
+        dialogueState: A2_Q6_AreYouOkay_AskHer
+      animationName: 
+  - dialogueState: A2_Q6_AreYouOkay_AskHer
+    lines:
+    - speakerName: Tupas
+      dialogueText: Why don't you ask her instead?
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: She came here after she felt something was going on with the
+        forest.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+  - dialogueState: A2_Q7_TalkToTheWoman
+    lines:
+    - speakerName: Tupas
+      dialogueText: Have you talked to her yet?
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Tupas
+      dialogueText: If not, you should hurry along now.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 

@@ -30,6 +30,9 @@ public class MangkukulamLoadingTrigger : MonoBehaviour
     }
     private async Task Loading()
     {
+        m_player.SetPlayerLocked(true);
+        m_player.ForceIdleOverride();
+        PlayerCamera.Instance.HardLockCamera();
         BB_QuestManager.Instance.UpdateMissionProgressOnce(missionID);
         await Task.Delay(1000);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));

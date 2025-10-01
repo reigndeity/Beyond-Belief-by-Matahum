@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14ec87d2c1db42c48a5fc9356d8aa89f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: 19b49c7766a047e6a4b21f150a5ce374
+  guid: 0fbb745e5e1945aaacfe858f42f1462e
 --- !u!114 &2819117383280230892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -772,7 +772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14ec87d2c1db42c48a5fc9356d8aa89f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: 4dc65d65d3f941bcb484eb8c60a61ab3
+  guid: b4e401b9b15e4acc98f6301b0d507f91
 --- !u!1 &5635748829260599624
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,6 +1189,7 @@ MonoBehaviour:
   tupas: {fileID: 0}
   nunoSaPunso: {fileID: 0}
   mangkukulam: {fileID: 0}
+  albularyo: {fileID: 0}
   markerPrefab: {fileID: 1592800379683749542, guid: 69eb1a659fe75474f844a450ab66d525, type: 3}
   uiMarkerParent: {fileID: 0}
   mainQuestSprite: {fileID: 117534696, guid: 31f54bd5977cf814194c37796607019f, type: 3}
@@ -1242,7 +1243,10 @@ MonoBehaviour:
   secondFakeBaleteTree: {fileID: 0}
   thirdFakeBaleteTree: {fileID: 0}
   mangkukulamSecondTriggers: {fileID: 0}
-  a2_q6_playerTransform: {fileID: 0}
+  albularyoNpc: {fileID: 0}
+  a2_q5_playerTransform: {fileID: 0}
+  a2_q5_questNotify: {fileID: 0}
+  mangkukulamThirdTriggers: {fileID: 0}
 --- !u!1 &8864477638513326815
 GameObject:
   m_ObjectHideFlags: 0
@@ -1480,6 +1484,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotId: Slot_01
+  forcedTeleportTarget: {fileID: 0}
+  hasForcedTeleport: 0
 --- !u!114 &724645795393110087
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -25,6 +25,7 @@ public class DialogueQuestLinker : MonoBehaviour
     public DialogueStateHolder tupas;
     public DialogueStateHolder nunoSaPunso;
     public DialogueStateHolder mangkukulam;
+    public DialogueStateHolder albularyo;
     
 
     [Header("Quest Marker")]
@@ -85,7 +86,10 @@ public class DialogueQuestLinker : MonoBehaviour
     public GameObject secondFakeBaleteTree;
     public GameObject thirdFakeBaleteTree;
     public GameObject mangkukulamSecondTriggers;
-    public Transform a2_q6_playerTransform;
+    public GameObject albularyoNpc;
+    public Transform a2_q5_playerTransform;
+    public GameObject a2_q5_questNotify;
+    public GameObject mangkukulamThirdTriggers;
 
     void OnEnable()
     {
@@ -467,10 +471,48 @@ public class DialogueQuestLinker : MonoBehaviour
                 case "A2_Q4_ReturnToTheAlbularyo":
                     mangkukulamNpc.SetActive(false);
                     mangkukulamSecondTriggers.SetActive(true);
+                    AddActiveMarker(currentQuestID, tracked);
                     break;
-                case "A2_Q6_WhoAreYou?":
-                    CutsceneManager.Instance.MovePlayerToTarget(a2_q6_playerTransform);
+                case "A2_Q5_WhatHappened":
+                    albularyoNpc.SetActive(true);
+
+                    // queue forced teleport
+                    GameManager.instance.forcedTeleportTarget = a2_q5_playerTransform;
+                    GameManager.instance.hasForcedTeleport = true;
+
                     PlayerCamera.Instance.AdjustCamera();
+                    a2_q5_questNotify.SetActive(true);
+                    tupas.GetComponent<BlazeAI>().StayIdle();
+                    albularyoNpc.GetComponent<BlazeAI>().StayIdle();
+                    break;
+                case "A2_Q6_AreYouOkay":
+                    a2_q5_questNotify.SetActive(false);
+                    tupas.SetDialogueState("A2_Q6_AreYouOkay");
+                    ApplyStates(tupas);
+                    albularyoNpc.gameObject.layer = LayerMask.NameToLayer("Default");
+                    AddActiveMarker(currentQuestID, tracked);
+
+                    albularyoNpc.SetActive(true);
+                    break;
+                case "A2_Q7_TalkToTheWoman":
+                    tupas.SetDialogueState("A2_Q7_TalkToTheWoman");
+                    albularyo.SetDialogueState("A2_Q7_TalkToTheWoman");
+                    ApplyStates(tupas, albularyo);
+                    albularyoNpc.gameObject.layer = LayerMask.NameToLayer("NPC");
+                    AddActiveMarker(currentQuestID, tracked);
+
+                    albularyoNpc.SetActive(true);
+                    break;
+                case "A2_Q8_GoToMangkukulamWithAlbularyo":
+                    tupas.SetDialogueState("Default");
+                    albularyo.SetDialogueState("A2_Q8_GoToMangkukulamWithAlbularyo");
+                    ApplyStates(tupas,albularyo);
+                    AddActiveMarker(currentQuestID, tracked);
+                    albularyoNpc.GetComponent<NPC>().interactName = "Talk to Albularyo";
+                    albularyoNpc.SetActive(true);
+
+                    mangkukulamNpc.SetActive(false);
+                    mangkukulamThirdTriggers.SetActive(true);
                     break;
                 #endregion
             }
@@ -667,6 +709,39 @@ public class DialogueQuestLinker : MonoBehaviour
         TutorialManager.instance.AllowFirstStatueInteraction();
         fullscreenMapPopUp.SetActive(true);
     }
+
+    private void TeleportPlayerTo(Transform target)
+    {
+        if (target == null)
+        {
+            Debug.LogWarning("Teleport failed: target transform is null!");
+            return;
+        }
+
+        // Find the player object (or cache it in Awake for performance)
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player == null)
+        {
+            Debug.LogWarning("Teleport failed: no player object with tag 'Player' found!");
+            return;
+        }
+
+        // Move player to target position and rotation
+        CharacterController controller = player.GetComponent<CharacterController>();
+        if (controller != null)
+        {
+            // Disable controller to avoid unwanted physics issues
+            controller.enabled = false;
+            player.transform.SetPositionAndRotation(target.position, target.rotation);
+            controller.enabled = true;
+        }
+        else
+        {
+            player.transform.SetPositionAndRotation(target.position, target.rotation);
+        }
+
+        Debug.Log($"✅ Player teleported to {target.name} at {target.position}");
+    }
     #endregion
 
     #region NAVIGATION FUNCTIONS
@@ -746,6 +821,10 @@ public class DialogueQuestLinker : MonoBehaviour
             case "A2_Q3_TheSecondPillar_P1": return secondFakeBaleteTree.transform;
             case "A2_Q3_TheThirdPillar_P1": return thirdFakeBaleteTree.transform;
             case "A2_Q4_ReturnToTheAlbularyo": return mangkukulamHut.transform;
+            case "A2_Q6_AreYouOkay": return tupas.transform;
+            case "A2_Q7_TalkToTheWoman": return albularyo.transform;
+            case "A2_Q8_GoToMangkukulamWithAlbularyo": return mangkukulamHut.transform;
+
         }
         return null;
     }
