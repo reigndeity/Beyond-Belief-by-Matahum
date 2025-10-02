@@ -57,7 +57,7 @@ public class BB_Quest_ButtonManager : MonoBehaviour
         //sideQuestPanel.SetActive(false);
         //BB_QuestJournalUI.instance.OnOpenJournal(mainQuestScrollView);
 
-        OpenAllQuest();
+        //OpenAllQuest();
     }
     #endregion
     #region Quest Category

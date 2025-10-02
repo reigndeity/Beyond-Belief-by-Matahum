@@ -369,6 +369,7 @@ public class TutorialManager : MonoBehaviour
         tutorialFadeImage.enabled = true;
         nonInteractablePanel.gameObject.SetActive(true);
         questJournalTextTutorial.text = "this is where you can filter your quest and even view completed ones";
+        questJournalTextTutorial.GetComponent<TutorialHighlight>().enabled = true;
         questButtonFiltersTH.enabled = true;
     }
     public void QuestJournalTutorial()
@@ -412,6 +413,7 @@ public class TutorialManager : MonoBehaviour
                 closeQuestButton.onClick.AddListener(QuestJournalTutorial);
                 break;
             case 4:
+            questJournalTextTutorial.GetComponent<TutorialHighlight>().enabled = false;
                 closeQuestJournalButtonTH.enabled = false;
                 closeQuestButton.onClick.RemoveListener(QuestJournalTutorial);
                 questJournalTutorial.SetActive(false);

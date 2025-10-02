@@ -14,7 +14,13 @@ public class FilterButton
 public class TabButton
 {
     public Button button;
-    public Image icon; 
+    public Image icon;
+}
+[System.Serializable]
+public class QuestTabButton
+{
+    public Button button;
+    public Image icon;
 }
 
 public class UI_Game : MonoBehaviour
@@ -61,6 +67,12 @@ public class UI_Game : MonoBehaviour
     [SerializeField] private BB_Quest_ButtonManager m_questButtonManager;
     public Button questButton;
     [SerializeField] Button closeQuestButton;
+    [Header("------------------------")]
+    [SerializeField] private QuestTabButton allQuestTab;
+    [SerializeField] private QuestTabButton mainQuestTab;
+    [SerializeField] private QuestTabButton sideQuestTab;
+    [SerializeField] private QuestTabButton completedQuestTab;
+    private QuestTabButton activeQuestTab;
 
     [Header("Archive Properties")]
     [SerializeField] private BB_Archive_ButtonManager m_archiveButtonManager;
@@ -131,6 +143,10 @@ public class UI_Game : MonoBehaviour
 
         questButton.onClick.AddListener(OnClickOpenQuestJournal);
         closeQuestButton.onClick.AddListener(OnClickCloseQuestJournal);
+        allQuestTab.button.onClick.AddListener(OnClickAllQuest);
+        mainQuestTab.button.onClick.AddListener(OnClickMainQuest);
+        sideQuestTab.button.onClick.AddListener(OnClickSideQuest);
+        completedQuestTab.button.onClick.AddListener(OnClickCompletedQuest);
 
         archiveButton.onClick.AddListener(OnClickOpenArchive);
         closeArchiveButton.onClick.AddListener(OnClickCloseArchive);
@@ -367,9 +383,38 @@ public class UI_Game : MonoBehaviour
     #endregion
 
     #region QUEST JOURNAL
+    private void SetActiveQuestTab(QuestTabButton selected)
+    {
+        ResetQuestTab(allQuestTab);
+        ResetQuestTab(mainQuestTab);
+        ResetQuestTab(sideQuestTab);
+        ResetQuestTab(completedQuestTab);
+
+        var circle = selected.button.GetComponent<Image>();
+        if (circle != null)
+            circle.color = new Color(circle.color.r, circle.color.g, circle.color.b, 1f);
+
+        if (selected.icon != null)
+            selected.icon.color = new Color(0.4f, 0.2f, 0f, 1f); // brown
+
+        activeQuestTab = selected;
+    }
+
+    private void ResetQuestTab(QuestTabButton tab)
+    {
+        if (tab == null) return;
+
+        var circle = tab.button.GetComponent<Image>();
+        if (circle != null)
+            circle.color = new Color(circle.color.r, circle.color.g, circle.color.b, 0f);
+
+        if (tab.icon != null)
+            tab.icon.color = Color.white;
+    }
     public void OnClickOpenQuestJournal()
     {
         m_questButtonManager.OpenJournal();
+        OnClickAllQuest();
         HideUI();
         PauseGame();
     }
@@ -378,6 +423,27 @@ public class UI_Game : MonoBehaviour
         m_questButtonManager.ExitJournal();
         ShowUI();
         ResumeGame();
+    }
+
+    public void OnClickAllQuest()
+    {
+        m_questButtonManager.OpenAllQuest();
+        SetActiveQuestTab(allQuestTab);
+    }
+    public void OnClickMainQuest()
+    {
+        m_questButtonManager.OpenMainQuest();
+        SetActiveQuestTab(mainQuestTab);
+    }
+    public void OnClickSideQuest()
+    {
+        m_questButtonManager.OpenSideQuest();
+        SetActiveQuestTab(sideQuestTab);
+    }
+    public void OnClickCompletedQuest()
+    {
+        m_questButtonManager.OpenCompletedQuest();
+        SetActiveQuestTab(completedQuestTab);
     }
     #endregion
 

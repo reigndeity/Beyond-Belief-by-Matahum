@@ -45,7 +45,6 @@ public class BB_QuestJournalUI : MonoBehaviour
 
     [Header("Quest Selected Indicator")] 
     public Sprite defaultSprite;
-    public Sprite selectedSprite; // Assign this manually or load it
     private Button currentlySelectedButton;
     private Image currentlySelectedImage;
     
@@ -166,6 +165,8 @@ public class BB_QuestJournalUI : MonoBehaviour
         //newQuestButton.onClick.AddListener(() => ShowQuestDetails(quest));
         Button capturedButton = newQuestButton;
         Image capturedImage = newQuestButton.GetComponent<Image>();
+        if (capturedImage != null)
+        capturedImage.color = Color.white;
 
         newQuestButton.onClick.AddListener(() =>
         {
@@ -186,20 +187,24 @@ public class BB_QuestJournalUI : MonoBehaviour
 
     private void OnQuestButtonClicked(BB_Quest quest, Button clickedButton, Image clickedImage)
     {
-        // Reset previous button to default sprite
+        // Reset previous button back to white
         if (currentlySelectedImage != null)
         {
-            currentlySelectedImage.sprite = defaultSprite;
+            currentlySelectedImage.color = Color.white; // #FFFFFF
         }
 
-        // Set new button sprite to selected
+        // Set new button color to gray (#969696)
         currentlySelectedButton = clickedButton;
         currentlySelectedImage = clickedImage;
-        currentlySelectedImage.sprite = selectedSprite;
+
+        Color selectedColor;
+        ColorUtility.TryParseHtmlString("#969696", out selectedColor);
+        currentlySelectedImage.color = selectedColor;
 
         // Show quest details
         ShowQuestDetails(quest);
     }
+
     #region QUEST DETAILS
     public void ShowQuestDetails(BB_Quest quest)
     {
