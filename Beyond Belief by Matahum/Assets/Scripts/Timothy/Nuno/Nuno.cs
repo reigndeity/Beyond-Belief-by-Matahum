@@ -102,7 +102,7 @@ public class Nuno : MonoBehaviour, IDamageable, IDeathHandler
         await Task.Delay(500);
         await GameManager.instance.SavePlayerCoreData();
         await Task.Delay(500);
-        Loader.Load(4);
+        Loader.Load(7);
     }
     #endregion
 }
