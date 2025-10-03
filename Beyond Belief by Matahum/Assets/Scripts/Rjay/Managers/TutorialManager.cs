@@ -600,6 +600,7 @@ public class TutorialManager : MonoBehaviour
         closeCharacterDetailButton.onClick.RemoveListener(CloseAndAcceptAgimatTrainingP4);
         BB_QuestManager.Instance.AcceptQuestByID("A0_Q11_AgimatTraining_P4");
         HideCharacterDetails();
+        m_uiGame.UnBlur();
     }
     #endregion
 
@@ -757,6 +758,7 @@ public class TutorialManager : MonoBehaviour
         BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q12_P1_Pamana");
         BB_QuestManager.Instance.ClaimRewardsByID("A0_Q12_PamanaTraining_P1");
         BB_QuestManager.Instance.AcceptQuestByID("A0_Q12_PamanaTraining_P2");
+        m_uiGame.UnBlur();
     }
     #endregion
 
@@ -811,6 +813,7 @@ public class TutorialManager : MonoBehaviour
         m_uiGame.inventoryButton.onClick.RemoveListener(EnableInventoryTutorial);
         BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q13_Backpack");
         isTutorialDone = true;
+        m_uiGame.UnBlur();
     }
     #endregion
 
