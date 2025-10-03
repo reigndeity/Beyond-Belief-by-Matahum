@@ -343,8 +343,9 @@ public class DialogueQuestLinker : MonoBehaviour
                     AddActiveMarker(currentQuestID, tracked);
                     break;
                 case "A1_Q1.1_Amihan'sOrder_P1":
+                    tupas.SetDialogueState("A1_Q1_Tupas'Request_P2");
                     amihanGuard.SetDialogueState("A1_Q1.1_Amihan'sOrder_P1");
-                    ApplyStates(amihanGuard);
+                    ApplyStates(tupas, amihanGuard);
                     break;
                 case "A1_Q1.1_Amihan'sOrder_P2":
                     amihanGuard.SetDialogueState("A1_Q1.1_Amihan'sOrder_P2");
