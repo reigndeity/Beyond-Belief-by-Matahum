@@ -81,22 +81,43 @@ MonoBehaviour:
   m_characterDetailsPanel: {fileID: 0}
   m_player: {fileID: 0}
   m_playerMovement: {fileID: 0}
+  currentFilteredInventoryText: {fileID: 0}
   inventoryButton: {fileID: 0}
   inventoryPanel: {fileID: 0}
   closeInventoryButton: {fileID: 0}
-  consumablesFilterButton: {fileID: 0}
-  questItemsFilterButton: {fileID: 0}
-  pamanaFilterButton: {fileID: 0}
-  agimatFilterButton: {fileID: 0}
-  upgradeMaterialsFilterButton: {fileID: 0}
-  rawIngredientsFilterButton: {fileID: 0}
+  consumablesFilter:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  questItemsFilter:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  pamanaFilter:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  agimatFilter:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  upgradeMaterialsFilter:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  rawIngredientsFilter:
+    button: {fileID: 0}
+    icon: {fileID: 0}
   characterDetailsButton: {fileID: 0}
   characterDetailPanel: {fileID: 0}
   closeCharacterDetailsButton: {fileID: 0}
-  attributesTabButton: {fileID: 0}
-  weaponTabButton: {fileID: 0}
-  agimatTabButton: {fileID: 0}
-  pamanaTabButton: {fileID: 0}
+  attributesTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  weaponTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  agimatTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  pamanaTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
   diwataSlotButton: {fileID: 0}
   lihimSlotButton: {fileID: 0}
   salamangkeroSlotButton: {fileID: 0}
@@ -104,14 +125,36 @@ MonoBehaviour:
   m_questButtonManager: {fileID: 0}
   questButton: {fileID: 0}
   closeQuestButton: {fileID: 0}
+  allQuestTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  mainQuestTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  sideQuestTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  completedQuestTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
   m_archiveButtonManager: {fileID: 0}
   archiveButton: {fileID: 0}
   closeArchiveButton: {fileID: 0}
   teleportPanel: {fileID: 0}
   closeTeleportPanelButton: {fileID: 0}
   teleportButton: {fileID: 0}
+  closeMapButton: {fileID: 0}
+  pauseMenuPanel: {fileID: 0}
+  resumeButton: {fileID: 0}
+  settingsButton: {fileID: 0}
+  returnToMenuButton: {fileID: 0}
+  confirmReturnPanel: {fileID: 0}
+  confirmYesButton: {fileID: 0}
+  confirmNoButton: {fileID: 0}
   topUIObj: {fileID: 0}
   bottomUIObj: {fileID: 0}
   fadeDuration: 0.2
   uiMoveDuration: 0.25
   hideYOffset: 350
+  blurImage: {fileID: 0}
+  blurDuration: 0.5

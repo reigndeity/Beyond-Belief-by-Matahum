@@ -107,6 +107,10 @@ public class UI_Game : MonoBehaviour
     private CanvasGroup topCanvasGroup;
     private CanvasGroup bottomCanvasGroup;
     private FilterButton activeFilterButton;
+    [SerializeField] Image blurImage;
+    [SerializeField] private float blurDuration = 0.5f;
+    private float currentAlpha = 0f;
+    private Coroutine blurRoutine;
 
     void Awake()
     {
@@ -250,12 +254,14 @@ public class UI_Game : MonoBehaviour
     {
         inventoryPanel.SetActive(true);
         HideUI();
+        Blur();
         PauseGame();
     }
     public void OnClickCloseInventory()
     {
         inventoryPanel.SetActive(false);
         ShowUI();
+        UnBlur();
         ResumeGame();
     }
     public void OnClickConsumableFilter()
@@ -307,12 +313,14 @@ public class UI_Game : MonoBehaviour
     {
         characterDetailPanel.SetActive(true);
         HideUI();
+        Blur();
         PauseGame();
     }
     public void OnClickCloseCharacterDetails()
     {
         characterDetailPanel.SetActive(false);
         ShowUI();
+        UnBlur();
         ResumeGame();
     }
     public void OnClickAttributesTab()
@@ -416,12 +424,14 @@ public class UI_Game : MonoBehaviour
         m_questButtonManager.OpenJournal();
         OnClickAllQuest();
         HideUI();
+        Blur();
         PauseGame();
     }
     public void OnClickCloseQuestJournal()
     {
         m_questButtonManager.ExitJournal();
         ShowUI();
+        UnBlur();
         ResumeGame();
     }
 
@@ -452,12 +462,14 @@ public class UI_Game : MonoBehaviour
     {
         m_archiveButtonManager.OnOpenArchives();
         HideUI();
+        Blur();
         PauseGame();
     }
     private void OnClickCloseArchive()
     {
         m_archiveButtonManager.ExitArchives();
         ShowUI();
+        UnBlur();
         ResumeGame();
     }
     #endregion
@@ -468,6 +480,7 @@ public class UI_Game : MonoBehaviour
         PlayerCamera.Instance.SetCursorVisibility(true);
         pauseMenuPanel.SetActive(true);
         HideUI();
+        Blur();
         PauseGame();
     }
 
@@ -476,6 +489,7 @@ public class UI_Game : MonoBehaviour
         PlayerCamera.Instance.SetCursorVisibility(false);
         pauseMenuPanel.SetActive(false);
         ShowUI();
+        UnBlur();
         ResumeGame();
     }
 
@@ -583,6 +597,40 @@ public class UI_Game : MonoBehaviour
         canvasGroup.alpha = toAlpha;
         canvasGroup.interactable = (toAlpha >= 1f);
         canvasGroup.blocksRaycasts = (toAlpha >= 1f);
+    }
+    public void Blur()
+    {
+        if (blurRoutine != null) StopCoroutine(blurRoutine);
+        blurRoutine = StartCoroutine(AnimateBlur(1f));
+    }
+
+    public void UnBlur()
+    {
+        if (blurRoutine != null) StopCoroutine(blurRoutine);
+        blurRoutine = StartCoroutine(AnimateBlur(0f));
+    }
+    private IEnumerator AnimateBlur(float targetAlpha)
+    {
+        float startAlpha = currentAlpha;
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.unscaledDeltaTime; // works even if Time.timeScale = 0
+            float t = Mathf.Clamp01(elapsed / fadeDuration);
+            currentAlpha = Mathf.Lerp(startAlpha, targetAlpha, t);
+
+            Color c = blurImage.color;
+            c.a = currentAlpha;
+            blurImage.color = c;
+
+            yield return null;
+        }
+
+        currentAlpha = targetAlpha;
+        Color final = blurImage.color;
+        final.a = currentAlpha;
+        blurImage.color = final;
     }
     #endregion
 
