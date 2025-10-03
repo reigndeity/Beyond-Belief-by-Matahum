@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -5,7 +6,8 @@ using UnityEngine.UI;
 
 public class BeyondBelief_DebugTool : MonoBehaviour
 {
-    private Player m_player;
+    [SerializeField] Player m_player;
+    [SerializeField] PlayerStats m_playerStats;
 
     [Header("Debug Properties")]
     public Button closeButton;
@@ -24,9 +26,12 @@ public class BeyondBelief_DebugTool : MonoBehaviour
 
     [Header("Player Properties")]
     public Button infiniteHpButton;
+    private bool infiniteHealth = false;
     public Button infiniteDamageButton;
+    private bool infiniteDamage = false;
     public Button infiniteMoneyButton;
     public Button infiniteStaminaButton;
+    private bool infiniteStamina = false;
     public Button enablePlayerAcess;
 
     [Header("Misc Properties")]
@@ -34,6 +39,9 @@ public class BeyondBelief_DebugTool : MonoBehaviour
     public TMP_InputField debugLevelInputField; // 🆕 input for simulated level
     public Button spawnAgimatButton;
     public Button spawnPamanaButton;
+    public Button ghostWalkButton;
+    private bool isGhostMode = false;
+    [SerializeField] CharacterController playerController;
 
     void Start()
     {
@@ -50,11 +58,16 @@ public class BeyondBelief_DebugTool : MonoBehaviour
         deleteProgressButton.onClick.AddListener(OnClickDeleteProgress);
         restartGameButton.onClick.AddListener(OnClickRestartGame);
 
+        infiniteHpButton.onClick.AddListener(OnClickInfiniteHealth);
+        infiniteDamageButton.onClick.AddListener(OnClickInfiniteDamage);
+        infiniteMoneyButton.onClick.AddListener(OnClickInfiniteMoney);
+        infiniteStaminaButton.onClick.AddListener(OnClickInfiniteStamina);
         enablePlayerAcess.onClick.AddListener(OnClickEnablePlayerAccess);
 
         resumeTimelineButton.onClick.AddListener(OnClickResumeTimeline);
         spawnAgimatButton.onClick.AddListener(OnClickSpawnAgimat);
         spawnPamanaButton.onClick.AddListener(OnClickSpawnPamana);
+        ghostWalkButton.onClick.AddListener(OnClickGhostWalk);
 
         // 🆕 apply simulated level when value changes
         debugLevelInputField.onEndEdit.AddListener(OnSimulatedLevelChanged);
@@ -99,6 +112,90 @@ public class BeyondBelief_DebugTool : MonoBehaviour
     void OnClickResumeTimeline() => CutsceneManager.Instance.ResumeTimeline();
     void OnClickSpawnAgimat() => R_GeneralItemSpawner.instance.SpawnRandomAgimatFromTemplate();
     void OnClickSpawnPamana() => R_GeneralItemSpawner.instance.SpawnRandomPamanaFromTemplate();
+    void OnClickGhostWalk()
+    {
+        if (isGhostMode == false)
+        {
+            ghostWalkButton.GetComponent<Image>().color = Color.green;
+            isGhostMode = true;
+            playerController.excludeLayers = LayerMask.GetMask("Building", "Stone", "Fence");
+        }
+        else
+        {
+            ghostWalkButton.GetComponent<Image>().color = Color.white;
+            isGhostMode = false;
+            playerController.excludeLayers = 0;
+        }
+    }
+
+    void OnClickInfiniteHealth()
+    {
+        infiniteHealth = !infiniteHealth;
+
+        if (infiniteHealth)
+        {
+            infiniteHpButton.GetComponent<Image>().color = Color.green;
+            m_playerStats.p_currentHealth = m_playerStats.p_maxHealth;
+            StartCoroutine(KeepHealthFull());
+        }
+        else
+        {
+            infiniteHpButton.GetComponent<Image>().color = Color.white;
+            StopCoroutine(KeepHealthFull());
+        }
+    }
+
+    IEnumerator KeepHealthFull()
+    {
+        while (infiniteHealth)
+        {
+            m_playerStats.p_currentHealth = m_playerStats.p_maxHealth;
+            yield return null;
+        }
+    }
+    void OnClickInfiniteDamage()
+    {
+        infiniteDamage = !infiniteDamage;
+
+        if (infiniteDamage)
+        {
+            infiniteDamageButton.GetComponent<Image>().color = Color.green;
+            m_playerStats.p_attack = int.MaxValue; // basically one-shot
+        }
+        else
+        {
+            infiniteDamageButton.GetComponent<Image>().color = Color.white;
+            m_playerStats.RecalculateStats(); // restore real attack
+        }
+    }
+    void OnClickInfiniteMoney()
+    {
+        m_player.AddGoldCoins(999999999);
+    }
+    void OnClickInfiniteStamina()
+    {
+        infiniteStamina = !infiniteStamina;
+
+        if (infiniteStamina)
+        {
+            infiniteStaminaButton.GetComponent<Image>().color = Color.green;
+            StartCoroutine(KeepStaminaFull());
+        }
+        else
+        {
+            infiniteStaminaButton.GetComponent<Image>().color = Color.white;
+            StopCoroutine(KeepStaminaFull());
+        }
+    }
+
+    IEnumerator KeepStaminaFull()
+    {
+        while (infiniteStamina)
+        {
+            m_playerStats.p_stamina = 9999f; // or just m_playerStats.baseStamina
+            yield return null;
+        }
+    }
 
     // 🆕 simulated level handler
     void OnSimulatedLevelChanged(string value)
