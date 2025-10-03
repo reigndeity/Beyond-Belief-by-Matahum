@@ -65,7 +65,8 @@ public class RockShield_ShieldHolder : MonoBehaviour
         {
             invulnerableShield.SetActive(false);
             nuno.isVulnerable = true;
-            Nuno_AttackManager.Instance.isStunned = true;
+            //Nuno_AttackManager.Instance.isStunned = true;
+            Nuno_AttackManager.Instance.ApplyStun();
             nuno.gameObject.layer = LayerMask.NameToLayer("Enemy");
             ability.GoOnCooldown();
             Debug.Log("All shields destroyed → Boss vulnerable!");
