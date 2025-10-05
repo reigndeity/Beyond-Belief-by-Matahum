@@ -6,10 +6,11 @@ public class CandlePillar : MonoBehaviour, IDamageable, IDeathHandler
 {
     private PlayerStats playerStats;
     [HideInInspector] public EnemyStats enemyStats;
+    [HideInInspector] public EnemyStats candleStats;
     public GameObject candlePulse;
+    public float candleHealth;
     public float pillarHeight;
     public float risingDuration;
-    public float candleHealth;
     public bool isDead = false;
 
     public event System.Action OnDeath;
@@ -17,6 +18,10 @@ public class CandlePillar : MonoBehaviour, IDamageable, IDeathHandler
     private void Start()
     {
         playerStats = FindFirstObjectByType<PlayerStats>();
+        candleStats = GetComponent<EnemyStats>();
+
+        candleStats.e_maxHealth = candleHealth;
+        candleStats.RecalculateStats();
 
         StartCoroutine(StartRising());
     }
@@ -52,17 +57,17 @@ public class CandlePillar : MonoBehaviour, IDamageable, IDeathHandler
         candlePulseExpansion.StartExpanding();
     }
 
-    public bool IsDead() => candleHealth <= 0;
+    public bool IsDead() => candleStats.e_currentHealth <= 0;
 
     public void TakeDamage(float damage, bool hitAnimOn = false)
     {
-        candleHealth -= damage;
+        candleStats.e_currentHealth -= damage;
 
         PopUpDamage(damage);
 
         if (IsDead())
         {
-            candleHealth = 0f;
+            candleStats.e_currentHealth = 0f;
             Death();
         }
     }

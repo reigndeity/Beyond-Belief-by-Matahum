@@ -2,37 +2,41 @@
 
 public class RockShield_Shield : MonoBehaviour, IDamageable
 {
-    public float shieldHealth;
     [HideInInspector] public RockShield_ShieldHolder shieldHolder;
+    public EnemyStats stats;
     private FractureObject vfx;
 
     private PlayerStats m_playerStats;
 
     void Start()
     {
-        m_playerStats = FindFirstObjectByType<PlayerStats>();
+        m_playerStats = FindFirstObjectByType<PlayerStats>();  
         vfx = GetComponentInParent<FractureObject>();
     }
-    public bool IsDead() => shieldHealth <= 0;
+    public bool IsDead() => stats.e_currentHealth <= 0;
 
     public void Init(RockShield_ShieldHolder holder, float health)
     {
         gameObject.SetActive(true);
+
+        stats = GetComponent<EnemyStats>();
+
         shieldHolder = holder;
-        shieldHealth = health;
+        stats.e_maxHealth = health;
+        stats.RecalculateStats();
         
     }
 
     public void TakeDamage(float damage, bool hitAnimOn = true)
     {
-        shieldHealth -= damage;
+        stats.e_currentHealth -= damage;
 
         PopUpDamage(damage);
 
         if (IsDead())
         {
             vfx.Explode();
-            shieldHealth = 0f;
+            stats.e_currentHealth = 0f;
             shieldHolder.OnShieldDestroyed();
         }
     }
