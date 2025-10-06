@@ -1,10 +1,19 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 public class Haligi : MonoBehaviour, IDamageable
 {
+    [SerializeField] private GameObject haligi;
+    [Header("Haligi Dissolve")]
+    [SerializeField] private PlayableDirector haligiDissolveController;
+    [SerializeField] private TimelineAsset dissolveHaligi;
+    [SerializeField] private TimelineAsset undissolveHaligi;
+
+
     [Header("Health & Defense")]
     [SerializeField] private float maxHealth = 1000;
     [SerializeField] private float currentHealth = 10f;
@@ -17,9 +26,6 @@ public class Haligi : MonoBehaviour, IDamageable
     [Header("Flags")]
     public bool isInvulnerable = false;
     private bool isDead = false;
-
-    [Header("FX")]
-    [SerializeField] private Animator animator;                    // Optional; can be null
 
     [Header("Health UI")]
     [SerializeField] private Image healthFillDelayed;
@@ -77,12 +83,10 @@ public class Haligi : MonoBehaviour, IDamageable
         if (isCriticalHit)
         {
             DamagePopUpGenerator.instance?.CreatePopUp(transform.position + popUpRandomness, dmgText, Color.red);
-            Debug.Log($"💥 CRIT on Haligi! Took {finalDamage}. HP: {currentHealth}/{maxHealth}");
         }
         else
         {
             DamagePopUpGenerator.instance?.CreatePopUp(transform.position + popUpRandomness, dmgText, Color.white);
-            Debug.Log($"Haligi took {finalDamage}. HP: {currentHealth}/{maxHealth}");
         }
 
         // Death
@@ -90,12 +94,6 @@ public class Haligi : MonoBehaviour, IDamageable
         {
             HandleDeath();
             return;
-        }
-
-        // Optional hit anim
-        if (hitAnimOn && animator != null)
-        {
-            animator.SetTrigger("Hit");
         }
     }
 
@@ -110,9 +108,10 @@ public class Haligi : MonoBehaviour, IDamageable
         isDead = true;
 
         BB_QuestManager.Instance.UpdateMissionProgressOnce(missionID);
-        fragment.SetActive(true);
+        fragment.gameObject.layer = LayerMask.NameToLayer("Quest_Item");
+        haligiDissolveController.Play(dissolveHaligi);
+        haligi.gameObject.layer = LayerMask.NameToLayer("Default");
         onDestroy?.Invoke();
-        Destroy(gameObject);
     }
 
     private void UpdateHealthUI()
