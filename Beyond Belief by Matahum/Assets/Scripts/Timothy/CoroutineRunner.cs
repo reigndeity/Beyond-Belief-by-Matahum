@@ -3,19 +3,18 @@ using System.Collections;
 
 public class CoroutineRunner : MonoBehaviour
 {
-    private static CoroutineRunner _instance;
-    public static CoroutineRunner Instance
+    public static CoroutineRunner Instance { get; private set; }
+
+    private void Awake()
     {
-        get
+        if (Instance != null && Instance != this)
         {
-            if (_instance == null)
-            {
-                GameObject obj = new GameObject("CoroutineRunner");
-                _instance = obj.AddComponent<CoroutineRunner>();
-                //DontDestroyOnLoad(obj); // keep across scenes
-            }
-            return _instance;
+            Destroy(gameObject);
+            return;
         }
+
+        Instance = this;
+        //DontDestroyOnLoad(gameObject); // optional, if you want it persistent
     }
 
     public Coroutine RunCoroutine(IEnumerator routine)
@@ -23,14 +22,10 @@ public class CoroutineRunner : MonoBehaviour
         return StartCoroutine(routine);
     }
 
-    private void Awake()
+    public void StopRunningCoroutine(Coroutine coroutine)
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        _instance = this;
+        if (coroutine != null)
+            StopCoroutine(coroutine);
     }
 
     private void OnDestroy()
