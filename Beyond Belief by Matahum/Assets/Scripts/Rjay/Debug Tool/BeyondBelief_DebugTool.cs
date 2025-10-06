@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class BeyondBelief_DebugTool : MonoBehaviour
 {
-    [SerializeField] Player m_player;
-    [SerializeField] PlayerStats m_playerStats;
+    private Player m_player;
+    private PlayerStats m_playerStats;
+    private PlayerMovement m_playerMovement;
 
     [Header("Debug Properties")]
     public Button closeButton;
@@ -43,6 +44,12 @@ public class BeyondBelief_DebugTool : MonoBehaviour
     private bool isGhostMode = false;
     [SerializeField] CharacterController playerController;
 
+    void Awake()
+    {
+        m_player = FindFirstObjectByType<Player>();
+        m_playerStats = FindFirstObjectByType<PlayerStats>();
+        m_playerMovement = FindFirstObjectByType<PlayerMovement>();
+    }
     void Start()
     {
         closeButton.onClick.AddListener(OnClickCloseDebugTool);
@@ -118,7 +125,7 @@ public class BeyondBelief_DebugTool : MonoBehaviour
         {
             ghostWalkButton.GetComponent<Image>().color = Color.green;
             isGhostMode = true;
-            playerController.excludeLayers = LayerMask.GetMask("Building", "Stone", "Fence");
+            playerController.excludeLayers = LayerMask.GetMask("Building", "Stone", "Fence", "Tree");
         }
         else
         {
@@ -192,7 +199,7 @@ public class BeyondBelief_DebugTool : MonoBehaviour
     {
         while (infiniteStamina)
         {
-            m_playerStats.p_stamina = 9999f; // or just m_playerStats.baseStamina
+            m_playerMovement.currentStamina = m_playerMovement.maxStamina;
             yield return null;
         }
     }
