@@ -136,6 +136,10 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
         await Task.Delay(500);
         BB_QuestManager.Instance.UpdateMissionProgressOnce("A2_Q9_FightMangkukulam");
+        await Task.Delay(100);
+        BB_QuestManager.Instance.ClaimRewardsByID("A2_Q9_DefeatMangkukulam");
+        await Task.Delay(100);
+        BB_QuestManager.Instance.AcceptQuestByID("A2_Q10_HowDoIgetHome");
         await Task.Delay(500);
         await GameManager.instance.SavePlayerCoreData();
         await Task.Delay(500);

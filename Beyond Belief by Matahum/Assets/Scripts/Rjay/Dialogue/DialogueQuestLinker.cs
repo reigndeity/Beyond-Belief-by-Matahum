@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using MTAssets.EasyMinimapSystem;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine.Timeline;
 
 public class DialogueQuestLinker : MonoBehaviour
 {
+    private Player m_player;
     private string lastTrackedQuestID = "";
     public bool isDelayAccept;
     [SerializeField] private UI_Game m_uiGame;
@@ -86,11 +88,21 @@ public class DialogueQuestLinker : MonoBehaviour
     public GameObject secondFakeBaleteTree;
     public GameObject thirdFakeBaleteTree;
     public GameObject mangkukulamSecondTriggers;
+    private bool isAlbularyoUnlocked;
     public GameObject albularyoNpc;
+    public GameObject albularyoCanvas;
     public Transform a2_q5_playerTransform;
     public GameObject a2_q5_questNotify;
     public GameObject mangkukulamThirdTriggers;
 
+    public Transform a2_q10_playerTransform;
+    public Transform a2_q10_albularyoTransform;
+    public GameObject repairFirstBalete;
+    public GameObject repairSecondBalete;
+    public GameObject repairThirdBalete;
+
+    public Transform a2_q12_albularyoTransform;
+    public GameObject portalInteractable;
     void OnEnable()
     {
         PlayerMovement.OnDashStarted += DashCounter;
@@ -105,6 +117,12 @@ public class DialogueQuestLinker : MonoBehaviour
     {
         m_playerInput = FindFirstObjectByType<PlayerInput>();
         m_playerSkills = FindFirstObjectByType<PlayerSkills>();
+        m_player = FindFirstObjectByType<Player>();
+    }
+
+    void Start()
+    {
+        Invoke("QuestPropertiesCheck", 0.5f);
     }
 
     void Update()
@@ -507,13 +525,47 @@ public class DialogueQuestLinker : MonoBehaviour
                 case "A2_Q8_GoToMangkukulamWithAlbularyo":
                     tupas.SetDialogueState("Default");
                     albularyo.SetDialogueState("A2_Q8_GoToMangkukulamWithAlbularyo");
-                    ApplyStates(tupas,albularyo);
+                    ApplyStates(tupas, albularyo);
                     AddActiveMarker(currentQuestID, tracked);
                     albularyoNpc.GetComponent<NPC>().interactName = "Talk to Albularyo";
                     albularyoNpc.SetActive(true);
+                    albularyoCanvas.SetActive(true);
 
                     mangkukulamNpc.SetActive(false);
                     mangkukulamThirdTriggers.SetActive(true);
+                    break;
+                case "A2_Q10_HowDoIgetHome":
+                    GameManager.instance.forcedTeleportTarget = a2_q10_playerTransform;
+                    GameManager.instance.hasForcedTeleport = true;
+
+                    albularyoNpc.transform.SetPositionAndRotation(a2_q10_albularyoTransform.position, a2_q10_albularyoTransform.rotation);
+                    albularyo.SetDialogueState("A2_Q10_HowDoIgetHome");
+                    albularyoNpc.GetComponent<BlazeAI>().StayIdle();    
+                    ApplyStates(albularyo);
+                    PlayerCamera.Instance.AdjustCamera();
+
+                    AddActiveMarker(currentQuestID, tracked);
+                    break;
+                case "A2_Q11_RepairFirstBalete_P1":
+                    albularyo.SetDialogueState("A2_Q11_RepairFirstBalete_P1");
+                    ApplyStates(albularyo);
+                    repairFirstBalete.gameObject.layer = LayerMask.NameToLayer("Fake Balete Tree Domain");
+                    AddActiveMarker(currentQuestID, tracked);
+                    break;
+                case "A2_Q11_RepairSecondBalete_P1":
+                    repairSecondBalete.gameObject.layer = LayerMask.NameToLayer("Fake Balete Tree Domain");
+                    AddActiveMarker(currentQuestID, tracked);
+                    break;
+                case "A2_Q11_RepairThirdBalete_P1":
+                    repairThirdBalete.gameObject.layer = LayerMask.NameToLayer("Fake Balete Tree Domain");
+                    AddActiveMarker(currentQuestID, tracked);
+                    break;
+                case "A2_Q12_TimeToGoHome":
+                    AddActiveMarker(currentQuestID, tracked);
+                    albularyo.SetDialogueState("A2_Q12_TimeToGoHome");
+                    ApplyStates(albularyo);
+                    albularyoNpc.transform.SetPositionAndRotation(a2_q12_albularyoTransform.position, a2_q12_albularyoTransform.rotation);
+                    albularyoNpc.GetComponent<BlazeAI>().StayIdle();
                     break;
                 #endregion
             }
@@ -743,6 +795,42 @@ public class DialogueQuestLinker : MonoBehaviour
 
         Debug.Log($"✅ Player teleported to {target.name} at {target.position}");
     }
+
+    public void PlayAlbularyoCastingPortalCutscene()
+    {
+        _ = CutsceneTransition();
+    }
+    public async Task CutsceneTransition()
+    {
+        m_player.SetPlayerLocked(true);
+        m_player.ForceIdleOverride();
+        PlayerCamera.Instance.HardLockCamera();
+        await Task.Delay(1000);
+        StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
+        await Task.Delay(500);
+        await GameManager.instance.SavePlayerCoreData();
+        await Task.Delay(500);
+        Loader.Load(19);
+    }
+    public void QuestPropertiesCheck()
+    {
+        if (BB_QuestManager.Instance.IsQuestDone("A2_Q8_GoToMangkukulamWithAlbularyo"))
+        {
+            albularyoNpc.SetActive(true);
+            albularyoNpc.GetComponent<NPC>().interactName = "Talk to Albularyo";
+            albularyoCanvas.SetActive(true);
+        }
+
+        if (BB_QuestManager.Instance.IsQuestDone("A2_Q12_TimeToGoHome"))
+        {
+            portalInteractable.SetActive(true);
+            albularyoNpc.transform.SetPositionAndRotation(a2_q12_albularyoTransform.position, a2_q12_albularyoTransform.rotation);
+            albularyoNpc.GetComponent<BlazeAI>().StayIdle();
+            albularyo.SetDialogueState("Default");
+            ApplyStates(albularyo);
+            RemoveActiveMarker();
+        }
+    }
     #endregion
 
     #region NAVIGATION FUNCTIONS
@@ -825,7 +913,11 @@ public class DialogueQuestLinker : MonoBehaviour
             case "A2_Q6_AreYouOkay": return tupas.transform;
             case "A2_Q7_TalkToTheWoman": return albularyo.transform;
             case "A2_Q8_GoToMangkukulamWithAlbularyo": return mangkukulamHut.transform;
-
+            case "A2_Q10_HowDoIgetHome": return albularyoNpc.transform;
+            case "A2_Q11_RepairFirstBalete_P1": return repairFirstBalete.transform;
+            case "A2_Q11_RepairSecondBalete_P1": return repairSecondBalete.transform;
+            case "A2_Q11_RepairThirdBalete_P1": return repairThirdBalete.transform;
+            case "A2_Q12_TimeToGoHome": return albularyoNpc.transform;
         }
         return null;
     }
