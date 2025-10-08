@@ -143,7 +143,7 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
         await Task.Delay(500);
         await GameManager.instance.SavePlayerCoreData();
         await Task.Delay(500);
-        Loader.Load(4);
+        Loader.Load(15);
     }
 
     #endregion

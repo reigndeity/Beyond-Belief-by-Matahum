@@ -1,9 +1,14 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class FakeBaleteManager : MonoBehaviour
 {
+
+
+    public string goToLocationMission;
+    public string goToLocationQuest;    
     public string acceptQuestID;
     public string enemyMissionID;
     public GameObject enemies;
@@ -26,8 +31,14 @@ public class FakeBaleteManager : MonoBehaviour
         PlayerCamera.Instance.HardUnlockCamera();
         PlayerCamera.Instance.AdjustCamera();
         await GameManager.instance.LoadPlayerCoreData();
+
         await Task.Delay(100);
         // Fade out
+        BB_QuestManager.Instance.UpdateMissionProgressOnce(goToLocationMission);
+        await Task.Delay(100);
+        BB_QuestManager.Instance.ClaimRewardsByID(goToLocationQuest);
+        await Task.Delay(100);
+        BB_QuestManager.Instance.AcceptQuestByID(acceptQuestID);
         await Task.Delay(1000);
         enemies.SetActive(true);
         StartCoroutine(UI_TransitionController.instance.Fade(1f, 0f, 0.5f));

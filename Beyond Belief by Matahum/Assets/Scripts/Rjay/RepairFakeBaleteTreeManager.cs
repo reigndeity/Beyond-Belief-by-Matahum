@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ReapirFakeBaleteManager : MonoBehaviour
 {
+    public string goToLocationMission;
+    public string goToLocationQuest;
     public string acceptQuestID;
     public string nextQuestID;
     private bool isDone;
@@ -23,7 +25,11 @@ public class ReapirFakeBaleteManager : MonoBehaviour
         PlayerCamera.Instance.AdjustCamera();
         await GameManager.instance.LoadPlayerCoreData();
         await Task.Delay(100);
-        // Fade out
+        BB_QuestManager.Instance.UpdateMissionProgressOnce(goToLocationMission);
+        await Task.Delay(100);
+        BB_QuestManager.Instance.ClaimRewardsByID(goToLocationQuest);
+        await Task.Delay(100);
+        BB_QuestManager.Instance.AcceptQuestByID(acceptQuestID);
         await Task.Delay(1000);
         StartCoroutine(UI_TransitionController.instance.Fade(1f, 0f, 0.5f));
         await Task.Delay(500);
