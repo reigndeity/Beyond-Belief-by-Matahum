@@ -805,11 +805,10 @@ public class DialogueQuestLinker : MonoBehaviour
         m_player.SetPlayerLocked(true);
         m_player.ForceIdleOverride();
         PlayerCamera.Instance.HardLockCamera();
-        await Task.Delay(1000);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
-        await Task.Delay(500);
-        await GameManager.instance.SavePlayerCoreData();
-        await Task.Delay(500);
+        await Task.Delay(1000);
+        await GameManager.instance.SaveAll();
+        await Task.Delay(1500);
         Loader.Load(19);
     }
     public void QuestPropertiesCheck()
