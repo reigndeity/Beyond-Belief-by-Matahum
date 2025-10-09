@@ -8,11 +8,11 @@ public class R_GeneralItemSpawner : MonoBehaviour
     [SerializeField] private R_InventoryUI inventoryUI;
 
     [Header("Pamana Spawning Reference")]
-    [SerializeField] private R_ItemData[] pamanaTemplates;
+    [SerializeField] public R_ItemData[] pamanaTemplates;
     [SerializeField] private R_PamanaVisualConfig visualConfig;
 
     [Header("Agimat Spawning Reference")]
-    [SerializeField] private R_ItemData[] agimatTemplates;
+    [SerializeField] public R_ItemData[] agimatTemplates;
     [SerializeField] private R_AgimatVisualConfig agimatVisualConfig;
 
     public int simulatedPlayerLevel = 1;
