@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8526996889699289115}
   - component: {fileID: -6462837225022954818}
   - component: {fileID: 739862122370070568}
-  m_Layer: 12
+  m_Layer: 21
   m_Name: Yellow Loot Drop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4824,6 +4824,7 @@ MonoBehaviour:
   lootContent:
     lootPrefab: {fileID: 0}
     itemData: {fileID: 0}
+    level: 0
     randomPamana: 0
     randomAgimat: 0
     isGold: 0
@@ -4870,7 +4871,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0

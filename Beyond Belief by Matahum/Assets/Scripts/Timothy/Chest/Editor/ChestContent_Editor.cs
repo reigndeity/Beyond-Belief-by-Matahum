@@ -4,15 +4,31 @@ using UnityEditor;
 [CustomEditor(typeof(Chest))]
 public class ChestContent_Editor : Editor
 {
+    // Interactable base fields
+    SerializedProperty interactNameProp;
+    SerializedProperty iconProp;
+    SerializedProperty interactKeyProp;
+    SerializedProperty useInteractCooldownProp;
+    SerializedProperty interactCooldownProp;
+
+    // Chest-specific fields
     SerializedProperty chestDropsProp;
     SerializedProperty explosionForceProp;
     SerializedProperty upwardModifierProp;
     SerializedProperty spawnOffsetProp;
 
-    bool[] foldouts; // for collapsible entries
+    bool[] foldouts; // For collapsible entries
 
     private void OnEnable()
     {
+        // Base class properties (from Interactable)
+        interactNameProp = serializedObject.FindProperty("interactName");
+        iconProp = serializedObject.FindProperty("icon");
+        interactKeyProp = serializedObject.FindProperty("interactKey");
+        useInteractCooldownProp = serializedObject.FindProperty("useInteractCooldown");
+        interactCooldownProp = serializedObject.FindProperty("interactCooldown");
+
+        // Chest-specific properties
         chestDropsProp = serializedObject.FindProperty("chestDrops");
         explosionForceProp = serializedObject.FindProperty("explosionForce");
         upwardModifierProp = serializedObject.FindProperty("upwardModifier");
@@ -25,6 +41,26 @@ public class ChestContent_Editor : Editor
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
+
+        // =============================
+        // 🧩 Interactable Settings
+        // =============================
+        EditorGUILayout.LabelField("Interactable Settings", EditorStyles.boldLabel);
+        EditorGUILayout.BeginVertical(GUI.skin.box);
+
+        EditorGUILayout.PropertyField(interactNameProp, new GUIContent("Interact Name"));
+        EditorGUILayout.PropertyField(iconProp, new GUIContent("Icon"));
+        EditorGUILayout.PropertyField(interactKeyProp, new GUIContent("Interact Key"));
+
+        EditorGUILayout.Space(5);
+        EditorGUILayout.PropertyField(useInteractCooldownProp, new GUIContent("Use Cooldown"));
+
+        if (useInteractCooldownProp.boolValue)
+            EditorGUILayout.PropertyField(interactCooldownProp, new GUIContent("Cooldown Duration"));
+
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.Space(10);
 
         // =============================
         // 🧨 Loot Physics Settings
@@ -45,7 +81,6 @@ public class ChestContent_Editor : Editor
         // =============================
         EditorGUILayout.LabelField("Chest Drops", EditorStyles.boldLabel);
 
-        // Ensure foldouts array matches chestDrops size
         if (foldouts.Length != chestDropsProp.arraySize)
             foldouts = new bool[chestDropsProp.arraySize];
 
@@ -57,6 +92,7 @@ public class ChestContent_Editor : Editor
 
             SerializedProperty lootDropPrefab = element.FindPropertyRelative("lootPrefab");
             SerializedProperty itemData = element.FindPropertyRelative("itemData");
+            SerializedProperty itemLevel = element.FindPropertyRelative("level");
             SerializedProperty randomPamana = element.FindPropertyRelative("randomPamana");
             SerializedProperty randomAgimat = element.FindPropertyRelative("randomAgimat");
             SerializedProperty isGold = element.FindPropertyRelative("isGold");
@@ -64,7 +100,6 @@ public class ChestContent_Editor : Editor
             SerializedProperty goldAmount = element.FindPropertyRelative("goldAmount");
             SerializedProperty randomGoldMinMax = element.FindPropertyRelative("randomGoldMinMax");
 
-            // Visual box and foldout
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
             EditorGUILayout.BeginHorizontal();
@@ -72,7 +107,7 @@ public class ChestContent_Editor : Editor
             if (GUILayout.Button("Remove", GUILayout.Width(70)))
             {
                 chestDropsProp.DeleteArrayElementAtIndex(i);
-                break; // stop drawing deleted element
+                break;
             }
             EditorGUILayout.EndHorizontal();
 
@@ -88,26 +123,38 @@ public class ChestContent_Editor : Editor
                 // Always show loot prefab
                 EditorGUILayout.PropertyField(lootDropPrefab, new GUIContent("Loot Prefab"));
 
-                // Conditional Logic
                 if (isRandomPamana)
                 {
+                    EditorGUILayout.PropertyField(itemLevel, new GUIContent("Level"));
                     EditorGUILayout.PropertyField(randomPamana, new GUIContent("Random Pamana"));
                 }
                 else if (isRandomAgimat)
                 {
+                    EditorGUILayout.PropertyField(itemLevel, new GUIContent("Level"));
                     EditorGUILayout.PropertyField(randomAgimat, new GUIContent("Random Agimat"));
                 }
                 else if (hasItemData)
                 {
                     EditorGUILayout.PropertyField(itemData, new GUIContent("Item Data"));
+
+                    // Try to get the actual itemData object reference
+                    R_ItemData dataRef = itemData.objectReferenceValue as R_ItemData;
+                    if (dataRef != null)
+                    {
+                        // Only show level if itemType is Pamana or Agimat
+                        if (dataRef.itemType == R_ItemType.Pamana || dataRef.itemType == R_ItemType.Agimat)
+                        {
+                            EditorGUILayout.PropertyField(itemLevel, new GUIContent("Level"));
+                        }
+                    }
                 }
+
                 else if (goldMode)
                 {
                     EditorGUILayout.PropertyField(isGold, new GUIContent("Is Gold"));
-
                     EditorGUI.indentLevel++;
-                    EditorGUILayout.PropertyField(randomGold, new GUIContent("Random Gold"));
 
+                    EditorGUILayout.PropertyField(randomGold, new GUIContent("Random Gold"));
                     if (randomGold.boolValue)
                         EditorGUILayout.PropertyField(randomGoldMinMax, new GUIContent("Gold Range"));
                     else
@@ -117,8 +164,8 @@ public class ChestContent_Editor : Editor
                 }
                 else
                 {
-                    // Default view
                     EditorGUILayout.PropertyField(itemData, new GUIContent("Item Data"));
+                    EditorGUILayout.PropertyField(itemLevel, new GUIContent("Level"));
                     EditorGUILayout.Space(3);
                     EditorGUILayout.PropertyField(randomPamana, new GUIContent("Random Pamana"));
                     EditorGUILayout.PropertyField(randomAgimat, new GUIContent("Random Agimat"));

@@ -40,17 +40,18 @@ public class R_GeneralItemSpawner : MonoBehaviour
         R_PamanaSpawnerUtility.SpawnRandomPamanaFromPool(pamanaTemplates, inventory, inventoryUI, simulatedPlayerLevel, visualConfig);
     }
 
-    public void SpawnSinglePamana(R_ItemData[] itemData)
+    public void SpawnSinglePamana(R_ItemData[] itemData, int level = 1)
     {
-        R_PamanaSpawnerUtility.SpawnRandomPamanaFromPool(itemData, inventory, inventoryUI, simulatedPlayerLevel, visualConfig);
+        R_PamanaSpawnerUtility.SpawnRandomPamanaFromPool(itemData, inventory, inventoryUI, level, visualConfig);
     }
     #endregion
 
     #region AGIMAT SPAWNING
-    public void SpawnSingleAgimat(R_ItemData[] itemData)
+    public void SpawnSingleAgimat(R_ItemData[] itemData, int level = 1)
     {
-        R_AgimatSpawnerUtility.SpawnRandomAgimatFromPool(itemData, inventory, inventoryUI, simulatedPlayerLevel, agimatVisualConfig);
+        R_AgimatSpawnerUtility.SpawnRandomAgimatFromPool(itemData, inventory, inventoryUI, level, agimatVisualConfig);
     }
+
     public void SpawnRandomAgimatFromTemplate()
     {
         R_AgimatSpawnerUtility.SpawnRandomAgimatFromPool(agimatTemplates, inventory, inventoryUI, simulatedPlayerLevel, agimatVisualConfig);

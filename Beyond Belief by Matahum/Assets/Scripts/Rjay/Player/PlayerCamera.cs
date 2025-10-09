@@ -62,6 +62,8 @@ public class PlayerCamera : MonoBehaviour
 
     private bool isCameraLocked = false;
 
+    private UI_Game uiGame;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -74,6 +76,8 @@ public class PlayerCamera : MonoBehaviour
 
     void Start()
     {
+        uiGame = FindFirstObjectByType<UI_Game>();
+
         desiredDistance = currentDistance = maxDistance;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -87,6 +91,7 @@ public class PlayerCamera : MonoBehaviour
     {
         if (playerTarget == null) return;
         if (isCameraLocked) return;
+        if (uiGame.IsGamePaused()) return;
         Vector3 targetPosition = playerTarget.position;
 
         UpdateShake();

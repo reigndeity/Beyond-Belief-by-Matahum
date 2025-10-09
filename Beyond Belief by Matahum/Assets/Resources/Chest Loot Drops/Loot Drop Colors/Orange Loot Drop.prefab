@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -3804211824616170337}
   - component: {fileID: 1689952991880635326}
   - component: {fileID: 6832912386879382505}
-  m_Layer: 12
+  m_Layer: 21
   m_Name: Orange Loot Drop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4824,6 +4824,7 @@ MonoBehaviour:
   lootContent:
     lootPrefab: {fileID: 0}
     itemData: {fileID: 0}
+    level: 0
     randomPamana: 0
     randomAgimat: 0
     isGold: 0
@@ -4870,7 +4871,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0

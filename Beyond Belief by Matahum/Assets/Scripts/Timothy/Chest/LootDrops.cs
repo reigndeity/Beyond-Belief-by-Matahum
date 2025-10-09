@@ -45,30 +45,30 @@ public class LootDrops : Interactable
 
     void SpecificItem()
     {
-        if (lootContent.itemData.itemType != R_ItemType.Agimat ||
+        if (lootContent.itemData.itemType != R_ItemType.Agimat &&
                 lootContent.itemData.itemType != R_ItemType.Pamana)
         {
             inventory.AddItem(lootContent.itemData, 1);
         }
         else if (lootContent.itemData.itemType == R_ItemType.Pamana)
         {
-            R_GeneralItemSpawner.instance.SpawnSinglePamana(new R_ItemData[] { lootContent.itemData });
+            R_GeneralItemSpawner.instance.SpawnSinglePamana(new R_ItemData[] { lootContent.itemData }, lootContent.level);
         }
         else if (lootContent.itemData.itemType == R_ItemType.Agimat)
         {
-            R_GeneralItemSpawner.instance.SpawnSingleAgimat(new R_ItemData[] { lootContent.itemData });
+            R_GeneralItemSpawner.instance.SpawnSingleAgimat(new R_ItemData[] { lootContent.itemData }, lootContent.level);
         }
     }
 
     public void RandomAgimatOrPamanaOrGold()
     {
-        if (lootContent.randomAgimat)
+        if (lootContent.randomPamana)
         {
             int randomizer = Random.Range(0, R_GeneralItemSpawner.instance.pamanaTemplates.Length);
             R_ItemData itemData = R_GeneralItemSpawner.instance.pamanaTemplates[randomizer];
             lootContent.itemData = itemData;
         }
-        else if (lootContent.randomPamana)
+        else if (lootContent.randomAgimat)
         {
             int randomizer = Random.Range(0, R_GeneralItemSpawner.instance.agimatTemplates.Length);
             R_ItemData itemData = R_GeneralItemSpawner.instance.agimatTemplates[randomizer];
