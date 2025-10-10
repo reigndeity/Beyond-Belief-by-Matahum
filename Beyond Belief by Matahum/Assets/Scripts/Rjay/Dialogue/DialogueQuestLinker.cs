@@ -29,6 +29,9 @@ public class DialogueQuestLinker : MonoBehaviour
     public DialogueStateHolder mangkukulam;
     public DialogueStateHolder albularyo;
     
+    [Header("Quest Minimap Item")]
+    [SerializeField] private GameObject questMinimapItem; // ✅ single persistent prefab
+    private Transform currentTrackedTransform;
 
     [Header("Quest Marker")]
     [SerializeField] private QuestMarker markerPrefab;       // Prefab of quest marker (UI only)
@@ -140,6 +143,28 @@ public class DialogueQuestLinker : MonoBehaviour
             AddActiveMarker(currentQuestID, tracked);
         }
 
+        // === ✅ Quest Minimap Item follow logic ===
+        Transform questTarget = GetQuestTargetTransform(currentQuestID);
+
+        if (questMinimapItem != null)
+        {
+            if (questTarget != null)
+            {
+                if (currentTrackedTransform != questTarget)
+                {
+                    questMinimapItem.transform.SetParent(questTarget);
+                    questMinimapItem.transform.localPosition = Vector3.zero;
+                    questMinimapItem.SetActive(true);
+                    currentTrackedTransform = questTarget;
+                }
+            }
+            else
+            {
+                questMinimapItem.SetActive(false);
+                currentTrackedTransform = null;
+            }
+        }
+
         // ==============================
         // Quest tracking state changes
         // ==============================
@@ -247,6 +272,10 @@ public class DialogueQuestLinker : MonoBehaviour
 
                     TutorialManager.instance.lewenriSacredStatue.gameObject.layer = LayerMask.NameToLayer("Teleporter");
                     m_uiGame.closeMapButton.onClick.AddListener(FirstStatueInteraction);
+                    if (questMinimapItem != null)
+                    { 
+                        questMinimapItem.SetActive(false);
+                    }
                     break;
 
                 case "A0_Q7_KeepingTrack":
@@ -372,6 +401,11 @@ public class DialogueQuestLinker : MonoBehaviour
                     lewenriSaveInteractable.onInteract.AddListener(TutorialManager.instance.SaveTutorial);
                     TutorialManager.instance.closeSaveButton.onClick.AddListener(TutorialManager.instance.ContinueQuestAfterSave);
                     TutorialManager.instance.noSaveButton.onClick.AddListener(TutorialManager.instance.ContinueQuestAfterSave);
+
+                    if (questMinimapItem != null)
+                    { 
+                        questMinimapItem.SetActive(false);
+                    }
                     break;
                 case "A1_Q1_Tupas'Request_P2":
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P2");
@@ -396,6 +430,11 @@ public class DialogueQuestLinker : MonoBehaviour
 
                     bakal.SetDialogueState("Default");
                     bangkaw.SetDialogueState("Default");
+
+                    if (questMinimapItem != null)
+                    { 
+                        questMinimapItem.SetActive(false);
+                    }
                     break;
                 case "A1_Q2_NewsFromTupas":
                     tupas.SetDialogueState("A1_Q2_NewsFromTupas");

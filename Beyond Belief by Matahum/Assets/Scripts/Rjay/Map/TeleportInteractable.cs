@@ -1,10 +1,13 @@
 using UnityEngine;
 using MTAssets.EasyMinimapSystem;
 using System.Collections;
+using UnityEngine.Events; // ✅ Needed for UnityEvent
 
 [RequireComponent(typeof(PersistentGuid))]
 public class TeleportInteractable : Interactable, ISaveable
 {
+    private Player m_player;
+
     [Header("Statue Type")]
     [SerializeField] private bool isSacredStatue = false;
 
@@ -30,41 +33,42 @@ public class TeleportInteractable : Interactable, ISaveable
     [SerializeField] private string teleportLabel = "Teleport";
 
     [Header("Boat Visuals")]
-    [SerializeField] private Transform boatObject; // assign your BoatRoot here
+    [SerializeField] private Transform boatObject;
     [SerializeField] private float unlockScaleDuration = 1.5f;
-    [SerializeField] private float unlockSpinSpeed = 360f; // degrees per second
+    [SerializeField] private float unlockSpinSpeed = 360f;
     [SerializeField] private float idleBobHeight = 0.2f;
     [SerializeField] private float idleBobSpeed = 2f;
     [SerializeField] private float idleRockAngle = 5f;
     [SerializeField] private float idleRockSpeed = 2f;
     [SerializeField] private float blendDuration = 1.0f;
 
+    [Header("Unlock Events")]
+    public UnityEvent OnUnlockedStart; // ✅ Called when unlocking starts
+    public UnityEvent OnUnlockedEnd;   // ✅ Called when unlocking fully completes
+
     private Coroutine boatRoutine;
     private bool appliedOnceThisEnable = false;
-
     private PlayerMinimap playerMinimap;
     private PersistentGuid persistentGuid;
 
     // ---- LIFECYCLE ----
     private void Awake()
     {
+        m_player = FindFirstObjectByType<Player>();
         playerMinimap = FindFirstObjectByType<PlayerMinimap>();
         persistentGuid = GetComponent<PersistentGuid>();
 
-        // NEW: register with SaveManager so each statue persists by GUID in save.json
         SaveManager.Instance.Register(this);
     }
 
     private void OnDestroy()
     {
-        // NEW: unregister on destroy
         SaveManager.Instance?.Unregister(this);
     }
 
     private void OnEnable()
     {
         appliedOnceThisEnable = false;
-        // ApplyAll will run after save restore
     }
 
     // ---- INTERACTION ----
@@ -121,13 +125,11 @@ public class TeleportInteractable : Interactable, ISaveable
         {
             if (!wasPreviouslyUnlocked)
             {
-                // First unlock → play animation
                 boatRoutine = StartCoroutine(PlayUnlockAnimation());
                 wasPreviouslyUnlocked = true;
             }
             else
             {
-                // Already unlocked on load → idle loop
                 if (boatObject != null) boatRoutine = StartCoroutine(BoatIdleLoop());
             }
         }
@@ -146,15 +148,8 @@ public class TeleportInteractable : Interactable, ISaveable
         InteractionManager.Instance?.NotifyInteractableChanged(this);
     }
 
-    private void RefreshUI()
-    {
-        interactName = isUnlocked ? teleportLabel : unlockLabel;
-    }
-
-    private void RefreshPromptIcon()
-    {
-        icon = isUnlocked ? unlockedPromptIcon : lockedPromptIcon;
-    }
+    private void RefreshUI() => interactName = isUnlocked ? teleportLabel : unlockLabel;
+    private void RefreshPromptIcon() => icon = isUnlocked ? unlockedPromptIcon : lockedPromptIcon;
 
     private void RefreshMinimapIcon()
     {
@@ -199,7 +194,6 @@ public class TeleportInteractable : Interactable, ISaveable
 
         wasPreviouslyUnlocked = saveData.wasPreviouslyUnlocked;
 
-        // Force apply regardless of appliedOnceThisEnable
         appliedOnceThisEnable = false;
         SetUnlocked(saveData.isUnlocked);
     }
@@ -212,6 +206,7 @@ public class TeleportInteractable : Interactable, ISaveable
     private IEnumerator UnlockSequence()
     {
         SetUnlocked(true);
+
         yield return StartCoroutine(PlayUnlockAnimation());
 
         if (playerMinimap == null)
@@ -221,6 +216,11 @@ public class TeleportInteractable : Interactable, ISaveable
             playerMinimap.OpenMapAndCenter();
 
         MapManager.instance.RevealAreas(revealAreaIds);
+
+                // ✅ Trigger end event once fully unlocked
+        m_player.SetPlayerLocked(false);
+        PlayerCamera.Instance.HardUnlockCamera();
+        OnUnlockedEnd?.Invoke();
     }
 
     // ---- BOAT ANIMATIONS ----
@@ -228,9 +228,14 @@ public class TeleportInteractable : Interactable, ISaveable
     {
         if (boatObject == null) yield break;
 
+        // ✅ Trigger start event
+        m_player.ForceIdleOverride();
+        m_player.SetPlayerLocked(true);
+        PlayerCamera.Instance.HardLockCamera();
+        OnUnlockedStart?.Invoke();
+
         boatObject.localScale = Vector3.zero;
         float elapsed = 0f;
-
         Vector3 startScale = Vector3.zero;
         Vector3 endScale = Vector3.one;
 
@@ -246,6 +251,7 @@ public class TeleportInteractable : Interactable, ISaveable
         }
 
         boatObject.localScale = endScale;
+
         yield return StartCoroutine(BlendIntoIdle());
     }
 
