@@ -24,7 +24,7 @@ public class MutyaNgSaging_S1 : R_AgimatAbility
         float bulletDamage = itemData.slot1RollValue[1];
         float turretDuration = bulletCount * 2f;
 
-        Vector3 spawnPoint = new Vector3(user.transform.position.x, user.transform.position.y, user.transform.position.z + 1);
+        Vector3 spawnPoint = user.transform.position + user.transform.forward * 1f + Vector3.up * 0.5f;
 
         if (NavMesh.SamplePosition(spawnPoint, out NavMeshHit hit, 5f, NavMesh.AllAreas))
         {

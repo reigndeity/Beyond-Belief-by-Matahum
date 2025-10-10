@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 [CreateAssetMenu(menuName = "Agimat/Abilities/MutyaNgSampalok/MutyaNgSampalok_S1")]
 public class MutyaNgSampalok_S1 : R_AgimatAbility
@@ -18,31 +19,18 @@ public class MutyaNgSampalok_S1 : R_AgimatAbility
     public override void Activate(GameObject user, R_ItemRarity rarity, R_ItemData itemData)
     {
         float roll = itemData.slot1RollValue[0];
-        CoroutineRunner.Instance.RunCoroutine(StartSweeping(user, roll));
-    }
 
-    private IEnumerator StartSweeping(GameObject user, float roll)
-    {
-        Vector3 offset = new Vector3(0, 0.5f, 0);
-        GameObject vineObj = Instantiate(vinePrefab, user.transform.position + offset, user.transform.rotation, user.transform);
+        Vector3 spawnPoint = user.transform.position + user.transform.forward * 1f + Vector3.up * 0.5f;
 
-        MutyaNgSampalok_VineDamage vineScript = vineObj.GetComponentInChildren<MutyaNgSampalok_VineDamage>();
-        float atk = user.GetComponent<PlayerStats>().p_attack;
-        vineScript.damage = atk * (roll / 100f);
-
-        float startAngle = 90f;
-        float endAngle = -90f;
-        float currentAngle = startAngle;
-
-        while (currentAngle > endAngle)
+        if (NavMesh.SamplePosition(spawnPoint, out NavMeshHit hit, 5f, NavMesh.AllAreas))
         {
-            float step = sweepSpeed * Time.deltaTime;
-            currentAngle -= step;
-            vineObj.transform.localRotation = Quaternion.Euler(0, currentAngle, 0);
-            yield return null;
-        }
+            Vector3 navMeshOffset = new Vector3(0, 0.11f, 0);
+            GameObject vineObj = Instantiate(vinePrefab, hit.position - navMeshOffset, user.transform.rotation);
 
-        Destroy(vineObj);
+            MutyaNgSampalok_VineDamage vineScript = vineObj.GetComponentInChildren<MutyaNgSampalok_VineDamage>();
+            float atk = user.GetComponent<PlayerStats>().p_attack;
+            vineScript.damage = atk * (roll / 100f);
+        }
     }
 
     public override float GetRandomDamagePercent(R_ItemRarity rarity)

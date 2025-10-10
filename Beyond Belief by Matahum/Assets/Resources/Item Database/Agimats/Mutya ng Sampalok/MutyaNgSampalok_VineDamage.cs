@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -8,7 +7,16 @@ public class MutyaNgSampalok_VineDamage : MonoBehaviour
     public GameObject poisonEffectObj;
     private HashSet<IDamageable> damagedEnemies = new HashSet<IDamageable>(); // faster lookup than List
 
-    private void OnTriggerEnter(Collider other)
+    public VineCollider[] colliders;
+
+    private void Start()
+    {
+        foreach (var vine in colliders)
+        {
+            vine.mainVine = this;
+        }
+    }
+    public void HandleTrigger(Collider other)
     {
         if (other.TryGetComponent<IDamageable>(out var damageable))
         {
@@ -36,5 +44,25 @@ public class MutyaNgSampalok_VineDamage : MonoBehaviour
                 poison.Initialize(true);
             }
         }
+    }
+
+    void EnableColliders()
+    {
+        foreach (var vine in colliders)
+        {
+            vine.collider.enabled = true;
+        }
+    }
+
+    void DisableColliders()
+    {
+        foreach (var vine in colliders)
+        {
+            vine.collider.enabled = false;
+        }
+    }
+    void DestroyObject()
+    {
+        Destroy(transform.parent.gameObject);
     }
 }

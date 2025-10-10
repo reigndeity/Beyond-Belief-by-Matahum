@@ -70,13 +70,13 @@ public class PoisonEffect : MonoBehaviour
     {
         float damage = 0f;
 
-        if (fromPlayer && playerStats != null)
+        if (!fromPlayer && playerStats != null)
         {
             float baseDamage = playerStats.p_maxHealth * (poisonToDamagePercentage / 100f);
             float reduction = playerStats.p_defense * 0.66f;
             damage = Mathf.Max(0, baseDamage + reduction);
         }
-        else if (!fromPlayer && enemyStats != null)
+        else if (fromPlayer && enemyStats != null)
         {
             float baseDamage = enemyStats.e_maxHealth * (poisonToDamagePercentage / 100f);
             float reduction = enemyStats.e_defense * 0.66f;

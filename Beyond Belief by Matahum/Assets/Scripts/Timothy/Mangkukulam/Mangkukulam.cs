@@ -18,6 +18,7 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
     [Header("References")]
     private EnemyStats stats;
     private PlayerStats m_playerStats;
+    private PlayerMovement playerMovement;
     private Mangkukulam_AnimationManager animator;
     [HideInInspector] public Boss_UICanvas uiCanvas;
 
@@ -35,20 +36,23 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
     {
         stats = GetComponent<EnemyStats>();
         m_playerStats = FindFirstObjectByType<PlayerStats>();
+        playerMovement = FindFirstObjectByType<PlayerMovement>();
         animator = GetComponent<Mangkukulam_AnimationManager>();
         uiCanvas = GetComponent<Boss_UICanvas>();
 
         uiCanvas.currentCastingSkillTxt.text = " ";
 
-        if (!isBattleStart)
-        {
-            Invoke("BattleStart", 5);
-            return;
-        }
+        
     }
 
     private void Update()
     {
+        if (playerMovement.Speed < 0.1f && !isBattleStart)
+        {
+            BattleStart();
+            return;
+        }
+
         if (isStunned)
             uiCanvas.currentCastingSkillTxt.text = "Mangkukulam is stunned!";
     }

@@ -12,6 +12,15 @@ public class MutyaNgSaging_Bullet : MonoBehaviour
     private void Start()
     {
         Destroy(gameObject, 10);
+
+        if (Random.Range(0, 2) == 0)
+        {
+            currentSpinSpeed *= 1;
+        }
+        else
+        {
+            currentSpinSpeed *= -1;
+        }
     }
     public void SetDirection(Vector3 dir)
     {
@@ -21,7 +30,7 @@ public class MutyaNgSaging_Bullet : MonoBehaviour
     private void Update()
     {
         transform.position += moveDirection * speed * Time.deltaTime;      
-        transform.Rotate(Vector3.forward, Random.Range(-currentSpinSpeed, currentSpinSpeed) * Time.deltaTime, Space.Self);
+        transform.Rotate(Vector3.forward, currentSpinSpeed * Time.deltaTime, Space.Self);
     }
 
     private void OnTriggerEnter(Collider other)
