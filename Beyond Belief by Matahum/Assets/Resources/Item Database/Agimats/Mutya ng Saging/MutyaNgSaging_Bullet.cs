@@ -7,7 +7,12 @@ public class MutyaNgSaging_Bullet : MonoBehaviour
     public float bulletDamage;
     private Vector3 moveDirection;
     public GameObject explosion_VFX;
+    private float currentSpinSpeed = 480;
 
+    private void Start()
+    {
+        Destroy(gameObject, 10);
+    }
     public void SetDirection(Vector3 dir)
     {
         moveDirection = dir.normalized;
@@ -15,7 +20,8 @@ public class MutyaNgSaging_Bullet : MonoBehaviour
 
     private void Update()
     {
-        transform.position += moveDirection * speed * Time.deltaTime;
+        transform.position += moveDirection * speed * Time.deltaTime;      
+        transform.Rotate(Vector3.forward, Random.Range(-currentSpinSpeed, currentSpinSpeed) * Time.deltaTime, Space.Self);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -39,16 +39,16 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
         uiCanvas = GetComponent<Boss_UICanvas>();
 
         uiCanvas.currentCastingSkillTxt.text = " ";
+
+        if (!isBattleStart)
+        {
+            Invoke("BattleStart", 5);
+            return;
+        }
     }
 
     private void Update()
     {
-        if (!isBattleStart)
-        {
-            Invoke("BattleStart", 2);
-            return;
-        }
-
         if (isStunned)
             uiCanvas.currentCastingSkillTxt.text = "Mangkukulam is stunned!";
     }

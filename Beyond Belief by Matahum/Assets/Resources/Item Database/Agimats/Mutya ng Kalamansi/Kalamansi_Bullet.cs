@@ -19,6 +19,44 @@ public class Kalamansi_Bullet : MonoBehaviour
     public GameObject defDown_xpld_VFX;
     private GameObject vfxToSpawn;
 
+    #region Rotator
+    public float rotationSpeed = 2f;
+    public float changeDirectionInterval = 2f;
+
+    private Vector3 targetRotation;
+    private float timer;
+
+    void Start()
+    {
+        PickNewRotation();
+        Destroy(gameObject, 10);
+    }
+
+    void Update()
+    {
+        timer += Time.deltaTime;
+        if (timer >= changeDirectionInterval)
+        {
+            PickNewRotation();
+            timer = 0f;
+        }
+
+        // Smoothly rotate towards the random rotation
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            Quaternion.Euler(targetRotation),
+            rotationSpeed * Time.deltaTime
+        );
+    }
+
+    void PickNewRotation()
+    {
+        float randomX = UnityEngine.Random.Range(-40f, 40f);
+        float randomY = UnityEngine.Random.Range(-40f, 40f);
+        targetRotation = new Vector3(randomX, randomY, 0);
+    }
+    #endregion
+
     private void OnTriggerEnter(Collider other)
     {
         
@@ -38,9 +76,10 @@ public class Kalamansi_Bullet : MonoBehaviour
                 damageable.TakeDamage(finalDamage * 1.5f);
             else
                 damageable.TakeDamage(finalDamage);
+
+            CheckBuffForVFX(other.transform);
+            Destroy(gameObject);
         }
-        CheckBuffForVFX(other.transform);
-        Destroy(gameObject);
     }
 
     void CheckBuffForVFX(Transform target)

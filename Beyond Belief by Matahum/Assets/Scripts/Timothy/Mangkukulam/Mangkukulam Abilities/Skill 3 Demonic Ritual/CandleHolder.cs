@@ -15,7 +15,7 @@ public class CandleHolder : MonoBehaviour
     [Header("Candle Properties")]
     public int candleCount = 4;
     public float radius = 10f;
-    public GameObject candlePrefab;
+    public GameObject[] candlePrefab;
     public List<CandlePillar> candles = new List<CandlePillar>();
     public float spawnInterval;
 
@@ -64,7 +64,7 @@ public class CandleHolder : MonoBehaviour
         {
             Vector3 navMeshOffset = new Vector3(0, 0.11f, 0);
             CandlePillar candleObj = Instantiate(
-                candlePrefab,
+                candlePrefab[Random.Range(0,candlePrefab.Length)],
                 hit.position - navMeshOffset,
                 transform.parent.rotation,
                 transform
