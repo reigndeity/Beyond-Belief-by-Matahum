@@ -303,7 +303,7 @@ public class UI_Game : MonoBehaviour
     {
         r_inventoryUI.SetFilter(R_InventoryFilter.Ingredient);
         Debug.Log("Currently in Raw Ingredients");
-        currentFilteredInventoryText.text = "Raw Ingredients";
+        currentFilteredInventoryText.text = "Collectibles";
         SetActiveFilter(rawIngredientsFilter);
     }
     #endregion

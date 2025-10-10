@@ -17,6 +17,9 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI speakerNameText;
     public TextMeshProUGUI dialogueText;
 
+    [Header("Indicator")]
+    public GameObject indicatorObj;
+
     [Header("Optional Voice")]
     public AudioSource voiceSource;
 
@@ -65,6 +68,8 @@ public class DialogueManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        if (indicatorObj != null) indicatorObj.SetActive(false);
     }
 
     void Update()
@@ -93,7 +98,7 @@ public class DialogueManager : MonoBehaviour
             }
             else
             {
-                // ✅ If last line, end; otherwise show next
+                // If last line, end; otherwise show next
                 if (currentIndex >= flattenedLines.Count - 1)
                     EndDialogue();
                 else
@@ -130,12 +135,14 @@ public class DialogueManager : MonoBehaviour
         }
 
         dialoguePanel.SetActive(true);
+        if (indicatorObj != null) indicatorObj.SetActive(false);
         onDialogueStart?.Invoke();
         ShowNextLine();
     }
 
     private void ShowNextLine()
     {
+        if (indicatorObj != null) indicatorObj.SetActive(false); // ensure hidden when moving to next
         choicePanel.SetActive(false);
         foreach (Transform child in choiceButtonContainer)
             Destroy(child.gameObject);
@@ -169,6 +176,7 @@ public class DialogueManager : MonoBehaviour
             if (typewriterRoutine != null) StopCoroutine(typewriterRoutine);
 
             onLineStart?.Invoke();
+            if (indicatorObj != null) indicatorObj.SetActive(false); // hide while typing
             typewriterRoutine = StartCoroutine(TypeText(line.dialogueText, line));
             return;
         }
@@ -204,8 +212,16 @@ public class DialogueManager : MonoBehaviour
         textFullyRevealed = true;
         onLineFinish?.Invoke();
 
-        if (line.isChoiceLine && line.choices != null && line.choices.Length > 0)
+        // Only show indicator if this is NOT a choice line
+        bool isChoice = line.isChoiceLine && line.choices != null && line.choices.Length > 0;
+        if (!isChoice)
         {
+            if (indicatorObj != null) indicatorObj.SetActive(true);
+        }
+
+        if (isChoice)
+        {
+            if (indicatorObj != null) indicatorObj.SetActive(false);
             DisplayChoices(line.choices);
         }
     }
@@ -217,11 +233,25 @@ public class DialogueManager : MonoBehaviour
             StopCoroutine(typewriterRoutine);
         }
 
-        dialogueText.text = flattenedLines[currentIndex].dialogueText;
+        DialogueLine line = flattenedLines[currentIndex];
+
+        dialogueText.text = line.dialogueText;
         textFullyRevealed = true;
         onLineFinish?.Invoke();
 
-        // ✅ No auto EndDialogue here anymore — wait for next input if it's the last line
+        bool isChoice = line.isChoiceLine && line.choices != null && line.choices.Length > 0;
+
+        if (isChoice)
+        {
+            if (indicatorObj != null) indicatorObj.SetActive(false);
+            DisplayChoices(line.choices);
+        }
+        else
+        {
+            if (indicatorObj != null) indicatorObj.SetActive(true);
+        }
+
+        // No auto EndDialogue here — wait for next input if it's the last line
         StartCoroutine(InputCooldownRoutine());
     }
 
@@ -243,6 +273,7 @@ public class DialogueManager : MonoBehaviour
 
     private void DisplayChoices(DialogueChoice[] choices)
     {
+        if (indicatorObj != null) indicatorObj.SetActive(false); // hide when choices are shown
         choicePanel.SetActive(true);
         waitingForChoice = true;
 
@@ -295,6 +326,7 @@ public class DialogueManager : MonoBehaviour
         isPlaying = false;
         isDialoguePlaying = false;
         dialoguePanel.SetActive(false);
+        if (indicatorObj != null) indicatorObj.SetActive(false);
         currentSequence = null;
 
         onDialogueEnd?.Invoke();
