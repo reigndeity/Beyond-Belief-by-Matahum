@@ -53,14 +53,13 @@ public class MutyaNgSaging_S2 : R_AgimatAbility
 
     public override float GetRandomDamagePercent(R_ItemRarity rarity)
     {
-        // Slot2 = bullet damage
         return rarity switch
         {
-            R_ItemRarity.Common => Random.Range(39, 65),
-            R_ItemRarity.Rare => Random.Range(46.5f, 71.5f),
-            R_ItemRarity.Epic => Random.Range(54, 79),
-            R_ItemRarity.Legendary => Random.Range(61.5f, 86.5f),
-            _ => 39f
+            R_ItemRarity.Common => Random.Range(85, 105),
+            R_ItemRarity.Rare => Random.Range(105, 115),
+            R_ItemRarity.Epic => Random.Range(115, 140),
+            R_ItemRarity.Legendary => Random.Range(140, 165),
+            _ => 85f
         };
     }
 }

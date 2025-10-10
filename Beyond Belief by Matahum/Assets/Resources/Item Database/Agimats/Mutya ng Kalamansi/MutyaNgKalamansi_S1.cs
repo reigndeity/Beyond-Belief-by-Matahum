@@ -23,7 +23,7 @@ public class MutyaNgKalamansi_S1 : R_AgimatAbility
         float damagePercentage = itemData.slot1RollValue[0];
         float damageReduction = itemData.slot1RollValue[1];
 
-        Vector3 throwPoint = user.transform.position + user.transform.forward * 1f + Vector3.up * 0.5f;
+        Vector3 throwPoint = user.transform.position + user.transform.forward * 1f + Vector3.up;
         GameObject projectile = Instantiate(kalamansi_BulletPrefab, throwPoint, Quaternion.identity);
 
         Kalamansi_Bullet bullet = projectile.GetComponent<Kalamansi_Bullet>();
@@ -70,11 +70,11 @@ public class MutyaNgKalamansi_S1 : R_AgimatAbility
     {
         return rarity switch
         {
-            R_ItemRarity.Common => Random.Range(30, 47.5f),
-            R_ItemRarity.Rare => Random.Range(40, 60),
-            R_ItemRarity.Epic => Random.Range(50, 72.5f),
-            R_ItemRarity.Legendary => Random.Range(60, 85),
-            _ => 30f
+            R_ItemRarity.Common => Random.Range(60, 95f),
+            R_ItemRarity.Rare => Random.Range(80, 120),
+            R_ItemRarity.Epic => Random.Range(100, 145f),
+            R_ItemRarity.Legendary => Random.Range(120, 170),
+            _ => 60f
         };
     }
 
@@ -86,7 +86,7 @@ public class MutyaNgKalamansi_S1 : R_AgimatAbility
             R_ItemRarity.Rare => Random.Range(33.33f, 50),
             R_ItemRarity.Epic => Random.Range(41.66f, 62.5f),
             R_ItemRarity.Legendary => Random.Range(50, 75),
-            _ => 30f
+            _ => 25f
         };
     }
 }
