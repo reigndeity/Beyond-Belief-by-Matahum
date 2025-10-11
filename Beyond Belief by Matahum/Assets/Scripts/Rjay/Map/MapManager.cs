@@ -299,4 +299,42 @@ public class MapManager : MonoBehaviour
         if (teleportButton) teleportButton.interactable = false;
         if (teleportButtonLabel) teleportButtonLabel.text = "Teleport";
     }
+
+
+    // debug
+    [ContextMenu("Reveal All Fog")]
+    public void RevealAllFog()
+    {
+        if (areas == null || areas.Length == 0)
+        {
+            Debug.LogWarning("MapManager: No areas registered to reveal.");
+            return;
+        }
+
+        foreach (var area in areas)
+        {
+            if (area == null) continue;
+
+            // Ensure points are initialized
+            if (area.points == null || area.points.Length == 0)
+                area.GatherPoints(minimapFog);
+
+            // Track revealed areas for persistence
+            if (!revealedAreaIds.Contains(area.id))
+                revealedAreaIds.Add(area.id);
+
+            // Reveal all points in this area
+            foreach (var point in area.points)
+            {
+                if (point != null)
+                {
+                    point.minimapFog = minimapFog;
+                    point.Reveal();
+                }
+            }
+        }
+
+        Debug.Log($"MapManager: Revealed fog for all {areas.Length} areas.");
+    }
+
 }

@@ -21,6 +21,7 @@ public class SaveInteractable : Interactable
     public UnityEvent onSaveStarted;   // Fired when save begins
     public UnityEvent onSaveFinished;  // Fired when save ends
     public UnityEvent onSaveCancelled; // Fired when player presses "No"
+    public UnityEvent onSaveClosed;
 
     private bool isSaving = false;
 
@@ -117,6 +118,7 @@ public class SaveInteractable : Interactable
     {
         savePanel.SetActive(false);
         UnlockPlayer();
+        onSaveClosed?.Invoke();
     }
 
     async Task SaveProgressAsync()
