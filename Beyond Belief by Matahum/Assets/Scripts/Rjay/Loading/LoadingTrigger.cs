@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class LoadingTrigger : MonoBehaviour
@@ -17,22 +18,26 @@ public class LoadingTrigger : MonoBehaviour
         if (!other.CompareTag("Player")) return;
         if (other.gameObject.tag == "Player")
         {
-            StartCoroutine(LoadingToCutscene());
+            LoadingToCutscene();
         }
     }
-
-    public IEnumerator LoadingToCutscene()
+    public void LoadingToCutscene()
+    {
+        _ = Loading();
+    }
+    public async Task Loading()
     {
         m_player.SetPlayerLocked(true);
         m_player.ForceIdleOverride();
         PlayerCamera.Instance.HardLockCamera();
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
-        yield return new WaitForSeconds(1f);
+        await GameManager.instance.SavePlayerCoreData();
+        await Task.Delay(1000);
         BB_QuestManager.Instance.UpdateMissionProgressOnce(updateQuest);
-        yield return new WaitForSeconds(0.1f);
+        await Task.Delay(100);
         BB_QuestManager.Instance.ClaimRewardsByID(claimQuest);
-        
-        yield return new WaitForSeconds(1f);
+        await Task.Delay(100);
         Loader.Load(sceneIndex);
+        
     }
 }
