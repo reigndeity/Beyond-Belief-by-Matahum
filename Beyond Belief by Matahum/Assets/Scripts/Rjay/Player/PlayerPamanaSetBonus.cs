@@ -61,7 +61,7 @@ public class PlayerPamanaSetBonus : MonoBehaviour
                 playerStats.p_atkPrcnt += 10f;
                 break;
             case R_PamanaSet.TagapangasiwaNgLayog:
-                playerStats.p_hpPrcnt += 10f;
+                playerStats.p_cooldownReduction += 10f;
                 break;
         }
     }
@@ -83,7 +83,7 @@ public class PlayerPamanaSetBonus : MonoBehaviour
                 playerStats.p_critRate += 15f;
                 break;
             case R_PamanaSet.TagapangasiwaNgLayog:
-                playerStats.p_atkPrcnt += 15f;
+                playerStats.p_cooldownReduction += 15f;
                 break;
         }
     }
