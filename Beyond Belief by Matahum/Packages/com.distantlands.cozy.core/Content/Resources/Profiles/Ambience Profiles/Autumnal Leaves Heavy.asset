@@ -16,7 +16,7 @@ MonoBehaviour:
   maxTime: 0.14583333
   likelihood: 1
   chance:
-    baseChance: 0.95
+    baseChance: 0
     chanceEffectors:
     - limitType: 3
       curve:
@@ -277,5 +277,3 @@ MonoBehaviour:
     customChanceEffector: {fileID: 0}
   FX:
   - {fileID: 11400000, guid: 6ca0abc02f6d0d24c9585aece19df8ab, type: 2}
-  FXVolume: 0.519
-  useVFX: 1
