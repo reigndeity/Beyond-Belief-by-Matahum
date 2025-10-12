@@ -14,7 +14,6 @@ public class ChestContent_Editor : Editor
     // Chest-specific fields
     SerializedProperty chestDropsProp;
     SerializedProperty explosionForceProp;
-    SerializedProperty upwardModifierProp;
     SerializedProperty spawnOffsetProp;
 
     bool[] foldouts; // For collapsible entries
@@ -29,9 +28,8 @@ public class ChestContent_Editor : Editor
         interactCooldownProp = serializedObject.FindProperty("interactCooldown");
 
         // Chest-specific properties
-        chestDropsProp = serializedObject.FindProperty("chestDrops");
+        chestDropsProp = serializedObject.FindProperty("lootDrops");
         explosionForceProp = serializedObject.FindProperty("explosionForce");
-        upwardModifierProp = serializedObject.FindProperty("upwardModifier");
         spawnOffsetProp = serializedObject.FindProperty("spawnOffset");
 
         // Initialize foldouts
@@ -69,7 +67,6 @@ public class ChestContent_Editor : Editor
         EditorGUILayout.BeginVertical(GUI.skin.box);
 
         EditorGUILayout.PropertyField(explosionForceProp, new GUIContent("Explosion Force"));
-        EditorGUILayout.PropertyField(upwardModifierProp, new GUIContent("Upward Modifier"));
         EditorGUILayout.PropertyField(spawnOffsetProp, new GUIContent("Spawn Offset"));
 
         EditorGUILayout.EndVertical();
@@ -79,7 +76,7 @@ public class ChestContent_Editor : Editor
         // =============================
         // 💰 Chest Drops Section
         // =============================
-        EditorGUILayout.LabelField("Chest Drops", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Loot Drops", EditorStyles.boldLabel);
 
         if (foldouts.Length != chestDropsProp.arraySize)
             foldouts = new bool[chestDropsProp.arraySize];
@@ -103,7 +100,7 @@ public class ChestContent_Editor : Editor
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
             EditorGUILayout.BeginHorizontal();
-            foldouts[i] = EditorGUILayout.Foldout(foldouts[i], $"Chest Drop {i + 1}", true, EditorStyles.foldoutHeader);
+            foldouts[i] = EditorGUILayout.Foldout(foldouts[i], $"Loot Drop {i + 1}", true, EditorStyles.foldoutHeader);
             if (GUILayout.Button("Remove", GUILayout.Width(70)))
             {
                 chestDropsProp.DeleteArrayElementAtIndex(i);

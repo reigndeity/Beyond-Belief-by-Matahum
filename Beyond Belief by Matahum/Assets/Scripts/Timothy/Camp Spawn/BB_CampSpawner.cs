@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using BlazeAISpace;
+using UnityEditor;
 
 public class BB_CampSpawner : MonoBehaviour
 {
@@ -28,13 +29,17 @@ public class BB_CampSpawner : MonoBehaviour
     // 🧠 NEW: Saved enemy data for persistence
     private List<EnemySaveData> savedEnemies = new();
 
+    [Header("Random Possible Lootdrops")]
+    public LootContent[] possibleLootDrops;
+
+
     private void Start()
     {
         playerStats = FindFirstObjectByType<PlayerStats>();
         spawnArea = GetComponent<SphereCollider>();
 
         // Load existing enemies if saved
-        LoadEnemies();
+        //LoadEnemies();
 
         // Only spawn if none saved and player is far enough
         var player = FindFirstObjectByType<Player>();
@@ -48,6 +53,8 @@ public class BB_CampSpawner : MonoBehaviour
 
     private IEnumerator SpawnLoop()
     {
+        yield return new WaitForSeconds(1f);
+
         while (true)
         {
             StartSpawning();
@@ -128,6 +135,20 @@ public class BB_CampSpawner : MonoBehaviour
                 EnemyStats enemyStats = enemyGO.GetComponent<EnemyStats>();
                 UpdateEnemyStats(enemyStats);
 
+                //AddLoots(enemyGO);
+                Debug.Log($"Possible Loot Drop Length: {possibleLootDrops.Length}");
+                if (possibleLootDrops.Length != 0)
+                {
+                    int randomLoot = UnityEngine.Random.Range(0, possibleLootDrops.Length);
+                    int randomQuantity = UnityEngine.Random.Range(1, 4);
+                    EnemyLootDrop loot = enemyGO.AddComponent<EnemyLootDrop>();
+
+                    for (int j = 0; j < randomQuantity; j++)
+                    {
+                        loot.lootContent.Add(possibleLootDrops[randomLoot]);
+                    }
+                }
+
                 // Setup notifier
                 if (enemyGO.GetComponent<BB_SpawnNotifier>() == null)
                 {
@@ -157,6 +178,22 @@ public class BB_CampSpawner : MonoBehaviour
         }
 
         spawningInProgress = false;
+    }
+
+    void AddLoots(GameObject enemyGO)
+    {
+        Debug.Log($"Possible Loot Drop Length: {possibleLootDrops.Length}");
+        if (possibleLootDrops.Length != 0)
+        {
+            int randomLoot = UnityEngine.Random.Range(0, possibleLootDrops.Length);
+            int randomQuantity  = UnityEngine.Random.Range(1, 4);
+            EnemyLootDrop loot = enemyGO.AddComponent<EnemyLootDrop>();
+            
+            for(int i = 0; i < randomQuantity; i++)
+            {
+                loot.lootContent.Add(possibleLootDrops[randomLoot]);
+            }
+        }
     }
 
     // ------------------ CORE LEVEL LOGIC ------------------
@@ -268,7 +305,7 @@ public class BB_CampSpawner : MonoBehaviour
 
     private void OnDisable()
     {
-        CaptureCurrentEnemies(); // Auto-save remaining enemies when scene unloads
+        //CaptureCurrentEnemies(); // Auto-save remaining enemies when scene unloads
     }
     // -------------------------------------------------------
 

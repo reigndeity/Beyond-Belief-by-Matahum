@@ -603,7 +603,16 @@ MonoBehaviour:
   isInRange: 0
   useInteractCooldown: 0
   interactCooldown: 1
-  chestDrops: []
+  lootDrops:
+  - lootPrefab: {fileID: 0}
+    itemData: {fileID: 0}
+    level: 0
+    randomPamana: 0
+    randomAgimat: 0
+    isGold: 0
+    randomGold: 0
+    goldAmount: 0
+    randomGoldMinMax: {x: 0, y: 0}
   isOpened: 0
   explosionForce: 20
   upwardModifier: 1

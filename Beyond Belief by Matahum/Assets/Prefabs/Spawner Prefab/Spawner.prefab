@@ -66,6 +66,82 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe788ea60ef07d84982c7b02997d4dd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyStatsMultiplier: 1
   spawnInterval: 5
+  spawnDistanceThreshold: 50
+  minEnemyLevel: 5
+  maxEnemyLevel: 50
+  levelOffset: 5
   enemiesToSpawn: []
+  possibleLootDrops:
+  - lootPrefab: {fileID: 0}
+    itemData: {fileID: 0}
+    level: 0
+    randomPamana: 1
+    randomAgimat: 0
+    isGold: 0
+    randomGold: 0
+    goldAmount: 0
+    randomGoldMinMax: {x: 0, y: 0}
+  - lootPrefab: {fileID: 0}
+    itemData: {fileID: 0}
+    level: 0
+    randomPamana: 0
+    randomAgimat: 1
+    isGold: 0
+    randomGold: 0
+    goldAmount: 0
+    randomGoldMinMax: {x: 0, y: 0}
+  - lootPrefab: {fileID: 0}
+    itemData: {fileID: 11400000, guid: 19a40389471ccc74ab67f7008330e94e, type: 2}
+    level: 0
+    randomPamana: 0
+    randomAgimat: 0
+    isGold: 0
+    randomGold: 0
+    goldAmount: 0
+    randomGoldMinMax: {x: 0, y: 0}
+  - lootPrefab: {fileID: 0}
+    itemData: {fileID: 11400000, guid: 7e8740107b0848347b37540679372a65, type: 2}
+    level: 0
+    randomPamana: 0
+    randomAgimat: 0
+    isGold: 0
+    randomGold: 0
+    goldAmount: 0
+    randomGoldMinMax: {x: 0, y: 0}
+  - lootPrefab: {fileID: 0}
+    itemData: {fileID: 11400000, guid: 8320a876a4d4f6b4faa6f3e2a58b6cf1, type: 2}
+    level: 0
+    randomPamana: 0
+    randomAgimat: 0
+    isGold: 0
+    randomGold: 0
+    goldAmount: 0
+    randomGoldMinMax: {x: 0, y: 0}
+  - lootPrefab: {fileID: 0}
+    itemData: {fileID: 11400000, guid: 3e04b016225f4f1458d60fd9a58f195a, type: 2}
+    level: 0
+    randomPamana: 0
+    randomAgimat: 0
+    isGold: 0
+    randomGold: 0
+    goldAmount: 0
+    randomGoldMinMax: {x: 0, y: 0}
+  - lootPrefab: {fileID: 0}
+    itemData: {fileID: 11400000, guid: c8fd79a9698185142ae1914d811602fa, type: 2}
+    level: 0
+    randomPamana: 0
+    randomAgimat: 0
+    isGold: 0
+    randomGold: 0
+    goldAmount: 0
+    randomGoldMinMax: {x: 0, y: 0}
+  - lootPrefab: {fileID: 0}
+    itemData: {fileID: 11400000, guid: c3714a2d905cb2442966f0fc2b11ba63, type: 2}
+    level: 0
+    randomPamana: 0
+    randomAgimat: 0
+    isGold: 0
+    randomGold: 0
+    goldAmount: 0
+    randomGoldMinMax: {x: 0, y: 0}

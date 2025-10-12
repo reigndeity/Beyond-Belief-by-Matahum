@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LootDrops : Interactable
 {
-    [HideInInspector] public ChestContent lootContent;
+    [HideInInspector] public LootContent lootContent;
     private R_Inventory inventory;
     private int goldToAdd;
 

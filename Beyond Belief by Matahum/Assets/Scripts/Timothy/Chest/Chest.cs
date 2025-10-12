@@ -4,12 +4,11 @@ using UnityEngine;
 public class Chest : Interactable
 {
     [Header("Chest Contents")]
-    public ChestContent[] chestDrops;
+    public LootContent[] lootDrops;
     public bool isOpened = false;
     
     [Header("Loot Physics Settings")]
     public float explosionForce = 5f;         // how strong the items shoot out
-    public float upwardModifier = 1f;         // how much upward push they get
     public Vector3 spawnOffset = Vector3.up * 0.5f; // offset above chest
 
     [Header("Animator")]
@@ -35,7 +34,7 @@ public class Chest : Interactable
 
     public override void OnInteract()
     {
-        if (chestDrops == null || chestDrops.Length == 0)
+        if (lootDrops == null || lootDrops.Length == 0)
         {
             Debug.LogWarning("Chest has no drops or lootPrefab is missing.");
             return;
@@ -53,7 +52,7 @@ public class Chest : Interactable
     {
         Vector3 chestPosition = transform.position + spawnOffset;
 
-        foreach (var chestDrop in chestDrops)
+        foreach (var chestDrop in lootDrops)
         {
             // Spawn loot object
             LootDrops lootObj = Instantiate(chestDrop.lootPrefab, chestPosition, Quaternion.identity);
@@ -85,7 +84,7 @@ public class Chest : Interactable
         chestParticle.SetActive(false);
     }
 }
-
+/*
 [Serializable]
 public class ChestContent
 {
@@ -100,3 +99,4 @@ public class ChestContent
     public int goldAmount;
     public Vector2 randomGoldMinMax;
 }
+*/
