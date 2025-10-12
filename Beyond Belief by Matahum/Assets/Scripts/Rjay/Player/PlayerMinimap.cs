@@ -7,6 +7,7 @@ public class PlayerMinimap : MonoBehaviour
 {
     public static PlayerMinimap instance;
     private PlayerInput m_playerInput;
+    private Player m_player;
     [Header("Projected View Rotation Settings")]
     [SerializeField] Transform cameraTransform;
     public MinimapItem projectedViewIcon;
@@ -46,6 +47,7 @@ public class PlayerMinimap : MonoBehaviour
     void Start()
     {
         m_playerInput = GetComponentInParent<PlayerInput>();
+        m_player = GetComponentInParent<Player>();
     }
 
     public void ProjectionRotation()
@@ -81,6 +83,8 @@ public class PlayerMinimap : MonoBehaviour
 
             if (open)
                 CenterMapOnPlayerWithZoom();
+
+            m_player.ForceIdleOverride();
         }
     }
 

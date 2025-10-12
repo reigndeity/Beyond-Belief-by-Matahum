@@ -26,12 +26,11 @@ public class PlayerSFX : MonoBehaviour
 
     public void PlayWalkStepSFX()
     {
+        if (walkStepSFX == null || walkStepSFX.Length == 0)
+            return;
+
+        playerFootstepAudioSource.PlayOneShot(walkStepSFX[walkCount % walkStepSFX.Length]);
         walkCount++;
-        if (walkCount == 2)
-        {
-            walkCount = 0;
-        }
-        playerFootstepAudioSource.PlayOneShot(walkStepSFX[walkCount]);
     }
     public void PlayFootStepSFX()
     {
