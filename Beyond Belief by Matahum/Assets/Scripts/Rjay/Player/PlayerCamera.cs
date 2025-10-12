@@ -7,7 +7,8 @@ public class PlayerCamera : MonoBehaviour
     public Transform playerTarget;
 
     [Header("Rotation Settings")]
-    public float mouseSensitivity = 50;
+    [Range(1f, 250f)]
+    public float mouseSensitivity = 50f;
     public float rotationSmoothTime = 0.02f;
     public float pitchMin = -30f;
     public float pitchMax = 60;
