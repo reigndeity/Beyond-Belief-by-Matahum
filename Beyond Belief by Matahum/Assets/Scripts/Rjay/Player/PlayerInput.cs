@@ -25,7 +25,7 @@ public class PlayerInput : MonoBehaviour
     public KeyCode ultimateSkillKey = KeyCode.Q;
     
     [Header("Agimat Input")]
-    public KeyCode agimatOneKey = KeyCode.R;
+    public KeyCode agimatOneKey = KeyCode.X;
     public KeyCode agimatTwoKey = KeyCode.C;
     
     [Header("Hud Input")]
