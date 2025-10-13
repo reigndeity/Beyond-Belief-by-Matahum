@@ -1,9 +1,12 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Beyond Belief/Rewards/Item Reward")]
-public class BB_ItemRewardSO : BB_RewardSO
+[CreateAssetMenu(menuName = "Beyond Belief/Rewards/Agimat Reward")]
+public class BB_AgimatRewardSO : BB_RewardSO
 {
+    [Header("If nothing is set, random agimat will spawn")]
     public R_ItemData item;
+    public int level = 1;
+
     public override Sprite RewardIcon()
     {
         if (item != null)
@@ -32,10 +35,17 @@ public class BB_ItemRewardSO : BB_RewardSO
     }
     public override void GiveReward()
     {
-        R_Inventory inventory = FindFirstObjectByType<R_Inventory>();
-        R_InventoryUI inventoryUI = FindFirstObjectByType<R_InventoryUI>();
+        R_GeneralItemSpawner agimataSpawner = FindFirstObjectByType<R_GeneralItemSpawner>();
 
-        inventory.AddItem(item, RewardQuantity());
-        inventoryUI?.RefreshUI();
+        if (item != null)
+        {
+
+            agimataSpawner.SpawnSingleAgimat(new R_ItemData[] { item }, level);
+        }
+        else
+        {
+            agimataSpawner.SetSimulatedLevel(level);
+            agimataSpawner.SpawnRandomAgimatFromTemplate();
+        }
     }
 }

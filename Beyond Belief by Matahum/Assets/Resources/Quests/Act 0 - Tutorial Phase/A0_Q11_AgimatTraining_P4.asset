@@ -21,12 +21,14 @@ MonoBehaviour:
   - Bangkaw instructs you to defeat the training dummies using the other agimat ability.
   questHudDescription: 
   questType: 0
-  state: 2
+  state: 0
   missions:
   - whatMustBeDone: Destroy the dummies
     targetID: A0_Q11_Dummy_P4
     hasCounter: 1
     requiredAmount: 3
     currentAmount: 0
-  rewards: []
-  isBeingTracked: 1
+  rewards:
+  - {fileID: 0}
+  isBeingTracked: 0
+  isInCompletedPanel: 0

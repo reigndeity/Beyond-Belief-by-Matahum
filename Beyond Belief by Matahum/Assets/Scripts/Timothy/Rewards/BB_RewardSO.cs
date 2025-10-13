@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class BB_RewardSO : ScriptableObject, BB_IReward
 {
-    public int baseQuantity;
+    public int baseQuantity = 1;
     [HideInInspector] public int multiplier = 1;
 
     public Sprite rewardBackground;

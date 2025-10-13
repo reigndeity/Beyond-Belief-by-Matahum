@@ -135,19 +135,7 @@ public class BB_CampSpawner : MonoBehaviour
                 EnemyStats enemyStats = enemyGO.GetComponent<EnemyStats>();
                 UpdateEnemyStats(enemyStats);
 
-                //AddLoots(enemyGO);
-                Debug.Log($"Possible Loot Drop Length: {possibleLootDrops.Length}");
-                if (possibleLootDrops.Length != 0)
-                {
-                    int randomLoot = UnityEngine.Random.Range(0, possibleLootDrops.Length);
-                    int randomQuantity = UnityEngine.Random.Range(1, 4);
-                    EnemyLootDrop loot = enemyGO.AddComponent<EnemyLootDrop>();
-
-                    for (int j = 0; j < randomQuantity; j++)
-                    {
-                        loot.lootContent.Add(possibleLootDrops[randomLoot]);
-                    }
-                }
+                AddLoots(enemyGO);
 
                 // Setup notifier
                 if (enemyGO.GetComponent<BB_SpawnNotifier>() == null)
@@ -182,7 +170,6 @@ public class BB_CampSpawner : MonoBehaviour
 
     void AddLoots(GameObject enemyGO)
     {
-        Debug.Log($"Possible Loot Drop Length: {possibleLootDrops.Length}");
         if (possibleLootDrops.Length != 0)
         {
             int randomLoot = UnityEngine.Random.Range(0, possibleLootDrops.Length);

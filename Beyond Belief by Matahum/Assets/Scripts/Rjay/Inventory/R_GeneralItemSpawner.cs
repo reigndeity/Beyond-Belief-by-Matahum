@@ -35,9 +35,9 @@ public class R_GeneralItemSpawner : MonoBehaviour
     // }
 
     #region PAMANA SPAWNING
-    public void SpawnRandomPamanaFromTemplate()
+    public void SpawnRandomPamanaFromTemplate(int level = 10)
     {
-        R_PamanaSpawnerUtility.SpawnRandomPamanaFromPool(pamanaTemplates, inventory, inventoryUI, simulatedPlayerLevel, visualConfig);
+        R_PamanaSpawnerUtility.SpawnRandomPamanaFromPool(pamanaTemplates, inventory, inventoryUI, level, visualConfig);
     }
 
     public void SpawnSinglePamana(R_ItemData[] itemData, int level = 1)
@@ -52,9 +52,9 @@ public class R_GeneralItemSpawner : MonoBehaviour
         R_AgimatSpawnerUtility.SpawnRandomAgimatFromPool(itemData, inventory, inventoryUI, level, agimatVisualConfig);
     }
 
-    public void SpawnRandomAgimatFromTemplate()
+    public void SpawnRandomAgimatFromTemplate(int level = 10)
     {
-        R_AgimatSpawnerUtility.SpawnRandomAgimatFromPool(agimatTemplates, inventory, inventoryUI, simulatedPlayerLevel, agimatVisualConfig);
+        R_AgimatSpawnerUtility.SpawnRandomAgimatFromPool(agimatTemplates, inventory, inventoryUI, level, agimatVisualConfig);
     }
     #endregion
 
