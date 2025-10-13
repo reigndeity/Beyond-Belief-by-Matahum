@@ -2,49 +2,40 @@ using UnityEngine;
 
 public class PlayerSFX : MonoBehaviour
 {
-    [Header("Player General Audio")]
-    public AudioSource playerAudioSource;
-    public AudioClip jumpSFX;
-    public AudioClip landingSFX;
-
-    [Header("Player Slash Audio")]
-    public AudioSource playerSwordAudioSource;
-    public AudioClip[] swordSlashSFX;
-
-    [Header("Player Footsteps Audio")]
-    public AudioSource playerFootstepAudioSource;
-    public AudioClip[] walkStepSFX;
-    public int walkCount = 0;
-    public AudioClip[] footStepSFX;
-
-
-
     public void PlaySwordSlash(int audio)
     {
-        playerSwordAudioSource.PlayOneShot(swordSlashSFX[audio]);
+        AudioManager.instance.PlaySwordSlash(audio);
     }
 
     public void PlayWalkStepSFX()
     {
-        if (walkStepSFX == null || walkStepSFX.Length == 0)
-            return;
-
-        playerFootstepAudioSource.PlayOneShot(walkStepSFX[walkCount % walkStepSFX.Length]);
-        walkCount++;
+        AudioManager.instance.PlayWalkStepSFX();
     }
     public void PlayFootStepSFX()
     {
-        int random = Random.Range(0, 6);
-        playerFootstepAudioSource.PlayOneShot(footStepSFX[random]);
+        AudioManager.instance.PlayFootStepSFX();
     }
 
     public void PlayJumpSFX()
     {
-        playerAudioSource.PlayOneShot(jumpSFX);
+        AudioManager.instance.PlayJumpSFX();
     }
 
     public void PlayLandSFX()
     {
-        playerAudioSource.PlayOneShot(landingSFX);
+        AudioManager.instance.PlayLandSFX();
+    }
+    public void PlayDashSFX()
+    {
+        AudioManager.instance.PlayDashSFX();
+    }
+
+    public void PlayNormalSkillSFX()
+    {
+        AudioManager.instance.PlayNormalSkillSFX();
+    }
+    public void PlayUltimateSkillSFX()
+    {
+        AudioManager.instance.PlayUltimateSkillSFX();
     }
 }
