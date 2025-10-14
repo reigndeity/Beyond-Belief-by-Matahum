@@ -19,7 +19,16 @@ public class UI_MainMenu : MonoBehaviour
     [SerializeField] Button noCloseGameButton;
     [SerializeField] Button yesCloseGameButton;
 
-
+    [Header("Settings")]
+    [SerializeField] GameObject settingsPanel;
+    [SerializeField] Button settingsButton;
+    [SerializeField] Button returnButton;
+    [SerializeField] private GameObject audioPanel;
+    [SerializeField] private GameObject displayAndGraphicsPanel;
+    [SerializeField] private GameObject controlPanel;
+    [SerializeField] private Button audioButton;
+    [SerializeField] private Button displayAndGraphicsButton;
+    [SerializeField] private Button controlButton;
 
     private string savePath;
 
@@ -47,6 +56,12 @@ public class UI_MainMenu : MonoBehaviour
         closeGameButton.onClick.AddListener(OnClickCloseGame);
         yesCloseGameButton.onClick.AddListener(OnClickYesCloseGame);
         noCloseGameButton.onClick.AddListener(OnClickNoCloseGame);
+
+        settingsButton.onClick.AddListener(OnOpenSettings);
+        returnButton.onClick.AddListener(OnCloseSettings);
+        audioButton.onClick.AddListener(OnClickAudio);
+        displayAndGraphicsButton.onClick.AddListener(OnClickDisplayAndGraphics);
+        controlButton.onClick.AddListener(OnClickControl);
     }
 
     private void OnClickNewGame()
@@ -87,6 +102,35 @@ public class UI_MainMenu : MonoBehaviour
     private void OnClickNoCloseGame()
     {
         closeGameConfirmationPanel.SetActive(false);
+    }
+
+    private void OnOpenSettings()
+    {
+        settingsPanel.SetActive(true);
+    }
+
+    private void OnCloseSettings()
+    {
+        settingsPanel.SetActive(false);
+    }
+    public void OnClickAudio()
+    {
+        audioPanel.SetActive(true);
+        displayAndGraphicsPanel.SetActive(false);
+        controlPanel.SetActive(false);
+    }
+    public void OnClickDisplayAndGraphics()
+    {
+        audioPanel.SetActive(false);
+        displayAndGraphicsPanel.SetActive(true);
+        controlPanel.SetActive(false);
+
+    }
+    public void OnClickControl()
+    {
+        audioPanel.SetActive(false);
+        displayAndGraphicsPanel.SetActive(false);
+        controlPanel.SetActive(true);
     }
 
     IEnumerator CloseGame()

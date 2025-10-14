@@ -15,9 +15,23 @@ public class Settings_Manager : MonoBehaviour
     [Header("Buttons")]
     public Button returnButton;
 
+    private void Start()
+    {
+        SubscribeToListeners();
+        LoadSettings();
+    }
+
+    void SubscribeToListeners()
+    {
+        if (returnButton != null)
+            returnButton.onClick.AddListener(SaveSettingsOnReturn);
+
+        if (camSensSlider != null)
+            camSensSlider.onValueChanged.AddListener(delegate { OnCamSensSliderChanged(); });
+    }
+
     public void SaveSettingsOnReturn()
     {
-        Debug.Log("Saved");
         PlayerPrefs.SetFloat(cameraSensitivityPlayerPrefs, CameraSensitivityValue());
         PlayerPrefs.Save();
     }
@@ -27,54 +41,38 @@ public class Settings_Manager : MonoBehaviour
         LoadCameraSetting();
     }
 
-    private void Awake()
-    {
-
-    }
-
-    private void Start()
-    {
-        SubscribeToListeners();
-
-        LoadSettings();
-    }
-
-    void SubscribeToListeners()
-    {
-        returnButton.onClick.AddListener(SaveSettingsOnReturn);
-
-        camSensSlider.onValueChanged.AddListener(delegate { OnCamSensSliderChanged(); });
-
-    }
-
-    private void Update()
-    {
-        
-    }
-
     #region Camera Sensitivity Setting
     public void LoadCameraSetting()
     {
-        camSensSlider.minValue = 0;
-        camSensSlider.maxValue = 100;
+        camSensSlider.minValue = 0.01f;
+        camSensSlider.maxValue = 1;
 
-        playerCam.mouseSensitivity = PlayerPrefs.GetFloat(cameraSensitivityPlayerPrefs, 50);
-        camSensSlider.value = playerCam.mouseSensitivity / 2.5f;
+        float savedSensitivity = PlayerPrefs.GetFloat(cameraSensitivityPlayerPrefs, 125);
+
+        if (playerCam != null)
+            playerCam.mouseSensitivity = savedSensitivity;
+
+        camSensSlider.value = savedSensitivity / 250f;
+
         CameraSensitivityTextChange();
     }
+
     public void OnCamSensSliderChanged()
     {
-        playerCam.mouseSensitivity = CameraSensitivityValue();
+        if (playerCam != null)
+            playerCam.mouseSensitivity = CameraSensitivityValue();
+
         CameraSensitivityTextChange();
     }
 
     public void CameraSensitivityTextChange()
     {
-        camSensValue.text = camSensSlider.value.ToString("0");
+        camSensValue.text = camSensSlider.value.ToString("F2");
     }
+
     public float CameraSensitivityValue()
     {
-        return camSensSlider.value * 2.5f;
+        return camSensSlider.value * 250;
     }
     #endregion
 }
