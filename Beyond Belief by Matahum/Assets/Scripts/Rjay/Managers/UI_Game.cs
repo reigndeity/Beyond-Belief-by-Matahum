@@ -95,6 +95,17 @@ public class UI_Game : MonoBehaviour
     [SerializeField] private Button confirmYesButton;
     [SerializeField] private Button confirmNoButton;
 
+    [Header("Settings Menu")]
+    [SerializeField] private GameObject pauseButtonHolder;
+    [SerializeField] private Button backToPauseMenuButton;
+    [SerializeField] private GameObject settingsContentHolder;
+    [SerializeField] private GameObject audioPanel;
+    [SerializeField] private GameObject displayAndGraphicsPanel;
+    [SerializeField] private GameObject controlPanel;
+    [SerializeField] private Button audioButton;
+    [SerializeField] private Button displayAndGraphicsButton;
+    [SerializeField] private Button controlButton;
+    
 
     [Header("UI Animation")]
     [SerializeField] GameObject topUIObj;
@@ -162,6 +173,12 @@ public class UI_Game : MonoBehaviour
 
         confirmYesButton.onClick.AddListener(OnConfirmReturnYes);
         confirmNoButton.onClick.AddListener(OnConfirmReturnNo);
+
+        backToPauseMenuButton.onClick.AddListener(OnClickBackToPauseMenu);
+        audioButton.onClick.AddListener(OnClickAudio);
+        displayAndGraphicsButton.onClick.AddListener(OnClickDisplayAndGraphics);
+        controlButton.onClick.AddListener(OnClickControl);
+
 
     }
     void Update()
@@ -475,7 +492,7 @@ public class UI_Game : MonoBehaviour
     #endregion
 
     #region  PAUSE
-    private void OpenPauseMenu()
+    public void OpenPauseMenu()
     {
         PlayerCamera.Instance.SetCursorVisibility(true);
         pauseMenuPanel.SetActive(true);
@@ -484,20 +501,64 @@ public class UI_Game : MonoBehaviour
         PauseGame();
     }
 
-    private void OnClickResumeGame()
+    public void OnClickResumeGame()
     {
         PlayerCamera.Instance.SetCursorVisibility(false);
         pauseMenuPanel.SetActive(false);
         ShowUI();
         UnBlur();
         ResumeGame();
+        Debug.Log("game resume");
     }
 
-    private void OnClickSettings()
+    public void OnClickSettings()
     {
-        // Leave empty for now
-        Debug.Log("Settings menu clicked (not implemented yet).");
+
+        pauseButtonHolder.SetActive(false);
+        resumeButton.gameObject.SetActive(false);
+        settingsContentHolder.SetActive(true);
+        audioPanel.SetActive(true);
+        Debug.Log("open settings");
     }
+
+    public void OnClickBackToPauseMenu()
+    {
+        Debug.Log("BACK TO PAUSE MENU");
+        pauseButtonHolder.SetActive(true);
+        resumeButton.gameObject.SetActive(true);
+        settingsContentHolder.SetActive(false);
+        audioPanel.SetActive(false);
+        displayAndGraphicsPanel.SetActive(false);
+        controlPanel.SetActive(false);
+        
+    }
+
+    public void OnClickAudio()
+    {
+        Debug.Log("open audio");
+        audioPanel.SetActive(true);
+        displayAndGraphicsPanel.SetActive(false);
+        controlPanel.SetActive(false);
+        
+    }
+    public void OnClickDisplayAndGraphics()
+    {
+        Debug.Log("open display");
+        audioPanel.SetActive(false);
+        displayAndGraphicsPanel.SetActive(true);
+        controlPanel.SetActive(false);
+        
+    }
+    public void OnClickControl()
+    {
+        Debug.Log("open control");
+        audioPanel.SetActive(false);
+        displayAndGraphicsPanel.SetActive(false);
+        controlPanel.SetActive(true);
+        
+    }
+
+
 
     private void OnClickReturnToMenu()
     {
