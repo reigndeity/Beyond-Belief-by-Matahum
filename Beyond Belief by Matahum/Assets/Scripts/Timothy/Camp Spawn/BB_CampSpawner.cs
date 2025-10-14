@@ -9,8 +9,6 @@ public class BB_CampSpawner : MonoBehaviour
 {
     private PlayerStats playerStats;
 
-    [Header("Spawn Timing")]
-    public float spawnInterval;
     [Header("Spawn Distance Control")]
     [SerializeField] private float spawnDistanceThreshold = 50f;
 
@@ -22,12 +20,9 @@ public class BB_CampSpawner : MonoBehaviour
     [Header("Enemies To Spawn")]
     public List<EnemyCount> enemiesToSpawn = new List<EnemyCount>();
 
-    private List<EnemyStats> enemyList = new List<EnemyStats>();
+    public List<EnemyStats> enemyList = new List<EnemyStats>();
     private SphereCollider spawnArea;
-    private bool spawningInProgress = false;
-
-    // 🧠 NEW: Saved enemy data for persistence
-    private List<EnemySaveData> savedEnemies = new();
+    public bool spawningInProgress = false;
 
     [Header("Random Possible Lootdrops")]
     public LootContent[] possibleLootDrops;
@@ -38,28 +33,13 @@ public class BB_CampSpawner : MonoBehaviour
         playerStats = FindFirstObjectByType<PlayerStats>();
         spawnArea = GetComponent<SphereCollider>();
 
-        // Load existing enemies if saved
-        //LoadEnemies();
-
         // Only spawn if none saved and player is far enough
         var player = FindFirstObjectByType<Player>();
         if (enemyList.Count == 0 && (player == null || Vector3.Distance(player.transform.position, transform.position) > spawnDistanceThreshold))
             SpawnUnits();
 
-        StartCoroutine(SpawnLoop());
         StartCoroutine(BoundaryLoop());
-    }
-
-
-    private IEnumerator SpawnLoop()
-    {
-        yield return new WaitForSeconds(1f);
-
-        while (true)
-        {
-            StartSpawning();
-            yield return new WaitForSeconds(1f);
-        }
+        LoadSpawners();
     }
 
     private IEnumerator BoundaryLoop()
@@ -210,6 +190,54 @@ public class BB_CampSpawner : MonoBehaviour
         if (playerLevel < min) return min;
         return Mathf.Clamp(playerLevel + offset, min, max);
     }
+    
+    // -------------------------------------------------------
+
+    #region RESTOCK TIMER
+    [Header("Item Restock Time")]
+    private DateTime nextGlobalSpawnTime;
+    [Tooltip("In Seconds")]
+    public int spawnInterval = 60;
+    public int currentTime;
+    private const string GLOBAL_SPAWN_KEY = "GlobalCampRespawnTime";
+    private void Update()
+    {
+        UpdateSpawnTimer();
+    }
+
+    private void LoadSpawners()
+    {
+        if (PlayerPrefs.HasKey(GLOBAL_SPAWN_KEY))
+        {
+            nextGlobalSpawnTime = DateTime.Parse(PlayerPrefs.GetString(GLOBAL_SPAWN_KEY));
+        }
+        else
+        {
+            nextGlobalSpawnTime = DateTime.UtcNow.AddSeconds(spawnInterval);
+            PlayerPrefs.SetString(GLOBAL_SPAWN_KEY, nextGlobalSpawnTime.ToString());
+        }
+    }
+
+    private void UpdateSpawnTimer()
+    {
+        TimeSpan remaining = nextGlobalSpawnTime - DateTime.UtcNow;
+        currentTime = (int)remaining.TotalSeconds;
+
+        if (enemyList.Count == 0 && !spawningInProgress)
+        {
+            if (remaining.TotalSeconds <= 0)
+            {
+                StartSpawning();
+
+                nextGlobalSpawnTime = DateTime.UtcNow.AddSeconds(spawnInterval);
+                PlayerPrefs.SetString(GLOBAL_SPAWN_KEY, nextGlobalSpawnTime.ToString());
+
+            }
+        }
+    }
+
+    #endregion
+
     // -------------------------------------------------------
 
     Vector3 GetRandomPositionInRadius(Vector3 center, float radius)
@@ -225,76 +253,6 @@ public class BB_CampSpawner : MonoBehaviour
             pos.y = hit.point.y;
         }
     }
-
-    // ------------------ SAVE / LOAD ------------------
-    public void CaptureCurrentEnemies()
-    {
-        savedEnemies.Clear();
-
-        foreach (var enemy in enemyList)
-        {
-            if (enemy == null) continue;
-
-            EnemySaveData data = new EnemySaveData
-            {
-                prefabName = enemy.name.Replace("(Clone)", "").Trim(),
-                position = enemy.transform.position,
-                rotation = enemy.transform.rotation,
-                level = enemy.e_level
-            };
-
-            savedEnemies.Add(data);
-        }
-
-        ES3.Save($"Camp_{name}_Enemies", savedEnemies);
-    }
-
-    public void LoadEnemies()
-    {
-        if (!ES3.KeyExists($"Camp_{name}_Enemies"))
-            return;
-
-        savedEnemies = ES3.Load<List<EnemySaveData>>($"Camp_{name}_Enemies");
-        if (savedEnemies == null || savedEnemies.Count == 0)
-            return;
-
-        foreach (var data in savedEnemies)
-        {
-            GameObject prefab = GetPrefabByName(data.prefabName);
-            if (prefab == null) continue;
-
-            GameObject enemyGO = Instantiate(prefab, data.position, data.rotation, transform);
-            EnemyStats stats = enemyGO.GetComponent<EnemyStats>();
-
-            stats.e_level = data.level;
-            stats.e_currentHealth = stats.e_maxHealth;
-            enemyList.Add(stats);
-
-            // Reconnect notifier
-            if (enemyGO.GetComponent<BB_SpawnNotifier>() == null)
-            {
-                BB_SpawnNotifier notifier = enemyGO.AddComponent<BB_SpawnNotifier>();
-                notifier.spawner = this;
-                notifier.enemyStats = stats;
-            }
-        }
-    }
-
-    private GameObject GetPrefabByName(string prefabName)
-    {
-        foreach (var enemy in enemiesToSpawn)
-        {
-            if (enemy.enemyPrefab.name == prefabName)
-                return enemy.enemyPrefab;
-        }
-        return null;
-    }
-
-    private void OnDisable()
-    {
-        //CaptureCurrentEnemies(); // Auto-save remaining enemies when scene unloads
-    }
-    // -------------------------------------------------------
 
     private void OnDrawGizmosSelected()
     {
