@@ -183,7 +183,7 @@ public class UI_Game : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !m_player.isDead)
         {
             if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialoguePlaying())
             {
@@ -195,10 +195,16 @@ public class UI_Game : MonoBehaviour
             {
                 return;
             }
-            
+
             if (pauseMenuPanel.activeSelf)
             {
                 OnClickResumeGame();
+                FindFirstObjectByType<Settings_Manager>().SaveSettingsOnReturn();
+                pauseButtonHolder.SetActive(true);
+                settingsContentHolder.SetActive(false);
+                audioPanel.SetActive(false);
+                resumeButton.gameObject.SetActive(true);
+
             }
             else
             {

@@ -47,12 +47,6 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
 
     private void Update()
     {
-        if (playerMovement.Speed < 0.1f && !isBattleStart)
-        {
-            BattleStart();
-            return;
-        }
-
         if (isStunned)
             uiCanvas.currentCastingSkillTxt.text = "Mangkukulam is stunned!";
     }
