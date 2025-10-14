@@ -30,14 +30,12 @@ public class AudioManager : MonoBehaviour
     {
         if (instance != null && instance != this)
         {
-            Destroy(this);
-        }
-        else
-        {
-            instance = this;
+            Destroy(gameObject);  // destroy the whole GameObject, not just the component
+            return;
         }
 
-        DontDestroyOnLoad(this.gameObject);
+        instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     public void PlaySwordSlash(int audio)

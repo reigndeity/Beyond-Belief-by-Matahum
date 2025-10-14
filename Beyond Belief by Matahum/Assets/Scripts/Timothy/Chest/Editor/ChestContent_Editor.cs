@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(Chest))]
@@ -16,6 +16,11 @@ public class ChestContent_Editor : Editor
     SerializedProperty explosionForceProp;
     SerializedProperty spawnOffsetProp;
 
+    // Save system properties
+    SerializedProperty isOpenedProp;
+    SerializedProperty chestIdProp;
+    SerializedProperty isLewenriChestProp; // ✅ Added for quest gating
+
     bool[] foldouts; // For collapsible entries
 
     private void OnEnable()
@@ -31,6 +36,11 @@ public class ChestContent_Editor : Editor
         chestDropsProp = serializedObject.FindProperty("lootDrops");
         explosionForceProp = serializedObject.FindProperty("explosionForce");
         spawnOffsetProp = serializedObject.FindProperty("spawnOffset");
+
+        // Save system properties
+        isOpenedProp = serializedObject.FindProperty("isOpened");
+        chestIdProp = serializedObject.FindProperty("chestId");
+        isLewenriChestProp = serializedObject.FindProperty("isLewenriChest"); // ✅ Added
 
         // Initialize foldouts
         foldouts = new bool[chestDropsProp.arraySize];
@@ -57,7 +67,41 @@ public class ChestContent_Editor : Editor
             EditorGUILayout.PropertyField(interactCooldownProp, new GUIContent("Cooldown Duration"));
 
         EditorGUILayout.EndVertical();
+        EditorGUILayout.Space(10);
 
+        // =============================
+        // 🗝️ Chest State Debug Info
+        // =============================
+        EditorGUILayout.LabelField("Chest State", EditorStyles.boldLabel);
+        EditorGUILayout.BeginVertical(GUI.skin.box);
+
+        EditorGUILayout.PropertyField(isOpenedProp, new GUIContent("Is Opened"));
+        EditorGUILayout.PropertyField(chestIdProp, new GUIContent("Chest ID"));
+        EditorGUILayout.PropertyField(isLewenriChestProp, new GUIContent("Is Lewenri Chest")); // ✅ Now visible
+
+        if (Application.isPlaying)
+        {
+            Chest chest = (Chest)target;
+
+            EditorGUILayout.Space(5);
+            EditorGUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("Force Close", GUILayout.Height(22)))
+            {
+                chest.isOpened = false;
+                chest.ApplySavedState();
+            }
+
+            if (GUILayout.Button("Force Open", GUILayout.Height(22)))
+            {
+                chest.isOpened = true;
+                chest.ApplySavedState();
+            }
+
+            EditorGUILayout.EndHorizontal();
+        }
+
+        EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);
 
         // =============================
@@ -70,7 +114,6 @@ public class ChestContent_Editor : Editor
         EditorGUILayout.PropertyField(spawnOffsetProp, new GUIContent("Spawn Offset"));
 
         EditorGUILayout.EndVertical();
-
         EditorGUILayout.Space(10);
 
         // =============================
@@ -134,18 +177,13 @@ public class ChestContent_Editor : Editor
                 {
                     EditorGUILayout.PropertyField(itemData, new GUIContent("Item Data"));
 
-                    // Try to get the actual itemData object reference
                     R_ItemData dataRef = itemData.objectReferenceValue as R_ItemData;
                     if (dataRef != null)
                     {
-                        // Only show level if itemType is Pamana or Agimat
                         if (dataRef.itemType == R_ItemType.Pamana || dataRef.itemType == R_ItemType.Agimat)
-                        {
                             EditorGUILayout.PropertyField(itemLevel, new GUIContent("Level"));
-                        }
                     }
                 }
-
                 else if (goldMode)
                 {
                     EditorGUILayout.PropertyField(isGold, new GUIContent("Is Gold"));

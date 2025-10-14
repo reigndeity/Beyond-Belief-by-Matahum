@@ -388,6 +388,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P1");
                     ApplyStates(tupas);
                     AddActiveMarker(currentQuestID, tracked);
+                    FindFirstObjectByType<ChestManager>().OnLewenriQuestComplete();
                     break;
                 case "A1_Q1.1_Amihan'sOrder_P1":
                     tupas.SetDialogueState("A1_Q1_Tupas'Request_P2");
