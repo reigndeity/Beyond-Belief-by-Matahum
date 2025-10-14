@@ -597,8 +597,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76b27cdc0a7b04040bd7808c29e78220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactName: Open Common Chest
-  icon: {fileID: 21300002, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+  interactName: Open Chest
+  icon: {fileID: -920425195, guid: 18ad5ed50defeac40bf60d865e257645, type: 3}
   interactKey: 102
   isInRange: 0
   useInteractCooldown: 0
@@ -614,9 +614,11 @@ MonoBehaviour:
     goldAmount: 0
     randomGoldMinMax: {x: 0, y: 0}
   isOpened: 0
+  isLewenriChest: 0
+  chestId: 45fe050f-8dc1-4af7-989f-bcce7015e3bc
   explosionForce: 20
-  upwardModifier: 1
   spawnOffset: {x: 0, y: 1, z: 0}
+  chestParticlePrefab: {fileID: 0}
 --- !u!1 &7546461426467456165
 GameObject:
   m_ObjectHideFlags: 0

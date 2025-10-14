@@ -29,16 +29,20 @@ public class PortalInteractable : Interactable
         await Task.Delay(1000);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
         await Task.Delay(500);
-        await GameManager.instance.SavePlayerCoreData();
-        await Task.Delay(500);
         if (isCreditsDone == false)
         {
+            isCreditsDone = true;
+            await Task.Delay(500);
+            await GameManager.instance.SaveAll();
+            await Task.Delay(500);
             Loader.Load(20);
         }
         else
         {
+            await Task.Delay(500);
+            await GameManager.instance.SaveAll();
+            await Task.Delay(500);
             Loader.Load(0);
         }
     }
-    
 }
