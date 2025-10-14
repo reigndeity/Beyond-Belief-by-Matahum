@@ -30,6 +30,9 @@ public class UI_MainMenu : MonoBehaviour
         continueGameButton.gameObject.SetActive(File.Exists(savePath));
 
         StartCoroutine(UI_TransitionController.instance.Fade(1, 0, 1f));
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     void Start()
