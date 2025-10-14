@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 5318778842507623005}
   - component: {fileID: 9207969951287233994}
   - component: {fileID: 5305862172156373939}
-  - component: {fileID: 2005121992148983161}
   - component: {fileID: 5875904144420176798}
   - component: {fileID: 8773872685044490796}
   - component: {fileID: 1344562595925548214}
   - component: {fileID: 5024944395770834900}
+  - component: {fileID: 6103927192232986427}
   m_Layer: 10
   m_Name: F_RockShield
   m_TagString: Untagged
@@ -92,28 +92,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2005121992148983161
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109368362521874816}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -3937840758629050675, guid: 76065413667fdd2469d35eac6d47cdff, type: 3}
 --- !u!114 &5875904144420176798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +180,27 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   levelTxt: {fileID: 6729633251211239239}
+--- !u!65 &6103927192232986427
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109368362521874816}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.1, z: 1.25}
+  m_Center: {x: 0.04, y: 0, z: 0.3}
 --- !u!1 &161997116669721567
 GameObject:
   m_ObjectHideFlags: 0
@@ -1663,18 +1662,18 @@ GameObject:
   - component: {fileID: 1587176056681608985}
   - component: {fileID: 425448613616938609}
   - component: {fileID: 3221974400132321749}
-  - component: {fileID: 6154571936283795499}
   - component: {fileID: 5503946024271381855}
   - component: {fileID: 7610363033277647931}
   - component: {fileID: 2853236697596200858}
   - component: {fileID: 6183267552562400110}
+  - component: {fileID: 2410189472549303590}
   m_Layer: 10
   m_Name: F_RockShield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1587176056681608985
 Transform:
   m_ObjectHideFlags: 0
@@ -1744,28 +1743,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6154571936283795499
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4403628078141154977}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -3937840758629050675, guid: 76065413667fdd2469d35eac6d47cdff, type: 3}
 --- !u!114 &5503946024271381855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1854,6 +1831,27 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   levelTxt: {fileID: 1797332462313659434}
+--- !u!65 &2410189472549303590
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4403628078141154977}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.1, z: 1.25}
+  m_Center: {x: 0.04, y: 0, z: 0.3}
 --- !u!1 &4485422705144971078
 GameObject:
   m_ObjectHideFlags: 0
@@ -2674,18 +2672,18 @@ GameObject:
   - component: {fileID: 6120393179912326121}
   - component: {fileID: 5945744216282104999}
   - component: {fileID: 3781256565178439466}
-  - component: {fileID: 3091958719942557908}
   - component: {fileID: 1413957182647016846}
   - component: {fileID: 256107306996997944}
   - component: {fileID: 5265678235795272501}
   - component: {fileID: 501494134626675835}
+  - component: {fileID: 7940024867230350180}
   m_Layer: 10
   m_Name: F_RockShield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6120393179912326121
 Transform:
   m_ObjectHideFlags: 0
@@ -2755,28 +2753,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3091958719942557908
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7262336362799390022}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -3937840758629050675, guid: 76065413667fdd2469d35eac6d47cdff, type: 3}
 --- !u!114 &1413957182647016846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2865,6 +2841,27 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   levelTxt: {fileID: 1480969768220448576}
+--- !u!65 &7940024867230350180
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7262336362799390022}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.1, z: 1.25}
+  m_Center: {x: 0.04, y: 0, z: 0.3}
 --- !u!1 &7456515532950805037
 GameObject:
   m_ObjectHideFlags: 0
@@ -3499,18 +3496,18 @@ GameObject:
   - component: {fileID: 1696114023706691332}
   - component: {fileID: 8168967816628482732}
   - component: {fileID: 7068592145651053818}
-  - component: {fileID: 9150578236777236301}
   - component: {fileID: 846691815365048926}
   - component: {fileID: 5542696470681110189}
   - component: {fileID: 6045024496996089704}
   - component: {fileID: 1868818234142272246}
+  - component: {fileID: 7842824568557845397}
   m_Layer: 10
   m_Name: F_RockShield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1696114023706691332
 Transform:
   m_ObjectHideFlags: 0
@@ -3580,28 +3577,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &9150578236777236301
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8555654806503818736}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -3937840758629050675, guid: 76065413667fdd2469d35eac6d47cdff, type: 3}
 --- !u!114 &846691815365048926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3690,6 +3665,27 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   levelTxt: {fileID: 6978315924197140417}
+--- !u!65 &7842824568557845397
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8555654806503818736}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.1, z: 1.25}
+  m_Center: {x: 0.04, y: 0, z: 0.3}
 --- !u!1 &9039092284283667814
 GameObject:
   m_ObjectHideFlags: 0
