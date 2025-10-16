@@ -63,6 +63,9 @@ public class TutorialManager : MonoBehaviour
 
     [Header("UI Tutorial")]
     public TutorialFadeImage tutorialFadeImage; // default smoothness is 0.0005
+    public GameObject journalTutorialArrow;
+    public GameObject characterDetailsTutorialArrow;
+    public GameObject inventoryTutorialArrow;
 
     [Header("Quest Journal UI Tutorial")]
     [SerializeField] private BB_Quest_ButtonManager m_questButtonManager;
@@ -371,6 +374,8 @@ public class TutorialManager : MonoBehaviour
         questJournalTextTutorial.text = "this is where you can filter your quest and even view completed ones";
         questJournalTextTutorial.GetComponent<TutorialHighlight>().enabled = true;
         questButtonFiltersTH.enabled = true;
+
+        journalTutorialArrow.SetActive(false);
     }
     public void QuestJournalTutorial()
     {
@@ -434,6 +439,8 @@ public class TutorialManager : MonoBehaviour
         agimatTutorialText.text = "Click on the button";
         agimatButtonTH.GetComponent<TutorialHighlight>().enabled = true;
         agimatButtonTH.onClick.AddListener(AgimatTutorial);
+
+        characterDetailsTutorialArrow.SetActive(false);
     }
     public void EnableAgimatSlotTwoTutorial()
     {
@@ -442,6 +449,8 @@ public class TutorialManager : MonoBehaviour
         agimatTutorialText.text = "Click on the button";
         agimatButtonTH.GetComponent<TutorialHighlight>().enabled = true;
         agimatButtonTH.onClick.AddListener(AgimatTutorial);
+
+        characterDetailsTutorialArrow.SetActive(false);
     }
     public void AgimatTutorial()
     {
@@ -613,10 +622,13 @@ public class TutorialManager : MonoBehaviour
         attributesButtonTH.GetComponent<TutorialHighlight>().enabled = true;
         attributeBackgroundTH.enabled = true;
         nextPamanaTutorialButtonTH.onClick.AddListener(PamanaTutorial);
+
+        characterDetailsTutorialArrow.SetActive(false);
     }
 
     public void PamanaTutorial()
     {
+        characterDetailsTutorialArrow.SetActive(false);
         switch (currentPamanaTutorial)
         {
             case 0:
@@ -772,6 +784,7 @@ public class TutorialManager : MonoBehaviour
         sortButtonsTH.enabled = true;
 
         nextInventoryTutorial.onClick.AddListener(InventoryTutorial);
+        inventoryTutorialArrow.SetActive(false);
     }
     public void InventoryTutorial()
     {
