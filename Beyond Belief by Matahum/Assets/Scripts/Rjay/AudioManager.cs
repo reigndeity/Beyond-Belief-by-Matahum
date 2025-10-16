@@ -4,6 +4,12 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
     [Header("Player Audio")]
+
+    [Header("Player Voice Audio")]
+    public AudioSource playerVoiceSource;
+    public AudioClip[] jumpVoiceSFX;
+    public AudioClip[] dashVoiceSFX;
+    public AudioClip[] hurtVoiceSFX;
     [Header("Player General Audio")]
     public AudioSource playerAudioSource;
     public AudioClip jumpSFX;
@@ -86,6 +92,25 @@ public class AudioManager : MonoBehaviour
     {
         playerSkillSource.PlayOneShot(ultimateSkillSFX);
     }
+
+    public void PlayJumpVoiceSFX()
+    {
+        int audio = Random.Range(0, 3);
+        playerVoiceSource.PlayOneShot(jumpVoiceSFX[audio]);
+    }
+
+    public void PlayDashVoiceSFX()
+    {
+        int audio = Random.Range(0, 3);
+        playerVoiceSource.PlayOneShot(dashVoiceSFX[audio]);
+    }
+
+    public void PlayHurtVoiceSFX(int audio)
+    {
+        playerVoiceSource.PlayOneShot(hurtVoiceSFX[audio]);
+    }
+
+
     #endregion
 
     public void SetSFXVolume(float newValue)
