@@ -4826,6 +4826,7 @@ GameObject:
   - component: {fileID: 3466612161432449023}
   - component: {fileID: 8014644168151847408}
   - component: {fileID: 4334444362062450498}
+  - component: {fileID: 8805560822572385210}
   m_Layer: 0
   m_Name: BananaBullet_Explosion_VFX
   m_TagString: Untagged
@@ -9759,6 +9760,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomPercent: 15
+--- !u!114 &8805560822572385210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2759488868745719482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 780aa2ea4059eb14d9333f695b53db96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxVolume: 0.25
+  isSFX: 1
 --- !u!1 &6873262643434568497
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1773673519030548, guid: 6e3db7afa59301e48bc3999ec41f1410, type: 3}
       propertyPath: m_Name
-      value: FlashExplosionBlue Variant
+      value: Kalamansi_DefDown_Explosion_VFX
       objectReference: {fileID: 0}
     - target: {fileID: 4049989968513302, guid: 6e3db7afa59301e48bc3999ec41f1410, type: 3}
       propertyPath: m_LocalScale.x
@@ -67,5 +67,27 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1773673519030548, guid: 6e3db7afa59301e48bc3999ec41f1410, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4459261671890524303}
   m_SourcePrefab: {fileID: 100100000, guid: 6e3db7afa59301e48bc3999ec41f1410, type: 3}
+--- !u!1 &4325029298639797058 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1773673519030548, guid: 6e3db7afa59301e48bc3999ec41f1410, type: 3}
+  m_PrefabInstance: {fileID: 4324539893357763158}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-4459261671890524303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4325029298639797058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 780aa2ea4059eb14d9333f695b53db96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxVolume: 1
+  isSFX: 1
