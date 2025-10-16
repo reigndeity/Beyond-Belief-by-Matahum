@@ -59,11 +59,11 @@ public class MutyaNgSaging_S1 : R_AgimatAbility
     {
         return rarity switch
         {
-            R_ItemRarity.Common => Random.Range(70, 90),
-            R_ItemRarity.Rare => Random.Range(90, 100),
-            R_ItemRarity.Epic => Random.Range(100, 125),
-            R_ItemRarity.Legendary => Random.Range(125, 150),
-            _ => 70f
+            R_ItemRarity.Common => Random.Range(50, 75),
+            R_ItemRarity.Rare => Random.Range(65, 90),
+            R_ItemRarity.Epic => Random.Range(80, 105),
+            R_ItemRarity.Legendary => Random.Range(95, 120),
+            _ => 50f
         };
     }
 }

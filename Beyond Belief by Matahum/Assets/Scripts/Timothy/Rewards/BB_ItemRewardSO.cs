@@ -21,15 +21,6 @@ public class BB_ItemRewardSO : BB_RewardSO
         }
         return base.RewardName();
     }
-
-    public override Sprite RewardBackground()
-    {
-        if (item != null)
-        {
-            return item.itemBackdropIcon;
-        }
-        return base.RewardBackground();
-    }
     public override void GiveReward()
     {
         R_Inventory inventory = FindFirstObjectByType<R_Inventory>();

@@ -152,12 +152,12 @@ public class BB_CampSpawner : MonoBehaviour
     {
         if (possibleLootDrops.Length != 0)
         {
-            int randomLoot = UnityEngine.Random.Range(0, possibleLootDrops.Length);
-            int randomQuantity  = UnityEngine.Random.Range(1, 4);
+            int randomQuantity  = UnityEngine.Random.Range(0, 3);
             EnemyLootDrop loot = enemyGO.AddComponent<EnemyLootDrop>();
             
             for(int i = 0; i < randomQuantity; i++)
             {
+                int randomLoot = UnityEngine.Random.Range(0, possibleLootDrops.Length);
                 loot.lootContent.Add(possibleLootDrops[randomLoot]);
             }
         }

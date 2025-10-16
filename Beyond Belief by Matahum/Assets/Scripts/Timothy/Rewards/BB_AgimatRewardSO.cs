@@ -25,14 +25,6 @@ public class BB_AgimatRewardSO : BB_RewardSO
         return base.RewardName();
     }
 
-    public override Sprite RewardBackground()
-    {
-        if (item != null)
-        {
-            return item.itemBackdropIcon;
-        }
-        return base.RewardBackground();
-    }
     public override void GiveReward()
     {
         R_GeneralItemSpawner agimataSpawner = FindFirstObjectByType<R_GeneralItemSpawner>();
