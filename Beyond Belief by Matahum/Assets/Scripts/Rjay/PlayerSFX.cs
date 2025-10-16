@@ -38,4 +38,23 @@ public class PlayerSFX : MonoBehaviour
     {
         AudioManager.instance.PlayUltimateSkillSFX();
     }
+
+    public void PlayJumpVoiceSFX()
+    {
+        AudioManager.instance.PlayJumpVoiceSFX();
+    }
+
+    public void PlayDashVoiceSFX()
+    {
+        AudioManager.instance.PlayDashVoiceSFX();
+    }
+
+    public void PlayHurtVoiceSFX(int audio)
+    {
+        AudioManager.instance.PlayHurtVoiceSFX(audio);
+    }
+    public void PlayDeathVoiceSFX()
+    {
+        AudioManager.instance.PlayDeathVoiceSFX();
+    }
 }

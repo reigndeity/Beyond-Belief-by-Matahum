@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] jumpVoiceSFX;
     public AudioClip[] dashVoiceSFX;
     public AudioClip[] hurtVoiceSFX;
+    public AudioClip deathVoiceSFX;
     [Header("Player General Audio")]
     public AudioSource playerAudioSource;
     public AudioClip jumpSFX;
@@ -95,19 +96,23 @@ public class AudioManager : MonoBehaviour
 
     public void PlayJumpVoiceSFX()
     {
-        int audio = Random.Range(0, 3);
+        int audio = Random.Range(0, 2);
         playerVoiceSource.PlayOneShot(jumpVoiceSFX[audio]);
     }
 
     public void PlayDashVoiceSFX()
     {
-        int audio = Random.Range(0, 3);
+        int audio = Random.Range(0, 4);
         playerVoiceSource.PlayOneShot(dashVoiceSFX[audio]);
     }
 
     public void PlayHurtVoiceSFX(int audio)
     {
         playerVoiceSource.PlayOneShot(hurtVoiceSFX[audio]);
+    }
+    public void PlayDeathVoiceSFX()
+    {
+        playerVoiceSource.PlayOneShot(deathVoiceSFX);
     }
 
 
