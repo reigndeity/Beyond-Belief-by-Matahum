@@ -15,7 +15,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0.41
   xMultiplier:
     m_OverrideState: 0
     m_Value: 1
@@ -26,8 +26,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: {x: 0.5, y: 0.5}
   scale:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 1.06
 --- !u!114 &-5688819508436966291
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -112,7 +112,7 @@ MonoBehaviour:
     m_Value: 10
   gaussianEnd:
     m_OverrideState: 1
-    m_Value: 1500
+    m_Value: 1972
   gaussianMaxRadius:
     m_OverrideState: 0
     m_Value: 0.5
@@ -121,16 +121,16 @@ MonoBehaviour:
     m_Value: 0
   focusDistance:
     m_OverrideState: 1
-    m_Value: 5.18
+    m_Value: 35.64
   aperture:
     m_OverrideState: 1
-    m_Value: 3.02
+    m_Value: 9.6
   focalLength:
     m_OverrideState: 1
-    m_Value: 61.7
+    m_Value: 97
   bladeCount:
     m_OverrideState: 0
-    m_Value: 5
+    m_Value: 3
   bladeCurvature:
     m_OverrideState: 0
     m_Value: 1
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: MainMenu Volume Profile
+  m_Name: Poster Volume Profile
   m_EditorClassIdentifier: 
   components:
   - {fileID: -4247406451616193968}
@@ -234,7 +234,7 @@ MonoBehaviour:
     m_Value: 0.438
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.385
+    m_Value: 0.23
   rounded:
     m_OverrideState: 0
     m_Value: 0
