@@ -45,7 +45,6 @@ public class Chest : Interactable
         {
             gameObject.layer = LayerMask.NameToLayer("Default");
             animator.CrossFade("Loot Chest_Opened", 0.1f);
-            HideParticle();
         }
         else
         {
@@ -53,12 +52,10 @@ public class Chest : Interactable
             if (isLewenriChest && !ChestManager.Instance.CanOpenLewenriChests)
             {
                 gameObject.layer = LayerMask.NameToLayer("Default");
-                HideParticle();
             }
             else
             {
                 gameObject.layer = LayerMask.NameToLayer("Loot");
-                ShowParticle();
             }
 
             animator.CrossFade("Loot Chest_Closed", 0.1f);
@@ -84,7 +81,6 @@ public class Chest : Interactable
         {
             isOpened = true;
             animator.CrossFade("Loot Chest_Opening", 0.1f);
-            HideParticle();
 
             // 🧩 Prevent further interaction
             gameObject.layer = LayerMask.NameToLayer("Default");

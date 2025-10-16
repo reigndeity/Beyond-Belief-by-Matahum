@@ -15,6 +15,7 @@ public class ChestContent_Editor : Editor
     SerializedProperty chestDropsProp;
     SerializedProperty explosionForceProp;
     SerializedProperty spawnOffsetProp;
+    SerializedProperty chestParticlePrefabProp;
 
     // Save system properties
     SerializedProperty isOpenedProp;
@@ -36,6 +37,7 @@ public class ChestContent_Editor : Editor
         chestDropsProp = serializedObject.FindProperty("lootDrops");
         explosionForceProp = serializedObject.FindProperty("explosionForce");
         spawnOffsetProp = serializedObject.FindProperty("spawnOffset");
+        chestParticlePrefabProp = serializedObject.FindProperty("chestParticlePrefab");
 
         // Save system properties
         isOpenedProp = serializedObject.FindProperty("isOpened");
@@ -119,6 +121,7 @@ public class ChestContent_Editor : Editor
         // =============================
         // 💰 Chest Drops Section
         // =============================
+        EditorGUILayout.PropertyField(chestParticlePrefabProp, new GUIContent("Chest Particle Prefab"));
         EditorGUILayout.LabelField("Loot Drops", EditorStyles.boldLabel);
 
         if (foldouts.Length != chestDropsProp.arraySize)
