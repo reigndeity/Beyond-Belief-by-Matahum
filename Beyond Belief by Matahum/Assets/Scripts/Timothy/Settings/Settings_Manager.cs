@@ -8,9 +8,17 @@ public class Settings_Manager : MonoBehaviour
     public PlayerCamera playerCam;
 
     [Header("Camera Sensitivity")]
-    private const string cameraSensitivityPlayerPrefs = "Camera_Sensitivity";
-    public TextMeshProUGUI camSensValue;
+    public TextMeshProUGUI camSensValueText;
     public Slider camSensSlider;
+    private const string cameraSensitivityPlayerPrefs = "Camera_Sensitivity";
+
+    [Header("Audio Settings")]
+    public TextMeshProUGUI sfxValueText;
+    public Slider sfxSlider;
+    public TextMeshProUGUI bgmValueText;
+    public Slider bgmSlider;
+    private const string audioSFXPlayerPrefs = "Audio_SFX";
+    private const string audioBGMPlayerPrefs = "Audio_BGM";
 
     [Header("Buttons")]
     public Button returnButton;
@@ -28,51 +36,93 @@ public class Settings_Manager : MonoBehaviour
 
         if (camSensSlider != null)
             camSensSlider.onValueChanged.AddListener(delegate { OnCamSensSliderChanged(); });
+
+        if (sfxSlider != null)
+            sfxSlider.onValueChanged.AddListener(OnSFXSliderChanged);
+
+        if (bgmSlider != null)
+            bgmSlider.onValueChanged.AddListener(OnBGMSliderChanged);
     }
 
+    #region Save & Load
     public void SaveSettingsOnReturn()
     {
         PlayerPrefs.SetFloat(cameraSensitivityPlayerPrefs, CameraSensitivityValue());
+        PlayerPrefs.SetFloat(audioSFXPlayerPrefs, sfxSlider.value);
+        PlayerPrefs.SetFloat(audioBGMPlayerPrefs, bgmSlider.value);
         PlayerPrefs.Save();
     }
 
     public void LoadSettings()
     {
         LoadCameraSetting();
+        LoadAudioSetting();
     }
+    #endregion
 
-    #region Camera Sensitivity Setting
-    public void LoadCameraSetting()
+    #region Camera Sensitivity
+    void LoadCameraSetting()
     {
         camSensSlider.minValue = 0.01f;
         camSensSlider.maxValue = 1;
 
-        float savedSensitivity = PlayerPrefs.GetFloat(cameraSensitivityPlayerPrefs, 125);
+        float savedSensitivity = PlayerPrefs.GetFloat(cameraSensitivityPlayerPrefs, 125f);
+        camSensSlider.value = savedSensitivity / 250f;
 
         if (playerCam != null)
             playerCam.mouseSensitivity = savedSensitivity;
 
-        camSensSlider.value = savedSensitivity / 250f;
-
-        CameraSensitivityTextChange();
+        camSensValueText.text = camSensSlider.value.ToString("F2");
     }
 
-    public void OnCamSensSliderChanged()
+    void OnCamSensSliderChanged()
     {
         if (playerCam != null)
             playerCam.mouseSensitivity = CameraSensitivityValue();
 
-        CameraSensitivityTextChange();
+        camSensValueText.text = camSensSlider.value.ToString("F2");
     }
 
-    public void CameraSensitivityTextChange()
+    float CameraSensitivityValue() => camSensSlider.value * 250f;
+    #endregion
+
+    #region Audio
+    void LoadAudioSetting()
     {
-        camSensValue.text = camSensSlider.value.ToString("F2");
+        sfxSlider.minValue = 0f;
+        sfxSlider.maxValue = 1f;
+        bgmSlider.minValue = 0f;
+        bgmSlider.maxValue = 1f;
+
+        float savedSFX = PlayerPrefs.GetFloat(audioSFXPlayerPrefs, 1);
+        float savedBGM = PlayerPrefs.GetFloat(audioBGMPlayerPrefs, 1f);
+
+        sfxSlider.value = savedSFX;
+        bgmSlider.value = savedBGM;
+
+        AudioManager.instance.SetSFXVolume(savedSFX);
+        AudioManager.instance.SetBGMVolume(savedBGM);
+
+        UpdateAudioText();
     }
 
-    public float CameraSensitivityValue()
+    void OnSFXSliderChanged(float value)
     {
-        return camSensSlider.value * 250;
+        AudioManager.instance.SetSFXVolume(sfxSlider.value);
+        UpdateAudioText();
     }
+
+    void OnBGMSliderChanged(float value)
+    {
+        AudioManager.instance.SetBGMVolume(bgmSlider.value);
+        UpdateAudioText();
+    }
+
+    void UpdateAudioText()
+    {
+        sfxValueText.text = Mathf.RoundToInt(sfxSlider.value * 100).ToString();
+        bgmValueText.text = Mathf.RoundToInt(bgmSlider.value * 100).ToString();
+    }
+
     #endregion
 }

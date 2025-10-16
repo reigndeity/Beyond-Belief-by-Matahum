@@ -24,7 +24,14 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] walkStepSFX;
     private int walkCount = 0;
     public AudioClip[] footStepSFX;
-    
+
+    //===================================================================================================
+    public event System.Action<float> OnSFXVolumeChanged;
+    public event System.Action<float> OnBGMVolumeChanged;
+
+    [Header("SFX and BGM Volume")]
+    public float SFXvolumeValue;
+    public float BGMvolumeValue;
 
     void Awake()
     {
@@ -37,7 +44,7 @@ public class AudioManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
+    #region Player Audio
     public void PlaySwordSlash(int audio)
     {
         playerSwordAudioSource.PlayOneShot(swordSlashSFX[audio]);
@@ -79,6 +86,20 @@ public class AudioManager : MonoBehaviour
     {
         playerSkillSource.PlayOneShot(ultimateSkillSFX);
     }
+    #endregion
 
+    public void SetSFXVolume(float newValue)
+    {
+        Debug.Log("Changed SFX");
+        SFXvolumeValue = newValue;
+        OnSFXVolumeChanged?.Invoke(newValue);
+    }
+
+    public void SetBGMVolume(float newValue)
+    {
+        Debug.Log("Changed BGM");
+        BGMvolumeValue = newValue;
+        OnBGMVolumeChanged?.Invoke(newValue);
+    }
 }
 
