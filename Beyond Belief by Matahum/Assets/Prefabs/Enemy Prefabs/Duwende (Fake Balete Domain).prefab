@@ -8704,6 +8704,8 @@ GameObject:
   - component: {fileID: 3715991670308564015}
   - component: {fileID: 4781077324318399489}
   - component: {fileID: 7366789268091043177}
+  - component: {fileID: -9137181599259692156}
+  - component: {fileID: 1941301533473605871}
   m_Layer: 10
   m_Name: Duwende (Fake Balete Domain)
   m_TagString: Untagged
@@ -9932,6 +9934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c20461622501a7642b56f5160a72985a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charAudios: {fileID: 0}
   isDead: 0
 --- !u!114 &3715991670308564015
 MonoBehaviour:
@@ -9995,6 +9998,48 @@ MonoBehaviour:
   duwendeAttackOne: {fileID: 119381830877903998}
   duwendeAttackTwo: {fileID: 9165419247363366836}
   duwendeAttackThree: {fileID: 8725497456133187354}
+--- !u!114 &-9137181599259692156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4204500552627025356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22a4542fa4921a640ae265c68ac248c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  clips:
+  - clip: {fileID: 8300000, guid: e1308dbfc5a85d74ca0229790acc31e1, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: f6229f25641b9c646813994775a5aea8, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: acefced8da183274098957c166271cf5, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: d28c233632ae5a241811b5ff2a8fafc1, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: 55a9e6475af2fe743ace023592c0764a, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: 436db43c0d1b5d747a974152ad85edf3, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: a4db9327ed0ee404da03abb689f5c191, type: 3}
+    volume: 1
+--- !u!114 &1941301533473605871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4204500552627025356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 780aa2ea4059eb14d9333f695b53db96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxVolume: 1
+  isSFX: 1
 --- !u!1 &4358061245350158298
 GameObject:
   m_ObjectHideFlags: 0

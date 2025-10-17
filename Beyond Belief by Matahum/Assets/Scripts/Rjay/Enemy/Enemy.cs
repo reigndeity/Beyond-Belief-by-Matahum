@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
     private NavMeshAgent m_navMeshAgent;
     private LegsAnimator m_legsAnimator;
     private EnemyAttack m_enemyAttack;
-
+    public CharacterAudios charAudios;
     public event System.Action OnDeath;
 
     void Awake()
