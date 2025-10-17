@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using System.Collections;
+using Unified.UniversalBlur.Runtime;
 
 public class UI_MainMenu : MonoBehaviour
 {
@@ -32,13 +33,17 @@ public class UI_MainMenu : MonoBehaviour
 
     private string savePath;
 
+    [Header("BLUR")]
+    [SerializeField] Image blurImage;
+    [SerializeField] private float blurDuration = 0.5f;
+    private float currentAlpha = 0f;
+    private Coroutine blurRoutine;
     void Awake()
     {
         string slotId = "Slot_01";
         savePath = Path.Combine(Application.persistentDataPath, $"Auto_{slotId}.es3");
         continueGameButton.gameObject.SetActive(File.Exists(savePath));
 
-        StartCoroutine(UI_TransitionController.instance.Fade(1, 0, 1f));
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -78,7 +83,7 @@ public class UI_MainMenu : MonoBehaviour
     IEnumerator NewGame()
     {
         GameManager.instance.DeleteAll();
-        StartCoroutine(UI_TransitionController.instance.Fade(0, 1, 1f));
+
         yield return new WaitForSeconds(1f);
         Loader.Load(3);
     }
@@ -107,11 +112,13 @@ public class UI_MainMenu : MonoBehaviour
     private void OnOpenSettings()
     {
         settingsPanel.SetActive(true);
+        Blur();
     }
 
     private void OnCloseSettings()
     {
         settingsPanel.SetActive(false);
+        UnBlur();
     }
     public void OnClickAudio()
     {
@@ -135,9 +142,42 @@ public class UI_MainMenu : MonoBehaviour
 
     IEnumerator CloseGame()
     {
-        StartCoroutine(UI_TransitionController.instance.Fade(0, 1, 1f));
         yield return new WaitForSeconds(1f);
         Application.Quit();
+    }
+    public void Blur()
+    {
+        if (blurRoutine != null) StopCoroutine(blurRoutine);
+        blurRoutine = StartCoroutine(AnimateBlur(1f));
+    }
+
+    public void UnBlur()
+    {
+        if (blurRoutine != null) StopCoroutine(blurRoutine);
+        blurRoutine = StartCoroutine(AnimateBlur(0f));
+    }
+    private IEnumerator AnimateBlur(float targetAlpha)
+    {
+        float startAlpha = currentAlpha;
+        float elapsed = 0f;
+
+        while (elapsed < blurDuration)
+        {
+            elapsed += Time.unscaledDeltaTime; // works even if Time.timeScale = 0
+            float t = Mathf.Clamp01(elapsed / blurDuration);
+            currentAlpha = Mathf.Lerp(startAlpha, targetAlpha, t);
+
+            Color c = blurImage.color;
+            c.a = currentAlpha;
+            blurImage.color = c;
+
+            yield return null;
+        }
+
+        currentAlpha = targetAlpha;
+        Color final = blurImage.color;
+        final.a = currentAlpha;
+        blurImage.color = final;
     }
 
 }
