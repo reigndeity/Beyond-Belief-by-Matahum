@@ -135,7 +135,7 @@ public class UI_MainMenu : MonoBehaviour
         continueGameButton.enabled = false;
         GameManager.instance.DeleteAll();
         fadeCanvasGroup.FadeIn(1);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         Loader.Load(3);
     }
     private void OnClickContinueGame()

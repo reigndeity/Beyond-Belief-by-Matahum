@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -19,6 +20,12 @@ public class TabButton
 [System.Serializable]
 public class QuestTabButton
 {
+    public Button button;
+    public Image icon;
+}
+[System.Serializable]
+public class SettingTabButton
+{   
     public Button button;
     public Image icon;
 }
@@ -102,9 +109,13 @@ public class UI_Game : MonoBehaviour
     [SerializeField] private GameObject audioPanel;
     [SerializeField] private GameObject displayAndGraphicsPanel;
     [SerializeField] private GameObject controlPanel;
-    [SerializeField] private Button audioButton;
-    [SerializeField] private Button displayAndGraphicsButton;
-    [SerializeField] private Button controlButton;
+    [SerializeField] private SettingTabButton audioButton;
+    [SerializeField] private SettingTabButton displayAndGraphicsButton;
+    [SerializeField] private SettingTabButton controlButton;
+
+    private SettingTabButton activeSettingTab;
+    private readonly Color activeColor = new(0.4f, 0.2f, 0f, 1f);
+    private readonly Color inactiveColor = Color.white;
     
 
     [Header("UI Animation")]
@@ -122,6 +133,10 @@ public class UI_Game : MonoBehaviour
     [SerializeField] private float blurDuration = 0.5f;
     private float currentAlpha = 0f;
     private Coroutine blurRoutine;
+    
+    [Header("Button Hover")]
+    [SerializeField] private float hoverScale = 1.1f;
+    [SerializeField] private float scaleSpeed = 8f;
 
     void Awake()
     {
@@ -175,11 +190,21 @@ public class UI_Game : MonoBehaviour
         confirmNoButton.onClick.AddListener(OnConfirmReturnNo);
 
         backToPauseMenuButton.onClick.AddListener(OnClickBackToPauseMenu);
-        audioButton.onClick.AddListener(OnClickAudio);
-        displayAndGraphicsButton.onClick.AddListener(OnClickDisplayAndGraphics);
-        controlButton.onClick.AddListener(OnClickControl);
 
+        audioButton.button.onClick.AddListener(OnClickAudioTab);
+        displayAndGraphicsButton.button.onClick.AddListener(OnClickDisplayTab);
+        controlButton.button.onClick.AddListener(OnClickControlTab);
 
+        SetActiveSettingTab(audioButton);
+        OnClickAudio();
+
+        AddHoverEffect(settingsButton);
+        AddHoverEffect(returnToMenuButton);
+        AddHoverEffect(resumeButton);
+        AddHoverEffect(backToPauseMenuButton);
+        AddHoverEffect(audioButton.button);
+        AddHoverEffect(displayAndGraphicsButton.button);
+        AddHoverEffect(controlButton.button);
     }
     void Update()
     {
@@ -505,7 +530,14 @@ public class UI_Game : MonoBehaviour
         HideUI();
         Blur();
         PauseGame();
+
+        // Safety: reset settings visuals if player reopened pause menu after using settings
+        SetActiveSettingTab(audioButton);
+        audioPanel.SetActive(true);
+        displayAndGraphicsPanel.SetActive(false);
+        controlPanel.SetActive(false);
     }
+
 
     public void OnClickResumeGame()
     {
@@ -521,17 +553,45 @@ public class UI_Game : MonoBehaviour
         pauseButtonHolder.SetActive(false);
         resumeButton.gameObject.SetActive(false);
         settingsContentHolder.SetActive(true);
+
+        // Reset panels
         audioPanel.SetActive(true);
+        displayAndGraphicsPanel.SetActive(false);
+        controlPanel.SetActive(false);
+
+        // ✅ Force reset the tab highlight
+        SetActiveSettingTab(audioButton);
     }
+
 
     public void OnClickBackToPauseMenu()
     {
         pauseButtonHolder.SetActive(true);
         resumeButton.gameObject.SetActive(true);
         settingsContentHolder.SetActive(false);
+
+        // Hide all settings panels to prevent overlap
         audioPanel.SetActive(false);
         displayAndGraphicsPanel.SetActive(false);
         controlPanel.SetActive(false);
+    }
+
+    private void OnClickAudioTab()
+    {
+        OnClickAudio();
+        SetActiveSettingTab(audioButton);
+    }
+
+    private void OnClickDisplayTab()
+    {
+        OnClickDisplayAndGraphics();
+        SetActiveSettingTab(displayAndGraphicsButton);
+    }
+
+    private void OnClickControlTab()
+    {
+        OnClickControl();
+        SetActiveSettingTab(controlButton);
     }
 
     public void OnClickAudio()
@@ -569,10 +629,46 @@ public class UI_Game : MonoBehaviour
 
     IEnumerator ReturningToMenu()
     {
-        UI_TransitionController.instance.Fade(0, 1, 0.5f);
+        StartCoroutine(UI_TransitionController.instance.Fade(0, 1, 0.5f));
         yield return new WaitForSeconds(1f);
         Loader.Load(0);
 
+    }
+
+    private void SetActiveSettingTab(SettingTabButton selected)
+    {
+        ResetSettingTab(audioButton);
+        ResetSettingTab(displayAndGraphicsButton);
+        ResetSettingTab(controlButton);
+
+        var circle = selected.button.GetComponent<Image>();
+        if (circle != null)
+        {
+            circle.color = new Color(circle.color.r, circle.color.g, circle.color.b, 1f);
+        }
+
+        if (selected.icon != null)
+        {
+            selected.icon.color = activeColor;
+        }
+
+        activeSettingTab = selected;
+    }
+
+    private void ResetSettingTab(SettingTabButton tab)
+    {
+        if (tab == null) return;
+
+        var circle = tab.button.GetComponent<Image>();
+        if (circle != null)
+        {
+            circle.color = new Color(circle.color.r, circle.color.g, circle.color.b, 0f);
+        }
+
+        if (tab.icon != null)
+        {
+            tab.icon.color = inactiveColor;
+        }
     }
 
     private void OnConfirmReturnNo()
@@ -688,6 +784,40 @@ public class UI_Game : MonoBehaviour
         Color final = blurImage.color;
         final.a = currentAlpha;
         blurImage.color = final;
+    }
+
+    private void AddHoverEffect(Button button)
+    {
+        EventTrigger trigger = button.gameObject.AddComponent<EventTrigger>();
+
+        var pointerEnter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+        pointerEnter.callback.AddListener((_) => StartCoroutine(ScaleButton(button.transform, hoverScale)));
+
+        var pointerExit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+        pointerExit.callback.AddListener((_) => StartCoroutine(ScaleButton(button.transform, 1f)));
+
+        var pointerClick = new EventTrigger.Entry { eventID = EventTriggerType.PointerClick };
+        pointerClick.callback.AddListener((_) => button.transform.localScale = Vector3.one);
+
+        trigger.triggers.Add(pointerEnter);
+        trigger.triggers.Add(pointerExit);
+        trigger.triggers.Add(pointerClick);
+    }
+
+    private IEnumerator ScaleButton(Transform button, float targetScale)
+    {
+        Vector3 startScale = button.localScale;
+        Vector3 endScale = Vector3.one * targetScale;
+        float elapsed = 0f;
+
+        while (elapsed < 1f)
+        {
+            elapsed += Time.unscaledDeltaTime * scaleSpeed;
+            button.localScale = Vector3.Lerp(startScale, endScale, elapsed);
+            yield return null;
+        }
+
+        button.localScale = endScale;
     }
     #endregion
 
