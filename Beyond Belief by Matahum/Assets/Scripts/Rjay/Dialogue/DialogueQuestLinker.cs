@@ -83,6 +83,7 @@ public class DialogueQuestLinker : MonoBehaviour
     public GameObject nunoBossFightTrigger;
     public GameObject nunoSaveTrigger;
     public GameObject nunoSaPunsoCharacter;
+    public R_ItemData mapQuestItem;
     [Header("Act 2 Components")]
     public GameObject mangkukulamHut;
     public GameObject mangkukulamFirstTriggers;
@@ -468,6 +469,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     AddActiveMarker(currentQuestID, tracked);
                     garlicParent.SetActive(false);
                     playerMinimapRenderer.RemoveMinimapItemOfHighlight(garlicHighlight);
+
                     break;
                 case "A1_Q3_BesikTheScout":
                     besikNPC.SetActive(true);
@@ -481,6 +483,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     tupas.SetDialogueState("Default");
                     besik.SetDialogueState("A1_Q4_AlbularyoHut");
                     ApplyStates(tupas, besik);
+                    inventory.AddItem(mapQuestItem, 1);
 
                     RemoveActiveMarker();
                     break;

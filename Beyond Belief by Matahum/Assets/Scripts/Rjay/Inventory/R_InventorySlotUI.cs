@@ -67,13 +67,14 @@ public class R_InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
             icon.enabled = true;
 
             if (item.itemData.itemType == R_ItemType.Pamana)
-                quantityText.text = $"+{item.itemData.pamanaData.currentLevel}";
+                //quantityText.text = $"+{item.itemData.pamanaData.currentLevel}";
+                quantityText.text = "1";
             else if (item.itemData.itemType == R_ItemType.Agimat)
-                quantityText.text = "1";
-            else if (item.itemData.isStackable)
-                quantityText.text = item.quantity.ToString();
-            else
-                quantityText.text = "1";
+                        quantityText.text = "1";
+                    else if (item.itemData.isStackable)
+                        quantityText.text = item.quantity.ToString();
+                    else
+                        quantityText.text = "1";
         }
         else
         {
