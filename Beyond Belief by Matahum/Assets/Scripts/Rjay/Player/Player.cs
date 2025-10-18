@@ -31,6 +31,9 @@ public class Player : MonoBehaviour, IDamageable
     public PlayerState currentState;
     public bool isDead = false;
     public bool isInvulnerable = false;
+    [Header("Combat Awareness")]
+    [SerializeField] private int dangerCount = 0; // how many enemies are chasing
+    public bool inDanger = false;
 
     [Header("Inventory Properties")]
     public R_Inventory playerInventory;
@@ -181,6 +184,36 @@ public class Player : MonoBehaviour, IDamageable
 
     #endregion
 
+    #region DANGER SYSTEM
+
+    public void SetInDanger(bool value)
+    {
+        // Safety — just use this if you want manual control
+        if (value) EnterDanger();
+        else ExitDanger();
+    }
+
+    public void EnterDanger()
+    {
+        dangerCount++;
+        if (!inDanger)
+        {
+            inDanger = true;
+            AudioManager.instance.PlayInDangerCue(true);
+        }
+    }
+
+    public void ExitDanger()
+    {
+        dangerCount = Mathf.Max(0, dangerCount - 1);
+        if (dangerCount == 0 && inDanger)
+        {
+            inDanger = false;
+            AudioManager.instance.PlayInDangerCue(false);
+        }
+    }
+
+#endregion
 
     #region DAMAGE / HEAL FUNCTIONS
     public void TakeDamage(float damage, bool hitAnimOn = true)

@@ -1,9 +1,14 @@
+using System.Collections;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
-    [Header("Player Audio")]
+    [Header("Player Danger Audio")]
+    public AudioSource playerAudioCueSource;
+    public AudioClip inDangerClip;
+    public static event System.Action<bool> OnDangerStateChanged;
+
 
     [Header("Player Voice Audio")]
     public AudioSource playerVoiceSource;
@@ -31,6 +36,13 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] walkStepSFX;
     private int walkCount = 0;
     public AudioClip[] footStepSFX;
+
+    [Header("UI SFX Audio")]
+    public AudioSource sfxSource;
+    public AudioClip newQuestSFX;
+    public AudioClip tutorialPopUpSFX;
+    public AudioClip buttonClickSFX;
+    public AudioClip onHoverSFX;
 
     //===================================================================================================
     public event System.Action<float> OnSFXVolumeChanged;
@@ -126,6 +138,18 @@ public class AudioManager : MonoBehaviour
 
     #endregion
 
+    #region UI SFX
+    public void PlayNewQuestSFX()
+    {
+        sfxSource.PlayOneShot(newQuestSFX);
+    }
+    public void PlayOnHoverSFX()
+    {
+        sfxSource.PlayOneShot(onHoverSFX);
+    }
+    #endregion
+
+
     public void SetSFXVolume(float newValue)
     {
         SFXvolumeValue = newValue;
@@ -137,5 +161,52 @@ public class AudioManager : MonoBehaviour
         BGMvolumeValue = newValue;
         OnBGMVolumeChanged?.Invoke(newValue);
     }
+    public void PlayInDangerCue(bool inDanger)
+    {
+        if (playerAudioCueSource == null || inDangerClip == null)
+            return;
+
+        StopAllCoroutines();
+        StartCoroutine(FadeDangerCue(inDanger));
+        OnDangerStateChanged?.Invoke(inDanger);
+    }
+
+    private IEnumerator FadeDangerCue(bool inDanger)
+    {
+        float fadeDuration = 1.5f;
+        float startVolume = playerAudioCueSource.volume;
+        float targetVolume = inDanger ? 1f : 0f;
+        float elapsed = 0f;
+
+        if (inDanger)
+        {
+            // 🔒 Prevent stacking — only start once
+            if (!playerAudioCueSource.isPlaying)
+            {
+                playerAudioCueSource.clip = inDangerClip;
+                playerAudioCueSource.loop = true;
+                playerAudioCueSource.volume = 0f;
+                playerAudioCueSource.Play();
+            }
+        }
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            playerAudioCueSource.volume = Mathf.Lerp(startVolume, targetVolume, elapsed / fadeDuration);
+            yield return null;
+        }
+
+        playerAudioCueSource.volume = targetVolume;
+
+        if (!inDanger && Mathf.Approximately(targetVolume, 0f))
+        {
+            // 🧹 Stop only when fading out is done
+            playerAudioCueSource.Stop();
+            playerAudioCueSource.clip = null;
+        }
+    }
+
+
 }
 

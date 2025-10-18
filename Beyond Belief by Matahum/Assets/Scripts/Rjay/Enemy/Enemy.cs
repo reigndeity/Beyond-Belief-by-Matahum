@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using FIMSpace.FProceduralAnimation;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
 {
@@ -19,6 +20,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
     public CharacterAudios charAudios;
     public int charAudioIndex;
     public event System.Action OnDeath;
+    private bool isChasingPlayer = false;
 
     void Awake()
     {
@@ -38,12 +40,19 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
         DisableAllRagdollParts();
         if (charAudios == null)
             charAudios = GetComponent<CharacterAudios>();
+
+        if (m_blazeAI != null && m_blazeAI.vision != null)
+        {
+            // these UnityEvents are built-in inside the BlazeAI.vision system
+            m_blazeAI.vision.enemyEnterEvent.AddListener(OnEnemyDetected);
+            m_blazeAI.vision.enemyLeaveEvent.AddListener(OnEnemyLost);
+        }
     }
     #region DAMAGE
 
     public void TakeDamage(float damage, bool hitAnimOn)
     {
-        if(hitAnimOn)
+        if (hitAnimOn)
             GetHit();
 
         bool isCriticalHit = UnityEngine.Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
@@ -57,7 +66,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
         // NEW: centralize health changes in EnemyStats
         bool died = m_enemyStats.ApplyDamage(finalDamage);
 
-        Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f),Random.Range(0f, 0.25f),Random.Range(0f, 0.25f));
+        Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
         if (isCriticalHit)
         {
             DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.red);
@@ -66,7 +75,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
         {
             DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.white);
         }
-            
+
         if (died) Death();
     }
 
@@ -187,7 +196,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
     }
     public void Death()
     {
-        StartCoroutine(Dying());        
+        StartCoroutine(Dying());
     }
     public bool isDead = false;
     public bool IsDead() => isDead;
@@ -208,4 +217,42 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
 
     public void EnableAttack() => m_enemyAttack.EnableAttackCollider();
     public void DisableAttack() => m_enemyAttack.DisableAttackCollider();
+    #region DANGER MUSIC HANDLER
+    private void OnEnemyDetected()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        string sceneName = currentScene.name;
+
+        if (sceneName != "OpenWorldScene") 
+            return; // ignore other scenes
+
+        if (isDead) return;
+        if (isChasingPlayer) return;
+
+        isChasingPlayer = true;
+        m_player.EnterDanger();
+    }
+
+    private void OnEnemyLost()
+    {
+        if (!isChasingPlayer) return;
+
+        isChasingPlayer = false;
+        m_player.ExitDanger();
+    }
+
+    private void OnDestroy()
+    {
+        if (m_blazeAI != null && m_blazeAI.vision != null)
+        {
+            m_blazeAI.vision.enemyEnterEvent.RemoveListener(OnEnemyDetected);
+            m_blazeAI.vision.enemyLeaveEvent.RemoveListener(OnEnemyLost);
+        }
+
+        if (m_player != null && isChasingPlayer)
+            m_player.ExitDanger();
+    }
+
+    #endregion
+
 }

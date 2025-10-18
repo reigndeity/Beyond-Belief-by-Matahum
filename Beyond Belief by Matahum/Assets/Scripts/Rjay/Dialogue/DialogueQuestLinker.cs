@@ -50,6 +50,7 @@ public class DialogueQuestLinker : MonoBehaviour
     [SerializeField] Collider playerWeaponCollider;
     [SerializeField] GameObject normalTrainingAreaMode;
     [SerializeField] GameObject trainingAreaMode;
+    [SerializeField] GameObject trainingAreaAudioZone;
     public TimelineAsset A0_Q3_BangkawTraining_P2_Cutscene;
     [SerializeField] private Transform normalSkillTrainingDummies;
     public TimelineAsset A0_Q3_BangkawTraining_P3_Cutscene;
@@ -234,6 +235,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     bakal.SetDialogueState("Default");
                     bangkaw.SetDialogueState("A0_Q3_Bangkaw'sTraining_P1");
                     ApplyStates(tupas, bakal, bangkaw);
+                    trainingAreaAudioZone.SetActive(true);
                     break;
 
                 case "A0_Q3_Bangkaw'sTraining_P2":
@@ -275,6 +277,7 @@ public class DialogueQuestLinker : MonoBehaviour
 
                     m_playerSkills.normalSkillCooldown = 12;
                     m_playerSkills.ultimateSkillCooldown = 30;
+                    trainingAreaAudioZone.SetActive(false);
                     break;
 
                 case "A0_Q5_ReturnToTupas":
@@ -345,6 +348,8 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.HideHealth();
                     TutorialManager.instance.HideQuestJournal();
                     TutorialManager.instance.HideMinimap();
+
+                    trainingAreaAudioZone.SetActive(true);
                     break;
                 case "A0_Q11_AgimatTraining_P2":
                     bangkaw.SetDialogueState("A0_Q11_AgimatTraining_P2");
@@ -398,6 +403,7 @@ public class DialogueQuestLinker : MonoBehaviour
 
                     normalTrainingAreaMode.SetActive(true);
                     trainingAreaMode.SetActive(false);
+                    trainingAreaAudioZone.SetActive(false);
                     break;
                 case "A0_Q13_BackpackTraining":
                     tupas.SetDialogueState("A0_Q13_BackpackTraining");

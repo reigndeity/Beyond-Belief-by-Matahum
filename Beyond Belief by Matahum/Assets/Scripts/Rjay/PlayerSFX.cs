@@ -57,4 +57,5 @@ public class PlayerSFX : MonoBehaviour
     {
         AudioManager.instance.PlayDeathVoiceSFX();
     }
+    
 }

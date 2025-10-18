@@ -24,6 +24,7 @@ public class UI_HoverScale : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnPointerEnter(PointerEventData eventData)
     {
         targetScale = originalScale * scaleUpFactor;
+        AudioManager.instance.PlayOnHoverSFX();
     }
 
     public void OnPointerExit(PointerEventData eventData)
