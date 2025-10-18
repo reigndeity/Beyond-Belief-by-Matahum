@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class UI_CanvasGroup : MonoBehaviour
 {
-    private CanvasGroup canvasGroup;
+    public CanvasGroup canvasGroup;
 
     void Awake()
     {
