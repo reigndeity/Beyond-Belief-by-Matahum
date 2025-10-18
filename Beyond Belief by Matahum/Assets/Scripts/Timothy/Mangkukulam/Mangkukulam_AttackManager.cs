@@ -80,13 +80,11 @@ public class Mangkukulam_AttackManager : MonoBehaviour
             castingCurrentAbility = abilityList[skillIndex];
 
             abilityList[skillIndex].Activate(gameObject);
-            Debug.Log($"Attacking with {abilityList[skillIndex].name}");
             mangkukulam.uiCanvas.currentCastingSkillTxt.text = $"Casting {abilityList[skillIndex].name} . . .";
         }
         else
         {
             mangkukulam.uiCanvas.currentCastingSkillTxt.text = $" ";
-            Debug.Log("Mangkukulam continues walking");
             canAttack = true;
         }
     }

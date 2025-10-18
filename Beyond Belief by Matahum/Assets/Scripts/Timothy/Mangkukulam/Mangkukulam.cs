@@ -109,14 +109,11 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
 
         Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
         DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, displayAmount.ToString(), Color.green);
-
-        Debug.Log($"💚 Mangkukulam Healed {amount} HP. Current Health: {stats.e_currentHealth} / {maxHP}");
     }
 
     public void Death()
     {
         _ = Dying();
-        Debug.Log("Mangkukulam is defeated");
         isDead = true;
         OnDeath?.Invoke();
     }

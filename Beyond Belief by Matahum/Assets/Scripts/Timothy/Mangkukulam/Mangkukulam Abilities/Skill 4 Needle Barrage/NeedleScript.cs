@@ -10,12 +10,14 @@ public class NeedleScript : MonoBehaviour
     public GameObject particleFX;
 
     private EnemyStats stats;
-    //public GameObject explosionVFX;
 
-    // Update is called once per frame
+    [Header("Audio")]
+    public AudioSource audioSource;
+    private bool isPlaying = false;
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         stats = FindFirstObjectByType<Mangkukulam>().GetComponent<EnemyStats>();
         damage = (stats.e_attack * (damagePercentage / 100));
         Destroy(gameObject, 10f);
@@ -24,6 +26,11 @@ public class NeedleScript : MonoBehaviour
     {
         if (canShoot)
         {
+            if (!isPlaying)
+            {
+                isPlaying = true;
+                audioSource.Play();
+            }
             transform.position += lastPlayerPosition * speed * Time.deltaTime;
             particleFX.SetActive(true);
         }
@@ -32,6 +39,17 @@ public class NeedleScript : MonoBehaviour
             Vector3 direction = FindFirstObjectByType<Player>().transform.position - transform.position;
             transform.rotation = Quaternion.LookRotation(direction.normalized);
             particleFX.SetActive(false);
+        }
+
+        if (Time.timeScale == 0)
+        {
+            if (audioSource.isPlaying)
+                audioSource.Pause();
+        }
+        else
+        {
+            if (!audioSource.isPlaying && audioSource.clip != null)
+                audioSource.UnPause();
         }
     }
 

@@ -56,6 +56,8 @@ public class PotionBottle : MonoBehaviour
         {
             Vector3 offset = new Vector3(0, 0.1f, 0);
             Instantiate(poisonArea, transform.position + offset, Quaternion.identity);
+            GameObject glassExplode = Instantiate(explosionVFX, transform.position, Quaternion.identity);
+            Destroy(glassExplode,2);
             Destroy(gameObject);
         }
     }
