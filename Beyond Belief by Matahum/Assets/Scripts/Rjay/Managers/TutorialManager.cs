@@ -620,13 +620,11 @@ public class TutorialManager : MonoBehaviour
         attributesButtonTH.GetComponent<TutorialHighlight>().enabled = true;
         attributeBackgroundTH.enabled = true;
         nextPamanaTutorialButtonTH.onClick.AddListener(PamanaTutorial);
-
         characterDetailsTutorialArrow.SetActive(false);
     }
 
     public void PamanaTutorial()
     {
-        characterDetailsTutorialArrow.SetActive(false);
         switch (currentPamanaTutorial)
         {
             case 0:

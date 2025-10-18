@@ -131,9 +131,34 @@ public class DialogueQuestLinker : MonoBehaviour
     void Update()
     {
         var tracked = BB_QuestHUD.instance?.trackedQuest;
-        if (tracked == null) return;
+
+        // 🧹 If nothing is tracked → remove marker + minimap item
+        if (tracked == null)
+        {
+            if (activeMarker != null)
+                RemoveActiveMarker();
+
+            if (questMinimapItem != null && questMinimapItem.activeSelf)
+                questMinimapItem.SetActive(false);
+
+            currentTrackedTransform = null;
+            return;
+        }
 
         string currentQuestID = tracked.questID;
+
+        // // 🧹 If quest is already completed → remove marker and skip logic
+        // if (BB_QuestManager.Instance.IsQuestDone(currentQuestID))
+        // {
+        //     if (activeMarker != null)
+        //         RemoveActiveMarker();
+
+        //     if (questMinimapItem != null && questMinimapItem.activeSelf)
+        //         questMinimapItem.SetActive(false);
+
+        //     currentTrackedTransform = null;
+        //     return;
+        // }
 
         // ==============================
         // Press V → Spawn / Replace quest marker
@@ -659,16 +684,7 @@ public class DialogueQuestLinker : MonoBehaviour
 
         if (dashAmount == 5)
         {
-            // isDelayAccept = false;
-            // if (!isDelayAccept)
-            // {
-            //     dashAmount = 0;
-            //     StartCoroutine(DelayAcceptQuestReward("A0_Q3_Bangkaw'sTraining_P4"));
-            //     StartCoroutine(DelayAcceptQuest("A0_Q4_TrainingWithBangkaw"));
-            // }
-
             isDelayAccept = false;
-
             if (!isDelayAccept)
             {
 
@@ -868,6 +884,7 @@ public class DialogueQuestLinker : MonoBehaviour
             albularyo.SetDialogueState("Default");
             ApplyStates(albularyo);
             RemoveActiveMarker();
+            questMinimapItem.SetActive(false);
         }
     }
     #endregion
@@ -884,43 +901,44 @@ public class DialogueQuestLinker : MonoBehaviour
     public void AddActiveMarker(string currentQuestID, BB_Quest tracked, Vector3? customOffset = null)
     {
         if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialoguePlaying())
-        {
-            Debug.Log("Cannot spawn marker while in dialogue!");
             return;
-        }
-        if (Time.time - lastMarkerTime < markerCooldown)
-        {
-            Debug.Log("Quest marker is on cooldown!");
-            return;
-        }
 
-        lastMarkerTime = Time.time;
-        Debug.Log("Spawn Quest Marker");
-
+        // 🧩 Always clear existing marker before proceeding
         if (activeMarker != null)
         {
             activeMarker.FadeOutAndDestroyMarker();
             activeMarker = null;
         }
 
+        // 🧩 Skip if quest isn’t tracked or already completed
+        if (tracked == null || BB_QuestManager.Instance.IsQuestDone(currentQuestID))
+            return;
+
+        // 🧩 Only spawn if currently tracked quest matches the one in HUD
+        if (BB_QuestHUD.instance?.trackedQuest == null ||
+            BB_QuestHUD.instance.trackedQuest.questID != currentQuestID)
+            return;
+
         Transform questTarget = GetQuestTargetTransform(currentQuestID);
-        if (questTarget != null)
-        {
-            activeMarker = Instantiate(markerPrefab, uiMarkerParent);
-            activeMarker.target = questTarget;
-            activeMarker.mainCamera = Camera.main;
+        if (questTarget == null) return;
 
-            // ✅ If custom offset is provided, override it
-            if (customOffset.HasValue)
-                activeMarker.SetOffset(customOffset.Value);
+        lastMarkerTime = Time.time;
 
-            activeMarker.SetQuestType(
-                tracked.questType == BB_QuestType.Main,
-                mainQuestSprite,
-                sideQuestSprite
-            );
-        }
+        // 🧩 Instantiate one clean marker
+        activeMarker = Instantiate(markerPrefab, uiMarkerParent);
+        activeMarker.target = questTarget;
+        activeMarker.mainCamera = Camera.main;
+
+        if (customOffset.HasValue)
+            activeMarker.SetOffset(customOffset.Value);
+
+        activeMarker.SetQuestType(
+            tracked.questType == BB_QuestType.Main,
+            mainQuestSprite,
+            sideQuestSprite
+        );
     }
+
     private Transform GetQuestTargetTransform(string questID)
     {
         switch (questID)
