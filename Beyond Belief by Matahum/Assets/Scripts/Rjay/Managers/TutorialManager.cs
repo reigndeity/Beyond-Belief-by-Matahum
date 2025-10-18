@@ -199,7 +199,6 @@ public class TutorialManager : MonoBehaviour
     }
     public void TutorialCheck()
     {
-        Debug.Log("DOING A TUTORIAL CHECK");
         if (!isTutorialDone)
         {
             StartTutorial();
@@ -554,7 +553,6 @@ public class TutorialManager : MonoBehaviour
         if (firstAgimatSlot != null)
         {
             firstAgimatSlot.onClick.AddListener(AgimatTutorial);
-            Debug.Log($"✅ Listener added to {firstAgimatSlot.name}");
         }
         else
         {
@@ -756,7 +754,6 @@ public class TutorialManager : MonoBehaviour
         if (firstPamanaSlot != null)
         {
             firstPamanaSlot.onClick.AddListener(PamanaTutorial);
-            Debug.Log($"✅ Listener added to {firstPamanaSlot.name}");
         }
         else
         {

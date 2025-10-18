@@ -146,7 +146,6 @@ public class Player : MonoBehaviour, IDamageable
             StartCoroutine(ApplyGravityUntilGrounded());
         }
 
-        Debug.Log("🧍 ForceIdleOverride: Player forcibly reset to idle.");
     }
 
 
@@ -178,7 +177,6 @@ public class Player : MonoBehaviour, IDamageable
             m_playerAnimator.HandleAnimations();
         }
 
-        Debug.Log($"🔒 Player locked: {isLocked}");
     }
 
     #endregion
@@ -205,18 +203,15 @@ public class Player : MonoBehaviour, IDamageable
         if (isCriticalHit) // Damage Pop Up Here
         {
             DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.red);
-            Debug.Log($"💥 CRITICAL HIT! Player took {finalDamage} damage. Current Health: {m_playerStats.p_currentHealth}");
         }
         else
         {
 
             DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.white);
-            Debug.Log($"Player took {finalDamage} damage. Current Health: {m_playerStats.p_currentHealth}");
         }
 
         if (m_playerStats.p_currentHealth <= 0f && !isDead) // Death check
         {
-            Debug.Log("Player is dead.");
             HandleDeath();
         }
         if (m_playerSkills.isUsingNormalSkill) return;
@@ -238,8 +233,6 @@ public class Player : MonoBehaviour, IDamageable
 
         Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
         DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, displayAmount.ToString(), Color.green);
-
-        Debug.Log($"💚 Healed {amount} HP. Current Health: {m_playerStats.p_currentHealth} / {maxHP}");
     }
     #endregion
     #region DEATH
@@ -247,13 +240,11 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (isDead) return;
         isDead = true;
-        Debug.Log("💀 Player has died.");
         SetPlayerLocked(true);
         m_playerAnimator.animator.applyRootMotion = true;
         GetComponent<LegsAnimator>().enabled = false;
         m_uiGame.HideUI();
         m_playerAnimator.PlayDeathAnimation();
-        Debug.Log($"Current anim: {m_playerAnimator.animator.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
         await System.Threading.Tasks.Task.Delay(1800);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
         await System.Threading.Tasks.Task.Delay(1000);
@@ -271,7 +262,6 @@ public class Player : MonoBehaviour, IDamageable
         {
             m_playerStats.currentExp -= PlayerLevelTable.GetXPRequiredForLevel(m_playerStats.currentLevel);
             m_playerStats.currentLevel++;
-            Debug.Log($"🔼 Level up! New level: {m_playerStats.currentLevel}");
             m_playerStats.RecalculateStats();
         }
 
@@ -288,7 +278,6 @@ public class Player : MonoBehaviour, IDamageable
         {
             m_playerStats.weaponXP -= GetWeaponXPRequired(m_playerStats.weaponLevel);
             m_playerStats.weaponLevel++;
-            Debug.Log($"🔼 Weapon leveled up to Lv.{m_playerStats.weaponLevel}!");
             m_playerStats.RecalculateStats();
         }
     }
@@ -310,7 +299,6 @@ public class Player : MonoBehaviour, IDamageable
         m_playerStats.currentGoldCoins += amount;
         if (m_playerStats.currentGoldCoins < 0) m_playerStats.currentGoldCoins = 0;
 
-        Debug.Log($"Gold Coins: {m_playerStats.currentGoldCoins}");
         // TODO: You can call a UI update here
     }
     public bool SpendGoldCoins(int amount)
@@ -318,11 +306,9 @@ public class Player : MonoBehaviour, IDamageable
         if (m_playerStats.currentGoldCoins >= amount)
         {
             m_playerStats.currentGoldCoins -= amount;
-            Debug.Log($"Spent {amount} coins. Remaining: {m_playerStats.currentGoldCoins}");
             return true;
         }
 
-        Debug.Log("Not enough coins!");
         return false;
     }
     #endregion

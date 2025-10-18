@@ -51,12 +51,10 @@ public class Nuno : MonoBehaviour, IDamageable, IDeathHandler
             if (isCriticalHit)
             {
                 DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.red);
-                Debug.Log($"💥 CRITICAL HIT! Nuno took {finalDamage} damage. Current Health: {nunoStats.e_currentHealth}");
             }
             else
             {
                 DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.white);
-                Debug.Log($"Nuno took {finalDamage} damage. Current Health: {nunoStats.e_currentHealth}");
             }
 
             if (died) Death();

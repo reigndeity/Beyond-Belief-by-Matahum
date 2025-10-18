@@ -53,7 +53,6 @@ public class PlayerStatsSaver : MonoBehaviour, ISaveable
             weaponLevel = stats.weaponLevel,
             weaponXP = stats.weaponXP
         };
-        Debug.Log($"[Save] HP saved: {stats.p_currentHealth}/{stats.p_maxHealth}");
         return JsonUtility.ToJson(dto, false);
     }
 
@@ -88,7 +87,6 @@ public class PlayerStatsSaver : MonoBehaviour, ISaveable
         stats.NotifyXPChanged();
         // If you have a stats/damage recalc method, call it here (optional):
         // stats.RecalculateStats();
-        Debug.Log($"[Load] HP loaded: {dto.hpCurrent}/{dto.hpMax}");
         stats.restoredFromSave = true;
     }
 }

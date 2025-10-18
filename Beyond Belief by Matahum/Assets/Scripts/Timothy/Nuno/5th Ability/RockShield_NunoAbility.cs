@@ -23,7 +23,7 @@ public class RockShield_NunoAbility : Nuno_Ability
         CoroutineRunner.Instance.RunCoroutine(DelaySpawnShield());
     }
 
-    public override void Deactivate() { Debug.Log("Do Nothing. This basically is the cause why everything will stop"); }
+    public override void Deactivate() { }
 
     IEnumerator DelaySpawnShield()
     {
@@ -34,7 +34,6 @@ public class RockShield_NunoAbility : Nuno_Ability
 
         if (activeShieldHolder == null)
         {
-            Debug.Log("Shield not existing, Instantiating a new one...");
             Vector3 offset = new Vector3(0, 0.5f, 0);
             activeShieldHolder = Instantiate(
                 shieldHolderPrefab,
@@ -43,7 +42,6 @@ public class RockShield_NunoAbility : Nuno_Ability
                 Nuno_AttackManager.Instance.transform.parent
             );
         }
-        else Debug.Log("Shield exists...");
 
         // Call initialize manually BEFORE ResetShield
         var nuno = Nuno_AttackManager.Instance.GetComponent<Nuno>();

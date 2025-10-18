@@ -33,7 +33,6 @@ public class StonePillar_Pillar : MonoBehaviour
             transform.position = Vector3.Lerp(startPos, endPos, t);
             yield return null;
         }
-        Debug.Log("Starts Rising");
         StartCoroutine(StartFalling(endPos, startPos));
     }
     IEnumerator StartFalling(Vector3 topPos, Vector3 bottomPos)
@@ -48,7 +47,6 @@ public class StonePillar_Pillar : MonoBehaviour
             transform.position = Vector3.Lerp(topPos, bottomPos, t);
             yield return null;
         }
-        Debug.Log("Starts Falling");
     }
 
     private void OnTriggerEnter(Collider other)

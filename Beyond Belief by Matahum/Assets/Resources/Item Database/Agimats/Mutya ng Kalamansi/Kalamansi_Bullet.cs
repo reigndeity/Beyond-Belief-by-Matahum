@@ -92,7 +92,6 @@ public class Kalamansi_Bullet : MonoBehaviour
         {
             vfxToSpawn = Instantiate(defDown_xpld_VFX, transform.position, Quaternion.identity, target.transform);
         }
-        Debug.Log("Splish Splash");
         Destroy(vfxToSpawn, 1);
     }
     void CheckForDebuffType(EnemyStats stats)

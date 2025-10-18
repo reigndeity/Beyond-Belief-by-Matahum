@@ -128,14 +128,12 @@ public class AudioManager : MonoBehaviour
 
     public void SetSFXVolume(float newValue)
     {
-        Debug.Log("Changed SFX");
         SFXvolumeValue = newValue;
         OnSFXVolumeChanged?.Invoke(newValue);
     }
 
     public void SetBGMVolume(float newValue)
     {
-        Debug.Log("Changed BGM");
         BGMvolumeValue = newValue;
         OnBGMVolumeChanged?.Invoke(newValue);
     }

@@ -41,7 +41,6 @@ public class MutyaNgSaging_S1 : R_AgimatAbility
             turret.bulletsLeft = bulletCount;
             turret.turretDuration = turretDuration;
 
-            Debug.Log($"🍌 Placed a turret that will attack {bulletCount} times, {bulletDamage:F1} dmg each.");
         }
     }
     public int GetBulletCount(R_ItemRarity rarity)
