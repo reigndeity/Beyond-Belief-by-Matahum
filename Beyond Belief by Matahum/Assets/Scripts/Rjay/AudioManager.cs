@@ -49,7 +49,15 @@ public class AudioManager : MonoBehaviour
         }
 
         instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        SFXvolumeValue = PlayerPrefs.GetFloat("Audio_SFX", 100);
+        BGMvolumeValue = PlayerPrefs.GetFloat("Audio_BGM", 100);
+        SetSFXVolume(SFXvolumeValue);
+        SetBGMVolume(BGMvolumeValue);
     }
     #region Player Audio
     public void PlaySwordSlash(int audio)
