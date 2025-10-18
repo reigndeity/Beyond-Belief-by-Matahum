@@ -6,14 +6,29 @@ public class CharacterAudios : MonoBehaviour
     public AudioSource audioSource;
     public CharacterAudioClip[] clips;
 
+    public AudioWrapper wrapper;
+
     private void Start()
     {
-        if(audioSource == null)
+        if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
+
+        if (wrapper == null)
+            wrapper = GetComponent<AudioWrapper>();
     }
-    private void SFX(int index)
+
+    public void SFX(int index)
     {
-        audioSource.PlayOneShot(clips[index].clip, clips[index].volume);
+        if (clips == null || clips.Length <= index || clips[index].clip == null)
+            return;
+
+        // Get base clip volume (0–1 preferred)
+        float clipVolume = Mathf.Clamp01(clips[index].volume);
+
+        // Scale it by wrapper's max volume range
+        float finalVolume = clipVolume * (wrapper != null ? wrapper.maxVolume : 1f);
+
+        audioSource.PlayOneShot(clips[index].clip, finalVolume);
     }
 }
 
@@ -21,5 +36,5 @@ public class CharacterAudios : MonoBehaviour
 public class CharacterAudioClip
 {
     public AudioClip clip;
-    public float volume;
+    [Range(0f, 1f)] public float volume = 1f;
 }

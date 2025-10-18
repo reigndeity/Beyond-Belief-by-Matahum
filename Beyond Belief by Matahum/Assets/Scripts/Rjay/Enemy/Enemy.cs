@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
     private LegsAnimator m_legsAnimator;
     private EnemyAttack m_enemyAttack;
     public CharacterAudios charAudios;
+    public int charAudioIndex;
     public event System.Action OnDeath;
 
     void Awake()
@@ -35,6 +36,8 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
     void Start()
     {
         DisableAllRagdollParts();
+        if (charAudios == null)
+            charAudios = GetComponent<CharacterAudios>();
     }
     #region DAMAGE
 
@@ -199,6 +202,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
         EnableAllRagdollParts();
         m_blazeAI.Death();
         IgnorePlayerLayer();
+        charAudios.SFX(charAudioIndex);
         OnDeath?.Invoke();
         yield return new WaitForSeconds(0.5f);
     }
