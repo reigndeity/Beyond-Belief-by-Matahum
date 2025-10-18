@@ -107,6 +107,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shieldHolder: {fileID: 0}
   stats: {fileID: 0}
+  clips:
+  - clip: {fileID: 8300000, guid: 5decb5057b22da544b61045a54a89b1f, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: 3a888fe990c8bcd4db7111af6056f781, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: c3817bcd826c04e4a90762ac6d389e3b, type: 3}
+    volume: 1
 --- !u!54 &8773872685044490796
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -196,7 +203,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -401,6 +408,7 @@ MonoBehaviour:
   originalObject: {fileID: 109368362521874816}
   fracturedObject: {fileID: 2418805838949985202, guid: c811270044ec0104fa21d3ec311c40c8, type: 3}
   explosionVFX: {fileID: 1745393915338153345, guid: ef3dbb6a396003d43a10f897552eca5b, type: 3}
+  explosionSFX: {fileID: 0}
   explosionMinForce: 5
   explosionMaxForce: 100
   explosionForceRadius: 10
@@ -1101,7 +1109,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3349740488504647684
 Transform:
   m_ObjectHideFlags: 0
@@ -1609,6 +1617,7 @@ MonoBehaviour:
   originalObject: {fileID: 4403628078141154977}
   fracturedObject: {fileID: 2418805838949985202, guid: c811270044ec0104fa21d3ec311c40c8, type: 3}
   explosionVFX: {fileID: 1745393915338153345, guid: ef3dbb6a396003d43a10f897552eca5b, type: 3}
+  explosionSFX: {fileID: 0}
   explosionMinForce: 5
   explosionMaxForce: 100
   explosionForceRadius: 10
@@ -1813,6 +1822,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shieldHolder: {fileID: 0}
   stats: {fileID: 0}
+  clips:
+  - clip: {fileID: 8300000, guid: 5decb5057b22da544b61045a54a89b1f, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: 3a888fe990c8bcd4db7111af6056f781, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: c3817bcd826c04e4a90762ac6d389e3b, type: 3}
+    volume: 1
 --- !u!54 &7610363033277647931
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1902,7 +1918,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -2032,6 +2048,7 @@ MonoBehaviour:
   originalObject: {fileID: 8555654806503818736}
   fracturedObject: {fileID: 2418805838949985202, guid: c811270044ec0104fa21d3ec311c40c8, type: 3}
   explosionVFX: {fileID: 1745393915338153345, guid: ef3dbb6a396003d43a10f897552eca5b, type: 3}
+  explosionSFX: {fileID: 0}
   explosionMinForce: 5
   explosionMaxForce: 100
   explosionForceRadius: 10
@@ -2053,7 +2070,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7669050416144891070
 Transform:
   m_ObjectHideFlags: 0
@@ -2106,7 +2123,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6052435482749817223
 Transform:
   m_ObjectHideFlags: 0
@@ -2458,7 +2475,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &835056131616307736
 Transform:
   m_ObjectHideFlags: 0
@@ -2635,6 +2652,7 @@ MonoBehaviour:
   originalObject: {fileID: 7262336362799390022}
   fracturedObject: {fileID: 2418805838949985202, guid: c811270044ec0104fa21d3ec311c40c8, type: 3}
   explosionVFX: {fileID: 1745393915338153345, guid: ef3dbb6a396003d43a10f897552eca5b, type: 3}
+  explosionSFX: {fileID: 0}
   explosionMinForce: 5
   explosionMaxForce: 100
   explosionForceRadius: 10
@@ -2984,6 +3002,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shieldHolder: {fileID: 0}
   stats: {fileID: 0}
+  clips:
+  - clip: {fileID: 8300000, guid: 5decb5057b22da544b61045a54a89b1f, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: 3a888fe990c8bcd4db7111af6056f781, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: c3817bcd826c04e4a90762ac6d389e3b, type: 3}
+    volume: 1
 --- !u!54 &256107306996997944
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3073,7 +3098,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -3810,6 +3835,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shieldHolder: {fileID: 0}
   stats: {fileID: 0}
+  clips:
+  - clip: {fileID: 8300000, guid: 5decb5057b22da544b61045a54a89b1f, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: 3a888fe990c8bcd4db7111af6056f781, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: c3817bcd826c04e4a90762ac6d389e3b, type: 3}
+    volume: 1
 --- !u!54 &5542696470681110189
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3899,7 +3931,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5

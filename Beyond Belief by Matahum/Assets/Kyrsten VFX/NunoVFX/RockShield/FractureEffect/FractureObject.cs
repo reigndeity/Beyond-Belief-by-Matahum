@@ -7,6 +7,7 @@ public class FractureObject : MonoBehaviour
     public GameObject originalObject;
     public GameObject fracturedObject;
     public GameObject explosionVFX;
+    public AudioSource explosionSFX;
     public float explosionMinForce = 5;
     public float explosionMaxForce = 100;
     public float explosionForceRadius = 10;
@@ -16,19 +17,6 @@ public class FractureObject : MonoBehaviour
     public float shrinkDuration = 1.5f;  // how long it takes to shrink to 0
 
     private GameObject fractObj;
-
-    /*void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Explode();
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Reset();
-        }
-    }*/
 
     public void Explode()
     {
@@ -59,6 +47,7 @@ public class FractureObject : MonoBehaviour
             if (explosionVFX != null)
             {
                 GameObject exploVFX = Instantiate(explosionVFX, originalObject.transform.position, Quaternion.identity);
+                explosionSFX = exploVFX.GetComponent<AudioSource>();
                 Destroy(exploVFX, 5);
             }
         }

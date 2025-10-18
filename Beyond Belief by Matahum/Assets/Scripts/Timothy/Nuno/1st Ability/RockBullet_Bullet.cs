@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Audio;
 
 public class RockBullet_Bullet : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class RockBullet_Bullet : MonoBehaviour
 
     private float spinTime;
     private float currentSpinSpeed;
+
+    [Header("Audio")]
+    public CharacterAudioClip[] clips;
 
     private void Start()
     {
@@ -60,9 +64,38 @@ public class RockBullet_Bullet : MonoBehaviour
             player.TakeDamage(bulletDamage);
 
             GameObject explosionObj = Instantiate(explosionVFX, gameObject.transform.position, Quaternion.identity);
+            AudioSource audio = explosionObj.GetComponent<AudioSource>();
+            PlayAudio(audio, explosionObj);
             Destroy(explosionObj, 2);
         }
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player") ||
+            other.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+        {
+            Destroy(gameObject);
+        }   
+    }
 
-        Destroy(gameObject);
+    private void PlayAudio(AudioSource audioSource, GameObject obj)
+    {
+        AudioWrapper wrapper = obj.GetComponent<AudioWrapper>();
+
+        int randomizer = Random.Range(0, clips.Length);
+        audioSource.clip = clips[randomizer].clip;
+        audioSource.volume = AdjustVolume(clips[randomizer], wrapper);
+        audioSource.Play();
+    }
+
+    private float AdjustVolume(CharacterAudioClip clip, AudioWrapper wrapper)
+    {
+        if (clip == null)
+            return 1;
+
+        // Get base clip volume (0–1 preferred)
+        float clipVolume = Mathf.Clamp01(clip.volume);
+
+        // Scale it by wrapper's max volume range
+        float finalVolume = clipVolume * (wrapper != null ? wrapper.maxVolume : 1f);
+
+        return finalVolume;
     }
 }

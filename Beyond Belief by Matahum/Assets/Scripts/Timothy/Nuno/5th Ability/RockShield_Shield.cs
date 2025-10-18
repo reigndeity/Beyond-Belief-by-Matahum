@@ -8,6 +8,9 @@ public class RockShield_Shield : MonoBehaviour, IDamageable
 
     private PlayerStats m_playerStats;
 
+    [Header("Audio")]
+    public CharacterAudioClip[] clips;
+
     void Start()
     {
         m_playerStats = FindFirstObjectByType<PlayerStats>();  
@@ -36,6 +39,7 @@ public class RockShield_Shield : MonoBehaviour, IDamageable
         if (IsDead())
         {
             vfx.Explode();
+            PlayAudio();
             stats.e_currentHealth = 0f;
             shieldHolder.OnShieldDestroyed();
         }
@@ -54,5 +58,30 @@ public class RockShield_Shield : MonoBehaviour, IDamageable
         {
             DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.white);
         }
+    }
+
+    private void PlayAudio()
+    {
+        AudioSource audioSource = vfx.explosionSFX;
+        AudioWrapper wrapper = vfx.GetComponent<AudioWrapper>();
+
+        int randomizer = Random.Range(0, clips.Length);
+        audioSource.clip = clips[randomizer].clip;
+        audioSource.volume = AdjustVolume(clips[randomizer], wrapper);
+        audioSource.Play();
+    }
+
+    private float AdjustVolume(CharacterAudioClip clip, AudioWrapper wrapper)
+    {
+        if (clip == null)
+            return 1;
+
+        // Get base clip volume (0–1 preferred)
+        float clipVolume = Mathf.Clamp01(clip.volume);
+
+        // Scale it by wrapper's max volume range
+        float finalVolume = clipVolume * (wrapper != null ? wrapper.maxVolume : 1f);
+
+        return finalVolume;
     }
 }

@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 3112690722619620622}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.47, y: 1.514, z: 1.106}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -120,6 +120,13 @@ MonoBehaviour:
   startSpinSpeed: 0
   endSpinSpeed: 720
   spinDuration: 5
+  clips:
+  - clip: {fileID: 8300000, guid: 5decb5057b22da544b61045a54a89b1f, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: 3a888fe990c8bcd4db7111af6056f781, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: c3817bcd826c04e4a90762ac6d389e3b, type: 3}
+    volume: 1
 --- !u!198 &2487156617581754346
 ParticleSystem:
   m_ObjectHideFlags: 0

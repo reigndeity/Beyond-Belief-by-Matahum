@@ -154,6 +154,7 @@ MonoBehaviour:
   originalObject: {fileID: 1429705434898785341}
   fracturedObject: {fileID: 8831090023643315501, guid: e25122dbfab7d1a4b930b5fcb8c7732c, type: 3}
   explosionVFX: {fileID: 1745393915338153345, guid: ef3dbb6a396003d43a10f897552eca5b, type: 3}
+  explosionSFX: {fileID: 0}
   explosionMinForce: 5
   explosionMaxForce: 100
   explosionForceRadius: 10
@@ -178,6 +179,11 @@ MonoBehaviour:
   startFalling: 0
   fractObj: {fileID: 5677831744408360643}
   smokeVFX: {fileID: 113220241461109044, guid: 7708ec996b01aeb4fa5a11a0ac222ce3, type: 3}
+  clips:
+  - clip: {fileID: 8300000, guid: 3b5c8bc4de66e1b43842b42992f38c9e, type: 3}
+    volume: 0.5
+  - clip: {fileID: 8300000, guid: 1dfc03a42842ef74a9074db30829fe02, type: 3}
+    volume: 0.5
 --- !u!1 &4883668428339430134
 GameObject:
   m_ObjectHideFlags: 0

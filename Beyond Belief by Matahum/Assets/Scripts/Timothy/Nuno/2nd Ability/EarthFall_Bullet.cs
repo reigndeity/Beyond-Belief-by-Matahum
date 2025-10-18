@@ -12,6 +12,9 @@ public class EarthFall_Bullet : MonoBehaviour
     public FractureObject fractObj;
     public GameObject smokeVFX;
 
+    [Header("Audio")]
+    public CharacterAudioClip[] clips;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -38,9 +41,35 @@ public class EarthFall_Bullet : MonoBehaviour
         if (other.gameObject.CompareTag("Nuno_Indicator"))
         {
             fractObj.Explode();
+            PlayAudio();
 
             GameObject smokeVFXObj = Instantiate(smokeVFX, gameObject.transform.position, Quaternion.identity);
             Destroy(smokeVFXObj, 2);
         }
+    }
+
+    private void PlayAudio()
+    {
+        AudioSource audioSource = fractObj.explosionSFX;
+        AudioWrapper wrapper = fractObj.GetComponent<AudioWrapper>();
+
+        int randomizer = Random.Range(0, clips.Length);
+        audioSource.clip = clips[randomizer].clip;
+        audioSource.volume = AdjustVolume(clips[randomizer], wrapper);
+        audioSource.Play();
+    }
+
+    private float AdjustVolume(CharacterAudioClip clip, AudioWrapper wrapper)
+    {
+        if (clip == null)
+            return 1;
+
+        // Get base clip volume (0–1 preferred)
+        float clipVolume = Mathf.Clamp01(clip.volume);
+
+        // Scale it by wrapper's max volume range
+        float finalVolume = clipVolume * (wrapper != null ? wrapper.maxVolume : 1f);
+
+        return finalVolume;
     }
 }
