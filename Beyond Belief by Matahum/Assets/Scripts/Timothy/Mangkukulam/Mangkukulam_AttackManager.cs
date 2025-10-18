@@ -41,6 +41,7 @@ public class Mangkukulam_AttackManager : MonoBehaviour
     {
         if (mangkukulam.IsDead()) return;
         if (mangkukulam.isFlying) return;
+        if(!mangkukulam.isBattleStart) return;
 
         animator.HandleAnimations();
 

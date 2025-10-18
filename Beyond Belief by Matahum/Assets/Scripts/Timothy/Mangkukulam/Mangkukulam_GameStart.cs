@@ -27,7 +27,8 @@ public class Mangkukulam_GameStart : MonoBehaviour
         DisableUI();
         await Task.Delay(1000);
         StartCoroutine(UI_TransitionController.instance.Fade(1f, 0f, 0.5f));
-        BattleStart();
+        await Task.Delay(1000);
+        Invoke("BattleStart", 3);
         await Task.Delay(500);
         mangkukulamCanvasGroup.FadeIn(1f);
 
@@ -35,7 +36,7 @@ public class Mangkukulam_GameStart : MonoBehaviour
 
     public void BattleStart()
     {
-        Mangkukulam.instance.isBattleStart = true;
+        Mangkukulam.instance.BattleStart();
     }
 
     public void DisableUI()
