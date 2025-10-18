@@ -75899,7 +75899,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b308175118052043acf3d3799463e05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 4
   turnSpeed: 5
   idleAnim:
   - player_idle_2
@@ -75907,7 +75907,7 @@ MonoBehaviour:
   animT: 0.25
   idleTime: {x: 2, y: 2}
   playPatrolAudio: 0
-  returnToNormal: 1
+  returnToNormal: 0
   timeToReturnNormal: 2.5
   returningDuration: 1
   returningAnim: player_idle_1
@@ -76151,6 +76151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c20461622501a7642b56f5160a72985a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charAudios: {fileID: 0}
+  charAudioIndex: 0
   isDead: 0
 --- !u!114 &7513005907472831836
 MonoBehaviour:
