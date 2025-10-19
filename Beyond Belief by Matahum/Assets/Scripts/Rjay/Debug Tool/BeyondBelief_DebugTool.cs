@@ -117,8 +117,8 @@ public class BeyondBelief_DebugTool : MonoBehaviour
     void OnClickRestartGame() => Loader.Load(4);
     void OnClickEnablePlayerAccess() => TutorialManager.instance.AllowTemporaryBooleans();
     void OnClickResumeTimeline() => CutsceneManager.Instance.ResumeTimeline();
-    void OnClickSpawnAgimat() => R_GeneralItemSpawner.instance.SpawnRandomAgimatFromTemplate();
-    void OnClickSpawnPamana() => R_GeneralItemSpawner.instance.SpawnRandomPamanaFromTemplate();
+    void OnClickSpawnAgimat() => R_GeneralItemSpawner.instance.DebugSpawnRandomAgimat();
+    void OnClickSpawnPamana() => R_GeneralItemSpawner.instance.DebugSpawnRandomPamana();
     void OnClickGhostWalk()
     {
         if (isGhostMode == false)

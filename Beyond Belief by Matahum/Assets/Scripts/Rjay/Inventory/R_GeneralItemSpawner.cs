@@ -62,4 +62,23 @@ public class R_GeneralItemSpawner : MonoBehaviour
     {
         simulatedPlayerLevel = Mathf.Max(1, level); // enforce minimum level 1
     }
+
+    #region DEBUG SPAWNING
+    // 🧪 Debug version — automatically uses simulatedPlayerLevel
+    public void DebugSpawnRandomPamana()
+    {
+        int level = simulatedPlayerLevel;
+        Debug.Log($"[DebugSpawner] Spawning Pamana at simulated level {level}");
+        R_PamanaSpawnerUtility.SpawnRandomPamanaFromPool(
+            pamanaTemplates, inventory, inventoryUI, level, visualConfig);
+    }
+
+    public void DebugSpawnRandomAgimat()
+    {
+        int level = simulatedPlayerLevel;
+        Debug.Log($"[DebugSpawner] Spawning Agimat at simulated level {level}");
+        R_AgimatSpawnerUtility.SpawnRandomAgimatFromPool(
+            agimatTemplates, inventory, inventoryUI, level, agimatVisualConfig);
+    }
+    #endregion
 }
