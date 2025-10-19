@@ -79,7 +79,7 @@ public class CharacterAudios : MonoBehaviour
         if (chosen.clip == null) return;
 
         float finalVolume = AdjustVolume(chosen);
-        audioSource.pitch = clipGroup[index].clips[index].pitch;
+        audioSource.pitch = chosen.pitch;
         audioSource.PlayOneShot(chosen.clip, finalVolume);
     }
 
