@@ -18,20 +18,6 @@ public class StartRandomAudio : MonoBehaviour
         audioSource.Play();
     }
 
-    private void Update()
-    {
-        if (Time.timeScale == 0)
-        {
-            if (audioSource.isPlaying)
-                audioSource.Pause();
-        }
-        else
-        {
-            if (!audioSource.isPlaying && audioSource.clip != null)
-                audioSource.UnPause();
-        }
-    }
-
     private float AdjustVolume(CharacterAudioClip clip)
     {
         if (clip == null)

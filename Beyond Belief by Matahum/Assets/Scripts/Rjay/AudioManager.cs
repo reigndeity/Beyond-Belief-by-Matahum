@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class AudioManager : MonoBehaviour
     [Header("SFX and BGM Volume")]
     public float SFXvolumeValue;
     public float BGMvolumeValue;
+    public bool isPaused;
 
     void Awake()
     {
@@ -70,7 +72,51 @@ public class AudioManager : MonoBehaviour
         BGMvolumeValue = PlayerPrefs.GetFloat("Audio_BGM", 100);
         SetSFXVolume(SFXvolumeValue);
         SetBGMVolume(BGMvolumeValue);
+
+        if(UI_Game.Instance != null)
+        {
+            UI_Game.Instance.OnGamePause += HandlePauseState;
+        }
     }
+    private void OnDestroy()
+    {
+        if (UI_Game.Instance != null)
+        {
+            UI_Game.Instance.OnGamePause -= HandlePauseState;
+        }
+    }
+    private void HandlePauseState(bool isPaused)
+    {
+        AudioSource[] sources = UnityEngine.Object.FindObjectsByType<AudioSource>(
+            FindObjectsSortMode.None
+        );
+
+        foreach (AudioSource audioSource in sources)
+        {
+            if (isPaused)
+            {
+                GameIsPaused(audioSource);
+            }
+            else
+            {
+                GameIsResumed(audioSource);
+            }
+        }
+
+        
+    }
+    public void GameIsPaused(AudioSource audioSource)
+    {
+        if (audioSource.isPlaying)
+            audioSource.Pause();
+    }
+
+    public void GameIsResumed(AudioSource audioSource)
+    {
+        if (audioSource != null && !audioSource.isPlaying && audioSource.clip != null)
+            audioSource.UnPause();
+    }
+
     #region Player Audio
     public void PlaySwordSlash(int audio)
     {

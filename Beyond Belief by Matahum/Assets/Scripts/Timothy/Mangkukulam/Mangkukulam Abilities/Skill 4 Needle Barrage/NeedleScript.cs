@@ -14,6 +14,8 @@ public class NeedleScript : MonoBehaviour
     [Header("Audio")]
     public AudioSource audioSource;
     private bool isPlaying = false;
+    public AudioClip[] clips;
+    private bool isHit = false;
 
     private void Start()
     {
@@ -29,6 +31,7 @@ public class NeedleScript : MonoBehaviour
             if (!isPlaying)
             {
                 isPlaying = true;
+                audioSource.clip = clips[0];
                 audioSource.Play();
             }
             transform.position += lastPlayerPosition * speed * Time.deltaTime;
@@ -65,7 +68,14 @@ public class NeedleScript : MonoBehaviour
             other.gameObject.layer == LayerMask.NameToLayer("Terrain") ||
             other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            Destroy(gameObject);
+            if (isHit) return;
+
+            isHit = true;
+            int randomizer = Random.Range(1,clips.Length);
+            audioSource.clip = clips[randomizer];
+            audioSource.Play();
+            float clipLength = clips[randomizer].length;
+            Destroy(gameObject, clipLength);
         }
     }
 }

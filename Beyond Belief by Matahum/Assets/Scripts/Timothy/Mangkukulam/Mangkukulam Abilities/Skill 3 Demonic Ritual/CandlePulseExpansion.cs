@@ -25,6 +25,16 @@ public class CandlePulseExpansion : MonoBehaviour
 
     private int fireCount;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip[] clips;
+    AudioWrapper wrapper;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        wrapper = GetComponent<AudioWrapper>();
+    }
     public void PrewarmPool()
     {
         fireCount = colliderCount * flameMultiplier;
@@ -49,9 +59,16 @@ public class CandlePulseExpansion : MonoBehaviour
             flames.Add(flame.transform);
         }
     }
-
+    void PlayAudio()
+    {
+        int randomizer = Random.Range(0, clips.Length);
+        audioSource.clip = clips[randomizer];
+        audioSource.Play();
+    }
     void ActivatePool()
     {
+        PlayAudio();
+
         canDamage = true;
 
         // Colliders

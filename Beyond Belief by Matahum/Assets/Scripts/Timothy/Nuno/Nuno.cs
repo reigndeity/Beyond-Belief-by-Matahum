@@ -63,14 +63,24 @@ public class Nuno : MonoBehaviour, IDamageable, IDeathHandler
 
     #endregion
     #region GET HIT
+    private bool CanGetHitAnimation = true;
     public void GetHit()
     {
         FindFirstObjectByType<PlayerCamera>().CameraShake(0.1f, 1f);
         HitStop.Instance.TriggerHitStop(0.05f);
 
-        if(Nuno_AttackManager.Instance.isStunned) animator.GetHit();
+        if (Nuno_AttackManager.Instance.isStunned && CanGetHitAnimation)
+        {
+            StartCoroutine(GetHitCooldown());
+            animator.GetHit();
+        }
     }
-
+    IEnumerator GetHitCooldown()
+    {
+        CanGetHitAnimation = false;
+        yield return new WaitForSeconds(1);
+        CanGetHitAnimation = true;
+    }
     #endregion
     #region DEATH
     public void Death()

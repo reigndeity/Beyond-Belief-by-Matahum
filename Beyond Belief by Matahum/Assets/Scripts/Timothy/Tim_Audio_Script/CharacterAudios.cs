@@ -20,7 +20,7 @@ public class CharacterAudios : MonoBehaviour
             wrapper = GetComponent<AudioWrapper>();
     }
 
-    private void Update()
+    /*private void Update()
     {
         if (Time.timeScale == 0)
         {
@@ -32,7 +32,7 @@ public class CharacterAudios : MonoBehaviour
             if (!audioSource.isPlaying && audioSource.clip != null)
                 audioSource.UnPause();
         }
-    }
+    }*/
 
     private float AdjustVolume(CharacterAudioClip clip)
     {
@@ -47,6 +47,8 @@ public class CharacterAudios : MonoBehaviour
 
         return finalVolume;
     }
+
+
     /// <summary>
     /// This plays PlayOneShot. AudioSource will not be affected.
     /// </summary>
@@ -58,6 +60,8 @@ public class CharacterAudios : MonoBehaviour
         float finalVolume = AdjustVolume(clips[index]);
         audioSource.PlayOneShot(clips[index].clip, finalVolume);
     }
+
+
     /// <summary>
     /// This plays a random PlayOneShot. AudioSource will not be affected.
     /// </summary>
@@ -76,6 +80,8 @@ public class CharacterAudios : MonoBehaviour
         float finalVolume = AdjustVolume(chosen);
         audioSource.PlayOneShot(chosen.clip, finalVolume);
     }
+
+
     /// <summary>
     /// This plays Play() that can be stopped. This will add the clip to the AudioSource and adjust the volume.
     /// </summary>
@@ -87,6 +93,8 @@ public class CharacterAudios : MonoBehaviour
         audioSource.clip = clips[index].clip;
         audioSource.Play();
     }
+
+
     /// <summary>
     /// This plays a random Play() that can be stopped. This will add the clip to the AudioSource and adjust the volume.
     /// </summary>

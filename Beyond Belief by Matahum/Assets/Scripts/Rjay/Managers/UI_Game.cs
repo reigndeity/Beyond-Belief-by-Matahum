@@ -32,6 +32,7 @@ public class SettingTabButton
 
 public class UI_Game : MonoBehaviour
 {
+    public static UI_Game Instance;
     [SerializeField] private R_InventoryUI r_inventoryUI;
     [SerializeField] private R_CharacterDetailsPanel m_characterDetailsPanel;
     [SerializeField] private Player m_player;
@@ -140,6 +141,14 @@ public class UI_Game : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);  // destroy the whole GameObject, not just the component
+            return;
+        }
+
+        Instance = this;
+
         topOriginalPos = topUIObj.transform.localPosition;
         bottomOriginalPos = bottomUIObj.transform.localPosition;
         topCanvasGroup = topUIObj.GetComponent<CanvasGroup>();
@@ -822,13 +831,17 @@ public class UI_Game : MonoBehaviour
     #endregion
 
     #region GAME BEHAVIOR
+    public event Action<bool> OnGamePause;
     public void PauseGame()
     {
+        OnGamePause?.Invoke(true);
         Time.timeScale = 0f;
     }
 
     public void ResumeGame()
     {
+        OnGamePause?.Invoke(false);
+
         Time.timeScale = 1f;
         if (m_player.currentState == PlayerState.FALLING && m_playerMovement.verticalVelocity <= -2)
         {

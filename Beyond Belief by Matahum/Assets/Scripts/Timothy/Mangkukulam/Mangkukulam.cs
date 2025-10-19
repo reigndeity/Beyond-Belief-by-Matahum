@@ -86,13 +86,23 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
             if (died) Death();
         }
     }
-
+    private bool CanGetHitAnimation = true;
     public void GetHit()
     {
         FindFirstObjectByType<PlayerCamera>().CameraShake(0.1f, 1f);
         HitStop.Instance.TriggerHitStop(0.05f);
 
-        if (isStunned) animator.GetHit();
+        if (isStunned && CanGetHitAnimation)
+        {
+            StartCoroutine(GetHitCooldown());
+            animator.GetHit();
+        }
+    }
+    IEnumerator GetHitCooldown()
+    {
+        CanGetHitAnimation = false;
+        yield return new WaitForSeconds(1);
+        CanGetHitAnimation = true;
     }
 
     public void Heal(float amount)
