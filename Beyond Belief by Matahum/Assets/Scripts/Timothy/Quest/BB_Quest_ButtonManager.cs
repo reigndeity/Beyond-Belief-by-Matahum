@@ -121,14 +121,12 @@ public class BB_Quest_ButtonManager : MonoBehaviour
     {
         BB_QuestJournalUI.instance.TrackQuest(BB_QuestJournalUI.instance.currentSelectedQuest);
 
-        AudioManager.instance.PlayButtonClickSFX();
     }
 
     public void UnTrackQuest()
     {
         BB_QuestJournalUI.instance.UnTrackQuest(BB_QuestJournalUI.instance.currentSelectedQuest);
 
-        AudioManager.instance.PlayButtonClickSFX();
     }
     #endregion
     #region Claim Rewards
@@ -137,7 +135,6 @@ public class BB_Quest_ButtonManager : MonoBehaviour
         BB_QuestManager.Instance.ClaimRewards(BB_QuestJournalUI.instance.currentSelectedQuest);
         claimRewardsButton.gameObject.SetActive(false);
 
-        AudioManager.instance.PlayButtonClickSFX();
     }
     #endregion
     #region Exit Journal

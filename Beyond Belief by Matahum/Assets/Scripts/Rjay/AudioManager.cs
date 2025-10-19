@@ -6,10 +6,8 @@ using UnityEngine.SceneManagement;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
-    [Header("Player Danger Audio")]
-    public AudioSource playerAudioCueSource;
-    public AudioClip inDangerClip;
     public static event System.Action<bool> OnDangerStateChanged;
+    private Coroutine dangerFadeCoroutine;
 
 
     [Header("Player Voice Audio")]
@@ -61,6 +59,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip lewenriTrainingAreaMusic;
     public AudioClip outsideTheVillageMusic;
     public AudioClip swampMusic;
+    public AudioClip inDangerClip;
 
     [Header("Ambience Audio")]
     public AudioSource ambienceSource;
@@ -107,6 +106,8 @@ public class AudioManager : MonoBehaviour
         {
             UI_Game.Instance.OnGamePause += HandlePauseState;
         }
+
+        PlayForestAmbience(2);
     }
     private void OnDestroy()
     {
@@ -274,111 +275,108 @@ public class AudioManager : MonoBehaviour
         BGMvolumeValue = newValue;
         OnBGMVolumeChanged?.Invoke(newValue);
     }
-    public void PlayInDangerCue(bool inDanger)
+
+
+    #region OPEN WORLD AUDIO
+    public void PlayForestAmbience(float fadeDuration = 2f)
     {
-        if (playerAudioCueSource == null || inDangerClip == null)
+        if (ambienceSource == null || forestAmbience == null)
             return;
 
-        StopAllCoroutines();
-        StartCoroutine(FadeDangerCue(inDanger));
+        // If it's already playing this clip, skip
+        if (ambienceSource.clip == forestAmbience && ambienceSource.isPlaying)
+            return;
+
+        StopAllCoroutines(); // stop any previous fades
+        StartCoroutine(FadeInAmbience(forestAmbience, fadeDuration));
+    }
+
+    private IEnumerator FadeInAmbience(AudioClip newClip, float fadeDuration)
+    {
+        AudioWrapper wrapper = ambienceSource.GetComponent<AudioWrapper>();
+        float targetVolume = wrapper != null ? wrapper.GetCurrentVolume() : 1f;
+
+        ambienceSource.clip = newClip;
+        ambienceSource.loop = true;
+        ambienceSource.volume = 0f;
+        ambienceSource.Play();
+
+        float elapsed = 0f;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            ambienceSource.volume = Mathf.Lerp(0f, targetVolume, elapsed / fadeDuration);
+            yield return null;
+        }
+
+        ambienceSource.volume = targetVolume;
+    }
+        
+    public void PlayInDangerCue(bool inDanger)
+    {
+        if (musicSource == null || inDangerClip == null)
+            return;
+
+        // Stop only the danger fade, not all coroutines globally
+        if (dangerFadeCoroutine != null)
+            StopCoroutine(dangerFadeCoroutine);
+
+        dangerFadeCoroutine = StartCoroutine(FadeDangerCue(inDanger));
         OnDangerStateChanged?.Invoke(inDanger);
     }
+
 
     private IEnumerator FadeDangerCue(bool inDanger)
     {
         float fadeDuration = 1.5f;
-
-        float targetVolume;
-        AudioWrapper wrapper = playerAudioCueSource.GetComponent<AudioWrapper>();
-        if (wrapper != null)
-        {
-            targetVolume = inDanger ? wrapper.GetCurrentVolume() : 0f;
-        }
-        else
-        {
-            targetVolume = inDanger ? 1f : 0f;
-        }
-
         float elapsed = 0f;
+
+        AudioWrapper wrapper = musicSource.GetComponent<AudioWrapper>();
+        float targetVolume = inDanger
+            ? (wrapper != null ? wrapper.GetCurrentVolume() : 1f)
+            : 0f;
 
         if (inDanger)
         {
-            // 🔒 Prevent stacking — only start once
-            if (!playerAudioCueSource.isPlaying)
+            // Re-prepare clip even if it's been stopped earlier
+            if (musicSource.clip != inDangerClip)
             {
-                playerAudioCueSource.clip = inDangerClip;
-                playerAudioCueSource.loop = true;
-                playerAudioCueSource.volume = 0f;
-                playerAudioCueSource.Play();
+                musicSource.clip = inDangerClip;
+                musicSource.loop = true;
+            }
+
+            // Restart playback safely
+            if (!musicSource.isPlaying)
+            {
+                musicSource.volume = 0f;
+                musicSource.Play();
             }
         }
+
+        float startVolume = musicSource.volume;
 
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
-            playerAudioCueSource.volume = Mathf.Lerp(0, targetVolume, elapsed / fadeDuration);
+            musicSource.volume = Mathf.Lerp(startVolume, targetVolume, elapsed / fadeDuration);
             yield return null;
         }
 
-        playerAudioCueSource.volume = targetVolume;
+        musicSource.volume = targetVolume;
 
         if (!inDanger && Mathf.Approximately(targetVolume, 0f))
         {
-            // 🧹 Stop only when fading out is done
-            playerAudioCueSource.Stop();
-            playerAudioCueSource.clip = null;
+            musicSource.Stop();
+            // DO NOT set clip = null; keeps clip ready for next use
         }
+
+        dangerFadeCoroutine = null;
     }
 
-    #region OPEN WORLD AUDIO
-    public void AudioCheck()
-    {
-        Scene currentScene = SceneManager.GetActiveScene();
-        string sceneName = currentScene.name;
-
-        // Only allow hotkeys in OpenWorldScene
-        if (sceneName != "OpenWorldScene")
-        {
-
-        }
-        else
-        {
-            if (isInVillage == true && isInTraining == false && isInWaterfall == false && isInSwamp == false)
-            {
-                ambienceSource.clip = forestAmbience;
-                ambienceSource.Play();
-                musicSource.clip = lewenriVillageMusic;
-                musicSource.Play();
-            }
-
-            if (isInVillage == false && isInTraining == false && isInWaterfall == false && isInSwamp == false)
-            {
-                ambienceSource.clip = forestAmbience;
-                ambienceSource.Play();
-                musicSource.clip = outsideTheVillageMusic;
-                musicSource.Play();
-            }
-
-            if (isInVillage == false && isInTraining == false && isInWaterfall == true && isInSwamp == false)
-            {
-                ambienceSource.clip = waterfallAmbience;
-                ambienceSource.Play();
-                musicSource.clip = outsideTheVillageMusic;
-                musicSource.Play();
-            }
-
-            if (isInVillage == false && isInTraining == false && isInWaterfall == false && isInSwamp == true)
-            {
-                ambienceSource.clip = swampAmbience;
-                ambienceSource.Play();
-                musicSource.clip = swampMusic;
-                musicSource.Play();
-            }
-        }
-
-        
-    }
     #endregion
+
+
+
 
 }
 
