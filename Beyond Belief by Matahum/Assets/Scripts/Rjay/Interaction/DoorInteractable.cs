@@ -68,7 +68,8 @@ public class DoorInteractable : Interactable
         if (audioSource != null)
         {
             var clip = isOpen ? openSfx : closeSfx;
-            if (clip) audioSource.PlayOneShot(clip);
+            audioSource.clip = clip;
+            if (clip) audioSource.Play();
         }
     }
 
