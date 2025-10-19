@@ -92,12 +92,16 @@ public class BB_QuestManager : MonoBehaviour
 
         if (BB_QuestHUD.instance.trackedQuest == null)
             BB_QuestJournalUI.instance.TrackQuest(quest);
+
+        AudioManager.instance.PlayNewQuestSFX();
     }
 
     public void AcceptQuestByID(string questID)
     {
         var quest = allQuests.Find(q => q.questID == questID);
         AcceptQuest(quest);
+
+        AudioManager.instance.PlayNewQuestSFX();
     }
 
 

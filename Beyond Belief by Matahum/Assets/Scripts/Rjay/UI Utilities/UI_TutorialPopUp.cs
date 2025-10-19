@@ -30,6 +30,7 @@ public class UI_TutorialPopUp : MonoBehaviour
     /// </summary>
     public void FadeIn(float duration)
     {
+        AudioManager.instance.PlayTutorialPopUpSFX();
         if (fadeRoutine != null) StopCoroutine(fadeRoutine);
         fadeRoutine = StartCoroutine(FadeRoutine(0f, 1f, duration, onFadeInComplete));
     }

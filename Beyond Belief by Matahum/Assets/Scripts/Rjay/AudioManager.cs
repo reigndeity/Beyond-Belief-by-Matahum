@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -42,8 +43,33 @@ public class AudioManager : MonoBehaviour
     public AudioSource sfxSource;
     public AudioClip newQuestSFX;
     public AudioClip tutorialPopUpSFX;
-    public AudioClip buttonClickSFX;
+    public AudioClip[] buttonClickSFX;
+    public AudioClip[] dialogueCompleteLineSFX;
     public AudioClip onHoverSFX;
+
+    [Header("NPC Audio")]
+    public AudioSource npcSource;
+    public AudioClip tupasInteractClip;
+    public AudioClip deerInteractClip;
+    public AudioClip monkeyInteractClip;
+
+    [Header("Music Audio")]
+    public AudioSource musicSource;
+    public AudioClip lewenriVillageMusic;
+    public AudioClip lewenriTrainingAreaMusic;
+    public AudioClip outsideTheVillageMusic;
+    public AudioClip swampMusic;
+
+    [Header("Ambience Audio")]
+    public AudioSource ambienceSource;
+    public AudioClip forestAmbience;
+    public AudioClip swampAmbience;
+    public AudioClip waterfallAmbience;
+
+    public bool isInVillage;
+    public bool isInTraining;
+    public bool isInSwamp;
+    public bool isInWaterfall;
 
     //===================================================================================================
     public event System.Action<float> OnSFXVolumeChanged;
@@ -64,6 +90,8 @@ public class AudioManager : MonoBehaviour
 
         instance = this;
         //DontDestroyOnLoad(gameObject);
+
+        //AudioCheck();
     }
 
     private void Start()
@@ -73,7 +101,7 @@ public class AudioManager : MonoBehaviour
         SetSFXVolume(SFXvolumeValue);
         SetBGMVolume(BGMvolumeValue);
 
-        if(UI_Game.Instance != null)
+        if (UI_Game.Instance != null)
         {
             UI_Game.Instance.OnGamePause += HandlePauseState;
         }
@@ -103,7 +131,7 @@ public class AudioManager : MonoBehaviour
             }
         }
 
-        
+
     }
     public void GameIsPaused(AudioSource audioSource)
     {
@@ -189,12 +217,41 @@ public class AudioManager : MonoBehaviour
     {
         sfxSource.PlayOneShot(newQuestSFX);
     }
+
+    public void PlayTutorialPopUpSFX()
+    {
+        sfxSource.PlayOneShot(tutorialPopUpSFX);
+    }
+
+    public void PlayDialogueComepleteLineSFX()
+    {
+        int audio = Random.Range(0, dialogueCompleteLineSFX.Length);
+        sfxSource.PlayOneShot(dialogueCompleteLineSFX[audio]);
+    }
+    public void PlayButtonClickSFX()
+    {
+        int audio = Random.Range(0, buttonClickSFX.Length);
+        sfxSource.PlayOneShot(buttonClickSFX[audio]);
+    }
     public void PlayOnHoverSFX()
     {
         sfxSource.PlayOneShot(onHoverSFX);
     }
     #endregion
-
+    #region NPC SFX
+    public void PlayTupasInteractSFX()
+    {
+        npcSource.PlayOneShot(tupasInteractClip);
+    }
+    public void PlayerDeerInteractSFX()
+    {
+        npcSource.PlayOneShot(deerInteractClip);
+    }
+    public void PlayMonkeyInteractSFX()
+    {
+        npcSource.PlayOneShot(monkeyInteractClip);
+    }
+    #endregion
 
     public void SetSFXVolume(float newValue)
     {
@@ -263,6 +320,55 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    #region OPEN WORLD AUDIO
+    public void AudioCheck()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        string sceneName = currentScene.name;
+
+        // Only allow hotkeys in OpenWorldScene
+        if (sceneName != "OpenWorldScene")
+        {
+
+        }
+        else
+        {
+            if (isInVillage == true && isInTraining == false && isInWaterfall == false && isInSwamp == false)
+            {
+                ambienceSource.clip = forestAmbience;
+                ambienceSource.Play();
+                musicSource.clip = lewenriVillageMusic;
+                musicSource.Play();
+            }
+
+            if (isInVillage == false && isInTraining == false && isInWaterfall == false && isInSwamp == false)
+            {
+                ambienceSource.clip = forestAmbience;
+                ambienceSource.Play();
+                musicSource.clip = outsideTheVillageMusic;
+                musicSource.Play();
+            }
+
+            if (isInVillage == false && isInTraining == false && isInWaterfall == true && isInSwamp == false)
+            {
+                ambienceSource.clip = waterfallAmbience;
+                ambienceSource.Play();
+                musicSource.clip = outsideTheVillageMusic;
+                musicSource.Play();
+            }
+
+            if (isInVillage == false && isInTraining == false && isInWaterfall == false && isInSwamp == true)
+            {
+                ambienceSource.clip = swampAmbience;
+                ambienceSource.Play();
+                musicSource.clip = swampMusic;
+                musicSource.Play();
+            }
+        }
+
+        
+    }
+    #endregion
 
 }
 
