@@ -115,16 +115,19 @@ public class UI_MainMenu : MonoBehaviour
         {
             StartCoroutine(NewGame());
         }
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     private void OnClickNoNewGame()
     {
         newGameConfirmationPanel.SetActive(false);
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     private void OnClickYesNewGame()
     {
         StartCoroutine(NewGame());
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     private IEnumerator NewGame()
@@ -141,6 +144,7 @@ public class UI_MainMenu : MonoBehaviour
     private void OnClickContinueGame()
     {
         StartCoroutine(ContinueGame());
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     private IEnumerator ContinueGame()
@@ -157,16 +161,19 @@ public class UI_MainMenu : MonoBehaviour
     private void OnClickCloseGame()
     {
         closeGameConfirmationPanel.SetActive(true);
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     private void OnClickYesCloseGame()
     {
         StartCoroutine(CloseGame());
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     private void OnClickNoCloseGame()
     {
         closeGameConfirmationPanel.SetActive(false);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     private IEnumerator CloseGame()
     {
@@ -180,12 +187,14 @@ public class UI_MainMenu : MonoBehaviour
     {
         settingsPanel.SetActive(true);
         Blur();
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     private void OnCloseSettings()
     {
         settingsPanel.SetActive(false);
         UnBlur();
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     private void OnClickAudioTab()
@@ -211,6 +220,7 @@ public class UI_MainMenu : MonoBehaviour
         audioPanel.SetActive(true);
         displayAndGraphicsPanel.SetActive(false);
         controlPanel.SetActive(false);
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     public void OnClickDisplayAndGraphics()
@@ -218,6 +228,7 @@ public class UI_MainMenu : MonoBehaviour
         audioPanel.SetActive(false);
         displayAndGraphicsPanel.SetActive(true);
         controlPanel.SetActive(false);
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     public void OnClickControl()
@@ -225,6 +236,7 @@ public class UI_MainMenu : MonoBehaviour
         audioPanel.SetActive(false);
         displayAndGraphicsPanel.SetActive(false);
         controlPanel.SetActive(true);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     #endregion
     #region UI PROPERTIES

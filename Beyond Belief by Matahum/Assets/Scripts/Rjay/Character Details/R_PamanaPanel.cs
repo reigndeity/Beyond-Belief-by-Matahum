@@ -196,6 +196,8 @@ public class R_PamanaPanel : MonoBehaviour
         unequipButton.interactable = true;
 
         UpdateSelectedSlotVisual();
+
+        AudioManager.instance.PlayEquipSFX();
     }
 
 
@@ -228,6 +230,8 @@ public class R_PamanaPanel : MonoBehaviour
         }
 
         UpdateSelectedSlotVisual();
+
+        AudioManager.instance.PlayUnequipSFX();
     }
 
 

@@ -46,6 +46,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] buttonClickSFX;
     public AudioClip[] dialogueCompleteLineSFX;
     public AudioClip onHoverSFX;
+    public AudioClip equipSFX;
+    public AudioClip unequipSFX;
 
     [Header("NPC Audio")]
     public AudioSource npcSource;
@@ -236,6 +238,14 @@ public class AudioManager : MonoBehaviour
     public void PlayOnHoverSFX()
     {
         sfxSource.PlayOneShot(onHoverSFX);
+    }
+    public void PlayEquipSFX()
+    {
+        sfxSource.PlayOneShot(equipSFX);
+    }
+    public void PlayUnequipSFX()
+    {
+        sfxSource.PlayOneShot(unequipSFX);
     }
     #endregion
     #region NPC SFX

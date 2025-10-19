@@ -341,14 +341,18 @@ public class UI_Game : MonoBehaviour
     {
         teleportPanel.SetActive(false);
         MapManager.instance.HideSelection();
+
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickTeleport()
     {
         MapManager.instance.TeleportPlayerToSelected();
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickCloseMapButton()
     {
         PlayerMinimap.instance.CloseMap();
+        AudioManager.instance.PlayButtonClickSFX();
     }
     #endregion
 
@@ -390,6 +394,7 @@ public class UI_Game : MonoBehaviour
         HideUI();
         Blur();
         PauseGame();
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickCloseInventory()
     {
@@ -397,6 +402,7 @@ public class UI_Game : MonoBehaviour
         ShowUI();
         UnBlur();
         ResumeGame();
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickConsumableFilter()
     {
@@ -404,6 +410,7 @@ public class UI_Game : MonoBehaviour
         Debug.Log("Currently in Consumable");
         currentFilteredInventoryText.text = "Consumables";
         SetActiveFilter(consumablesFilter);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickQuestItemFilter()
     {
@@ -411,6 +418,7 @@ public class UI_Game : MonoBehaviour
         Debug.Log("Currently in Quest Item");
         currentFilteredInventoryText.text = "Quest Items";
         SetActiveFilter(questItemsFilter);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickCPamanaFilter()
     {
@@ -418,6 +426,7 @@ public class UI_Game : MonoBehaviour
         Debug.Log("Currently in Pamana");
         currentFilteredInventoryText.text = "Pamana";
         SetActiveFilter(pamanaFilter);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickAgimatFilter()
     {
@@ -425,6 +434,7 @@ public class UI_Game : MonoBehaviour
         Debug.Log("Currently in Agimat");
         currentFilteredInventoryText.text = "Agimat";
         SetActiveFilter(agimatFilter);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickUpgradeMaterialsFilter()
     {
@@ -432,6 +442,7 @@ public class UI_Game : MonoBehaviour
         Debug.Log("Currently in Materials");
         currentFilteredInventoryText.text = "Materials";
         SetActiveFilter(upgradeMaterialsFilter);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickRawIngredientsFilter()
     {
@@ -439,6 +450,7 @@ public class UI_Game : MonoBehaviour
         Debug.Log("Currently in Raw Ingredients");
         currentFilteredInventoryText.text = "Collectibles";
         SetActiveFilter(rawIngredientsFilter);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     #endregion
 
@@ -449,6 +461,7 @@ public class UI_Game : MonoBehaviour
         HideUI();
         Blur();
         PauseGame();
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickCloseCharacterDetails()
     {
@@ -456,38 +469,46 @@ public class UI_Game : MonoBehaviour
         ShowUI();
         UnBlur();
         ResumeGame();
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickAttributesTab()
     {
         m_characterDetailsPanel.OnClick_AttributeTab();
         SetActiveTab(attributesTab);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickWeaponTab()
     {
         m_characterDetailsPanel.OnClick_WeaponTab();
         SetActiveTab(weaponTab);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickAgimatTab()
     {
         m_characterDetailsPanel.OnClick_AgimatTab();
         SetActiveTab(agimatTab);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickPamanaTab()
     {
         m_characterDetailsPanel.OnClick_PamanaTab();
         SetActiveTab(pamanaTab);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickDiwataSort()
     {
         m_pamanaPanel.OnClick_EquipSlot_Diwata();
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickLihimSort()
     {
         m_pamanaPanel.OnClick_EquipSlot_Lihim();
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickSalamangkeroSort()
     {
         m_pamanaPanel.OnClick_EquipSlot_Salamangkero();
+        AudioManager.instance.PlayButtonClickSFX();
     }
     private void SetActiveTab(TabButton selected)
     {
@@ -560,6 +581,7 @@ public class UI_Game : MonoBehaviour
         HideUI();
         Blur();
         PauseGame();
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickCloseQuestJournal()
     {
@@ -567,27 +589,32 @@ public class UI_Game : MonoBehaviour
         ShowUI();
         UnBlur();
         ResumeGame();
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     public void OnClickAllQuest()
     {
         m_questButtonManager.OpenAllQuest();
         SetActiveQuestTab(allQuestTab);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickMainQuest()
     {
         m_questButtonManager.OpenMainQuest();
         SetActiveQuestTab(mainQuestTab);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickSideQuest()
     {
         m_questButtonManager.OpenSideQuest();
         SetActiveQuestTab(sideQuestTab);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickCompletedQuest()
     {
         m_questButtonManager.OpenCompletedQuest();
         SetActiveQuestTab(completedQuestTab);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     #endregion
 
@@ -622,6 +649,7 @@ public class UI_Game : MonoBehaviour
         audioPanel.SetActive(true);
         displayAndGraphicsPanel.SetActive(false);
         controlPanel.SetActive(false);
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
 
@@ -632,6 +660,7 @@ public class UI_Game : MonoBehaviour
         ShowUI();
         UnBlur();
         ResumeGame();
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     public void OnClickSettings()
@@ -647,6 +676,7 @@ public class UI_Game : MonoBehaviour
 
         // ✅ Force reset the tab highlight
         SetActiveSettingTab(audioButton);
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
 
@@ -660,6 +690,7 @@ public class UI_Game : MonoBehaviour
         audioPanel.SetActive(false);
         displayAndGraphicsPanel.SetActive(false);
         controlPanel.SetActive(false);
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     private void OnClickAudioTab()
@@ -685,19 +716,22 @@ public class UI_Game : MonoBehaviour
         audioPanel.SetActive(true);
         displayAndGraphicsPanel.SetActive(false);
         controlPanel.SetActive(false);
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnClickDisplayAndGraphics()
     {
         audioPanel.SetActive(false);
         displayAndGraphicsPanel.SetActive(true);
         controlPanel.SetActive(false);
+        AudioManager.instance.PlayButtonClickSFX();
         
     }
     public void OnClickControl()
     {
         audioPanel.SetActive(false);
         displayAndGraphicsPanel.SetActive(false);
-        controlPanel.SetActive(true); 
+        controlPanel.SetActive(true);
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
 
@@ -705,12 +739,14 @@ public class UI_Game : MonoBehaviour
     private void OnClickReturnToMenu()
     {
         confirmReturnPanel.SetActive(true);
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     private void OnConfirmReturnYes()
     {
         Time.timeScale = 1f; // restore normal speed before scene change
         StartCoroutine(ReturningToMenu());
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     IEnumerator ReturningToMenu()

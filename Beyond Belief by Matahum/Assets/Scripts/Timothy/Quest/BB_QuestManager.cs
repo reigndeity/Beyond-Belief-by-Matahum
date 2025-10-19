@@ -93,7 +93,6 @@ public class BB_QuestManager : MonoBehaviour
         if (BB_QuestHUD.instance.trackedQuest == null)
             BB_QuestJournalUI.instance.TrackQuest(quest);
 
-        AudioManager.instance.PlayNewQuestSFX();
     }
 
     public void AcceptQuestByID(string questID)
@@ -101,7 +100,6 @@ public class BB_QuestManager : MonoBehaviour
         var quest = allQuests.Find(q => q.questID == questID);
         AcceptQuest(quest);
 
-        AudioManager.instance.PlayNewQuestSFX();
     }
 
 

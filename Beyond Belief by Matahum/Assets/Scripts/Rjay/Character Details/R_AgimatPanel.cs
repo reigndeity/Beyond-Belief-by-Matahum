@@ -109,6 +109,8 @@ public class R_AgimatPanel : MonoBehaviour
 
         UpdateSelectionVisuals();
         UpdateInfoPanelAndButtons();
+
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     public void RefreshAgimatList()
@@ -270,6 +272,8 @@ public class R_AgimatPanel : MonoBehaviour
         UpdateInfoPanelAndButtons();
         UpdateSelectionVisuals();
         RefreshAgimatList();
+
+        AudioManager.instance.PlayEquipSFX();
     }
 
     private void OnClickUnequip()
@@ -287,6 +291,8 @@ public class R_AgimatPanel : MonoBehaviour
         UpdateInfoPanelAndButtons();
         UpdateSelectionVisuals();
         RefreshAgimatList();
+
+        AudioManager.instance.PlayUnequipSFX();
     }
 
     private void UpdateSlotIcons()
