@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -37,6 +38,7 @@ public class UI_Game : MonoBehaviour
     [SerializeField] private R_CharacterDetailsPanel m_characterDetailsPanel;
     [SerializeField] private Player m_player;
     [SerializeField] private PlayerMovement m_playerMovement;
+    [SerializeField] private PlayerInput m_playerInput;
 
     [Header("UI Game Behavior")]
     private bool isUIHidden = false;
@@ -153,6 +155,8 @@ public class UI_Game : MonoBehaviour
         bottomOriginalPos = bottomUIObj.transform.localPosition;
         topCanvasGroup = topUIObj.GetComponent<CanvasGroup>();
         bottomCanvasGroup = bottomUIObj.GetComponent<CanvasGroup>();
+
+        m_playerInput = FindFirstObjectByType<PlayerInput>();
     }
     void Start()
     {
@@ -257,6 +261,65 @@ public class UI_Game : MonoBehaviour
                 // Show cursor when pausing
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+            }
+        }
+
+
+
+        Scene currentScene = SceneManager.GetActiveScene();
+        string sceneName = currentScene.name;
+
+        // Only allow hotkeys in OpenWorldScene
+        if (sceneName != "OpenWorldScene")
+            return;
+
+        // Block hotkeys if any major UI or map/pause is open (but still allow toggling that same panel)
+        bool isAnyPanelOpen = IsAnyMajorPanelOpen() || 
+                            (PlayerMinimap.instance != null && PlayerMinimap.instance.IsMapOpen()) || 
+                            pauseMenuPanel.activeSelf;
+
+        // Journal hotkey
+        if (TutorialManager.instance.canHotKeyJournal && Input.GetKeyDown(m_playerInput.questLogKey))
+        {
+            if (m_questButtonManager.IsJournalOpen())
+            {
+                OnClickCloseQuestJournal();
+                PlayerCamera.Instance.SetCursorVisibility(false); // hides cursor when closing
+            }
+            else if (!isAnyPanelOpen)
+            {
+                OnClickOpenQuestJournal();
+                PlayerCamera.Instance.SetCursorVisibility(true); // shows cursor when opening
+            }
+        }
+
+        // Character Details hotkey
+        if (TutorialManager.instance.canHotKeyCharacterDetails && Input.GetKeyDown(m_playerInput.characterDetailsKey))
+        {
+            if (characterDetailPanel.activeSelf)
+            {
+                OnClickCloseCharacterDetails();
+                PlayerCamera.Instance.SetCursorVisibility(false);
+            }
+            else if (!isAnyPanelOpen)
+            {
+                OnClickOpenCharacterDetails();
+                PlayerCamera.Instance.SetCursorVisibility(true);
+            }
+        }
+
+        // Inventory hotkey
+        if (TutorialManager.instance.canHotKeyInventory && Input.GetKeyDown(m_playerInput.inventoryKey))
+        {
+            if (inventoryPanel.activeSelf)
+            {
+                OnClickCloseInventory();
+                PlayerCamera.Instance.SetCursorVisibility(false);
+            }
+            else if (!isAnyPanelOpen)
+            {
+                OnClickOpenInventory();
+                PlayerCamera.Instance.SetCursorVisibility(true);
             }
         }
     }

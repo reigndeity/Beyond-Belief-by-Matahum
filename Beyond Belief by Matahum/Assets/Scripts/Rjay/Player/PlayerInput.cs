@@ -30,7 +30,9 @@ public class PlayerInput : MonoBehaviour
     
     [Header("Hud Input")]
     public KeyCode gameMenuKey = KeyCode.Escape;
-    public KeyCode inventoryKey = KeyCode.Tab;
+    public KeyCode inventoryKey = KeyCode.B;
+    public KeyCode characterDetailsKey = KeyCode.L;
+
     public KeyCode questGuideKey = KeyCode.V;
     public KeyCode questLogKey = KeyCode.J;
     public KeyCode cursorShowKey = KeyCode.LeftAlt;

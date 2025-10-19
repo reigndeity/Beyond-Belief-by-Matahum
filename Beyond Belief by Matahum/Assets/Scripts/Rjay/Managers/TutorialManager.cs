@@ -69,6 +69,7 @@ public class TutorialManager : MonoBehaviour
 
     [Header("Quest Journal UI Tutorial")]
     [SerializeField] private BB_Quest_ButtonManager m_questButtonManager;
+    public bool canHotKeyJournal;
     public GameObject questJournalTutorial;
     public TutorialHighlight mainQuestViewportTH;
     public TutorialHighlight questSelectionPanelTH;
@@ -85,11 +86,14 @@ public class TutorialManager : MonoBehaviour
     public GameObject nonInteractablePanel;
     public int currentQuestJournalTutorial = 0;
     public GameObject claimThisTextHelper;
+    [SerializeField] GameObject questJournalHotkeyPopup;
     [Header("Character Details UI Tutorial")]
+    public bool canHotKeyCharacterDetails;
     public Button weaponButtonTH;
     public Button closeCharacterDetailButton;
     public Button confirmSwitchButton;
     public TutorialHighlight confirmTextTH;
+    [SerializeField] GameObject characterDetailsHotkeyPopup;
 
     [Header("Agimat Tutorial")]
     public Button agimatButtonTH;
@@ -122,6 +126,7 @@ public class TutorialManager : MonoBehaviour
     public TutorialHighlight attributeBackgroundTH;
 
     [Header("Inventory Tutorial")]
+    public bool canHotKeyInventory;
     public GameObject inventoryTutorial;
     public TextMeshProUGUI inventoryTutorialText;
     public GameObject nonInteractableInventory;
@@ -133,6 +138,7 @@ public class TutorialManager : MonoBehaviour
     public TutorialHighlight inventoryItemImageTH;
     public TutorialHighlight inventoryDescriptionTH;
     public Button closeInventoryButtonTH;
+    [SerializeField] GameObject inventoryHotkeyPopUp;
 
     [Header("Save Tutorial")]
     public Button noSaveButton;
@@ -178,6 +184,10 @@ public class TutorialManager : MonoBehaviour
 
         PlayerCamera.Instance.HardUnlockCamera();
         PlayerCamera.Instance.AdjustCamera();
+
+        canHotKeyInventory = true;
+        canHotKeyJournal = true;
+        canHotKeyCharacterDetails = true;
     }
 
     private void OnEnable()
@@ -226,6 +236,10 @@ public class TutorialManager : MonoBehaviour
             cutsceneBakalNPC.SetActive(false);
 
             saveStatue.gameObject.layer = LayerMask.NameToLayer("Save Statue");
+
+            canHotKeyInventory = true;
+            canHotKeyJournal = true;
+            canHotKeyCharacterDetails = true;
 
         }
 
@@ -295,6 +309,10 @@ public class TutorialManager : MonoBehaviour
         tutorial_isFirstStatueInteract = false;
         tutorial_isGateOpen = false;
 
+        canHotKeyInventory = false;
+        canHotKeyJournal = false;
+        canHotKeyCharacterDetails = false;
+
         lewenriGate.Close();
     }
 
@@ -321,6 +339,12 @@ public class TutorialManager : MonoBehaviour
     public void AllowFirstStatueInteraction() => tutorial_isFirstStatueInteract = true;
     public void AllowFullscreenMap() => tutorial_canOpenMap = true;
     public void DisableFullscreenMap() => tutorial_canOpenMap = false;
+
+    public void AllowQuestJournalHotKey() => canHotKeyJournal = true;
+    public void AllowInventoryHotkey() => canHotKeyInventory = true;
+    public void AllowCharacterDetailsHotKey() => canHotKeyCharacterDetails = true;
+
+    public void ShowInventoryHotkeyPopUp() => inventoryHotkeyPopUp.SetActive(true);
     public void ShowQuestJournal()
     {
         questButton.GetComponent<Button>().enabled = true;
@@ -423,6 +447,7 @@ public class TutorialManager : MonoBehaviour
                 questJournalTutorial.SetActive(false);
                 tutorialFadeImage.enabled = false;
                 BB_QuestManager.Instance.AcceptQuestByID("A0_Q9_OneMoreThing");
+                questJournalHotkeyPopup.SetActive(true);
                 break;
         }
         currentQuestJournalTutorial++;
@@ -809,6 +834,8 @@ public class TutorialManager : MonoBehaviour
                 inventoryTutorialText.text = "Now click on this button to resume your journey";
                 closeInventoryButtonTH.GetComponent<TutorialHighlight>().enabled = true;
                 closeInventoryButtonTH.onClick.AddListener(CloseAndAcceptMainQuest);
+
+                
                 break;
         }
         currentInventoryTutorial++;
@@ -822,6 +849,7 @@ public class TutorialManager : MonoBehaviour
         BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q13_Backpack");
         isTutorialDone = true;
         m_uiGame.UnBlur();
+        inventoryHotkeyPopUp.SetActive(true);
     }
     #endregion
 

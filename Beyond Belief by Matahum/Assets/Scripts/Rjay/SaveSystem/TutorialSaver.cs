@@ -38,6 +38,9 @@ public class TutorialSaver : MonoBehaviour, ISaveable
         public bool tutorial_isFirstStatueInteract;
         public bool tutorial_isGateOpen;
         public bool tutorial_isFirstSaveStatueInteract;
+        public bool canHotKeyInventory;
+        public bool canHotKeyJournal;
+        public bool canHotKeyCharacterDetails;
     }
 
     public string CaptureJson()
@@ -61,14 +64,18 @@ public class TutorialSaver : MonoBehaviour, ISaveable
 
             tutorial_isFirstStatueInteract = tutorial.tutorial_isFirstStatueInteract,
             tutorial_isGateOpen = tutorial.tutorial_isGateOpen,
-            tutorial_isFirstSaveStatueInteract = tutorial.tutorial_isFirstSaveStatueInteract
+            tutorial_isFirstSaveStatueInteract = tutorial.tutorial_isFirstSaveStatueInteract,
+
+            canHotKeyInventory = tutorial.canHotKeyInventory,
+            canHotKeyJournal = tutorial.canHotKeyJournal,
+            canHotKeyCharacterDetails = tutorial.canHotKeyCharacterDetails
         };
         return JsonUtility.ToJson(dto, false);
     }
 
     public void RestoreFromJson(string json)
     {
-        Debug.Log("TutorialSaver CaptureJson");
+        Debug.Log("TutorialSaver RestoreFromJson");
         if (string.IsNullOrEmpty(json)) return;
         var dto = JsonUtility.FromJson<DTO>(json);
         if (dto == null) return;
@@ -91,7 +98,11 @@ public class TutorialSaver : MonoBehaviour, ISaveable
         tutorial.tutorial_isGateOpen = dto.tutorial_isGateOpen;
         tutorial.tutorial_isFirstSaveStatueInteract = dto.tutorial_isFirstSaveStatueInteract;
 
-        // After restoring, run TutorialCheck to apply UI + world state
+        tutorial.canHotKeyInventory = dto.canHotKeyInventory;
+        tutorial.canHotKeyJournal = dto.canHotKeyJournal;
+        tutorial.canHotKeyCharacterDetails = dto.canHotKeyCharacterDetails;
+
+        // After restoring, re-apply the tutorial state
         tutorial.TutorialCheck();
     }
 }
