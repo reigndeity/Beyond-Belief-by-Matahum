@@ -220,8 +220,18 @@ public class AudioManager : MonoBehaviour
     private IEnumerator FadeDangerCue(bool inDanger)
     {
         float fadeDuration = 1.5f;
-        float startVolume = playerAudioCueSource.volume;
-        float targetVolume = inDanger ? 1f : 0f;
+
+        float targetVolume;
+        AudioWrapper wrapper = playerAudioCueSource.GetComponent<AudioWrapper>();
+        if (wrapper != null)
+        {
+            targetVolume = inDanger ? wrapper.GetCurrentVolume() : 0f;
+        }
+        else
+        {
+            targetVolume = inDanger ? 1f : 0f;
+        }
+
         float elapsed = 0f;
 
         if (inDanger)
@@ -239,7 +249,7 @@ public class AudioManager : MonoBehaviour
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
-            playerAudioCueSource.volume = Mathf.Lerp(startVolume, targetVolume, elapsed / fadeDuration);
+            playerAudioCueSource.volume = Mathf.Lerp(0, targetVolume, elapsed / fadeDuration);
             yield return null;
         }
 

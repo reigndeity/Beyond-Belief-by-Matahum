@@ -58,6 +58,7 @@ public class CharacterAudios : MonoBehaviour
             return;
 
         float finalVolume = AdjustVolume(clips[index]);
+        audioSource.pitch = clips[index].pitch;
         audioSource.PlayOneShot(clips[index].clip, finalVolume);
     }
 
@@ -78,6 +79,7 @@ public class CharacterAudios : MonoBehaviour
         if (chosen.clip == null) return;
 
         float finalVolume = AdjustVolume(chosen);
+        audioSource.pitch = clipGroup[index].clips[index].pitch;
         audioSource.PlayOneShot(chosen.clip, finalVolume);
     }
 
@@ -91,6 +93,7 @@ public class CharacterAudios : MonoBehaviour
 
         audioSource.volume = finalVolume;
         audioSource.clip = clips[index].clip;
+        audioSource.pitch = clips[index].pitch;
         audioSource.Play();
     }
 
@@ -105,6 +108,7 @@ public class CharacterAudios : MonoBehaviour
 
         audioSource.volume = finalVolume;
         audioSource.clip = clipGroup[index].clips[randomIndex].clip;
+        audioSource.pitch = clipGroup[index].clips[randomIndex].pitch;
         audioSource.Play();
     }
     public void StopAudioSource()
@@ -118,6 +122,7 @@ public class CharacterAudioClip
 {
     public AudioClip clip;
     [Range(0f, 1f)] public float volume = 1f;
+    [Range(0f, 3f)] public float pitch = 1f;
 }
 
 [Serializable]
