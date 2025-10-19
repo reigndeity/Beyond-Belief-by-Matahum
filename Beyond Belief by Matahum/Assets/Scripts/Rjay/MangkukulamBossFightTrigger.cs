@@ -32,7 +32,10 @@ public class MangkukulamBossFightTrigger : MonoBehaviour
         await Task.Delay(1000);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
         await Task.Delay(500);
-        await GameManager.instance.SaveAll();
+        //await GameManager.instance.SaveAll();
+        await GameManager.instance.SaveOnlyES3();
+        await Task.Delay(500);
+        await GameManager.instance.SavePlayerCoreData();
         await Task.Delay(500);
         Loader.Load(sceneIndex);
     }

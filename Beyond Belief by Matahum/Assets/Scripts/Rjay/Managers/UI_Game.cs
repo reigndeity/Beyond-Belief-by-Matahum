@@ -273,10 +273,11 @@ public class UI_Game : MonoBehaviour
         if (sceneName != "OpenWorldScene")
             return;
 
-        // Block hotkeys if any major UI or map/pause is open (but still allow toggling that same panel)
+        // Block hotkeys if any major UI, map, pause, or dialogue is active
         bool isAnyPanelOpen = IsAnyMajorPanelOpen() || 
                             (PlayerMinimap.instance != null && PlayerMinimap.instance.IsMapOpen()) || 
-                            pauseMenuPanel.activeSelf;
+                            pauseMenuPanel.activeSelf ||
+                            (DialogueManager.Instance != null && DialogueManager.Instance.IsDialoguePlaying());
 
         // Journal hotkey
         if (TutorialManager.instance.canHotKeyJournal && Input.GetKeyDown(m_playerInput.questLogKey))

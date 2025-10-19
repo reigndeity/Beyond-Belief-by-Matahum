@@ -68,6 +68,7 @@ public class NPC : Interactable
 
         // ✅ Start cooldown AFTER dialogue ends
         TriggerCooldown();
+        FindFirstObjectByType<DialogueQuestLinker>().RemoveActiveMarker();
     }
 
     public void FacePlayer()

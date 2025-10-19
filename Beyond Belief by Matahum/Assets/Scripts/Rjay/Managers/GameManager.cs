@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         StartCoroutine(UI_TransitionController.instance.Fade(1f, 0f, 0.5f));
     }
- 
+
 
     public async Task SaveAll()
     {
@@ -138,11 +138,14 @@ public class GameManager : MonoBehaviour
         await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "Player.Stats");
         await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "Inventory.Main");
         await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "Equipment.Main");
+        await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "ChestManager");
+        await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "Fog.Main");
 
         // Save quests as well
         BB_QuestManager.Instance?.SaveQuestData();
 
         Debug.Log("💾 [GameSaveController] Saved Player Stats + Inventory + Equipment + Quests.");
+        
     }
 
     public async Task LoadPlayerNoQuest()
@@ -191,5 +194,20 @@ public class GameManager : MonoBehaviour
     {
         await SaveAll();
     }
+    
 
+    public async Task SaveOnlyES3()
+    {
+        if (SceneAutoSaveControllerExists())
+        {
+            FindFirstObjectByType<SceneAutoSaveController>().SaveSceneNow();
+            Debug.Log("💾 [GameSaveController] Saved only ES3 scene data.");
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ No SceneAutoSaveController found — ES3 save skipped.");
+        }
+
+        await Task.Yield(); // just to keep async signature consistent
+    }
 }
