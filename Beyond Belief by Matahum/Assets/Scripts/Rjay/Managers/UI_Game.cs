@@ -219,30 +219,44 @@ public class UI_Game : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !m_player.isDead)
         {
+            // Block pause if dialogue is active
             if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialoguePlaying())
             {
                 Debug.Log("Pause blocked: dialogue is active.");
                 return;
             }
 
-            if (IsAnyMajorPanelOpen())
+            // Prevent pause if another major panel or fullscreen map is open
+            if (IsAnyMajorPanelOpen() || (PlayerMinimap.instance != null && PlayerMinimap.instance.IsMapOpen()))
             {
+                Debug.Log("Pause blocked: major UI or fullscreen map is open.");
                 return;
             }
 
+            // --- TOGGLE BEHAVIOR ---
             if (pauseMenuPanel.activeSelf)
             {
+                // Resume game
                 OnClickResumeGame();
+
+                // Hide cursor when unpausing
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+
                 FindFirstObjectByType<Settings_Manager>().SaveSettingsOnReturn();
                 pauseButtonHolder.SetActive(true);
                 settingsContentHolder.SetActive(false);
                 audioPanel.SetActive(false);
                 resumeButton.gameObject.SetActive(true);
-
             }
             else
             {
+                // Open pause menu
                 OpenPauseMenu();
+
+                // Show cursor when pausing
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
         }
     }

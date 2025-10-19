@@ -228,6 +228,11 @@ public class DialogueQuestLinker : MonoBehaviour
                     ApplyStates(tupas, bakal, bangkaw);
                     AddActiveMarker(currentQuestID, tracked);
 
+                    TutorialManager.instance.tupasHouseStairs.SetActive(true);
+                    TutorialManager.instance.temporaryCollider.SetActive(false);
+                    TutorialManager.instance.tupasHouseDoor.interactCooldown = 1;
+                    TutorialManager.instance.cutsceneBakalNPC.SetActive(false);
+
                     break;
 
                 case "A0_Q3_Bangkaw'sTraining_P1":

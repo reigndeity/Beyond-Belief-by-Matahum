@@ -60,11 +60,6 @@ public class Player : MonoBehaviour, IDamageable
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            TakeDamage(50);
-        }
-
         if (UI_TransitionController.instance.isTeleporting) return;
 
         // Player Camera
