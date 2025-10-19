@@ -89,4 +89,11 @@ public class AudioWrapper : MonoBehaviour
 
         audioSource.volume = scaledVolume;
     }
+
+    public float GetCurrentVolume()
+    {
+        if (audioSource == null) return 0f;
+        return audioSource.volume;
+    }
+
 }
