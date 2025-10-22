@@ -103,12 +103,21 @@ public class CharacterAudios : MonoBehaviour
     /// </summary>
     public void RandomPlaySFX(int index)
     {
+        if (clipGroup == null || index < 0 || index >= clipGroup.Length)
+            return;
+
+        if (clipGroup[index].clips == null || clipGroup[index].clips.Length == 0)
+            return;
+
         int randomIndex = UnityEngine.Random.Range(0, clipGroup[index].clips.Length);
+        var chosen = clipGroup[index].clips[randomIndex];
+        if (chosen.clip == null) return;
+
         float finalVolume = AdjustVolume(clipGroup[index].clips[randomIndex]);
 
         audioSource.volume = finalVolume;
-        audioSource.clip = clipGroup[index].clips[randomIndex].clip;
-        audioSource.pitch = clipGroup[index].clips[randomIndex].pitch;
+        audioSource.clip = chosen.clip;
+        audioSource.pitch = chosen.pitch;
         audioSource.Play();
     }
     public void StopAudioSource()

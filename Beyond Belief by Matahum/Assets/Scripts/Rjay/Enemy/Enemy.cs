@@ -85,7 +85,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
     {
         m_navMeshAgent.enabled = false;
         m_blazeAI.Hit();
-        PushBackward(1f);
+        PushBackward(0.5f);
         FindFirstObjectByType<PlayerCamera>().CameraShake(0.1f, 1f);
         HitStop.Instance.TriggerHitStop(0.05f);
         FacePlayer();
