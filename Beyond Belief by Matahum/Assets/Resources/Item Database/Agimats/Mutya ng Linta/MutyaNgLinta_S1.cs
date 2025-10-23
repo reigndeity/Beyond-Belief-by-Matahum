@@ -39,14 +39,19 @@ public class MutyaNgLinta_S1 : R_AgimatAbility
         PlayerStats stats = user.GetComponent<PlayerStats>();
 
         float damageReduction = stats.p_defense * 0.66f;
-        float damageToSelf = damageReduction + (stats.p_currentHealth * (selfDamage / 100f));
+        float percentSelfDamage = (stats.p_currentHealth * (selfDamage / 100f));
+        float damageToSelf = damageReduction + percentSelfDamage;
 
-        float totalHealth = stats.p_currentHealth - damageToSelf;
-        if (totalHealth <= 10f)
-            damageToSelf = stats.p_currentHealth - 10f;
+        // Prevent dropping below 1 HP
+        float minHealth = 1f;
+        float calculatedHealth = stats.p_currentHealth - percentSelfDamage;
+        if (calculatedHealth < minHealth)
+            damageToSelf = stats.p_currentHealth - minHealth;
 
-        player.TakeDamage(damageToSelf, false);
+        if (damageToSelf > 1)
+            player.TakeDamage(damageToSelf, false);
 
+        // Apply lifesteal
         MutyaNgLinta_Lifesteal lifesteal = user.GetComponent<MutyaNgLinta_Lifesteal>();
         if (lifesteal == null)
             lifesteal = user.AddComponent<MutyaNgLinta_Lifesteal>();
