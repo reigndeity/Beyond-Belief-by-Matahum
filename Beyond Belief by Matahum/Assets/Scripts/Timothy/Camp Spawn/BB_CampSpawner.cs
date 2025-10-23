@@ -150,26 +150,41 @@ public class BB_CampSpawner : MonoBehaviour
 
     void AddLoots(GameObject enemyGO)
     {
-        if (possibleLootDrops.Length != 0)
+        if (possibleLootDrops.Length == 0) return;
+
+        int worldLevel;
+        if (WorldLevelSetter.Instance != null)        
+            worldLevel = WorldLevelSetter.Instance.worldLevel;       
+        else worldLevel = 1;
+
+        int randomQuantity = UnityEngine.Random.Range(0, 3 + worldLevel);
+
+        EnemyLootDrop loot = enemyGO.AddComponent<EnemyLootDrop>();
+
+        for (int i = 0; i < randomQuantity; i++)
         {
-            int randomQuantity  = UnityEngine.Random.Range(0, 3);
-            EnemyLootDrop loot = enemyGO.AddComponent<EnemyLootDrop>();
-            
-            for(int i = 0; i < randomQuantity; i++)
-            {
-                int randomLoot = UnityEngine.Random.Range(0, possibleLootDrops.Length);
-                loot.lootContent.Add(possibleLootDrops[randomLoot]);
-            }
+
+            int randomLoot = UnityEngine.Random.Range(0, possibleLootDrops.Length);
+            LootContent sourceLoot = possibleLootDrops[randomLoot];
+
+            // 🟢 Create a new instance to avoid modifying the original
+            int scaledLevel = Mathf.Clamp(worldLevel * 10, 1, Mathf.Min(maxEnemyLevel, 50));
+
+            LootContent lootCopy = sourceLoot.Clone();
+            lootCopy.level = scaledLevel;
+
+            loot.lootContent.Add(lootCopy);
         }
     }
 
     // ------------------ CORE LEVEL LOGIC ------------------
-    private void UpdateEnemyStats(EnemyStats enemyStats)
+    /*private void UpdateEnemyStats(EnemyStats enemyStats)
     {
         if (enemyStats == null || playerStats == null) return;
 
-        int pLevel = Mathf.Clamp(playerStats.currentLevel, 1, 50);
-        int eLevel = ComputeEnemyLevel(pLevel, minEnemyLevel, maxEnemyLevel, levelOffset);
+        //int pLevel = Mathf.Clamp(playerStats.currentLevel, 1, 50);
+        int worldLevel = WorldLevelSetter.Instance.worldLevel;
+        int eLevel = ComputeEnemyLevel(worldLevel, minEnemyLevel, maxEnemyLevel, levelOffset);
 
         try
         {
@@ -189,8 +204,60 @@ public class BB_CampSpawner : MonoBehaviour
         if (playerLevel >= max - offset) return max;
         if (playerLevel < min) return min;
         return Mathf.Clamp(playerLevel + offset, min, max);
+    }*/
+
+    private void UpdateEnemyStats(EnemyStats enemyStats)
+    {
+        if (enemyStats == null) return;
+
+        int worldLevel;
+        if (WorldLevelSetter.Instance != null)
+            worldLevel = WorldLevelSetter.Instance.worldLevel;
+        else worldLevel = 1;
+
+        int eLevel = ComputeEnemyLevelByWorld(worldLevel);
+
+        try
+        {
+            enemyStats.SetLevel(eLevel);
+            enemyStats.RecalculateStats();
+        }
+        catch (MissingMethodException)
+        {
+            enemyStats.e_level = eLevel;
+        }
+
+        enemyStats.e_currentHealth = enemyStats.e_maxHealth;
     }
-    
+
+    /// <summary>
+    /// Computes enemy level based on which world is active.
+    /// Adjust the values per world as needed.
+    /// </summary>
+    private int ComputeEnemyLevelByWorld(int worldLevel)
+    {
+        switch (worldLevel)
+        {
+            case 1: // World 1: Early game
+                    // Weakest enemies
+                return Mathf.Clamp(minEnemyLevel + levelOffset, minEnemyLevel, maxEnemyLevel / 4);
+
+            case 2: // World 2: Early-mid game
+                return Mathf.Clamp((maxEnemyLevel / 4) + levelOffset, minEnemyLevel, maxEnemyLevel / 2);
+
+            case 3: // World 3: Mid-late game
+                return Mathf.Clamp((maxEnemyLevel / 2) + levelOffset, minEnemyLevel, (3 * maxEnemyLevel) / 4);
+
+            case 4: // World 4: Endgame
+                return Mathf.Clamp((3 * maxEnemyLevel / 4) + levelOffset, minEnemyLevel, maxEnemyLevel);
+
+            default: // Fallback
+                return Mathf.Clamp(minEnemyLevel + levelOffset, minEnemyLevel, maxEnemyLevel);
+        }
+    }
+
+
+
     // -------------------------------------------------------
 
     #region RESTOCK TIMER

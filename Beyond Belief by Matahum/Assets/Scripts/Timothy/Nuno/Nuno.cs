@@ -101,6 +101,7 @@ public class Nuno : MonoBehaviour, IDamageable, IDeathHandler
 
         animator.ChangeAnimationState("Nuno_Death");
         hpCanvas.FadeOut(1f);
+        WorldLevelSetter.Instance.SetWorldLevel(2);
         BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q6_Nuno");
         await Task.Delay(2500);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));

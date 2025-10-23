@@ -44,7 +44,7 @@ public class MutyaNgLinta_S1 : R_AgimatAbility
 
         // Prevent dropping below 1 HP
         float minHealth = 1f;
-        float calculatedHealth = stats.p_currentHealth - percentSelfDamage;
+        float calculatedHealth = stats.p_currentHealth - percentSelfDamage; //removed the damageReduction since it will be cancelled out once it takes damage
         if (calculatedHealth < minHealth)
             damageToSelf = stats.p_currentHealth - minHealth;
 

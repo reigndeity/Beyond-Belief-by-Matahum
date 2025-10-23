@@ -96,10 +96,20 @@ public class Chest : Interactable
     {
         Vector3 chestPosition = transform.position + spawnOffset;
 
+        int worldLevel;
+        if (WorldLevelSetter.Instance != null)
+            worldLevel = WorldLevelSetter.Instance.worldLevel;
+        else worldLevel = 1;
+
+        int randomLevelMultiplier = UnityEngine.Random.Range(10, 18);
+        int scaledLevel = Mathf.Clamp(worldLevel * randomLevelMultiplier, 1, 50);
+
         foreach (var chestDrop in lootDrops)
         {
-            LootDrops lootObj = Instantiate(chestDrop.lootPrefab, chestPosition, Quaternion.identity);
-            lootObj.lootContent = chestDrop;
+            LootContent lootCopy = chestDrop.Clone();
+            lootCopy.level = scaledLevel;
+            LootDrops lootObj = Instantiate(lootCopy.lootPrefab, chestPosition, Quaternion.identity);
+            lootObj.lootContent = lootCopy;
             lootObj.Initialize();
 
             Rigidbody rb = lootObj.GetComponent<Rigidbody>();

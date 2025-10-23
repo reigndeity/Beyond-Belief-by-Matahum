@@ -543,6 +543,8 @@ public class DialogueQuestLinker : MonoBehaviour
                     break;
 
                 case "A2_Q2_MysteriousWoman":
+                    WorldLevelSetter.Instance.SetWorldLevel(3);
+
                     mangkukulamNpc.SetActive(true);
                     tupas.SetDialogueState("default");
                     mangkukulam.SetDialogueState("A2_Q2_MysteriousWoman");
@@ -572,6 +574,8 @@ public class DialogueQuestLinker : MonoBehaviour
                     AddActiveMarker(currentQuestID, tracked);
                     break;
                 case "A2_Q5_WhatHappened":
+                    WorldLevelSetter.Instance.SetWorldLevel(4);
+
                     albularyoNpc.SetActive(true);
 
                     // queue forced teleport

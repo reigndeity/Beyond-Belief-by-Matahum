@@ -13,4 +13,20 @@ public class LootContent
     public bool randomGold = false;
     public int goldAmount;
     public Vector2 randomGoldMinMax;
+
+    public LootContent Clone()
+    {
+        return new LootContent
+        {
+            lootPrefab = this.lootPrefab,
+            itemData = this.itemData,
+            level = this.level,
+            randomPamana = this.randomPamana,
+            randomAgimat = this.randomAgimat,
+            isGold = this.isGold,
+            randomGold = this.randomGold,
+            goldAmount = this.goldAmount,
+            randomGoldMinMax = this.randomGoldMinMax
+        };
+    }
 }
