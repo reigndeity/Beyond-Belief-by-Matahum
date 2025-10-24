@@ -157,7 +157,7 @@ public class BB_CampSpawner : MonoBehaviour
             worldLevel = WorldLevelSetter.Instance.worldLevel;       
         else worldLevel = 1;
 
-        int randomQuantity = UnityEngine.Random.Range(0, 3 + worldLevel);
+        int randomQuantity = UnityEngine.Random.Range(0, 3);
 
         EnemyLootDrop loot = enemyGO.AddComponent<EnemyLootDrop>();
 

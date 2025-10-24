@@ -101,7 +101,7 @@ public class Chest : Interactable
             worldLevel = WorldLevelSetter.Instance.worldLevel;
         else worldLevel = 1;
 
-        int randomLevelMultiplier = UnityEngine.Random.Range(10, 18);
+        int randomLevelMultiplier = (int)UnityEngine.Random.Range(9, 12.5f);
         int scaledLevel = Mathf.Clamp(worldLevel * randomLevelMultiplier, 1, 50);
 
         foreach (var chestDrop in lootDrops)
