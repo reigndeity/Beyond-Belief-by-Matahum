@@ -35,19 +35,56 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
         m_enemyAttack = GetComponentInChildren<EnemyAttack>();
     }
 
+    // ---- inside Start(), remove the vision event subscription block and instead add this ----
     void Start()
     {
         DisableAllRagdollParts();
         if (charAudios == null)
             charAudios = GetComponent<CharacterAudios>();
 
-        if (m_blazeAI != null && m_blazeAI.vision != null)
+        StartCoroutine(SetupStateListeners());
+    }
+
+    private IEnumerator SetupStateListeners()
+    {
+        // Wait a frame so BlazeAI can finish initializing if this object was instantiated
+        yield return null;
+
+        if (m_blazeAI == null)
+            m_blazeAI = GetComponent<BlazeAI>();
+
+        // Try direct references first
+        var normal = m_blazeAI?.normalStateBehaviour as BlazeAISpace.NormalStateBehaviour;
+        var surprised = m_blazeAI?.surprisedStateBehaviour as BlazeAISpace.SurprisedStateBehaviour;
+
+        // Fallback — just in case BlazeAI didn’t assign them yet
+        if (normal == null)
+            normal = GetComponent<BlazeAISpace.NormalStateBehaviour>();
+        if (surprised == null)
+            surprised = GetComponent<BlazeAISpace.SurprisedStateBehaviour>();
+
+        if (normal != null)
         {
-            // these UnityEvents are built-in inside the BlazeAI.vision system
-            m_blazeAI.vision.enemyEnterEvent.AddListener(OnEnemyDetected);
-            m_blazeAI.vision.enemyLeaveEvent.AddListener(OnEnemyLost);
+            normal.onStateEnter.AddListener(OnNormalStateEnter);
+            Debug.Log($"[{name}] ✅ Bound NormalStateBehaviour (same object).");
+        }
+        else
+        {
+            Debug.LogWarning($"[{name}] ⚠️ No NormalStateBehaviour found!");
+        }
+
+        if (surprised != null)
+        {
+            surprised.onStateEnter.AddListener(OnSurprisedStateEnter);
+            Debug.Log($"[{name}] ✅ Bound SurprisedStateBehaviour (same object).");
+        }
+        else
+        {
+            Debug.LogWarning($"[{name}] ⚠️ No SurprisedStateBehaviour found!");
         }
     }
+
+
     #region DAMAGE
 
     public void TakeDamage(float damage, bool hitAnimOn)
@@ -218,42 +255,50 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
     public void EnableAttack() => m_enemyAttack.EnableAttackCollider();
     public void DisableAttack() => m_enemyAttack.DisableAttackCollider();
     #region DANGER MUSIC HANDLER
-    private void OnEnemyDetected()
+    // ---- add these new handler methods to Enemy.cs ----
+    private void OnSurprisedStateEnter()
     {
-        Scene currentScene = SceneManager.GetActiveScene();
-        string sceneName = currentScene.name;
-
-        if (sceneName != "OpenWorldScene") 
-            return; // ignore other scenes
-
-        if (isDead) return;
+        if (SceneManager.GetActiveScene().name != "OpenWorldScene") return;
+        if (isDead || m_player == null) return;
         if (isChasingPlayer) return;
 
         isChasingPlayer = true;
         m_player.EnterDanger();
-        Debug.Log("Entering Combat");
+        Debug.Log($"[{name}] ⚡ Entering Combat (Surprised state).");
     }
 
-    private void OnEnemyLost()
+    private void OnNormalStateEnter()
     {
+        // only run in the open world scene
+        if (SceneManager.GetActiveScene().name != "OpenWorldScene") return;
+        if (isDead || m_player == null) return;
+
+        // if this enemy was contributing to danger before, remove it now
         if (!isChasingPlayer) return;
 
         isChasingPlayer = false;
         m_player.ExitDanger();
-        Debug.Log("Leaving Combat");
+        Debug.Log($"[{name}] Leaving Combat (Normal state).");
     }
 
     private void OnDestroy()
     {
-        if (m_blazeAI != null && m_blazeAI.vision != null)
+        if (m_blazeAI != null)
         {
-            m_blazeAI.vision.enemyEnterEvent.RemoveListener(OnEnemyDetected);
-            m_blazeAI.vision.enemyLeaveEvent.RemoveListener(OnEnemyLost);
+            var normal = m_blazeAI.normalStateBehaviour as BlazeAISpace.NormalStateBehaviour;
+            if (normal != null)
+                normal.onStateEnter.RemoveListener(OnNormalStateEnter);
+
+            var surprised = m_blazeAI.surprisedStateBehaviour as BlazeAISpace.SurprisedStateBehaviour;
+            if (surprised != null)
+                surprised.onStateEnter.RemoveListener(OnSurprisedStateEnter);
         }
 
         if (m_player != null && isChasingPlayer)
             m_player.ExitDanger();
     }
+
+
 
     #endregion
 

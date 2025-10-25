@@ -291,25 +291,23 @@ public class AudioManager : MonoBehaviour
     {
         lockMusic = state;
     }
-    public void PlayInDangerCue(bool isInDanger)
-    {
-        if (isInDanger)
-        {
-            StartCoroutine(FadeMusic(inDangerClip));
-        }
-        else
-        {
-            StartCoroutine(FadeMusic(currentMusic));
-        }
-
-    }
     private void HandleDangerMusic(bool isInDanger)
     {
         if (dangerFadeCoroutine != null)
             StopCoroutine(dangerFadeCoroutine);
 
+        // Always allow dynamic transitions
+        lockMusic = false;
+
         dangerFadeCoroutine = StartCoroutine(FadeMusic(isInDanger ? inDangerClip : currentMusic));
-        lockMusic = !isInDanger;
+    }
+
+    public void PlayInDangerCue(bool isInDanger)
+    {
+        // Ensure music is never locked when manually toggled
+        lockMusic = false;
+
+        StartCoroutine(FadeMusic(isInDanger ? inDangerClip : currentMusic));
     }
 
     public IEnumerator FadeMusic(AudioClip bgmClip)
