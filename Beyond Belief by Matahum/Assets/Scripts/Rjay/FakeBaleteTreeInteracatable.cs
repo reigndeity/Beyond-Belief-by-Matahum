@@ -24,7 +24,7 @@ public class FakeBaleteTreeInteracatable : Interactable
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
         await Task.Delay(1000);
         await GameManager.instance.SaveAll();
-        await Task.Delay(500);
+        await Task.Delay(1000);
         Loader.Load(sceneIndex);
     }
 }

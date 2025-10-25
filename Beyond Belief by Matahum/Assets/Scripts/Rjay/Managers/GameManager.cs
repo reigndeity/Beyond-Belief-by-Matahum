@@ -151,8 +151,8 @@ public class GameManager : MonoBehaviour
         await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "Player.Stats");
         await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "Inventory.Main");
         await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "Equipment.Main");
-        await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "ChestManager");
-        await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "Fog.Main");
+        // await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "ChestManager");
+        // await SaveManager.Instance.SaveSystemsAsync(slotId, updateScene: false, "Fog.Main");
 
         // Save quests as well
         BB_QuestManager.Instance?.SaveQuestData();
