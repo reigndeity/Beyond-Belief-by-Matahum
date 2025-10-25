@@ -33,7 +33,7 @@ public class MangkukulamFirstMeetLoadingLoadingTrigger : MonoBehaviour
         await Task.Delay(500);
         BB_QuestManager.Instance.AcceptQuestByID("A2_Q2_MysteriousWoman");
         await Task.Delay(500);
-        await GameManager.instance.SavePlayerCoreData();
+        await GameManager.instance.SaveAllExceptPlayerPosition();
         await Task.Delay(500);
         Loader.Load(sceneIndex);
     }

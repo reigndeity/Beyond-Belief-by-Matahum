@@ -31,7 +31,7 @@ public class LoadingTrigger : MonoBehaviour
         m_player.ForceIdleOverride();
         PlayerCamera.Instance.HardLockCamera();
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
-        await GameManager.instance.SavePlayerCoreData();
+        await GameManager.instance.SaveAllExceptPlayerPosition();
         await Task.Delay(1000);
         BB_QuestManager.Instance.UpdateMissionProgressOnce(updateQuest);
         await Task.Delay(100);

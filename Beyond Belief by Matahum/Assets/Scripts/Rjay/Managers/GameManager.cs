@@ -85,6 +85,19 @@ public class GameManager : MonoBehaviour
         Debug.Log("💾 [GameSaveController] SaveAll complete.");
     }
 
+    public async Task SaveAllExceptPlayerPosition()
+    {
+        if (SceneAutoSaveControllerExists())
+            FindFirstObjectByType<SceneAutoSaveController>().SaveSceneNow();
+
+        BB_QuestManager.Instance?.SaveQuestData();
+
+        // Save everything except Player.Transform (player position)
+        await SaveManager.Instance.SaveSystemsExceptAsync(slotId, updateScene: false, "Player.Transform");
+
+        Debug.Log("💾 [GameSaveController] SaveAllExceptPlayerPosition complete.");
+    }
+
     public async Task LoadAll()
     {
         if (SceneAutoSaveControllerExists())
@@ -197,7 +210,6 @@ public class GameManager : MonoBehaviour
         await SaveAll();
     }
     
-
     public async Task SaveOnlyES3()
     {
         if (SceneAutoSaveControllerExists())

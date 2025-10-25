@@ -40,7 +40,7 @@ public class MangkukulamLoadingTrigger : MonoBehaviour
         await Task.Delay(500);
         BB_QuestManager.Instance.AcceptQuestByID(acceptquestID);
         await Task.Delay(500);
-        await GameManager.instance.SaveAll();
+        await GameManager.instance.SaveAllExceptPlayerPosition();
         await Task.Delay(500);
         Loader.Load(sceneIndex);
     }
