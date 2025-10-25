@@ -73,6 +73,9 @@ public class PlayerMinimap : MonoBehaviour
         // Block map during dialogue
         if (DialogueManager.Instance != null && DialogueManager.Instance.isDialoguePlaying) return;
 
+        // Block map when game is paused
+        if (UI_Game.Instance != null && UI_Game.Instance.IsGamePaused()) return;
+
         // Block map while any major UI panel is open
         if (FindFirstObjectByType<UI_Game>()?.IsAnyMajorPanelOpen() == true) return;
 
