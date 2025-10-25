@@ -212,6 +212,8 @@ public class DialogueQuestLinker : MonoBehaviour
                     A0_Q0_InitialTalk_NQP.SetActive(true);
                     TutorialManager.instance.cutsceneTriggerOne.SetActive(true);
                     movementTutorialPopUp.SetActive(true);
+
+                    PlayerPrefs.SetInt("ToolTipGroup", 0);
                     break;
 
                 case "A0_Q1_FindAndTalkToTupas":
@@ -506,6 +508,8 @@ public class DialogueQuestLinker : MonoBehaviour
                     nunoMound.SetActive(true);
 
                     AddActiveMarker(currentQuestID, tracked);
+
+                    PlayerPrefs.SetInt("ToolTipGroup", 1);
                     break;
                 case "A1_Q7_LessonFromNuno":
                     nunoBossFightTrigger.SetActive(false);
@@ -523,6 +527,8 @@ public class DialogueQuestLinker : MonoBehaviour
                     nunoSaPunsoCharacter.GetComponent<BlazeAI>().StayIdle();
 
                     AddActiveMarker(currentQuestID, tracked, new Vector3(0, 1, 0));
+
+                    PlayerPrefs.SetInt("ToolTipGroup", 0);
                     break;
                 case "A1_Q8_ReturnToTheVillage":
                     tupas.SetDialogueState("A1_Q8_ReturnToTheVillage");
@@ -616,6 +622,8 @@ public class DialogueQuestLinker : MonoBehaviour
 
                     mangkukulamNpc.SetActive(false);
                     mangkukulamThirdTriggers.SetActive(true);
+
+                    PlayerPrefs.SetInt("ToolTipGroup", 2);
                     break;
                 case "A2_Q10_HowDoIgetHome":
                     GameManager.instance.forcedTeleportTarget = a2_q10_playerTransform;
@@ -628,6 +636,8 @@ public class DialogueQuestLinker : MonoBehaviour
                     PlayerCamera.Instance.AdjustCamera();
 
                     AddActiveMarker(currentQuestID, tracked);
+
+                    PlayerPrefs.SetInt("ToolTipGroup", 0);
                     break;
                 case "A2_Q11_RepairFirstBalete_P1":
                     albularyo.SetDialogueState("A2_Q11_RepairFirstBalete_P1");
