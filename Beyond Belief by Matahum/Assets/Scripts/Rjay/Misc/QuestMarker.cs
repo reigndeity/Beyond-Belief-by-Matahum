@@ -29,7 +29,6 @@ public class QuestMarker : MonoBehaviour
     [Header("Clamping Shape")]
     public ClampShape clampShape = ClampShape.Circle;
     public enum ClampShape { Circle, Square }
-    
 
     private RectTransform rectTransform;
     private Coroutine fadeRoutine;
@@ -39,38 +38,43 @@ public class QuestMarker : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
+
+        // Ensure it's hidden by default
+        if (canvasGroup != null)
+            canvasGroup.alpha = 0f;
     }
 
     void OnEnable()
     {
+        // When re-enabled, fade in smoothly
         if (canvasGroup != null)
         {
-            canvasGroup.alpha = 0f; // start hidden
+            if (fadeRoutine != null) StopCoroutine(fadeRoutine);
             fadeRoutine = StartCoroutine(FadeTo(1f, fadeInDuration));
         }
     }
 
     void Update()
     {
-        if (target == null || mainCamera == null) return;
+        if (target == null || mainCamera == null || !gameObject.activeSelf)
+            return;
 
-        // World → Screen position
+        // Convert world → screen position
         Vector3 screenPos = mainCamera.WorldToScreenPoint(target.position + offset);
         if (screenPos.z < 0) screenPos *= -1;
 
-        // Center of screen
         Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Vector2 dir = ((Vector2)screenPos - screenCenter).normalized;
         Vector2 offsetFromCenter = (Vector2)screenPos - screenCenter;
 
+        // Clamp to edges (circle or square)
         if (clampShape == ClampShape.Circle)
         {
-            // Circle radius
             float radius = Mathf.Min(Screen.width, Screen.height) / 2f - edgeBuffer;
             if (offsetFromCenter.magnitude > radius)
                 offsetFromCenter = dir * radius;
         }
-        else // Square clamp
+        else
         {
             float halfW = Screen.width / 2f - edgeBuffer;
             float halfH = Screen.height / 2f - edgeBuffer;
@@ -78,7 +82,6 @@ public class QuestMarker : MonoBehaviour
             offsetFromCenter.y = Mathf.Clamp(offsetFromCenter.y, -halfH, halfH);
         }
 
-        // Final position
         rectTransform.position = screenCenter + offsetFromCenter;
 
         // Distance-based scaling
@@ -87,8 +90,9 @@ public class QuestMarker : MonoBehaviour
         float scale = Mathf.Lerp(maxScale, minScale, t);
         rectTransform.localScale = Vector3.one * scale;
 
-        // Distance text
-        distanceText.text = $"{dist:F0}m";
+        // Update distance text
+        if (distanceText != null)
+            distanceText.text = $"{dist:F0}m";
 
         // Fade near/far
         if (dist <= 5f && isVisible)
@@ -105,29 +109,32 @@ public class QuestMarker : MonoBehaviour
         }
     }
 
-    IEnumerator FadeTo(float targetAlpha, float duration)
+    private IEnumerator FadeTo(float targetAlpha, float duration)
     {
         float startAlpha = canvasGroup.alpha;
         float time = 0f;
+
         while (time < duration)
         {
             time += Time.deltaTime;
             canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, time / duration);
             yield return null;
         }
+
         canvasGroup.alpha = targetAlpha;
     }
 
-    IEnumerator FadeOutAndDestroy()
-    {
-        yield return FadeTo(0f, fadeOutDuration);
-        Destroy(gameObject);
-    }
-
-    public void FadeOutAndDestroyMarker()
+    // ✅ Used when reusing one persistent marker instead of destroying
+    public void FadeOutAndHide()
     {
         if (fadeRoutine != null) StopCoroutine(fadeRoutine);
-        fadeRoutine = StartCoroutine(FadeOutAndDestroy());
+        fadeRoutine = StartCoroutine(FadeToAndHide(0f, fadeOutDuration));
+    }
+
+    private IEnumerator FadeToAndHide(float targetAlpha, float duration)
+    {
+        yield return FadeTo(targetAlpha, duration);
+        gameObject.SetActive(false);
     }
 
     public void SetQuestType(bool isMainQuest, Sprite mainSprite, Sprite sideSprite)

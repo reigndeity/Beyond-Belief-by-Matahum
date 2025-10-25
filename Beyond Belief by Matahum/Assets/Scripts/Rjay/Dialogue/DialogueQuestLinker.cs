@@ -34,9 +34,8 @@ public class DialogueQuestLinker : MonoBehaviour
     private Transform currentTrackedTransform;
 
     [Header("Quest Marker")]
-    [SerializeField] private QuestMarker markerPrefab;       // Prefab of quest marker (UI only)
-    [SerializeField] private Transform uiMarkerParent;       // Parent under PlayerHUD UI
-    private QuestMarker activeMarker;                        // Currently active marker
+    [SerializeField] private QuestMarker questMarker;     // ✅ pre-existing marker object
+    [SerializeField] private Transform uiMarkerParent;
     [SerializeField] private Sprite mainQuestSprite;
     [SerializeField] private Sprite sideQuestSprite;
     [Header("Marker Cooldown")]
@@ -137,7 +136,7 @@ public class DialogueQuestLinker : MonoBehaviour
         // 🧹 If nothing is tracked → remove marker + minimap item
         if (tracked == null)
         {
-            if (activeMarker != null)
+            if (questMarker != null && questMarker.gameObject.activeSelf)
                 RemoveActiveMarker();
 
             if (questMinimapItem != null && questMinimapItem.activeSelf)
@@ -920,29 +919,20 @@ public class DialogueQuestLinker : MonoBehaviour
     #region NAVIGATION FUNCTIONS
     public void RemoveActiveMarker()
     {
-        if (activeMarker != null)
-        {
-            activeMarker.FadeOutAndDestroyMarker();
-            activeMarker = null;
-        }
+        if (questMarker != null)
+            questMarker.FadeOutAndHide();
     }
+
     public void AddActiveMarker(string currentQuestID, BB_Quest tracked, Vector3? customOffset = null)
     {
         if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialoguePlaying())
             return;
 
-        // 🧩 Always clear existing marker before proceeding
-        if (activeMarker != null)
-        {
-            activeMarker.FadeOutAndDestroyMarker();
-            activeMarker = null;
-        }
-
         // 🧩 Skip if quest isn’t tracked or already completed
         if (tracked == null || BB_QuestManager.Instance.IsQuestDone(currentQuestID))
             return;
 
-        // 🧩 Only spawn if currently tracked quest matches the one in HUD
+        // 🧩 Only proceed if the HUD’s current quest matches
         if (BB_QuestHUD.instance?.trackedQuest == null ||
             BB_QuestHUD.instance.trackedQuest.questID != currentQuestID)
             return;
@@ -952,15 +942,17 @@ public class DialogueQuestLinker : MonoBehaviour
 
         lastMarkerTime = Time.time;
 
-        // 🧩 Instantiate one clean marker
-        activeMarker = Instantiate(markerPrefab, uiMarkerParent);
-        activeMarker.target = questTarget;
-        activeMarker.mainCamera = Camera.main;
+        // ✅ Reuse single marker
+        questMarker.gameObject.SetActive(true);
+        questMarker.target = questTarget;
+        questMarker.mainCamera = Camera.main;
 
         if (customOffset.HasValue)
-            activeMarker.SetOffset(customOffset.Value);
+            questMarker.SetOffset(customOffset.Value);
+        else
+            questMarker.SetOffset(new Vector3(0, 2.3f, 0)); // default
 
-        activeMarker.SetQuestType(
+        questMarker.SetQuestType(
             tracked.questType == BB_QuestType.Main,
             mainQuestSprite,
             sideQuestSprite
