@@ -91,7 +91,7 @@ public class CharacterAudios : MonoBehaviour
     {
         float finalVolume = AdjustVolume(clips[index]);
 
-        audioSource.volume = finalVolume;
+        //audioSource.volume = finalVolume;
         audioSource.clip = clips[index].clip;
         audioSource.pitch = clips[index].pitch;
         audioSource.Play();
@@ -115,7 +115,7 @@ public class CharacterAudios : MonoBehaviour
 
         float finalVolume = AdjustVolume(clipGroup[index].clips[randomIndex]);
 
-        audioSource.volume = finalVolume;
+        //audioSource.volume = finalVolume;
         audioSource.clip = chosen.clip;
         audioSource.pitch = chosen.pitch;
         audioSource.Play();
