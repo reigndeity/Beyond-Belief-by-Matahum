@@ -16,7 +16,7 @@ public class LoadingScene_ToolTips : MonoBehaviour
         int tipGroup = Mathf.Clamp(PlayerPrefs.GetInt("ToolTipGroup", 0), 0, toolTipsGroup.Length);
 
         int randomizer = UnityEngine.Random.Range(0, toolTipsGroup.Length);
-        toolTipText.text = toolTipsGroup[tipGroup].toolTips[randomizer];
+        toolTipText.text = $"<color=yellow><b>Tool Tip:</b></color> {toolTipsGroup[tipGroup].toolTips[randomizer]}";
     }
 }
 
