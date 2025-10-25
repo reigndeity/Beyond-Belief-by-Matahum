@@ -231,6 +231,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
 
         isChasingPlayer = true;
         m_player.EnterDanger();
+        Debug.Log("Entering Combat");
     }
 
     private void OnEnemyLost()
@@ -239,6 +240,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
 
         isChasingPlayer = false;
         m_player.ExitDanger();
+        Debug.Log("Leaving Combat");
     }
 
     private void OnDestroy()

@@ -181,6 +181,7 @@ public class Player : MonoBehaviour, IDamageable
 
     #region DANGER SYSTEM
 
+    public Coroutine dangerCoroutine;
     public void SetInDanger(bool value)
     {
         // Safety — just use this if you want manual control
@@ -194,21 +195,42 @@ public class Player : MonoBehaviour, IDamageable
         if (!inDanger)
         {
             inDanger = true;
-            AudioManager.instance.PlayInDangerCue(true);
+            AudioManager.instance.PlayInDangerCue(inDanger);   
         }
     }
 
     public void ExitDanger()
     {
         dangerCount = Mathf.Max(0, dangerCount - 1);
+
+        // If there are still enemies chasing, stay in danger
+        if (dangerCount > 0)
+            return;
+
+        // Start a grace delay before actually exiting danger
+        if (dangerCoroutine != null)
+            StopCoroutine(dangerCoroutine);
+
+        dangerCoroutine = StartCoroutine(DelayExitDanger());
+    }
+
+    private IEnumerator DelayExitDanger()
+    {
+        yield return new WaitForSeconds(3f);
+
+        // Only exit danger if no enemies are chasing after the delay
         if (dangerCount == 0 && inDanger)
         {
             inDanger = false;
-            AudioManager.instance.PlayInDangerCue(false);
+            AudioManager.instance.PlayInDangerCue(inDanger);
+            Debug.Log("Player: Exited danger after delay.");
         }
+
+        dangerCoroutine = null;
     }
 
-#endregion
+
+    #endregion
 
     #region DAMAGE / HEAL FUNCTIONS
     public void TakeDamage(float damage, bool hitAnimOn = true)

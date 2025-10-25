@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,8 @@ public class AudioManager : MonoBehaviour
     public static event System.Action<bool> OnDangerStateChanged;
     private Coroutine dangerFadeCoroutine;
 
+    [Header("References")]
+    public Player player;
 
     [Header("Player Voice Audio")]
     public AudioSource playerVoiceSource;
@@ -55,22 +58,12 @@ public class AudioManager : MonoBehaviour
 
     [Header("Music Audio")]
     public AudioSource musicSource;
-    public AudioClip lewenriVillageMusic;
-    public AudioClip lewenriTrainingAreaMusic;
-    public AudioClip outsideTheVillageMusic;
-    public AudioClip swampMusic;
+    public AudioClip currentMusic;
     public AudioClip inDangerClip;
+    public bool lockMusic = false;
 
     [Header("Ambience Audio")]
     public AudioSource ambienceSource;
-    public AudioClip forestAmbience;
-    public AudioClip swampAmbience;
-    public AudioClip waterfallAmbience;
-
-    public bool isInVillage;
-    public bool isInTraining;
-    public bool isInSwamp;
-    public bool isInWaterfall;
 
     //===================================================================================================
     public event System.Action<float> OnSFXVolumeChanged;
@@ -106,9 +99,23 @@ public class AudioManager : MonoBehaviour
         {
             UI_Game.Instance.OnGamePause += HandlePauseState;
         }
-
-        PlayForestAmbience(2);
     }
+
+    public bool lastDangerState = false; // Tracks previous state
+
+    private void Update()
+    {
+        if (player == null)
+            return;
+
+        // Detect danger state changes
+        if (player.inDanger != lastDangerState)
+        {
+            lastDangerState = player.inDanger;
+            HandleDangerMusic(player.inDanger);
+        }
+    }
+
     private void OnDestroy()
     {
         if (UI_Game.Instance != null)
@@ -264,6 +271,7 @@ public class AudioManager : MonoBehaviour
     }
     #endregion
 
+    #region SET VOLUME
     public void SetSFXVolume(float newValue)
     {
         SFXvolumeValue = newValue;
@@ -275,108 +283,91 @@ public class AudioManager : MonoBehaviour
         BGMvolumeValue = newValue;
         OnBGMVolumeChanged?.Invoke(newValue);
     }
+    #endregion
 
+    #region AUDIO ZONES
 
-    #region OPEN WORLD AUDIO
-    public void PlayForestAmbience(float fadeDuration = 2f)
+    public void LockMusic(bool state)
     {
-        if (ambienceSource == null || forestAmbience == null)
-            return;
-
-        // If it's already playing this clip, skip
-        if (ambienceSource.clip == forestAmbience && ambienceSource.isPlaying)
-            return;
-
-        StopAllCoroutines(); // stop any previous fades
-        StartCoroutine(FadeInAmbience(forestAmbience, fadeDuration));
+        lockMusic = state;
     }
-
-    private IEnumerator FadeInAmbience(AudioClip newClip, float fadeDuration)
+    public void PlayInDangerCue(bool isInDanger)
     {
-        AudioWrapper wrapper = ambienceSource.GetComponent<AudioWrapper>();
-        float targetVolume = wrapper != null ? wrapper.GetCurrentVolume() : 1f;
-
-        ambienceSource.clip = newClip;
-        ambienceSource.loop = true;
-        ambienceSource.volume = 0f;
-        ambienceSource.Play();
-
-        float elapsed = 0f;
-        while (elapsed < fadeDuration)
+        if (isInDanger)
         {
-            elapsed += Time.deltaTime;
-            ambienceSource.volume = Mathf.Lerp(0f, targetVolume, elapsed / fadeDuration);
-            yield return null;
+            StartCoroutine(FadeMusic(inDangerClip));
+        }
+        else
+        {
+            StartCoroutine(FadeMusic(currentMusic));
         }
 
-        ambienceSource.volume = targetVolume;
     }
-        
-    public void PlayInDangerCue(bool inDanger)
+    private void HandleDangerMusic(bool isInDanger)
     {
-        if (musicSource == null || inDangerClip == null)
-            return;
-
-        // Stop only the danger fade, not all coroutines globally
         if (dangerFadeCoroutine != null)
             StopCoroutine(dangerFadeCoroutine);
 
-        dangerFadeCoroutine = StartCoroutine(FadeDangerCue(inDanger));
-        OnDangerStateChanged?.Invoke(inDanger);
+        dangerFadeCoroutine = StartCoroutine(FadeMusic(isInDanger ? inDangerClip : currentMusic));
+        lockMusic = !isInDanger;
     }
 
-
-    private IEnumerator FadeDangerCue(bool inDanger)
+    public IEnumerator FadeMusic(AudioClip bgmClip)
     {
-        float fadeDuration = 1.5f;
-        float elapsed = 0f;
+        if (musicSource.clip == bgmClip) yield break;
+        if (lockMusic) yield break;
 
-        AudioWrapper wrapper = musicSource.GetComponent<AudioWrapper>();
-        float targetVolume = inDanger
-            ? (wrapper != null ? wrapper.GetCurrentVolume() : 1f)
-            : 0f;
+        float currentAudioVolume = musicSource.volume;
+        yield return FadeOut(musicSource);
+        yield return FadeIn(musicSource, bgmClip, currentAudioVolume);
+    }
 
-        if (inDanger)
+    public IEnumerator FadeAmbience(AudioClip sfxClip)
+    {
+        if (ambienceSource.clip == sfxClip) yield break;
+        if (lockMusic) yield break;
+
+        float currentAudioVolume = ambienceSource.volume;
+        yield return FadeOut(ambienceSource);
+        yield return FadeIn(ambienceSource, sfxClip, currentAudioVolume);
+    }
+    IEnumerator FadeIn(AudioSource source, AudioClip clip, float targetVolume)
+    {
+        if (clip != inDangerClip) currentMusic = clip;
+        source.clip = clip;
+        source.Play();
+
+        float i = 0;
+        float duration = 2;
+        while (i < duration)
         {
-            // Re-prepare clip even if it's been stopped earlier
-            if (musicSource.clip != inDangerClip)
-            {
-                musicSource.clip = inDangerClip;
-                musicSource.loop = true;
-            }
+            i += Time.deltaTime;
 
-            // Restart playback safely
-            if (!musicSource.isPlaying)
-            {
-                musicSource.volume = 0f;
-                musicSource.Play();
-            }
+            source.volume = Mathf.Lerp(0, targetVolume, i / duration);
+
+            yield return null;
         }
+        source.volume = targetVolume;
+    }
 
-        float startVolume = musicSource.volume;
+    IEnumerator FadeOut(AudioSource source)
+    {
+        float startVolume = source.volume;
 
-        while (elapsed < fadeDuration)
+        float i = 0;
+        float duration = 2;
+        while (i < duration)
         {
-            elapsed += Time.deltaTime;
-            musicSource.volume = Mathf.Lerp(startVolume, targetVolume, elapsed / fadeDuration);
+            i += Time.deltaTime;
+
+            source.volume = Mathf.Lerp(source.volume, 0, i / duration);
+
             yield return null;
         }
 
-        musicSource.volume = targetVolume;
-
-        if (!inDanger && Mathf.Approximately(targetVolume, 0f))
-        {
-            musicSource.Stop();
-            // DO NOT set clip = null; keeps clip ready for next use
-        }
-
-        dangerFadeCoroutine = null;
+        source.Stop();
+        source.volume = startVolume; // reset for reuse
     }
-
     #endregion
-
-
-
-
 }
 
