@@ -12,6 +12,7 @@ public class AudioWrapper : MonoBehaviour
 
     [Header("Type Settings")]
     public bool isSFX = true;
+    public bool isAmbience = false;
 
     private bool isSubscribed = false;
 
@@ -47,15 +48,20 @@ public class AudioWrapper : MonoBehaviour
         if (isSubscribed || AudioManager.instance == null)
             return;
 
-        if (isSFX)
+        if (isSFX && !isAmbience)
         {
             AudioManager.instance.OnSFXVolumeChanged += ChangeVolume;
             ChangeVolume(AudioManager.instance.SFXvolumeValue);
         }
-        else
+        else if (!isSFX && !isAmbience)
         {
             AudioManager.instance.OnBGMVolumeChanged += ChangeVolume;
             ChangeVolume(AudioManager.instance.BGMvolumeValue);
+        }
+        else if (isAmbience)
+        {
+            AudioManager.instance.OnAmbienceVolumeChanged += ChangeVolume;
+            ChangeVolume(AudioManager.instance.ambienceVolumeValue);
         }
 
         isSubscribed = true;
@@ -72,10 +78,12 @@ public class AudioWrapper : MonoBehaviour
         if (!isSubscribed || AudioManager.instance == null)
             return;
 
-        if (isSFX)
+        if (isSFX && !isAmbience)
             AudioManager.instance.OnSFXVolumeChanged -= ChangeVolume;
-        else
+        else if(!isSFX && !isAmbience)
             AudioManager.instance.OnBGMVolumeChanged -= ChangeVolume;
+        else if(isAmbience)
+            AudioManager.instance.OnAmbienceVolumeChanged -= ChangeVolume;
 
         isSubscribed = false;
     }

@@ -26,8 +26,8 @@ public class AudioZone : MonoBehaviour
             {
                 isPlaying = true;
 
-                StartCoroutine(AudioManager.instance.FadeMusic(backgroundMusicClip));
-                StartCoroutine(AudioManager.instance.FadeAmbience(ambienceMusicClip));
+                StartCoroutine(AudioManager.instance.CrossFadeMusic(backgroundMusicClip));
+                StartCoroutine(AudioManager.instance.CrossFadeAmbience(ambienceMusicClip));
             }            
         }
         else

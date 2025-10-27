@@ -17,8 +17,11 @@ public class Settings_Manager : MonoBehaviour
     public Slider sfxSlider;
     public TextMeshProUGUI bgmValueText;
     public Slider bgmSlider;
+    public TextMeshProUGUI ambienceValueText;
+    public Slider ambienceSlider;
     private const string audioSFXPlayerPrefs = "Audio_SFX";
     private const string audioBGMPlayerPrefs = "Audio_BGM";
+    private const string audioAmbiencePlayerPrefs = "Audio_Ambience";
 
     [Header("Buttons")]
     public Button returnButton;
@@ -42,6 +45,9 @@ public class Settings_Manager : MonoBehaviour
 
         if (bgmSlider != null)
             bgmSlider.onValueChanged.AddListener(OnBGMSliderChanged);
+
+        if (ambienceSlider != null)
+            ambienceSlider.onValueChanged.AddListener(OnAmbienceSliderChanged);
     }
 
     #region Save & Load
@@ -93,15 +99,20 @@ public class Settings_Manager : MonoBehaviour
         sfxSlider.maxValue = 1f;
         bgmSlider.minValue = 0f;
         bgmSlider.maxValue = 1f;
+        ambienceSlider.minValue = 0f;
+        ambienceSlider.maxValue = 1f;
 
         float savedSFX = PlayerPrefs.GetFloat(audioSFXPlayerPrefs, 1);
         float savedBGM = PlayerPrefs.GetFloat(audioBGMPlayerPrefs, 1f);
+        float savedAmbience = PlayerPrefs.GetFloat(audioAmbiencePlayerPrefs, 1f);
 
         sfxSlider.value = savedSFX;
         bgmSlider.value = savedBGM;
+        ambienceSlider.value = savedAmbience;
 
         AudioManager.instance.SetSFXVolume(savedSFX);
         AudioManager.instance.SetBGMVolume(savedBGM);
+        AudioManager.instance.SetAmbienceVolume(savedAmbience);
 
         UpdateAudioText();
     }
@@ -118,10 +129,17 @@ public class Settings_Manager : MonoBehaviour
         UpdateAudioText();
     }
 
+    void OnAmbienceSliderChanged(float value)
+    {
+        AudioManager.instance.SetAmbienceVolume(ambienceSlider.value);
+        UpdateAudioText();
+    }
+
     void UpdateAudioText()
     {
         sfxValueText.text = Mathf.RoundToInt(sfxSlider.value * 100).ToString();
         bgmValueText.text = Mathf.RoundToInt(bgmSlider.value * 100).ToString();
+        ambienceValueText.text = Mathf.RoundToInt(bgmSlider.value * 100).ToString();
     }
 
     #endregion

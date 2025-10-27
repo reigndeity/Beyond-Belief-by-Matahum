@@ -57,21 +57,30 @@ public class AudioManager : MonoBehaviour
     public AudioClip monkeyInteractClip;
 
     [Header("Music Audio")]
-    public AudioSource musicSource;
+    public AudioSource musicSourceA;
+    public AudioSource musicSourceB;
+    private AudioSource activeMusicSource;
+    private AudioSource inactiveMusicSource;
+
     public AudioClip currentMusic;
     public AudioClip inDangerClip;
     public bool lockMusic = false;
 
     [Header("Ambience Audio")]
-    public AudioSource ambienceSource;
+    public AudioSource ambienceSourceA;
+    public AudioSource ambienceSourceB;
+    private AudioSource activeAmbienceSource;
+    private AudioSource inactiveAmbienceSource;
 
     //===================================================================================================
     public event System.Action<float> OnSFXVolumeChanged;
     public event System.Action<float> OnBGMVolumeChanged;
+    public event System.Action<float> OnAmbienceVolumeChanged;
 
     [Header("SFX and BGM Volume")]
     public float SFXvolumeValue;
     public float BGMvolumeValue;
+    public float ambienceVolumeValue;
     public bool isPaused;
 
     void Awake()
@@ -92,8 +101,16 @@ public class AudioManager : MonoBehaviour
     {
         SFXvolumeValue = PlayerPrefs.GetFloat("Audio_SFX", 100);
         BGMvolumeValue = PlayerPrefs.GetFloat("Audio_BGM", 100);
+        ambienceVolumeValue = PlayerPrefs.GetFloat("Audio_Ambience", 100);
         SetSFXVolume(SFXvolumeValue);
         SetBGMVolume(BGMvolumeValue);
+        SetAmbienceVolume(ambienceVolumeValue);
+
+        if(musicSourceA != null) activeMusicSource = musicSourceA;
+        if(musicSourceB != null) inactiveMusicSource = musicSourceB;
+        if(ambienceSourceA != null) activeAmbienceSource = ambienceSourceA;
+        if(ambienceSourceB != null) inactiveAmbienceSource = ambienceSourceB;
+
 
         if (UI_Game.Instance != null)
         {
@@ -283,6 +300,12 @@ public class AudioManager : MonoBehaviour
         BGMvolumeValue = newValue;
         OnBGMVolumeChanged?.Invoke(newValue);
     }
+
+    public void SetAmbienceVolume(float newValue)
+    {
+        ambienceVolumeValue = newValue;
+        OnAmbienceVolumeChanged?.Invoke(newValue);
+    }
     #endregion
 
     #region AUDIO ZONES
@@ -299,7 +322,7 @@ public class AudioManager : MonoBehaviour
         // Always allow dynamic transitions
         lockMusic = false;
 
-        dangerFadeCoroutine = StartCoroutine(FadeMusic(isInDanger ? inDangerClip : currentMusic));
+        dangerFadeCoroutine = StartCoroutine(CrossFadeMusic(isInDanger ? inDangerClip : currentMusic));
     }
 
     public void PlayInDangerCue(bool isInDanger)
@@ -307,65 +330,78 @@ public class AudioManager : MonoBehaviour
         // Ensure music is never locked when manually toggled
         lockMusic = false;
 
-        StartCoroutine(FadeMusic(isInDanger ? inDangerClip : currentMusic));
+        StartCoroutine(CrossFadeMusic(isInDanger ? inDangerClip : currentMusic));
     }
 
-    public IEnumerator FadeMusic(AudioClip bgmClip)
+    public IEnumerator CrossFadeMusic(AudioClip newClip)
     {
-        if (musicSource.clip == bgmClip) yield break;
         if (lockMusic) yield break;
+        if (activeMusicSource.clip == newClip) yield break;
 
-        float currentAudioVolume = musicSource.volume;
-        yield return FadeOut(musicSource);
-        yield return FadeIn(musicSource, bgmClip, currentAudioVolume);
-    }
+        // Prepare inactive source
+        inactiveMusicSource.clip = newClip;
+        inactiveMusicSource.volume = 0f;
+        inactiveMusicSource.Play();
 
-    public IEnumerator FadeAmbience(AudioClip sfxClip)
-    {
-        if (ambienceSource.clip == sfxClip) yield break;
-        if (lockMusic) yield break;
+        // Perform crossfade
+        float timer = 0f;
+        float startVolume = activeMusicSource.volume;
 
-        float currentAudioVolume = ambienceSource.volume;
-        yield return FadeOut(ambienceSource);
-        yield return FadeIn(ambienceSource, sfxClip, currentAudioVolume);
-    }
-    IEnumerator FadeIn(AudioSource source, AudioClip clip, float targetVolume)
-    {
-        if (clip != inDangerClip) currentMusic = clip;
-        source.clip = clip;
-        source.Play();
-
-        float i = 0;
-        float duration = 2;
-        while (i < duration)
+        while (timer < 2)
         {
-            i += Time.deltaTime;
+            timer += Time.deltaTime;
+            float t = timer / 2;
 
-            source.volume = Mathf.Lerp(0, targetVolume, i / duration);
-
-            yield return null;
-        }
-        source.volume = targetVolume;
-    }
-
-    IEnumerator FadeOut(AudioSource source)
-    {
-        float startVolume = source.volume;
-
-        float i = 0;
-        float duration = 2;
-        while (i < duration)
-        {
-            i += Time.deltaTime;
-
-            source.volume = Mathf.Lerp(source.volume, 0, i / duration);
+            activeMusicSource.volume = Mathf.Lerp(startVolume, 0f, t);
+            inactiveMusicSource.volume = Mathf.Lerp(0f, startVolume, t);
 
             yield return null;
         }
 
-        source.Stop();
-        source.volume = startVolume; // reset for reuse
+        // Swap roles
+        activeMusicSource.Stop();
+
+        var temp = activeMusicSource;
+        activeMusicSource = inactiveMusicSource;
+        inactiveMusicSource = temp;
+
+        activeMusicSource.volume = startVolume;
+        if (newClip != inDangerClip)
+            currentMusic = newClip;
     }
+
+    public IEnumerator CrossFadeAmbience(AudioClip newClip, float duration = 2f)
+    {
+        if (lockMusic) yield break;
+        if (activeAmbienceSource.clip == newClip) yield break;
+
+        inactiveAmbienceSource.clip = newClip;
+        inactiveAmbienceSource.volume = 0f;
+        inactiveAmbienceSource.Play();
+
+        float timer = 0f;
+        float startVolume = activeAmbienceSource.volume;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            float t = timer / duration;
+
+            activeAmbienceSource.volume = Mathf.Lerp(startVolume, 0f, t);
+            inactiveAmbienceSource.volume = Mathf.Lerp(0f, startVolume, t);
+
+            yield return null;
+        }
+
+        activeAmbienceSource.Stop();
+
+        var temp = activeAmbienceSource;
+        activeAmbienceSource = inactiveAmbienceSource;
+        inactiveAmbienceSource = temp;
+
+        activeAmbienceSource.volume = startVolume;
+    }
+    
     #endregion
 }
 
