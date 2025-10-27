@@ -20,6 +20,8 @@ public class UI_TransitionController : MonoBehaviour
 
     [HideInInspector] public bool isTeleporting { get; private set; }
 
+    public LoadingScene_ToolTips toolTips;
+
     void Awake()
     {
         if (fadeGroup)
@@ -109,6 +111,8 @@ public class UI_TransitionController : MonoBehaviour
     
     IEnumerator PlayLoading()
     {
+        if(toolTips) toolTips.ShowToolTip();
+
         if (!loadingPanel || !loadingFill)
         {
             // If there’s no loading UI wired, just wait a short moment for effect
