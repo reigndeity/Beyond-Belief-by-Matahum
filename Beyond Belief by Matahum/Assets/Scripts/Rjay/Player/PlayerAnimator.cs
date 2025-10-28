@@ -158,7 +158,7 @@ public class PlayerAnimator : MonoBehaviour
             }
         }
 
-        // THIS IS NEW, MIGHT REMOVE IF STILL SHIT BUT IT SEEMS TO FIX THE ISSUE WITH THE IDLE SLIDING BUG 09/07/2025 - 2:23PM
+        // Chatgpt, this was my attempt to fix but it didnt work hahaha
         if (m_playerMovement.MoveDirection.magnitude > 0.1f &&
             currentAnimationState.StartsWith("player_idle"))
         {
@@ -469,13 +469,25 @@ public class PlayerAnimator : MonoBehaviour
     public void ForceIdleState()
     {
         if (isDead) return;
+
+        // Stop any running animation coroutines so we have a clean slate
         StopAllCoroutines();
+
+        // Clear hit flag
         isHit = false;
 
+        // Reset internal coroutines / flags
         idleCycleCoroutine = null;
         stopAnimationCoroutine = null;
         isInIdleCycle = false;
         isPlayingStopAnimation = false;
+
+        // IMPORTANT: reset jump/fall state and air timer so HandleAnimations() doesn't early-return
+        jumpState = JumpState.None;
+        airTime = 0f;
+
+        // Clear recent speed buffer so JustStoppedAbruptly doesn't trigger incorrectly
+        recentSpeeds.Clear();
 
         ChangeAnimationState("player_idle_1");
     }
