@@ -111,31 +111,37 @@ public class PlayerCamera : MonoBehaviour
     void UpdateDistanceWithCollision(Vector3 targetPosition)
     {
         Quaternion rotation = Quaternion.Euler(currentRotation);
-        Vector3 desiredCameraPos = targetPosition - (rotation * Vector3.forward * desiredDistance);
+        Vector3 camDir = rotation * Vector3.back;
+        Vector3 desiredCamPos = targetPosition + camDir * desiredDistance;
 
-        float targetDistance = desiredDistance;
+        float targetDist = desiredDistance;
 
-        // Check along the path (spherecast)
-        if (Physics.SphereCast(targetPosition, cameraRadius, desiredCameraPos - targetPosition, out RaycastHit hit, desiredDistance, collisionLayers))
+        // --- Perform a solid spherecast from target to desired camera position ---
+        if (Physics.SphereCast(targetPosition, cameraRadius, camDir, out RaycastHit hit, desiredDistance, collisionLayers, QueryTriggerInteraction.Ignore))
         {
-            targetDistance = Mathf.Clamp(hit.distance - 0.1f, minDistance, desiredDistance);
+            // Position the camera right before the obstacle
+            targetDist = Mathf.Clamp(hit.distance - 0.05f, minDistance, desiredDistance);
         }
 
-        // Smooth transition
-        currentDistance = Mathf.SmoothDamp(currentDistance, targetDistance, ref distanceSmoothVelocity, 1f / collisionSmoothSpeed);
+        // --- Smoothly interpolate distance ---
+        currentDistance = Mathf.Lerp(currentDistance, targetDist, Time.deltaTime * collisionSmoothSpeed);
 
-        // --- Extra safeguard: check final camera position ---
-        Vector3 finalCameraPos = targetPosition - (rotation * Vector3.forward * currentDistance);
+        // --- Compute final camera position ---
+        Vector3 finalCamPos = targetPosition + camDir * currentDistance;
 
-        if (Physics.CheckSphere(finalCameraPos, cameraRadius, collisionLayers))
+        // --- Hard clamp: ensure camera never spawns inside geometry ---
+        if (Physics.CheckSphere(finalCamPos, cameraRadius, collisionLayers))
         {
-            // Push camera out of walls
-            if (Physics.Raycast(targetPosition, (finalCameraPos - targetPosition).normalized, out RaycastHit pushHit, currentDistance, collisionLayers))
+            if (Physics.Raycast(targetPosition, camDir, out RaycastHit pushHit, currentDistance, collisionLayers, QueryTriggerInteraction.Ignore))
             {
-                currentDistance = Mathf.Clamp(pushHit.distance - 0.05f, minDistance, currentDistance);
+                finalCamPos = pushHit.point + hit.normal * 0.05f;
+                currentDistance = Vector3.Distance(targetPosition, finalCamPos);
             }
         }
+
+        transform.position = Vector3.Lerp(transform.position, finalCamPos, Time.deltaTime * (followSmoothSpeed * 0.5f));
     }
+
 
 
 
