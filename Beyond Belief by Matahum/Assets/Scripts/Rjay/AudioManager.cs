@@ -310,33 +310,63 @@ public class AudioManager : MonoBehaviour
 
     #region AUDIO ZONES
 
+    public Coroutine bgmCoroutine;
+    public Coroutine ambienceCoroutine;
+
     public void LockMusic(bool state)
     {
         lockMusic = state;
     }
-    private void HandleDangerMusic(bool isInDanger)
+    public void HandleDangerMusic(bool isInDanger)
     {
-        if (dangerFadeCoroutine != null)
-            StopCoroutine(dangerFadeCoroutine);
+        /* if (dangerFadeCoroutine != null)
+             StopCoroutine(dangerFadeCoroutine);
 
-        // Always allow dynamic transitions
+         // Always allow dynamic transitions
+         lockMusic = false;
+
+         AudioClip dangerClip = isInDanger ? inDangerClip : currentMusic;
+
+         dangerFadeCoroutine = StartCoroutine(CrossFadeMusic(dangerClip));*/
+
         lockMusic = false;
 
-        dangerFadeCoroutine = StartCoroutine(CrossFadeMusic(isInDanger ? inDangerClip : currentMusic));
+        AudioClip dangerClip = isInDanger ? inDangerClip : currentMusic;
+        FadeMusic(dangerClip);
     }
 
-    public void PlayInDangerCue(bool isInDanger)
+    public void FadeMusic(AudioClip newClip)
     {
-        // Ensure music is never locked when manually toggled
-        lockMusic = false;
+        if (activeMusicSource.clip == newClip) return;
 
-        StartCoroutine(CrossFadeMusic(isInDanger ? inDangerClip : currentMusic));
+        if (bgmCoroutine != null)
+            StopCoroutine(bgmCoroutine);
+
+        bgmCoroutine = StartCoroutine(CrossFadeMusic(newClip));
+    }
+
+    public void FadeAmbience(AudioClip newClip)
+    {
+        if (activeAmbienceSource.clip == newClip) return;
+
+        if (ambienceCoroutine != null)
+            StopCoroutine(ambienceCoroutine);
+
+        ambienceCoroutine = StartCoroutine(CrossFadeAmbience(newClip));
     }
 
     public IEnumerator CrossFadeMusic(AudioClip newClip)
     {
         if (lockMusic) yield break;
-        if (activeMusicSource.clip == newClip) yield break;
+        //if (activeMusicSource.clip == newClip) yield break;
+
+        if (inDangerClip == newClip)
+        {
+            lockMusic = true;
+        }
+
+        AudioWrapper wrapper = inactiveMusicSource.GetComponent<AudioWrapper>();
+        float targetVolume = Mathf.Lerp(0, wrapper.maxVolume, Mathf.Clamp01(BGMvolumeValue));
 
         // Prepare inactive source
         inactiveMusicSource.clip = newClip;
@@ -347,13 +377,13 @@ public class AudioManager : MonoBehaviour
         float timer = 0f;
         float startVolume = activeMusicSource.volume;
 
-        while (timer < 2)
+        while (timer < 1)
         {
             timer += Time.deltaTime;
-            float t = timer / 2;
+            float t = timer / 1;
 
             activeMusicSource.volume = Mathf.Lerp(startVolume, 0f, t);
-            inactiveMusicSource.volume = Mathf.Lerp(0f, startVolume, t);
+            inactiveMusicSource.volume = Mathf.Lerp(0f, targetVolume, t);
 
             yield return null;
         }
@@ -365,15 +395,18 @@ public class AudioManager : MonoBehaviour
         activeMusicSource = inactiveMusicSource;
         inactiveMusicSource = temp;
 
-        activeMusicSource.volume = startVolume;
+        activeMusicSource.volume = targetVolume;
         if (newClip != inDangerClip)
             currentMusic = newClip;
     }
 
-    public IEnumerator CrossFadeAmbience(AudioClip newClip, float duration = 2f)
+    public IEnumerator CrossFadeAmbience(AudioClip newClip)
     {
         if (lockMusic) yield break;
-        if (activeAmbienceSource.clip == newClip) yield break;
+        //if (activeAmbienceSource.clip == newClip) yield break;
+
+        AudioWrapper wrapper = inactiveAmbienceSource.GetComponent<AudioWrapper>();
+        float targetVolume = Mathf.Lerp(0, wrapper.maxVolume, Mathf.Clamp01(ambienceVolumeValue));
 
         inactiveAmbienceSource.clip = newClip;
         inactiveAmbienceSource.volume = 0f;
@@ -382,13 +415,13 @@ public class AudioManager : MonoBehaviour
         float timer = 0f;
         float startVolume = activeAmbienceSource.volume;
 
-        while (timer < duration)
+        while (timer < 1)
         {
             timer += Time.deltaTime;
-            float t = timer / duration;
+            float t = timer / 1;
 
             activeAmbienceSource.volume = Mathf.Lerp(startVolume, 0f, t);
-            inactiveAmbienceSource.volume = Mathf.Lerp(0f, startVolume, t);
+            inactiveAmbienceSource.volume = Mathf.Lerp(0f, targetVolume, t);
 
             yield return null;
         }
@@ -399,7 +432,7 @@ public class AudioManager : MonoBehaviour
         activeAmbienceSource = inactiveAmbienceSource;
         inactiveAmbienceSource = temp;
 
-        activeAmbienceSource.volume = startVolume;
+        activeAmbienceSource.volume = targetVolume;
     }
     
     #endregion

@@ -10,15 +10,23 @@ public class AudioZone : MonoBehaviour
 
     private Transform player;
     private bool isPlaying = false;
-
+    private bool canPlayMusic = false;
     private void Start()
     {
         player = FindFirstObjectByType<Player>().transform;
+        StartCoroutine(StartTheGame());
+    }
+
+    IEnumerator StartTheGame()
+    {
+        yield return new WaitForSeconds(1);
+        canPlayMusic = true;
     }
 
     private void Update()
     {
-        if (player == null) return;   
+        if (player == null) return;
+        if (!canPlayMusic) return;
 
         if (Vector3.Distance(player.position, transform.position) < audioDistance)
         {
@@ -26,8 +34,8 @@ public class AudioZone : MonoBehaviour
             {
                 isPlaying = true;
 
-                StartCoroutine(AudioManager.instance.CrossFadeMusic(backgroundMusicClip));
-                StartCoroutine(AudioManager.instance.CrossFadeAmbience(ambienceMusicClip));
+                AudioManager.instance.FadeMusic(backgroundMusicClip);
+                AudioManager.instance.FadeAmbience(ambienceMusicClip);
             }            
         }
         else

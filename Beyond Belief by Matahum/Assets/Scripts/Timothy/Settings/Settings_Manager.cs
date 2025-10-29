@@ -139,7 +139,7 @@ public class Settings_Manager : MonoBehaviour
     {
         sfxValueText.text = Mathf.RoundToInt(sfxSlider.value * 100).ToString();
         bgmValueText.text = Mathf.RoundToInt(bgmSlider.value * 100).ToString();
-        ambienceValueText.text = Mathf.RoundToInt(bgmSlider.value * 100).ToString();
+        ambienceValueText.text = Mathf.RoundToInt(ambienceSlider.value * 100).ToString();
     }
 
     #endregion

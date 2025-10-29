@@ -195,7 +195,7 @@ public class Player : MonoBehaviour, IDamageable
         if (!inDanger)
         {
             inDanger = true;
-            AudioManager.instance.PlayInDangerCue(inDanger);   
+            AudioManager.instance.HandleDangerMusic(inDanger);   
         }
     }
 
@@ -207,22 +207,25 @@ public class Player : MonoBehaviour, IDamageable
         if (dangerCount > 0)
             return;
 
+        inDanger = false;
+        AudioManager.instance.HandleDangerMusic(inDanger);
+
         // Start a grace delay before actually exiting danger
-        if (dangerCoroutine != null)
+        /*if (dangerCoroutine != null)
             StopCoroutine(dangerCoroutine);
 
-        dangerCoroutine = StartCoroutine(DelayExitDanger());
+        dangerCoroutine = StartCoroutine(DelayExitDanger());*/
     }
 
     private IEnumerator DelayExitDanger()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(.5f);
 
         // Only exit danger if no enemies are chasing after the delay
         if (dangerCount == 0 && inDanger)
         {
             inDanger = false;
-            AudioManager.instance.PlayInDangerCue(inDanger);
+            AudioManager.instance.HandleDangerMusic(inDanger);
             Debug.Log("Player: Exited danger after delay.");
         }
 

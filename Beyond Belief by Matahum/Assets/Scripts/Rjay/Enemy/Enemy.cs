@@ -56,6 +56,8 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
         // Try direct references first
         var normal = m_blazeAI?.normalStateBehaviour as BlazeAISpace.NormalStateBehaviour;
         var surprised = m_blazeAI?.surprisedStateBehaviour as BlazeAISpace.SurprisedStateBehaviour;
+        var alert = m_blazeAI?.alertStateBehaviour as BlazeAISpace.AlertStateBehaviour;
+
 
         // Fallback — just in case BlazeAI didn’t assign them yet
         if (normal == null)
@@ -280,6 +282,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
         m_player.ExitDanger();
         Debug.Log($"[{name}] Leaving Combat (Normal state).");
     }
+
 
     private void OnDestroy()
     {
