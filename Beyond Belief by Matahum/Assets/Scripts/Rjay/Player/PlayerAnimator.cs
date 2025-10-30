@@ -112,6 +112,7 @@ public class PlayerAnimator : MonoBehaviour
         }
         else
         {
+            // Handle landing or soft ground contact
             if (jumpState == JumpState.Falling)
             {
                 jumpState = JumpState.Landing;
@@ -119,8 +120,15 @@ public class PlayerAnimator : MonoBehaviour
                 return;
             }
 
+            // 🔥 NEW FIX: if we're grounded but still in Jumping state (on gentle slopes etc.)
+            if (jumpState == JumpState.Jumping)
+            {
+                jumpState = JumpState.None;
+            }
+
             airTime = 0f; // reset when grounded
         }
+
 
         if (jumpState != JumpState.None ||
             !isGrounded ||

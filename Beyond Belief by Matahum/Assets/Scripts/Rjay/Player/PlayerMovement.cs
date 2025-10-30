@@ -50,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
     public float staminaRegenRate = 10f;
     public bool isSprinting = false;
     public float CurrentStamina { get => currentStamina; set => currentStamina = value; }
-    public float MaxStamina     { get => maxStamina;     set => maxStamina     = value; }
+    public float MaxStamina { get => maxStamina; set => maxStamina = value; }
 
 
     [Header("Stamina Delay")]
@@ -111,9 +111,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if (GetComponent<PlayerSkills>().isUsingNormalSkill || GetComponent<PlayerSkills>().isUsingUltimateSkill)
             return;
-        
+
         if (m_playerAnimator.isHit) return;
-        
+
         HandleMovementMode();
 
         Vector2 input = m_playerInput.GetMovementInput();
@@ -177,7 +177,7 @@ public class PlayerMovement : MonoBehaviour
         if (m_playerAnimator.isHit) return;
         if (m_playerCombat.IsAttacking() && !m_playerCombat.CanMoveDuringAttack())
             return;
-        
+
         if (jumpCooldownTimer > 0f)
             jumpCooldownTimer -= Time.deltaTime;
 
@@ -199,7 +199,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(m_playerInput.jumpKey) && m_characterController.isGrounded &&jumpCooldownTimer <= 0f)
+        if (Input.GetKeyDown(m_playerInput.jumpKey) && m_characterController.isGrounded && jumpCooldownTimer <= 0f)
         {
             m_lookAtTarget.DisableLooking();
             if (jumpStartDelay > 0f)
@@ -318,7 +318,7 @@ public class PlayerMovement : MonoBehaviour
         if (!TutorialManager.instance.tutorial_canSprintAndDash) return;
         if (GetComponent<PlayerSkills>().isUsingNormalSkill || GetComponent<PlayerSkills>().isUsingUltimateSkill)
             return;
-        
+
         dashCooldownTimer -= Time.deltaTime;
 
         if (Input.GetKeyDown(m_playerInput.sprintKey) &&
@@ -412,5 +412,32 @@ public class PlayerMovement : MonoBehaviour
         isWalking = !isWalking;
         currentMoveSpeed = isWalking ? walkSpeed : jogSpeed;
     }
+
+    // #if UNITY_EDITOR
+    //     private void OnGUI()
+    //     {
+    //         GUI.color = Color.white;
+    //         GUI.Label(new Rect(25, 25, 400, 25), $"Grounded: {m_characterController.isGrounded}");
+    //         GUI.Label(new Rect(25, 45, 400, 25), $"Vertical Velocity: {verticalVelocity:F2}");
+    //         GUI.Label(new Rect(25, 65, 400, 25), $"Is Jumping: {isJumping}");
+    //         GUI.Label(new Rect(25, 85, 400, 25), $"Just Landed: {justLanded}");
+    //         GUI.Label(new Rect(25, 105, 400, 25), $"Was Grounded Last Frame: {wasGroundedLastFrame}");
+    //         GUI.Label(new Rect(25, 125, 400, 25), $"Speed: {Speed:F2}");
+
+    //         // Optional: display what the CharacterController is standing on
+    //         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, m_characterController.height))
+    //         {
+    //             GUI.color = Color.cyan;
+    //             GUI.Label(new Rect(25, 145, 400, 25), $"Ray Hit: {hit.collider.name}");
+    //             GUI.Label(new Rect(25, 165, 400, 25), $"Surface Normal Angle: {Vector3.Angle(hit.normal, Vector3.up):F1}°");
+    //         }
+    //         else
+    //         {
+    //             GUI.color = Color.red;
+    //             GUI.Label(new Rect(25, 145, 400, 25), "Ray Hit: NONE");
+    //         }
+    //     }
+    // #endif
+
 
 }
