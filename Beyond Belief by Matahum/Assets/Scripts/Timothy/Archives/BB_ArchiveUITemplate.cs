@@ -21,12 +21,14 @@ public class BB_ArchiveUITemplate : MonoBehaviour
     {
         if (linkedArchiveSO == null) return;
 
-        if (linkedArchiveSO.isDiscovered)
+        bool isDiscovered = PlayerPrefs.GetInt($"{linkedArchiveSO.archiveName}_Discovered", 0) == 1;
+        if (isDiscovered)
         {
             nameText.text = linkedArchiveSO.archiveName;
             iconImage.sprite = linkedArchiveSO.archiveIcon;
 
-            newDiscoverySprite.SetActive(!linkedArchiveSO.isViewed);
+            bool isViewed = PlayerPrefs.GetInt($"{linkedArchiveSO.archiveName}_Viewed", 0) == 1;
+            newDiscoverySprite.SetActive(!isViewed);
 
         }
         else

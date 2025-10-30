@@ -4,6 +4,7 @@ using TMPro;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
+using static UnityEngine.GraphicsBuffer;
 
 public class BB_ArchiveUI : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class BB_ArchiveUI : MonoBehaviour
     public List<GameObject> archiveList = new List<GameObject>();
 
     [Header("Archive Details")]
+    public GameObject selectedArchive;
     public TextMeshProUGUI archiveTitleName;
     public Image archiveImage;
     public TextMeshProUGUI archiveDetailText;
@@ -76,19 +78,26 @@ public class BB_ArchiveUI : MonoBehaviour
         }
     }
 
-
+    Transform currentScrollPane;
     public void OnOpenJournal(Transform scrollPanel) //This will auto select the first Quest when opening either the Journal, or switching between quest panels
     {
+        if (currentScrollPane == scrollPanel) return;
+
+        currentScrollPane = scrollPanel;
+        selectedArchive.SetActive(false);
+
         if (scrollPanel.childCount > 0)
         {
             Button archiveBtn = scrollPanel.GetChild(0).GetComponent<Button>();
             archiveBtn?.onClick.Invoke();
+
+            
         }
     }
 
     public void ShowDetails(BB_ArchiveSO archiveSO, BB_ArchiveUITemplate uiTemplate)
     {
-        if (!archiveSO.isDiscovered)
+        if (PlayerPrefs.GetInt($"{archiveSO.archiveName}_Discovered", 0) == 0)
         {
             archiveTitleName.text = $"{undiscoveredName} {archiveSO.archiveType.ToString()}";
             archiveImage.sprite = undiscoveredImage;
@@ -100,14 +109,27 @@ public class BB_ArchiveUI : MonoBehaviour
             archiveImage.sprite = archiveSO.archiveImage;
             archiveDetailText.text = archiveSO.archiveDescription;
 
-            if (!archiveSO.isViewed)
+            if (PlayerPrefs.GetInt($"{archiveSO.archiveName}_Viewed", 0) == 0) //0 = not viewed, 1 = viewed.
             {
-                archiveSO.isViewed = true;
+                //archiveSO.isViewed = true;
                 uiTemplate.newDiscoverySprite.SetActive(false);
+                PlayerPrefs.SetInt($"{archiveSO.archiveName}_Viewed", 1);
+                PlayerPrefs.Save();
             }
+        }
+
+        if (selectedArchive)
+        {
+            StartCoroutine(SetHighlightNextFrame(uiTemplate.transform));
         }
     }
 
+    private IEnumerator SetHighlightNextFrame(Transform target)
+    {
+        yield return null; // wait one frame for layout
+        selectedArchive.SetActive(true);
+        selectedArchive.transform.position = target.position;
+    }
     private void RefreshArchiveDisplay(BB_ArchiveSO ignoreThis)
     {
         foreach (var slotGO in archiveList)

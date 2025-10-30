@@ -29,6 +29,14 @@ public class BB_ArchiveManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
+    /*private void Start()
+    {
+        foreach (var archive in allArchives)
+        {
+            archive.isDiscovered = PlayerPrefs.GetInt($"{archive.archiveName}_Discovered", 0) == 1;
+            archive.isViewed = PlayerPrefs.GetInt($"{archive.archiveName}_Viewed", 0) == 1;
+        }
+    }*/
     public void SettingUpArchives()
     {
         foreach (var obj in allArchives)
@@ -71,10 +79,13 @@ public class BB_ArchiveManager : MonoBehaviour
 
     public void CheckArchive(BB_ArchiveSO archiveObj, BB_ArchiveSO archiveData)
     {
-        if (archiveObj == archiveData && !archiveObj.isDiscovered)
+        bool isDiscovered = PlayerPrefs.GetInt($"{archiveObj.archiveName}_Discovered", 0) == 1;
+        if (archiveObj == archiveData && !isDiscovered)
         {
-            archiveObj.isDiscovered = true;
+            //archiveObj.isDiscovered = true;
             OnArchiveUpdate?.Invoke(archiveObj);
+            PlayerPrefs.SetInt($"{archiveObj.archiveName}_Discovered", 1);
+            PlayerPrefs.Save();
             Debug.Log(archiveObj.archiveName + " has been discovered (visible and unobstructed)");
         }
     }

@@ -16,6 +16,7 @@ public class BB_Archive_ButtonManager : MonoBehaviour
     [Header("Archive Panels")]
     public GameObject creaturePanel;
     public GameObject locationPanel;
+    public Image locationImage;
     public GameObject wildlifePanel;
     public GameObject plantPanel;
 
@@ -38,6 +39,7 @@ public class BB_Archive_ButtonManager : MonoBehaviour
     #region Archive Categories
     public void OnOpenCreatureCategory()
     {
+        locationImage.gameObject.SetActive(false);
         creaturePanel.SetActive(true);
         locationPanel.SetActive(false);
         wildlifePanel.SetActive(false);
@@ -48,6 +50,7 @@ public class BB_Archive_ButtonManager : MonoBehaviour
     }
     public void OnOpenLocationCategory()
     {
+        locationImage.gameObject.SetActive(true);
         creaturePanel.SetActive(false);
         locationPanel.SetActive(true);
         wildlifePanel.SetActive(false);
@@ -69,6 +72,7 @@ public class BB_Archive_ButtonManager : MonoBehaviour
     }
     public void OnOpenPlantCategory()
     {
+        locationImage.gameObject.SetActive(false);
         creaturePanel.SetActive(false);
         locationPanel.SetActive(false);
         wildlifePanel.SetActive(false);

@@ -50,7 +50,9 @@ public class BahayAlitaptap_S2 : R_AgimatAbility
         GameObject sparkleObj = Instantiate(sparkleVFX, tracker.transform.position + offset, Quaternion.identity, tracker.transform);
         sparkleList.Add(sparkleObj);
 
-        if (tracker.archiveData.isDiscovered)
+        bool isDiscovered = PlayerPrefs.GetInt($"{tracker.archiveData.archiveName}_Discovered", 0) == 1;
+
+        if (isDiscovered)
         {
             Destroy(sparkleObj);
             sparkleList.Remove(sparkleObj);
@@ -65,7 +67,8 @@ public class BahayAlitaptap_S2 : R_AgimatAbility
 
         while (elapsed < fadeDuration)
         {
-            if (tracker.archiveData.isDiscovered)
+            
+            if (isDiscovered)
             {
                 if (cg != null) cg.alpha = 0f;
                 Destroy(sparkleObj);

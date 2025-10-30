@@ -18,6 +18,7 @@ public class TeleportInteractable : Interactable, ISaveable
     [Header("State")]
     [SerializeField] private bool isUnlocked = false;
     private bool wasPreviouslyUnlocked = false;
+    private BB_ArchiveTracker archiveTracker;
 
     [Header("Prompt Icon (world interaction prompt)")]
     [SerializeField] private Sprite lockedPromptIcon;
@@ -57,6 +58,7 @@ public class TeleportInteractable : Interactable, ISaveable
         m_player = FindFirstObjectByType<Player>();
         playerMinimap = FindFirstObjectByType<PlayerMinimap>();
         persistentGuid = GetComponent<PersistentGuid>();
+        archiveTracker = GetComponent<BB_ArchiveTracker>();
 
         SaveManager.Instance.Register(this);
     }
@@ -77,9 +79,12 @@ public class TeleportInteractable : Interactable, ISaveable
         if (useInteractCooldown && IsOnCooldown()) return;
         if (useInteractCooldown) TriggerCooldown();
 
+        if (archiveTracker != null) archiveTracker.DiscoveredArchive();
+
         if (!isUnlocked)
         {
             Unlock();
+
         }
         else
         {
