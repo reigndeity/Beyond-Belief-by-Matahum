@@ -21949,6 +21949,17 @@ MonoBehaviour:
     - clip: {fileID: 8300000, guid: e80c2111256f197429ce4f1d078cd086, type: 3}
       volume: 1
       pitch: 1
+  - clipGroupName: Alert SFX
+    clips:
+    - clip: {fileID: 8300000, guid: e43afb0984cf50742a8ab8bc7317bb51, type: 3}
+      volume: 1
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 45b97871742e2ea42839ac23be4bef80, type: 3}
+      volume: 1
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 9c588481eeff8ff4ea3826a970f04bf2, type: 3}
+      volume: 1
+      pitch: 1
   wrapper: {fileID: 0}
 --- !u!114 &7422140618456207651
 MonoBehaviour:
@@ -21964,6 +21975,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxVolume: 1
   isSFX: 1
+  isAmbience: 0
 --- !u!114 &5815128256286311317
 MonoBehaviour:
   m_ObjectHideFlags: 0
