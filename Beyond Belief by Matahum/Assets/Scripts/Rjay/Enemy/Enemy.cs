@@ -19,6 +19,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
     private EnemyAttack m_enemyAttack;
     public CharacterAudios charAudios;
     public int charAudioIndex;
+    public int charAudioHitSFX;
     public event System.Action OnDeath;
     private bool isChasingPlayer = false;
 
@@ -94,6 +95,8 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
         if (hitAnimOn)
             GetHit();
 
+        charAudios.RandomOneShotSFX(charAudioHitSFX);
+
         bool isCriticalHit = UnityEngine.Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
         float damageReduction = m_enemyStats.e_defense * 0.66f; // Defense Scaling
         float reducedDamage = damage - damageReduction;
@@ -122,6 +125,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
     #region GET HIT
     public void GetHit()
     {
+
         m_navMeshAgent.enabled = false;
         m_blazeAI.Hit();
         PushBackward(0.5f);

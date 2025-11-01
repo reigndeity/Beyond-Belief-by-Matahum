@@ -21845,6 +21845,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charAudios: {fileID: 5122814182568886753}
   charAudioIndex: 6
+  charAudioHitSFX: 2
   isDead: 0
 --- !u!114 &1523728016205171200
 MonoBehaviour:
@@ -21958,6 +21959,26 @@ MonoBehaviour:
       volume: 1
       pitch: 1
     - clip: {fileID: 8300000, guid: 9c588481eeff8ff4ea3826a970f04bf2, type: 3}
+      volume: 1
+      pitch: 1
+  - clipGroupName: Hit SFX
+    clips:
+    - clip: {fileID: 8300000, guid: 5cd7bef244cba0d45b0168508f3ff62d, type: 3}
+      volume: 1
+      pitch: 1
+    - clip: {fileID: 8300000, guid: ccd5db336b26eaf4f94e371d347b31d0, type: 3}
+      volume: 1
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 496af8c8847192142a141a06a31a2425, type: 3}
+      volume: 1
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 3d648b69a31a32341b40ea6db2763f1e, type: 3}
+      volume: 1
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 1b4483973d94a334f9aca90addd254c3, type: 3}
+      volume: 1
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 34c7c9e240b9baa4094f93ba0624a4a1, type: 3}
       volume: 1
       pitch: 1
   wrapper: {fileID: 0}

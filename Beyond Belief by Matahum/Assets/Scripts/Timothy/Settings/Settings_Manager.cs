@@ -56,6 +56,7 @@ public class Settings_Manager : MonoBehaviour
         PlayerPrefs.SetFloat(cameraSensitivityPlayerPrefs, CameraSensitivityValue());
         PlayerPrefs.SetFloat(audioSFXPlayerPrefs, sfxSlider.value);
         PlayerPrefs.SetFloat(audioBGMPlayerPrefs, bgmSlider.value);
+        PlayerPrefs.SetFloat(audioAmbiencePlayerPrefs, ambienceSlider.value);
         PlayerPrefs.Save();
     }
 

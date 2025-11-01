@@ -22092,6 +22092,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charAudios: {fileID: 0}
   charAudioIndex: 6
+  charAudioHitSFX: 2
   isDead: 0
 --- !u!114 &2615384962391021437
 MonoBehaviour:
@@ -22167,7 +22168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a4542fa4921a640ae265c68ac248c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 7611694655124090694, guid: 697dc390005082149822f4170e56fa4f, type: 3}
   clips:
   - clip: {fileID: 8300000, guid: e1308dbfc5a85d74ca0229790acc31e1, type: 3}
     volume: 1
@@ -22193,24 +22194,55 @@ MonoBehaviour:
   clipGroup:
   - clipGroupName: Walk SFX
     clips:
-    - clip: {fileID: 8300000, guid: 3827f5d93f0818d42995f0acbcc60cac, type: 3}
+    - clip: {fileID: 8300000, guid: ebf118c7e6aae8041b503802933baed3, type: 3}
       volume: 1
-      pitch: 2.5
-    - clip: {fileID: 8300000, guid: d4c99d309db39c347bc0dbcc2b9dbbfa, type: 3}
+      pitch: 1
+    - clip: {fileID: 8300000, guid: f085dd42dd1a6e14eab0e375aaa603e6, type: 3}
       volume: 1
-      pitch: 2.5
-    - clip: {fileID: 8300000, guid: 7857dd19bdef26c42a9906c682c7d2f7, type: 3}
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 2c4eda418bf6c484886359ee78eec103, type: 3}
       volume: 1
-      pitch: 2.5
-    - clip: {fileID: 8300000, guid: 53bbcb5f21ab4504ea8ad1e0dcc04758, type: 3}
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 5d934e81dc1a6224fad99a81df95ee10, type: 3}
       volume: 1
-      pitch: 2.5
-    - clip: {fileID: 8300000, guid: f12dc4adcd4f3a548a1ef6b054bf4cca, type: 3}
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 2ae42d92cd02e814a928f5c77d3d0870, type: 3}
       volume: 1
-      pitch: 2.5
-    - clip: {fileID: 8300000, guid: bc32f5baeefb770408f1fa88295fee1f, type: 3}
+      pitch: 1
+    - clip: {fileID: 8300000, guid: e80c2111256f197429ce4f1d078cd086, type: 3}
       volume: 1
-      pitch: 2.5
+      pitch: 1
+  - clipGroupName: Alert SFX
+    clips:
+    - clip: {fileID: 8300000, guid: e43afb0984cf50742a8ab8bc7317bb51, type: 3}
+      volume: 1
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 45b97871742e2ea42839ac23be4bef80, type: 3}
+      volume: 1
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 9c588481eeff8ff4ea3826a970f04bf2, type: 3}
+      volume: 1
+      pitch: 1
+  - clipGroupName: Hit SFX
+    clips:
+    - clip: {fileID: 8300000, guid: 5cd7bef244cba0d45b0168508f3ff62d, type: 3}
+      volume: 1
+      pitch: 1
+    - clip: {fileID: 8300000, guid: ccd5db336b26eaf4f94e371d347b31d0, type: 3}
+      volume: 1
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 496af8c8847192142a141a06a31a2425, type: 3}
+      volume: 1
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 3d648b69a31a32341b40ea6db2763f1e, type: 3}
+      volume: 1
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 1b4483973d94a334f9aca90addd254c3, type: 3}
+      volume: 1
+      pitch: 1
+    - clip: {fileID: 8300000, guid: 34c7c9e240b9baa4094f93ba0624a4a1, type: 3}
+      volume: 1
+      pitch: 1
   wrapper: {fileID: 0}
 --- !u!114 &-3185441177496818196
 MonoBehaviour:
@@ -22226,6 +22258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxVolume: 1
   isSFX: 1
+  isAmbience: 0
 --- !u!1 &7738221789811731494
 GameObject:
   m_ObjectHideFlags: 0
