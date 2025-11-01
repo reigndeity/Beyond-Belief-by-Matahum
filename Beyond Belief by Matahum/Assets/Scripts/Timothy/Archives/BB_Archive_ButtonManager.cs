@@ -31,6 +31,8 @@ public class BB_Archive_ButtonManager : MonoBehaviour
     #region Open Archives
     public void OnOpenArchives()
     {
+        PlayerCamera.Instance.SetCursorVisibility(true);
+
         archiveUI.SetActive(true);
 
         OnOpenCreatureCategory();
@@ -85,6 +87,8 @@ public class BB_Archive_ButtonManager : MonoBehaviour
     #region Exit Archives
     public void ExitArchives()
     {
+        PlayerCamera.Instance.SetCursorVisibility(false);
+
         archiveUI.SetActive(false);
         OnOpenCreatureCategory();
     }

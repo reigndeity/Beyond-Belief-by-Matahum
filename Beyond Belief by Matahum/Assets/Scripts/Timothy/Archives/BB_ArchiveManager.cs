@@ -83,9 +83,9 @@ public class BB_ArchiveManager : MonoBehaviour
         if (archiveObj == archiveData && !isDiscovered)
         {
             //archiveObj.isDiscovered = true;
-            OnArchiveUpdate?.Invoke(archiveObj);
             PlayerPrefs.SetInt($"{archiveObj.archiveName}_Discovered", 1);
             PlayerPrefs.Save();
+            OnArchiveUpdate?.Invoke(archiveObj);
             Debug.Log(archiveObj.archiveName + " has been discovered (visible and unobstructed)");
         }
     }

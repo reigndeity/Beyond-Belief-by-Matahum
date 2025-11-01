@@ -45,7 +45,7 @@ public class PlayerCamera : MonoBehaviour
     private Vector3 shakeOffset = Vector3.zero;
 
     // Cursor toggle
-    private bool isCursorVisible = false;
+    private bool cursorUsedBySystem = false;
 
     // Toggles
     [SerializeField] private bool rotationEnabled = true;
@@ -183,20 +183,17 @@ public class PlayerCamera : MonoBehaviour
 
     public void HandleMouseLock()
     {
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
-        {
-            isCursorVisible = !isCursorVisible;
+        if (cursorUsedBySystem) return;
 
-            if (isCursorVisible)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
+        if (Input.GetKey(KeyCode.LeftAlt))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 
@@ -257,9 +254,9 @@ public class PlayerCamera : MonoBehaviour
 
     public void SetCursorVisibility(bool visible)
     {
-        isCursorVisible = visible;
+        cursorUsedBySystem = visible;
 
-        if (isCursorVisible)
+        if (cursorUsedBySystem)
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;

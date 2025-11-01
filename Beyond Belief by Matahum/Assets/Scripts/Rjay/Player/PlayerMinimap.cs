@@ -182,8 +182,9 @@ public class PlayerMinimap : MonoBehaviour
     private void SetMapOpen(bool open)
     {
         fullscreenMap.SetActive(open);
-        Cursor.lockState = open ? CursorLockMode.None : CursorLockMode.Locked;
-        Cursor.visible = open;
+        PlayerCamera.Instance.SetCursorVisibility(open);
+        /*Cursor.lockState = open ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = open;*/
         var wasOpen = isMapOpen;
         isMapOpen = open;
 

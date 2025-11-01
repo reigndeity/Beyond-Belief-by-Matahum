@@ -285,12 +285,10 @@ public class UI_Game : MonoBehaviour
             if (m_questButtonManager.IsJournalOpen())
             {
                 OnClickCloseQuestJournal();
-                PlayerCamera.Instance.SetCursorVisibility(false); // hides cursor when closing
             }
             else if (!isAnyPanelOpen)
             {
                 OnClickOpenQuestJournal();
-                PlayerCamera.Instance.SetCursorVisibility(true); // shows cursor when opening
             }
         }
 
@@ -300,12 +298,10 @@ public class UI_Game : MonoBehaviour
             if (characterDetailPanel.activeSelf)
             {
                 OnClickCloseCharacterDetails();
-                PlayerCamera.Instance.SetCursorVisibility(false);
             }
             else if (!isAnyPanelOpen)
             {
                 OnClickOpenCharacterDetails();
-                PlayerCamera.Instance.SetCursorVisibility(true);
             }
         }
 
@@ -315,12 +311,10 @@ public class UI_Game : MonoBehaviour
             if (inventoryPanel.activeSelf)
             {
                 OnClickCloseInventory();
-                PlayerCamera.Instance.SetCursorVisibility(false);
             }
             else if (!isAnyPanelOpen)
             {
                 OnClickOpenInventory();
-                PlayerCamera.Instance.SetCursorVisibility(true);
             }
         }
     }
@@ -391,6 +385,8 @@ public class UI_Game : MonoBehaviour
 
     public void OnClickOpenInventory()
     {
+        PlayerCamera.Instance.SetCursorVisibility(true);
+
         inventoryPanel.SetActive(true);
         HideUI();
         Blur();
@@ -399,6 +395,7 @@ public class UI_Game : MonoBehaviour
     }
     public void OnClickCloseInventory()
     {
+        PlayerCamera.Instance.SetCursorVisibility(false);
         inventoryPanel.SetActive(false);
         ShowUI();
         UnBlur();
@@ -458,6 +455,8 @@ public class UI_Game : MonoBehaviour
     #region CHARACTER DETAILS
     public void OnClickOpenCharacterDetails()
     {
+        PlayerCamera.Instance.SetCursorVisibility(true);
+
         characterDetailPanel.SetActive(true);
         HideUI();
         Blur();
@@ -466,6 +465,8 @@ public class UI_Game : MonoBehaviour
     }
     public void OnClickCloseCharacterDetails()
     {
+        PlayerCamera.Instance.SetCursorVisibility(false);
+
         characterDetailPanel.SetActive(false);
         ShowUI();
         UnBlur();
@@ -577,6 +578,8 @@ public class UI_Game : MonoBehaviour
     }
     public void OnClickOpenQuestJournal()
     {
+        PlayerCamera.Instance.SetCursorVisibility(true); // shows cursor when opening
+
         m_questButtonManager.OpenJournal();
         OnClickAllQuest();
         HideUI();
@@ -586,6 +589,8 @@ public class UI_Game : MonoBehaviour
     }
     public void OnClickCloseQuestJournal()
     {
+        PlayerCamera.Instance.SetCursorVisibility(false); // hides cursor when closing
+
         m_questButtonManager.ExitJournal();
         ShowUI();
         UnBlur();

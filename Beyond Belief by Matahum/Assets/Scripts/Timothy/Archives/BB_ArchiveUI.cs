@@ -89,9 +89,7 @@ public class BB_ArchiveUI : MonoBehaviour
         if (scrollPanel.childCount > 0)
         {
             Button archiveBtn = scrollPanel.GetChild(0).GetComponent<Button>();
-            archiveBtn?.onClick.Invoke();
-
-            
+            archiveBtn?.onClick.Invoke();    
         }
     }
 
