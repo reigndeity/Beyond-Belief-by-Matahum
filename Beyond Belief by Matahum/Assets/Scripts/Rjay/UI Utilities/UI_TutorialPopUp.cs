@@ -7,11 +7,15 @@ public class UI_TutorialPopUp : MonoBehaviour
 {
     private CanvasGroup canvasGroup;
 
-    public float duration;
+    [Header("Settings")]
+    public float duration = 2f;
+    public bool isRequired = false;              // Only fade out after a key press if true
+    public KeyCode requiredKey = KeyCode.None;   // Key to continue
 
     [Header("Events")]
     public UnityEvent onFadeInComplete;
     public UnityEvent onFadeOutComplete;
+
     private Coroutine fadeRoutine;
 
     private void Awake()
@@ -59,6 +63,24 @@ public class UI_TutorialPopUp : MonoBehaviour
         canvasGroup.alpha = end;
         onComplete?.Invoke();
         fadeRoutine = null;
+
+        // If fade-in completed and requiredKey is active, wait for player input
+        if (end == 1f && isRequired && requiredKey != KeyCode.None)
+        {
+            yield return StartCoroutine(WaitForRequiredKey());
+        }
+    }
+
+    private IEnumerator WaitForRequiredKey()
+    {
+        Debug.Log($"[TutorialPopUp] Waiting for key: {requiredKey}");
+        while (!Input.GetKeyDown(requiredKey))
+        {
+            yield return null;
+        }
+
+        Debug.Log($"[TutorialPopUp] Required key pressed: {requiredKey}");
+        FadeOut(0.5f);
     }
 
     public void FadeInAndFadeOut(float duration)
@@ -69,7 +91,12 @@ public class UI_TutorialPopUp : MonoBehaviour
     private IEnumerator FadeInAndFadeOutRoutine(float duration)
     {
         FadeIn(0.5f);
-        yield return new WaitForSeconds(duration);
-        FadeOut(0.5f);
+
+        // Only auto-fade-out if not required
+        if (!isRequired)
+        {
+            yield return new WaitForSeconds(duration);
+            FadeOut(0.5f);
+        }
     }
 }
