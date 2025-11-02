@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using BlazeAISpace;
 using UnityEditor;
+using static UnityEditor.PlayerSettings;
 
 public class BB_CampSpawner : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class BB_CampSpawner : MonoBehaviour
 
     [Header("Enemies To Spawn")]
     public List<EnemyCount> enemiesToSpawn = new List<EnemyCount>();
+    private bool warmUpSpawn = false;
 
     public List<EnemyStats> enemyList = new List<EnemyStats>();
     private SphereCollider spawnArea;
@@ -34,12 +36,27 @@ public class BB_CampSpawner : MonoBehaviour
         spawnArea = GetComponent<SphereCollider>();
 
         // Only spawn if none saved and player is far enough
+        StartCoroutine(WarmUpSpawn()); //Remove this if broken
+
+        StartCoroutine(BoundaryLoop());
+        LoadSpawners();
+    }
+
+    IEnumerator WarmUpSpawn() //Remove this if broken
+    {
+        foreach (var enemy in enemiesToSpawn)
+        {
+            GameObject enemyObj = Instantiate(enemy.enemyPrefab, transform);
+            yield return null;
+            Destroy(enemyObj);
+        }
+        yield return null;
+
         var player = FindFirstObjectByType<Player>();
         if (enemyList.Count == 0 && (player == null || Vector3.Distance(player.transform.position, transform.position) > spawnDistanceThreshold))
             SpawnUnits();
 
-        StartCoroutine(BoundaryLoop());
-        LoadSpawners();
+        warmUpSpawn = true;
     }
 
     private IEnumerator BoundaryLoop()
@@ -112,6 +129,7 @@ public class BB_CampSpawner : MonoBehaviour
                 AdjustYToGround(ref pos);
 
                 GameObject enemyGO = Instantiate(enemy.enemyPrefab, pos, Quaternion.identity, transform);
+
                 EnemyStats enemyStats = enemyGO.GetComponent<EnemyStats>();
                 UpdateEnemyStats(enemyStats);
 
@@ -176,35 +194,6 @@ public class BB_CampSpawner : MonoBehaviour
             loot.lootContent.Add(lootCopy);
         }
     }
-
-    // ------------------ CORE LEVEL LOGIC ------------------
-    /*private void UpdateEnemyStats(EnemyStats enemyStats)
-    {
-        if (enemyStats == null || playerStats == null) return;
-
-        //int pLevel = Mathf.Clamp(playerStats.currentLevel, 1, 50);
-        int worldLevel = WorldLevelSetter.Instance.worldLevel;
-        int eLevel = ComputeEnemyLevel(worldLevel, minEnemyLevel, maxEnemyLevel, levelOffset);
-
-        try
-        {
-            enemyStats.SetLevel(eLevel);
-            enemyStats.RecalculateStats();
-        }
-        catch (MissingMethodException)
-        {
-            enemyStats.e_level = eLevel;
-        }
-
-        enemyStats.e_currentHealth = enemyStats.e_maxHealth;
-    }
-
-    private static int ComputeEnemyLevel(int playerLevel, int min, int max, int offset)
-    {
-        if (playerLevel >= max - offset) return max;
-        if (playerLevel < min) return min;
-        return Mathf.Clamp(playerLevel + offset, min, max);
-    }*/
 
     private void UpdateEnemyStats(EnemyStats enemyStats)
     {
@@ -289,6 +278,8 @@ public class BB_CampSpawner : MonoBehaviour
     {
         TimeSpan remaining = nextGlobalSpawnTime - DateTime.UtcNow;
         currentTime = (int)remaining.TotalSeconds;
+
+        if (!warmUpSpawn) return; //Remove this if broken
 
         if (enemyList.Count == 0 && !spawningInProgress)
         {
