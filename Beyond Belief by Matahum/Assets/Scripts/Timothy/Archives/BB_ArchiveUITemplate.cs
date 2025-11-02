@@ -10,9 +10,19 @@ public class BB_ArchiveUITemplate : MonoBehaviour
 
     public Sprite undiscoveredSprite;
     public GameObject newDiscoverySprite;
+
+    [Header("Properties for the Type of Archive")]
+    public Vector2 normalTypeSize;
+    public Vector2 locationTypeSize;
     public void Setup(BB_ArchiveSO archiveSO, Sprite defaultUndiscoveredSprite)
     {
         linkedArchiveSO = archiveSO;
+
+        if (linkedArchiveSO.archiveType == ArchiveType.location) 
+            GetComponent<RectTransform>().sizeDelta = locationTypeSize;    
+        else 
+            GetComponent<RectTransform>().sizeDelta = normalTypeSize;
+
         undiscoveredSprite = defaultUndiscoveredSprite;
         Refresh();
     }

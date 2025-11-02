@@ -27,11 +27,13 @@ public class BB_ArchiveUI : MonoBehaviour
     public List<GameObject> archiveList = new List<GameObject>();
 
     [Header("Archive Details")]
-    public GameObject selectedArchive;
+    public GameObject selectedNormalArchive;
+    public GameObject selectedLocationArchive;
     public TextMeshProUGUI archiveTitleName;
     public Image archiveImage;
     public TextMeshProUGUI archiveDetailText;
-    public Sprite undiscoveredImage;
+    public Sprite undiscoveredLocationImage;
+    public Sprite undiscoveredButtonImage;
     private string undiscoveredName = "Undiscovered";
     private string undiscoveredBodyText = "You have not yet discovered this";
 
@@ -68,7 +70,10 @@ public class BB_ArchiveUI : MonoBehaviour
             BB_ArchiveUITemplate slotUI = slotGO.GetComponent<BB_ArchiveUITemplate>();
             if (slotUI != null)
             {
-                slotUI.Setup(localObj, undiscoveredImage);
+                if (obj.archiveType == ArchiveType.location)
+                    slotUI.Setup(localObj, undiscoveredLocationImage);
+                else
+                    slotUI.Setup(localObj, undiscoveredButtonImage);
             }
 
             Button archiveBtn = slotGO.GetComponent<Button>();
@@ -84,7 +89,9 @@ public class BB_ArchiveUI : MonoBehaviour
         if (currentScrollPane == scrollPanel) return;
 
         currentScrollPane = scrollPanel;
-        selectedArchive.SetActive(false);
+
+        selectedNormalArchive.SetActive(false);
+        selectedLocationArchive.SetActive(false);
 
         if (scrollPanel.childCount > 0)
         {
@@ -98,7 +105,7 @@ public class BB_ArchiveUI : MonoBehaviour
         if (PlayerPrefs.GetInt($"{archiveSO.archiveName}_Discovered", 0) == 0)
         {
             archiveTitleName.text = $"{undiscoveredName} {archiveSO.archiveType.ToString()}";
-            archiveImage.sprite = undiscoveredImage;
+            archiveImage.sprite = undiscoveredLocationImage;
             archiveDetailText.text = $"{undiscoveredBodyText} {archiveSO.archiveType.ToString()}";
         }
         else
@@ -116,17 +123,22 @@ public class BB_ArchiveUI : MonoBehaviour
             }
         }
 
-        if (selectedArchive)
-        {
-            StartCoroutine(SetHighlightNextFrame(uiTemplate.transform));
-        }
+        StartCoroutine(SetHighlightNextFrame(uiTemplate.transform, archiveSO));
+
     }
 
-    private IEnumerator SetHighlightNextFrame(Transform target)
+    private IEnumerator SetHighlightNextFrame(Transform target, BB_ArchiveSO archiveSO)
     {
         yield return null; // wait one frame for layout
-        selectedArchive.SetActive(true);
-        selectedArchive.transform.position = target.position;
+
+        GameObject selectedBorder;
+
+        if (archiveSO.archiveType == ArchiveType.location) selectedBorder = selectedLocationArchive;
+        else selectedBorder = selectedNormalArchive;
+
+        selectedBorder.SetActive(true);
+        selectedBorder.transform.parent = target;
+        selectedBorder.transform.position = target.position;
     }
     private void RefreshArchiveDisplay(BB_ArchiveSO ignoreThis)
     {

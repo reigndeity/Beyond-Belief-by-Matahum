@@ -70,7 +70,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 100392724, guid: 97f7105057906e54f9ba7dc6ab4ab72a, type: 3}
+  m_Sprite: {fileID: 862036028, guid: bcaff6652af06734597f614140c97e78, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -136,11 +136,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcd3a58f1f579924baa69db76ff7d2db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iconImage: {fileID: 281498933485986284}
+  iconImage: {fileID: 7862193517830910422}
   nameText: {fileID: 5826182358441979034}
   linkedArchiveSO: {fileID: 0}
-  undiscoveredSprite: {fileID: -2091878957, guid: b99d68011bc886a42b08662e69ae5f5f, type: 3}
+  undiscoveredSprite: {fileID: 862036028, guid: bcaff6652af06734597f614140c97e78, type: 3}
   newDiscoverySprite: {fileID: 1338278785819671247}
+  normalTypeSize: {x: 150, y: 150}
+  locationTypeSize: {x: 216, y: 123.6}
 --- !u!1 &1338278785819671247
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,7 +423,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3300770255794417053
 RectTransform:
   m_ObjectHideFlags: 0
@@ -439,7 +441,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3768651158151135601
 CanvasRenderer:
@@ -469,7 +471,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300002, guid: 07103c52b3aaeca4da8a83361edd059f, type: 3}
+  m_Sprite: {fileID: -613398453, guid: 8e488251a03653f4885fc035c2407e0b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
