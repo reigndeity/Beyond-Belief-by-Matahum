@@ -23,6 +23,8 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
     public event System.Action OnDeath;
     private bool isChasingPlayer = false;
 
+    public float pushBackOnHit;
+
     void Awake()
     {
         m_playerStats = FindFirstObjectByType<PlayerStats>();
@@ -128,7 +130,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
 
         m_navMeshAgent.enabled = false;
         m_blazeAI.Hit();
-        PushBackward(0.5f);
+        PushBackward(pushBackOnHit);
         FindFirstObjectByType<PlayerCamera>().CameraShake(0.1f, 1f);
         HitStop.Instance.TriggerHitStop(0.05f);
         FacePlayer();
