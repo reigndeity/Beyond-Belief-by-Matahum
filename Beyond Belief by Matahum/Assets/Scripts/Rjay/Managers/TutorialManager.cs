@@ -66,6 +66,10 @@ public class TutorialManager : MonoBehaviour
     public GameObject journalTutorialArrow;
     public GameObject characterDetailsTutorialArrow;
     public GameObject inventoryTutorialArrow;
+    public GameObject[] questJournalTutorialArrow;
+    public GameObject[] agimatTutorialArrow;
+    public GameObject[] pamanaTutorialArrow;
+    public GameObject[] backpackTutorialArrow;
 
     [Header("Quest Journal UI Tutorial")]
     [SerializeField] private BB_Quest_ButtonManager m_questButtonManager;
@@ -85,8 +89,8 @@ public class TutorialManager : MonoBehaviour
     public TutorialHighlight nextJournalTutorialTH;
     public GameObject nonInteractablePanel;
     public int currentQuestJournalTutorial = 0;
-    public GameObject claimThisTextHelper;
     [SerializeField] GameObject questJournalHotkeyPopup;
+    
     [Header("Character Details UI Tutorial")]
     public bool canHotKeyCharacterDetails;
     public Button weaponButtonTH;
@@ -128,7 +132,8 @@ public class TutorialManager : MonoBehaviour
     [Header("Inventory Tutorial")]
     public bool canHotKeyInventory;
     public GameObject inventoryTutorial;
-    public TextMeshProUGUI inventoryTutorialText;
+    public TextMeshProUGUI inventoryTutorialTxt;
+    public GameObject[] inventoryTutorialText;
     public GameObject nonInteractableInventory;
     public TutorialHighlight sortButtonsTH;
     public TutorialHighlight currentFilterTextTH;
@@ -399,6 +404,7 @@ public class TutorialManager : MonoBehaviour
         questButtonFiltersTH.enabled = true;
 
         journalTutorialArrow.SetActive(false);
+        questJournalTutorialArrow[0].SetActive(true);
     }
     public void QuestJournalTutorial()
     {
@@ -423,31 +429,35 @@ public class TutorialManager : MonoBehaviour
                 nextJournalTutorialButton.enabled = false;
 
                 nonInteractablePanel.SetActive(false);
-                claimThisTextHelper.SetActive(true);
                 questJournalTextTutorial.text = "Here you can claim, track, or untrack your current selected quest";
 
                 questDetailsPanelTH.enabled = false;
                 mainQuestViewportTH.enabled = true;
                 claimQuestButtonTH.enabled = true;
                 claimQuestButton.onClick.AddListener(QuestJournalTutorial);
+
+                questJournalTutorialArrow[0].SetActive(false);
+                questJournalTutorialArrow[1].SetActive(true);
                 break;
             case 3:
                 questJournalTextTutorial.text = "Now click on this button to resume your journey";
                 mainQuestViewportTH.enabled = false;
                 claimQuestButtonTH.enabled = false;
-                claimThisTextHelper.SetActive(false);
                 claimQuestButton.onClick.RemoveListener(QuestJournalTutorial);
                 closeQuestJournalButtonTH.enabled = true;
                 closeQuestButton.onClick.AddListener(QuestJournalTutorial);
+                questJournalTutorialArrow[1].SetActive(false);
+                questJournalTutorialArrow[2].SetActive(true);
                 break;
             case 4:
-            questJournalTextTutorial.GetComponent<TutorialHighlight>().enabled = false;
+                questJournalTextTutorial.GetComponent<TutorialHighlight>().enabled = false;
                 closeQuestJournalButtonTH.enabled = false;
                 closeQuestButton.onClick.RemoveListener(QuestJournalTutorial);
                 questJournalTutorial.SetActive(false);
                 tutorialFadeImage.enabled = false;
                 BB_QuestManager.Instance.AcceptQuestByID("A0_Q9_OneMoreThing");
                 questJournalHotkeyPopup.SetActive(true);
+                questJournalTutorialArrow[2].SetActive(false);
                 break;
         }
         currentQuestJournalTutorial++;
@@ -465,6 +475,7 @@ public class TutorialManager : MonoBehaviour
         agimatButtonTH.onClick.AddListener(AgimatTutorial);
 
         characterDetailsTutorialArrow.SetActive(false);
+        agimatTutorialArrow[0].SetActive(true);
     }
     public void EnableAgimatSlotTwoTutorial()
     {
@@ -475,6 +486,8 @@ public class TutorialManager : MonoBehaviour
         agimatButtonTH.onClick.AddListener(AgimatTutorial);
 
         characterDetailsTutorialArrow.SetActive(false);
+        agimatTutorialArrow[5].SetActive(false);
+        agimatTutorialArrow[6].SetActive(true);
     }
     public void AgimatTutorial()
     {
@@ -488,6 +501,8 @@ public class TutorialManager : MonoBehaviour
                 agimatTutorialText.text = "Now select the first empty agimat slot";
                 agimatOneTH.GetComponent<TutorialHighlight>().enabled = true;
                 agimatOneTH.onClick.AddListener(AgimatTutorial);
+                agimatTutorialArrow[0].SetActive(false);
+                agimatTutorialArrow[1].SetActive(true);
                 break;
             case 1:
                 agimatOneTH.GetComponent<TutorialHighlight>().enabled = false;
@@ -496,6 +511,8 @@ public class TutorialManager : MonoBehaviour
                 agimatInventoryTH.enabled = true;
                 agimatPanel.RefreshAgimatList();
                 StartCoroutine(AttachAgimatTutorialToFirstAgimatSlot());
+                agimatTutorialArrow[1].SetActive(false);
+                agimatTutorialArrow[2].SetActive(true);
                 break;
             case 2:
                 agimatTutorialText.text = "Here you can see the type of agimat that you have";
@@ -507,6 +524,7 @@ public class TutorialManager : MonoBehaviour
                 agimatItemDescriptionTH.enabled = true;
                 agimatItemImageTH.enabled = true;
                 agimatOneTH.GetComponent<TutorialHighlight>().enabled = false;
+                agimatTutorialArrow[2].SetActive(false);
                 break;
             case 3:
                 agimatItemDescriptionTH.enabled = false;
@@ -516,6 +534,8 @@ public class TutorialManager : MonoBehaviour
                 equipAgimatButtonTH.onClick.AddListener(AgimatTutorial);
 
                 nextAgimatTutorialButton.gameObject.SetActive(false);
+                agimatTutorialArrow[3].SetActive(false);
+                agimatTutorialArrow[4].SetActive(true);
                 break;
             case 4:
                 agimatTutorialText.text = "Now select this button to continue";
@@ -523,6 +543,8 @@ public class TutorialManager : MonoBehaviour
                 equipAgimatButtonTH.onClick.RemoveListener(AgimatTutorial);
                 closeCharacterDetailButton.GetComponent<TutorialHighlight>().enabled = true;
                 closeCharacterDetailButton.onClick.AddListener(CloseAndAcceptAgimatTrainingP2);
+                agimatTutorialArrow[4].SetActive(false);
+                agimatTutorialArrow[5].SetActive(true);
                 break;
             case 5:
                 agimatButtonTH.onClick.RemoveListener(AgimatTutorial);
@@ -532,6 +554,8 @@ public class TutorialManager : MonoBehaviour
                 agimatTutorialText.text = "Now select the second empty agimat slot";
                 agimatTwoTH.GetComponent<TutorialHighlight>().enabled = true;
                 agimatTwoTH.onClick.AddListener(AgimatTutorial);
+                agimatTutorialArrow[6].SetActive(false);
+                agimatTutorialArrow[7].SetActive(true);
                 break;
             case 6:
                 agimatTwoTH.GetComponent<TutorialHighlight>().enabled = false;
@@ -540,6 +564,8 @@ public class TutorialManager : MonoBehaviour
                 agimatInventoryTH.enabled = true;
                 agimatPanel.RefreshAgimatList();
                 StartCoroutine(AttachAgimatTutorialToFirstAgimatSlot());
+                agimatTutorialArrow[7].SetActive(false);
+                agimatTutorialArrow[8].SetActive(true);
                 break;
             case 7:
                 agimatInventoryTH.enabled = false;
@@ -547,6 +573,8 @@ public class TutorialManager : MonoBehaviour
                 agimatTutorialText.text = "Try equipping it to slot 2";
                 equipAgimatButtonTH.GetComponent<TutorialHighlight>().enabled = true;
                 equipAgimatButtonTH.onClick.AddListener(AgimatTutorial);
+                agimatTutorialArrow[8].SetActive(false);
+                agimatTutorialArrow[9].SetActive(true);
                 break;
             case 8:
                 agimatTutorialText.text = "Click on the confirm button";
@@ -555,6 +583,8 @@ public class TutorialManager : MonoBehaviour
                 confirmSwitchButton.GetComponent<TutorialHighlight>().enabled = true;
                 confirmSwitchButton.onClick.AddListener(AgimatTutorial);
                 confirmTextTH.enabled = true;
+                agimatTutorialArrow[9].SetActive(false);
+                agimatTutorialArrow[10].SetActive(true);    
                 break;
             case 9:
                 agimatTutorialText.text = "Now click on the close button";
@@ -563,6 +593,8 @@ public class TutorialManager : MonoBehaviour
                 confirmTextTH.enabled = false;
                 closeCharacterDetailButton.GetComponent<TutorialHighlight>().enabled = true;
                 closeCharacterDetailButton.onClick.AddListener(CloseAndAcceptAgimatTrainingP4);
+                agimatTutorialArrow[10].SetActive(false);
+                agimatTutorialArrow[11].SetActive(true);
                 break;
 
         }
@@ -609,6 +641,7 @@ public class TutorialManager : MonoBehaviour
 
         nextAgimatTutorialButton.GetComponent<TutorialHighlight>().enabled = true;
         cg.alpha = 1f; // make sure it ends at 1
+        agimatTutorialArrow[3].SetActive(true);
     }
 
     private void CloseAndAcceptAgimatTrainingP2()
@@ -646,6 +679,7 @@ public class TutorialManager : MonoBehaviour
         attributeBackgroundTH.enabled = true;
         nextPamanaTutorialButtonTH.onClick.AddListener(PamanaTutorial);
         characterDetailsTutorialArrow.SetActive(false);
+        pamanaTutorialArrow[0].SetActive(true);
     }
 
     public void PamanaTutorial()
@@ -664,6 +698,9 @@ public class TutorialManager : MonoBehaviour
                 pamanaTutorialText.text = "Now click on this button to check your pamana";
                 pamanaButtonTH.GetComponent<TutorialHighlight>().enabled = true;
                 pamanaButtonTH.onClick.AddListener(PamanaTutorial);
+
+                pamanaTutorialArrow[0].SetActive(false);
+                pamanaTutorialArrow[1].SetActive(true);
                 break;
             case 1:
                 pamanaButtonTH.GetComponent<TutorialHighlight>().enabled = false;
@@ -673,6 +710,8 @@ public class TutorialManager : MonoBehaviour
                 diwataSlotButtonTH.GetComponent<TutorialHighlight>().enabled = true;
                 diwataSlotButtonTH.onClick.AddListener(PamanaTutorial);
 
+                pamanaTutorialArrow[1].SetActive(false);
+                pamanaTutorialArrow[2].SetActive(true);
                 break;
             case 2:
                 diwataSlotButtonTH.GetComponent<TutorialHighlight>().enabled = false;
@@ -681,6 +720,8 @@ public class TutorialManager : MonoBehaviour
                 pamanaTutorialText.text = "Now click on the pamana";
                 pamanaInventoryTH.enabled = true;
                 StartCoroutine(AttachPamanaTutorialToFirstPamanaSlot());
+                pamanaTutorialArrow[2].SetActive(false);
+                pamanaTutorialArrow[3].SetActive(true);
                 break;
             case 3:
                 pamanaInventoryTH.enabled = false;
@@ -690,12 +731,14 @@ public class TutorialManager : MonoBehaviour
                 pamanaItemImageTH.enabled = true;
                 StartCoroutine(ShowNextPamanaTutorialButton());
                 nextPamanaTutorialButtonTH.onClick.AddListener(PamanaTutorial);
+                pamanaTutorialArrow[3].SetActive(false);
                 break;
             case 4:
                 pamanaItemImageTH.enabled = false;
 
                 pamanaTutorialText.text = "This shows what set it comes from and what bonuses you can unlock";
                 pamanaItemDescriptionTH.enabled = true;
+                
                 break;
             case 5:
                 pamanaItemDescriptionTH.enabled = false;
@@ -707,6 +750,8 @@ public class TutorialManager : MonoBehaviour
                 pamanaTutorialText.text = "Now let's equip it";
                 equipPamanaButtonTH.GetComponent<TutorialHighlight>().enabled = true;
                 equipPamanaButtonTH.onClick.AddListener(PamanaTutorial);
+                pamanaTutorialArrow[0].SetActive(false);
+                pamanaTutorialArrow[4].SetActive(true);
                 break;
             case 6:
                 equipPamanaButtonTH.GetComponent<TutorialHighlight>().enabled = false;
@@ -715,6 +760,8 @@ public class TutorialManager : MonoBehaviour
                 pamanaTutorialText.text = "Let's go back and see your stats";
                 attributesButtonTH.GetComponent<TutorialHighlight>().enabled = true;
                 attributesButtonTH.onClick.AddListener(PamanaTutorial);
+                pamanaTutorialArrow[4].SetActive(false);
+                pamanaTutorialArrow[5].SetActive(true);
                 break;
             case 7:
                 attributesButtonTH.GetComponent<TutorialHighlight>().enabled = false;
@@ -724,6 +771,7 @@ public class TutorialManager : MonoBehaviour
                 attributeBackgroundTH.enabled = true;
                 StartCoroutine(ShowNextPamanaTutorialButton());
                 nextPamanaTutorialButtonTH.onClick.AddListener(PamanaTutorial);
+                pamanaTutorialArrow[5].SetActive(false);
                 break;
             case 8:
                 attributeBackgroundTH.enabled = false;
@@ -733,6 +781,8 @@ public class TutorialManager : MonoBehaviour
                 pamanaTutorialText.text = "Now click on this button to resume your journey";
                 closeCharacterDetailButton.GetComponent<TutorialHighlight>().enabled = true;
                 closeCharacterDetailButton.onClick.AddListener(ClosePamanaTutorial);
+                pamanaTutorialArrow[0].SetActive(false);
+                pamanaTutorialArrow[6].SetActive(true);
 
                 break;
 
@@ -766,6 +816,7 @@ public class TutorialManager : MonoBehaviour
 
         nextPamanaTutorialButtonTH.GetComponent<TutorialHighlight>().enabled = true;
         cg.alpha = 1f; // make sure it ends at 1
+        pamanaTutorialArrow[0].SetActive(true);
     }
 
     private IEnumerator AttachPamanaTutorialToFirstPamanaSlot()
@@ -799,12 +850,18 @@ public class TutorialManager : MonoBehaviour
     {
         inventoryTutorial.SetActive(true);
         tutorialFadeImage.enabled = true;
-        inventoryTutorialText.text = "These buttons filter out the types of the item";
+
+
+
         nonInteractableInventory.gameObject.SetActive(true);
         sortButtonsTH.enabled = true;
 
         nextInventoryTutorial.onClick.AddListener(InventoryTutorial);
         inventoryTutorialArrow.SetActive(false);
+        backpackTutorialArrow[0].SetActive(true);
+
+        inventoryTutorialTxt.text = "These buttons allows you to display specific types of item";
+        inventoryTutorialText[0].SetActive(true);
     }
     public void InventoryTutorial()
     {
@@ -813,16 +870,15 @@ public class TutorialManager : MonoBehaviour
             case 0:
                 sortButtonsTH.enabled = false;
                 m_uiGame.OnClickAgimatFilter();
-                inventoryTutorialText.text = "As of now, we are currently on the agimat filter";
                 currentFilterTextTH.enabled = true;
+                inventoryTutorialTxt.text = "As of now, we are currently on the agimat filter";
                 break;
             case 1:
                 currentFilterTextTH.enabled = false;
-
-                inventoryTutorialText.text = "You can see the details of the item you selected here";
                 inventorySlotTH.enabled = true;
                 inventoryDescriptionTH.enabled = true;
                 inventoryItemImageTH.enabled = true;
+                inventoryTutorialTxt.text = "You can see the details of the item you selected here";
                 break;
             case 2:
                 inventorySlotTH.enabled = false;
@@ -830,12 +886,13 @@ public class TutorialManager : MonoBehaviour
                 inventoryItemImageTH.enabled = false;
                 nextInventoryTutorial.gameObject.SetActive(false);
                 nonInteractableInventory.gameObject.SetActive(false);
-
-                inventoryTutorialText.text = "Now click on this button to resume your journey";
                 closeInventoryButtonTH.GetComponent<TutorialHighlight>().enabled = true;
                 closeInventoryButtonTH.onClick.AddListener(CloseAndAcceptMainQuest);
 
-                
+                inventoryTutorialText[0].SetActive(false);
+                inventoryTutorialText[1].SetActive(true);
+                backpackTutorialArrow[0].SetActive(false);
+                backpackTutorialArrow[1].SetActive(true);
                 break;
         }
         currentInventoryTutorial++;

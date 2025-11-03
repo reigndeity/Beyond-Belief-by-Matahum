@@ -88,6 +88,14 @@ public class BeyondBelief_DebugTool : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Delete))
         {
             debugToolPanel.SetActive(!debugToolPanel.activeSelf);
+            if (debugToolPanel.activeSelf)
+            {
+                PlayerCamera.Instance.SetCursorVisibility(true);
+            }
+            else
+            {
+                PlayerCamera.Instance.SetCursorVisibility(false);
+            }
         }
     }
 
@@ -96,7 +104,11 @@ public class BeyondBelief_DebugTool : MonoBehaviour
         loadQuestButton.interactable = !string.IsNullOrEmpty(value);
     }
 
-    void OnClickCloseDebugTool() => debugToolPanel.SetActive(false);
+    void OnClickCloseDebugTool()
+    { 
+        debugToolPanel.SetActive(false);
+        PlayerCamera.Instance.SetCursorVisibility(false);    
+    }
 
     void OnClickLoadQuestID()
     {
