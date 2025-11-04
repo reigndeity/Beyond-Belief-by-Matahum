@@ -4,6 +4,9 @@ using System.Collections;
 
 public class CreditsScroller : MonoBehaviour
 {
+    public string nextScene;
+    public bool canTriggerNextScene;
+
     public float scrollSpeed = 30f; // Pixels per second
     private float currentSpeed;
     public RectTransform viewPort;
@@ -36,7 +39,7 @@ public class CreditsScroller : MonoBehaviour
 
         viewPort.anchoredPosition += Vector2.up * currentSpeed * Time.deltaTime;
 
-        if (viewPort.anchoredPosition.y >= endY)
+        if (viewPort.anchoredPosition.y >= endY && canTriggerNextScene)
         {
             isScrolling = false;
             StartCoroutine(BackToMenu());
@@ -50,6 +53,6 @@ public class CreditsScroller : MonoBehaviour
 
         yield return new WaitForSeconds(5f);
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuScene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(nextScene);
     }
 }

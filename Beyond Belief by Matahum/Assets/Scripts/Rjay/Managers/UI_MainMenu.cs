@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.IO;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class UI_MainMenu : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class UI_MainMenu : MonoBehaviour
     [SerializeField] private Button closeGameButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button returnButton;
+    [SerializeField] private Button creditsButton;
 
     [Header("New Game Confirmation")]
     [SerializeField] private GameObject newGameConfirmationPanel;
@@ -78,6 +80,7 @@ public class UI_MainMenu : MonoBehaviour
         noCloseGameButton.onClick.AddListener(OnClickNoCloseGame);
         settingsButton.onClick.AddListener(OnOpenSettings);
         returnButton.onClick.AddListener(OnCloseSettings);
+        creditsButton.onClick.AddListener(OnClickGoToCredts);
 
         audioButton.button.onClick.AddListener(OnClickAudioTab);
         displayAndGraphicsButton.button.onClick.AddListener(OnClickDisplayTab);
@@ -89,6 +92,7 @@ public class UI_MainMenu : MonoBehaviour
         AddHoverEffect(closeGameButton);
         AddHoverEffect(settingsButton);
         AddHoverEffect(returnButton);
+        AddHoverEffect(creditsButton);
         AddHoverEffect(audioButton.button);
         AddHoverEffect(displayAndGraphicsButton.button);
         AddHoverEffect(controlButton.button);
@@ -180,6 +184,11 @@ public class UI_MainMenu : MonoBehaviour
         fadeCanvasGroup.FadeIn(1);
         yield return new WaitForSeconds(1f);
         Application.Quit();
+    }
+
+    private void OnClickGoToCredts()
+    {
+        SceneManager.LoadScene("MainMenuCreditsScene");
     }
     #endregion
     #region SETTINGS FUNCTION
