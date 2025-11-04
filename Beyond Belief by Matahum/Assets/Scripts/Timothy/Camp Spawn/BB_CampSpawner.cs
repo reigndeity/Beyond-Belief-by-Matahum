@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System;
 using BlazeAISpace;
 using UnityEditor;
-using static UnityEditor.PlayerSettings;
 
 public class BB_CampSpawner : MonoBehaviour
 {
