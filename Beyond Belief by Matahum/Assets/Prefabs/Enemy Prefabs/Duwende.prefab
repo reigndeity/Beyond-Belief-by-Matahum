@@ -20639,6 +20639,7 @@ GameObject:
   - component: {fileID: 5122814182568886753}
   - component: {fileID: 7422140618456207651}
   - component: {fileID: 5815128256286311317}
+  - component: {fileID: 3067954279481270788}
   m_Layer: 10
   m_Name: Duwende
   m_TagString: Untagged
@@ -22013,6 +22014,23 @@ MonoBehaviour:
   duwendeAttackOne: {fileID: 5397278949327914301}
   duwendeAttackTwo: {fileID: 1073111951347450157}
   duwendeAttackThree: {fileID: 8450869649982314840}
+--- !u!114 &3067954279481270788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7577076651516667552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0f79af464a5d1b45bd21230ccde1114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  archiveData: {fileID: 11400000, guid: 45859ef0ce15a64479a500508a204cf6, type: 2}
+  checkInterval: 0.3
+  detectionRange: 30
+  canvasGroup: {fileID: 0}
+  mode: 0
 --- !u!1 &7589112550340679253
 GameObject:
   m_ObjectHideFlags: 0

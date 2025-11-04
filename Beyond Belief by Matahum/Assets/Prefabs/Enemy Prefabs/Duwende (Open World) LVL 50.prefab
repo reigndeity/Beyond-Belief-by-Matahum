@@ -20886,6 +20886,7 @@ GameObject:
   - component: {fileID: 7923006060344224578}
   - component: {fileID: 8939977338667337188}
   - component: {fileID: -2135557513745564940}
+  - component: {fileID: 6650552945495023116}
   m_Layer: 10
   m_Name: Duwende (Open World) LVL 50
   m_TagString: Untagged
@@ -22260,6 +22261,23 @@ MonoBehaviour:
   maxVolume: 1
   isSFX: 1
   isAmbience: 0
+--- !u!114 &6650552945495023116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7715834338738759297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0f79af464a5d1b45bd21230ccde1114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  archiveData: {fileID: 11400000, guid: 45859ef0ce15a64479a500508a204cf6, type: 2}
+  checkInterval: 0.3
+  detectionRange: 30
+  canvasGroup: {fileID: 0}
+  mode: 0
 --- !u!1 &7738221789811731494
 GameObject:
   m_ObjectHideFlags: 0

@@ -7807,6 +7807,7 @@ GameObject:
   - component: {fileID: 2864157314538103812}
   - component: {fileID: 5122814182568886753}
   - component: {fileID: 7422140618456207651}
+  - component: {fileID: -4470892450368517152}
   m_Layer: 10
   m_Name: Gabunan
   m_TagString: Untagged
@@ -9159,6 +9160,23 @@ MonoBehaviour:
   maxVolume: 1
   isSFX: 1
   isAmbience: 0
+--- !u!114 &-4470892450368517152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7577076651516667552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0f79af464a5d1b45bd21230ccde1114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  archiveData: {fileID: 11400000, guid: fe58c3f1f78acc24691b18b6e3cb2506, type: 2}
+  checkInterval: 0.3
+  detectionRange: 30
+  canvasGroup: {fileID: 0}
+  mode: 0
 --- !u!1 &7607352299792908973
 GameObject:
   m_ObjectHideFlags: 0

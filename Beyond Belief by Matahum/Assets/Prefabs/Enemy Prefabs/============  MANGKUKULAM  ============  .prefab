@@ -309,6 +309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 486217ce4af19e5439808283db6ee763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 0}
 --- !u!1 &262807393568243087
 GameObject:
   m_ObjectHideFlags: 0
@@ -7009,6 +7010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 486217ce4af19e5439808283db6ee763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 0}
 --- !u!1 &5273055393107792062
 GameObject:
   m_ObjectHideFlags: 0
@@ -11298,8 +11300,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   definition: {fileID: 0}
   e_level: 1
-  e_currentHealth: 5000
-  e_maxHealth: 5000
+  e_currentHealth: 10000
+  e_maxHealth: 10000
   e_attack: 150
   e_defense: 50
   e_criticalRate: 10
@@ -11445,6 +11447,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxVolume: 1
   isSFX: 1
+  isAmbience: 0
 --- !u!114 &2472656508366040319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11464,50 +11467,68 @@ MonoBehaviour:
     clips:
     - clip: {fileID: 8300000, guid: 829f65d810a89c542b3705045431e4ca, type: 3}
       volume: 1
+      pitch: 1
     - clip: {fileID: 8300000, guid: f74a53eee01489045a92b72e11261d75, type: 3}
       volume: 1
+      pitch: 1
     - clip: {fileID: 8300000, guid: b73b3a0136ccd574382b1f02be19e2ce, type: 3}
       volume: 1
+      pitch: 1
   - clipGroupName: Hurt 2 SFX
     clips:
     - clip: {fileID: 8300000, guid: 38b0915190b407049a1ac4615056fc00, type: 3}
       volume: 1
+      pitch: 1
     - clip: {fileID: 8300000, guid: e7ab43e14ac24c246ad52204853d052a, type: 3}
       volume: 1
+      pitch: 1
     - clip: {fileID: 8300000, guid: c69eb2fce8eb46841a9d5ac9f366f08a, type: 3}
       volume: 1
+      pitch: 1
   - clipGroupName: Land SFX
     clips:
     - clip: {fileID: 8300000, guid: f74c56a6fe3c5e14e89beb11af9c9533, type: 3}
       volume: 1
+      pitch: 1
     - clip: {fileID: 8300000, guid: 0c895ad71e2468448b3dc8e7551f992d, type: 3}
       volume: 1
+      pitch: 1
     - clip: {fileID: 8300000, guid: f47cae61a99f1b04ca914d2e9d0cd6e3, type: 3}
       volume: 1
+      pitch: 1
   - clipGroupName: Needle Barrage SFX
     clips:
     - clip: {fileID: 8300000, guid: b624e22a582bc764fbdbbbd3b1f3f793, type: 3}
       volume: 1
+      pitch: 1
     - clip: {fileID: 8300000, guid: ca94fd9d7084f6f4ba36e254af611e24, type: 3}
       volume: 1
+      pitch: 1
     - clip: {fileID: 8300000, guid: 1803627d82af2454f80a14ff56e920d7, type: 3}
       volume: 1
+      pitch: 1
   - clipGroupName: Potion Throw SFX
     clips:
     - clip: {fileID: 8300000, guid: 39cec59449620f7408c00ba041322263, type: 3}
       volume: 1
+      pitch: 1
     - clip: {fileID: 8300000, guid: 0f35d31435cf89847af1e4007382c64a, type: 3}
       volume: 1
+      pitch: 1
     - clip: {fileID: 8300000, guid: 648b1e39767cc1640a5aef1b2c72699f, type: 3}
       volume: 1
+      pitch: 1
   - clipGroupName: Start Fly SFX
     clips:
     - clip: {fileID: 8300000, guid: 8693ad698abed7f43879db10489fc924, type: 3}
       volume: 1
+      pitch: 1
     - clip: {fileID: 8300000, guid: 4f3ba7d01a28a8044a3fcbac9b039a7c, type: 3}
       volume: 1
+      pitch: 1
     - clip: {fileID: 8300000, guid: 6687c3600eb97b34c96d21074506f51f, type: 3}
       volume: 1
+      pitch: 1
   wrapper: {fileID: 1867775499985197372}
 --- !u!1 &7763513494450679080
 GameObject:
