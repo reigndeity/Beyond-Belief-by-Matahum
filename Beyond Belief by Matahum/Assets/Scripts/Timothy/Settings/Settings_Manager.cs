@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class Settings_Manager : MonoBehaviour
 {
+    public static Settings_Manager instance;
+
     [Header("References")]
     public PlayerCamera playerCam;
 
@@ -26,6 +28,16 @@ public class Settings_Manager : MonoBehaviour
     [Header("Buttons")]
     public Button returnButton;
 
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);  // destroy the whole GameObject, not just the component
+            return;
+        }
+
+        instance = this;
+    }
     private void Start()
     {
         SubscribeToListeners();

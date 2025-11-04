@@ -198,6 +198,11 @@ public class GameManager : MonoBehaviour
         BB_QuestManager.Instance?.ClearQuestSaveData();
 
         PlayerPrefs.DeleteAll();
+
+        if (Settings_Manager.instance)
+        {
+            Settings_Manager.instance.SaveSettingsOnReturn();
+        }
     }
 
     private bool SceneAutoSaveControllerExists()

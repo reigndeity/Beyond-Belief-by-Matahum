@@ -92,9 +92,6 @@ public class AudioManager : MonoBehaviour
         }
 
         instance = this;
-        //DontDestroyOnLoad(gameObject);
-
-        //AudioCheck();
     }
 
     private void Start()
