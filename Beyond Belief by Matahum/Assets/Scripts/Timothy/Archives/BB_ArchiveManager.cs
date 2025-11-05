@@ -24,7 +24,7 @@ public class BB_ArchiveManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
             allArchives = new List<BB_ArchiveSO>(Resources.LoadAll<BB_ArchiveSO>("Archives"));
-            allArchives.Sort((a, b) => a.archiveName.CompareTo(b.archiveName));
+            allArchives.Sort((a, b) => a.name.CompareTo(b.name));
         }
         else Destroy(gameObject);
     }
