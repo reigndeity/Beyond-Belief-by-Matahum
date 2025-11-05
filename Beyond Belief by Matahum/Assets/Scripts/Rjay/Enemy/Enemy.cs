@@ -255,7 +255,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
         m_blazeAI.Death();
         IgnorePlayerLayer();
 
-        if(charAudios.clips[charAudioIndex] != null) charAudios.SFX(charAudioIndex);
+        if(charAudios.clips[charAudioIndex].clip != null) charAudios.SFX(charAudioIndex);
 
         OnDeath?.Invoke();
         yield return new WaitForSeconds(0.5f);

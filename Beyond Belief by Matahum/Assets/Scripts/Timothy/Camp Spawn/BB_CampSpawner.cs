@@ -27,6 +27,7 @@ public class BB_CampSpawner : MonoBehaviour
 
     [Header("Random Possible Lootdrops")]
     public LootContent[] possibleLootDrops;
+    public Vector2 minMaxLootCount;
 
 
     private void Start()
@@ -174,7 +175,7 @@ public class BB_CampSpawner : MonoBehaviour
             worldLevel = WorldLevelSetter.Instance.worldLevel;       
         else worldLevel = 1;
 
-        int randomQuantity = UnityEngine.Random.Range(0, 3);
+        int randomQuantity = UnityEngine.Random.Range((int)minMaxLootCount.x, (int)minMaxLootCount.y);
 
         EnemyLootDrop loot = enemyGO.AddComponent<EnemyLootDrop>();
 
