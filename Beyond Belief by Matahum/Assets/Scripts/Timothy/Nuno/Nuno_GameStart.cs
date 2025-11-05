@@ -53,5 +53,6 @@ public class Nuno_GameStart : MonoBehaviour
         TutorialManager.instance.HideQuestJournal();
         TutorialManager.instance.HideInventory();
         TutorialManager.instance.DisableFullscreenMap();
+        TutorialManager.instance.HideArchives();
     }
 }

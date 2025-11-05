@@ -41,6 +41,7 @@ public class TutorialSaver : MonoBehaviour, ISaveable
         public bool canHotKeyInventory;
         public bool canHotKeyJournal;
         public bool canHotKeyCharacterDetails;
+        public bool canHotKeyArchives;
     }
 
     public string CaptureJson()
@@ -68,7 +69,8 @@ public class TutorialSaver : MonoBehaviour, ISaveable
 
             canHotKeyInventory = tutorial.canHotKeyInventory,
             canHotKeyJournal = tutorial.canHotKeyJournal,
-            canHotKeyCharacterDetails = tutorial.canHotKeyCharacterDetails
+            canHotKeyCharacterDetails = tutorial.canHotKeyCharacterDetails,
+            canHotKeyArchives = tutorial.canHotKeyArchives
         };
         return JsonUtility.ToJson(dto, false);
     }
@@ -101,6 +103,7 @@ public class TutorialSaver : MonoBehaviour, ISaveable
         tutorial.canHotKeyInventory = dto.canHotKeyInventory;
         tutorial.canHotKeyJournal = dto.canHotKeyJournal;
         tutorial.canHotKeyCharacterDetails = dto.canHotKeyCharacterDetails;
+        tutorial.canHotKeyArchives = dto.canHotKeyArchives;
 
         // After restoring, re-apply the tutorial state
         tutorial.TutorialCheck();

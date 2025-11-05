@@ -317,14 +317,16 @@ MonoBehaviour:
       choices: []
       animationName: 
     - speakerName: Tupas
-      dialogueText: Here's a <color=yellow>backpack</color>.
+      dialogueText: Here's a <color=yellow>backpack</color> and an <color=yellow>archive
+        journal</color>.
       voiceClip: {fileID: 0}
       skippable: 1
       isChoiceLine: 0
       choices: []
       animationName: 
     - speakerName: Tupas
-      dialogueText: I first need you to familiarize yourself with this.
+      dialogueText: "You\u2019ll need both \u2014 one to carry what you find, and
+        one to record what you learn."
       voiceClip: {fileID: 0}
       skippable: 1
       isChoiceLine: 0
@@ -333,7 +335,8 @@ MonoBehaviour:
   - dialogueState: A0_Q13_BackpackTraining
     lines:
     - speakerName: Tupas
-      dialogueText: Have you explored the contents of your backpack?
+      dialogueText: Have you explored the contents of your backpack and your archive
+        journal?
       voiceClip: {fileID: 0}
       skippable: 1
       isChoiceLine: 0

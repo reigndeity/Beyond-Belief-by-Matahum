@@ -398,6 +398,11 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.tutorial_canNormalSkill = true;
                     TutorialManager.instance.tutorial_canUltimateSkill = true;
                     TutorialManager.instance.tutorial_canOpenMap = true;
+                    TutorialManager.instance.tutorial_canSprintAndDash = true;
+                    TutorialManager.instance.tutorial_canCameraDirection = true;
+                    TutorialManager.instance.tutorial_canCameraZoom = true;
+                    TutorialManager.instance.tutorial_canJump = true;
+                    TutorialManager.instance.tutorial_canMovementToggle = true;
                     TutorialManager.instance.ShowNormalSkill();
                     TutorialManager.instance.ShowUltimateSkill();
                     TutorialManager.instance.ShowHealth();
@@ -416,8 +421,10 @@ public class DialogueQuestLinker : MonoBehaviour
                     ApplyStates(tupas);
                     RemoveActiveMarker();
                     TutorialManager.instance.ShowInventory();
+                    TutorialManager.instance.ShowArchives();
                     inventoryPopUp.SetActive(true);
                     m_uiGame.inventoryButton.onClick.AddListener(TutorialManager.instance.EnableInventoryTutorial);
+                    m_uiGame.archiveButton.onClick.AddListener(TutorialManager.instance.EnableArchiveTutorial);
                     break;
                 #endregion
 
@@ -768,6 +775,7 @@ public class DialogueQuestLinker : MonoBehaviour
 
                 inventoryPopUp.SetActive(false);
                 m_uiGame.inventoryButton.onClick.RemoveListener(TutorialManager.instance.EnableInventoryTutorial);
+                m_uiGame.archiveButton.onClick.RemoveListener(TutorialManager.instance.EnableArchiveTutorial);
             }
         }
         if (BB_QuestManager.Instance.IsQuestDone("A1_Q1_Tupas'Request_P3"))

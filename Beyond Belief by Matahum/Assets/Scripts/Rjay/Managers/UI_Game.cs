@@ -86,7 +86,7 @@ public class UI_Game : MonoBehaviour
 
     [Header("Archive Properties")]
     [SerializeField] private BB_Archive_ButtonManager m_archiveButtonManager;
-    [SerializeField] Button archiveButton;
+    public Button archiveButton;
     [SerializeField] Button closeArchiveButton;
 
     [Header("Full Screen Map Properties")]
@@ -274,8 +274,8 @@ public class UI_Game : MonoBehaviour
             return;
 
         // Block hotkeys if any major UI, map, pause, or dialogue is active
-        bool isAnyPanelOpen = IsAnyMajorPanelOpen() || 
-                            (PlayerMinimap.instance != null && PlayerMinimap.instance.IsMapOpen()) || 
+        bool isAnyPanelOpen = IsAnyMajorPanelOpen() ||
+                            (PlayerMinimap.instance != null && PlayerMinimap.instance.IsMapOpen()) ||
                             pauseMenuPanel.activeSelf ||
                             (DialogueManager.Instance != null && DialogueManager.Instance.IsDialoguePlaying());
 
@@ -315,6 +315,18 @@ public class UI_Game : MonoBehaviour
             else if (!isAnyPanelOpen)
             {
                 OnClickOpenInventory();
+            }
+        }
+        // Archive hotkey
+        if (TutorialManager.instance.canHotKeyArchives && Input.GetKeyDown(m_playerInput.archiveKey))
+        {
+            if (m_archiveButtonManager.archiveUI.activeSelf)
+            {
+                OnClickCloseArchive();
+            }
+            else if (!isAnyPanelOpen)
+            {
+                OnClickOpenArchive();
             }
         }
     }
@@ -451,7 +463,6 @@ public class UI_Game : MonoBehaviour
         AudioManager.instance.PlayButtonClickSFX();
     }
     #endregion
-
     #region CHARACTER DETAILS
     public void OnClickOpenCharacterDetails()
     {

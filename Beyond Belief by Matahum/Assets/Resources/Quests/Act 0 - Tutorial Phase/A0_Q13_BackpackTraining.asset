@@ -13,20 +13,29 @@ MonoBehaviour:
   m_Name: A0_Q13_BackpackTraining
   m_EditorClassIdentifier: 
   questID: A0_Q13_BackpackTraining
-  questTitle: Backpack that can fit everything?
+  questTitle: "What\u2019s in the Bag\u2026 and the Book?"
   actNumber: ACT 0
   questJournalDescription:
-  - Tupas asks you to familiarized yourself with the backpack he gave you.
-  - Tupas asks you to familiarized yourself with the backpack he gave you.
-  - Tupas asks you to familiarized yourself with the backpack he gave you.
+  - "Tupas wants you to get used to the new backpack he gave you \u2014 and the journal
+    that comes with it. You\u2019ll need both for the journey ahead."
+  - "Tupas wants you to get used to the new backpack he gave you \u2014 and the journal
+    that comes with it. You\u2019ll need both for the journey ahead."
+  - "Tupas wants you to get used to the new backpack he gave you \u2014 and the journal
+    that comes with it. You\u2019ll need both for the journey ahead."
   questHudDescription: 
   questType: 0
-  state: 3
+  state: 0
   missions:
   - whatMustBeDone: Open the backpack
     targetID: A0_Q13_Backpack
-    hasCounter: 0
+    hasCounter: 1
     requiredAmount: 1
-    currentAmount: 1
+    currentAmount: 0
+  - whatMustBeDone: Open the archive
+    targetID: A0_Q13_Archive
+    hasCounter: 1
+    requiredAmount: 1
+    currentAmount: 0
   rewards: []
   isBeingTracked: 0
+  isInCompletedPanel: 0

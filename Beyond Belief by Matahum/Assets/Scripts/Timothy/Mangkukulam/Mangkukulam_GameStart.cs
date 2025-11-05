@@ -46,5 +46,6 @@ public class Mangkukulam_GameStart : MonoBehaviour
         TutorialManager.instance.HideQuestJournal();
         TutorialManager.instance.HideInventory();
         TutorialManager.instance.DisableFullscreenMap();
+        TutorialManager.instance.HideArchives();
     }
 }

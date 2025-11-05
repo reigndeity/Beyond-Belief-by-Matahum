@@ -43,6 +43,7 @@ public class ReapirFakeBaleteManager : MonoBehaviour
         TutorialManager.instance.HideQuestJournal();
         TutorialManager.instance.HideInventory();
         TutorialManager.instance.DisableFullscreenMap();
+        TutorialManager.instance.HideArchives();
     }
 
     public void QuestCheck()

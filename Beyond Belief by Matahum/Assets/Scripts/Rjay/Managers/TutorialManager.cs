@@ -66,10 +66,12 @@ public class TutorialManager : MonoBehaviour
     public GameObject journalTutorialArrow;
     public GameObject characterDetailsTutorialArrow;
     public GameObject inventoryTutorialArrow;
+    public GameObject archiveTutorialArrow;
     public GameObject[] questJournalTutorialArrow;
     public GameObject[] agimatTutorialArrow;
     public GameObject[] pamanaTutorialArrow;
     public GameObject[] backpackTutorialArrow;
+    public GameObject[] archiveJournalTutorialArrow;
 
     [Header("Quest Journal UI Tutorial")]
     [SerializeField] private BB_Quest_ButtonManager m_questButtonManager;
@@ -145,6 +147,20 @@ public class TutorialManager : MonoBehaviour
     public Button closeInventoryButtonTH;
     [SerializeField] GameObject inventoryHotkeyPopUp;
 
+    [Header("Archives Tutorial")]
+    public bool canHotKeyArchives;
+    public GameObject nonInteractablePanelArchives;
+    public GameObject archiveTutorial;
+    public TextMeshProUGUI archiveTutorialTxt;
+    public TutorialHighlight archiveLayoutTH;
+    public TutorialHighlight archiveCategoryFilterTH;
+    public TutorialHighlight archiveSelectionTH;
+    public TutorialHighlight archiveDetailsTH;
+    public TutorialHighlight closeArchiveTH;
+    public Button nextArchiveTutorial;
+    public int currentArchiveTutorial;
+    [SerializeField] GameObject archiveHotkeyPopup;
+
     [Header("Save Tutorial")]
     public Button noSaveButton;
     public Button closeSaveButton;
@@ -186,6 +202,7 @@ public class TutorialManager : MonoBehaviour
         ShowAgimatOne();
         ShowAgimatTwo();
         ShowInventory();
+        ShowArchives();
 
         PlayerCamera.Instance.HardUnlockCamera();
         PlayerCamera.Instance.AdjustCamera();
@@ -193,6 +210,7 @@ public class TutorialManager : MonoBehaviour
         canHotKeyInventory = true;
         canHotKeyJournal = true;
         canHotKeyCharacterDetails = true;
+        canHotKeyArchives = true;
     }
 
     private void OnEnable()
@@ -250,16 +268,16 @@ public class TutorialManager : MonoBehaviour
 
         nextJournalTutorialButton.onClick.AddListener(QuestJournalTutorial);
 
-        if (tutorial_canArchives)
-        {
-            archiveButton.FadeIn(0.5f);
-            archiveButton.GetComponent<Button>().enabled = true;
-        }
-        else
-        {
-            archiveButton.FadeOut(0);
-            archiveButton.GetComponent<Button>().enabled = false;
-        }
+        // if (tutorial_canArchives)
+        // {
+        //     archiveButton.FadeIn(0.5f);
+        //     archiveButton.GetComponent<Button>().enabled = true;
+        // }
+        // else
+        // {
+        //     archiveButton.FadeOut(0);
+        //     archiveButton.GetComponent<Button>().enabled = false;
+        // }
     }
 
     void StartTutorial()
@@ -317,8 +335,11 @@ public class TutorialManager : MonoBehaviour
         canHotKeyInventory = false;
         canHotKeyJournal = false;
         canHotKeyCharacterDetails = false;
+        canHotKeyArchives = false;
 
         lewenriGate.Close();
+
+        HideArchives();
     }
 
     #region PLAYER BOOLEANS TUTORIAL
@@ -348,6 +369,7 @@ public class TutorialManager : MonoBehaviour
     public void AllowQuestJournalHotKey() => canHotKeyJournal = true;
     public void AllowInventoryHotkey() => canHotKeyInventory = true;
     public void AllowCharacterDetailsHotKey() => canHotKeyCharacterDetails = true;
+    public void AllowArchivesHotkey() => canHotKeyArchives = true;
 
     public void ShowInventoryHotkeyPopUp() => inventoryHotkeyPopUp.SetActive(true);
     public void ShowQuestJournal()
@@ -366,6 +388,17 @@ public class TutorialManager : MonoBehaviour
     public void ShowAgimatTwo() => agimatTwo.FadeIn(0.5f);
     public void HideAgimatTwo() => agimatTwo.FadeOut(0.5f);
 
+    public void AllowArchives() => tutorial_canArchives = true;
+    public void ShowArchives()
+    {
+        archiveButton.GetComponent<Button>().enabled = true;
+        archiveButton.FadeIn(0.5f);
+    }
+    public void HideArchives()
+    {
+        archiveButton.GetComponent<Button>().enabled = false;
+        archiveButton.FadeOut(0.5f);
+    }
 
     public void HideCharacterDetails()
     {
@@ -848,6 +881,7 @@ public class TutorialManager : MonoBehaviour
     #region INVENTORY TUTORIAL
     public void EnableInventoryTutorial()
     {
+        inventoryTutorialArrow.SetActive(false);
         inventoryTutorial.SetActive(true);
         tutorialFadeImage.enabled = true;
 
@@ -857,7 +891,7 @@ public class TutorialManager : MonoBehaviour
         sortButtonsTH.enabled = true;
 
         nextInventoryTutorial.onClick.AddListener(InventoryTutorial);
-        inventoryTutorialArrow.SetActive(false);
+        
         backpackTutorialArrow[0].SetActive(true);
 
         inventoryTutorialTxt.text = "These buttons allows you to display specific types of item";
@@ -887,7 +921,7 @@ public class TutorialManager : MonoBehaviour
                 nextInventoryTutorial.gameObject.SetActive(false);
                 nonInteractableInventory.gameObject.SetActive(false);
                 closeInventoryButtonTH.GetComponent<TutorialHighlight>().enabled = true;
-                closeInventoryButtonTH.onClick.AddListener(CloseAndAcceptMainQuest);
+                closeInventoryButtonTH.onClick.AddListener(CloseAndUpdateBackpack);
 
                 inventoryTutorialText[0].SetActive(false);
                 inventoryTutorialText[1].SetActive(true);
@@ -898,7 +932,7 @@ public class TutorialManager : MonoBehaviour
         currentInventoryTutorial++;
     }
 
-    public void CloseAndAcceptMainQuest()
+    public void CloseAndUpdateBackpack()
     {
         inventoryTutorial.SetActive(false);
         tutorialFadeImage.enabled = false;
@@ -907,6 +941,72 @@ public class TutorialManager : MonoBehaviour
         isTutorialDone = true;
         m_uiGame.UnBlur();
         inventoryHotkeyPopUp.SetActive(true);
+    }
+    #endregion
+
+    #region ARCHIVE TUTORIAL
+    public void EnableArchiveTutorial()
+    {
+        archiveTutorialArrow.SetActive(false);
+        archiveTutorial.SetActive(true);
+        tutorialFadeImage.enabled = true;
+        nonInteractablePanelArchives.SetActive(true);
+
+        nextArchiveTutorial.onClick.AddListener(ArchiveTutorial);
+        
+        archiveTutorialTxt.text = "This is your archive journal.";
+
+        archiveLayoutTH.enabled = true;
+        archiveJournalTutorialArrow[0].SetActive(true);
+    }
+    public void ArchiveTutorial()
+    {
+        switch (currentArchiveTutorial)
+        {
+            case 0:
+                archiveTutorialTxt.text = "It stores information about all discovered creatures, locations, and plants.";
+                break;
+            case 1:
+                archiveTutorialTxt.text = "These buttons filters and categorizes what needs to be shown";
+
+                archiveLayoutTH.enabled = false;
+                archiveCategoryFilterTH.enabled = true;
+                break;
+            case 2:
+                archiveTutorialTxt.text = "When you discover a new creature, location, or a plant, they will show up here.";
+                archiveCategoryFilterTH.enabled = false;
+                archiveSelectionTH.enabled = true;
+                break;
+            case 3:
+                archiveTutorialTxt.text = "Here you can learn what they are and even their nature";
+                archiveSelectionTH.enabled = false;
+                archiveDetailsTH.enabled = true;
+                break;
+            case 4:
+                archiveTutorialTxt.text = "Now click on this button to resume your journey";
+                archiveDetailsTH.enabled = false;
+                closeArchiveTH.enabled = true;
+                closeArchiveTH.GetComponent<Button>().onClick.AddListener(CloseAndUpdateArchives);
+                archiveJournalTutorialArrow[0].SetActive(false);
+                archiveJournalTutorialArrow[1].SetActive(true);
+
+                nextArchiveTutorial.gameObject.SetActive(false);
+                nonInteractablePanelArchives.SetActive(false);
+                archiveLayoutTH.gameObject.SetActive(false);
+                break;
+        }
+        currentArchiveTutorial++;
+    }
+
+    public void CloseAndUpdateArchives()
+    {
+        archiveTutorial.SetActive(false);
+        tutorialFadeImage.enabled = false;
+        m_uiGame.archiveButton.onClick.RemoveListener(EnableInventoryTutorial);
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q13_Archive");
+        isTutorialDone = true;
+        m_uiGame.UnBlur();
+        archiveHotkeyPopup.SetActive(true);
     }
     #endregion
 
