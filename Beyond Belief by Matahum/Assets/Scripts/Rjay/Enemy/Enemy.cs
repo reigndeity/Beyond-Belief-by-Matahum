@@ -97,7 +97,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
         if (hitAnimOn)
             GetHit();
 
-        charAudios.RandomOneShotSFX(charAudioHitSFX);
+        if (charAudios.clipGroup[charAudioHitSFX] != null) charAudios.RandomOneShotSFX(charAudioHitSFX);
 
         bool isCriticalHit = UnityEngine.Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
         float damageReduction = m_enemyStats.e_defense * 0.66f; // Defense Scaling
@@ -254,7 +254,9 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
         EnableAllRagdollParts();
         m_blazeAI.Death();
         IgnorePlayerLayer();
-        charAudios.SFX(charAudioIndex);
+
+        if(charAudios.clips[charAudioIndex] != null) charAudios.SFX(charAudioIndex);
+
         OnDeath?.Invoke();
         yield return new WaitForSeconds(0.5f);
     }

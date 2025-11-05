@@ -8732,7 +8732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f9d81f41de4ac4e944188683471a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
+  moveSpeed: 1
   turnSpeed: 5
   idleAnim:
   - Gabunan_Idle
@@ -9070,47 +9070,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 7611694655124090694}
-  clips:
-  - clip: {fileID: 8300000, guid: e1308dbfc5a85d74ca0229790acc31e1, type: 3}
-    volume: 1
-    pitch: 1
-  - clip: {fileID: 8300000, guid: f6229f25641b9c646813994775a5aea8, type: 3}
-    volume: 1
-    pitch: 1
-  - clip: {fileID: 8300000, guid: acefced8da183274098957c166271cf5, type: 3}
-    volume: 1
-    pitch: 1
-  - clip: {fileID: 8300000, guid: d28c233632ae5a241811b5ff2a8fafc1, type: 3}
-    volume: 1
-    pitch: 1
-  - clip: {fileID: 8300000, guid: 55a9e6475af2fe743ace023592c0764a, type: 3}
-    volume: 1
-    pitch: 1
-  - clip: {fileID: 8300000, guid: 436db43c0d1b5d747a974152ad85edf3, type: 3}
-    volume: 1
-    pitch: 1
-  - clip: {fileID: 8300000, guid: a4db9327ed0ee404da03abb689f5c191, type: 3}
-    volume: 1
-    pitch: 1
+  clips: []
   clipGroup:
   - clipGroupName: Walk SFX
     clips:
-    - clip: {fileID: 8300000, guid: ebf118c7e6aae8041b503802933baed3, type: 3}
+    - clip: {fileID: 8300000, guid: 3827f5d93f0818d42995f0acbcc60cac, type: 3}
       volume: 1
       pitch: 1
-    - clip: {fileID: 8300000, guid: f085dd42dd1a6e14eab0e375aaa603e6, type: 3}
+    - clip: {fileID: 8300000, guid: d4c99d309db39c347bc0dbcc2b9dbbfa, type: 3}
       volume: 1
       pitch: 1
-    - clip: {fileID: 8300000, guid: 2c4eda418bf6c484886359ee78eec103, type: 3}
+    - clip: {fileID: 8300000, guid: 7857dd19bdef26c42a9906c682c7d2f7, type: 3}
       volume: 1
       pitch: 1
-    - clip: {fileID: 8300000, guid: 5d934e81dc1a6224fad99a81df95ee10, type: 3}
+    - clip: {fileID: 8300000, guid: 53bbcb5f21ab4504ea8ad1e0dcc04758, type: 3}
       volume: 1
       pitch: 1
-    - clip: {fileID: 8300000, guid: 2ae42d92cd02e814a928f5c77d3d0870, type: 3}
+    - clip: {fileID: 8300000, guid: f12dc4adcd4f3a548a1ef6b054bf4cca, type: 3}
       volume: 1
       pitch: 1
-    - clip: {fileID: 8300000, guid: e80c2111256f197429ce4f1d078cd086, type: 3}
+    - clip: {fileID: 8300000, guid: bc32f5baeefb770408f1fa88295fee1f, type: 3}
       volume: 1
       pitch: 1
   - clipGroupName: Alert SFX
