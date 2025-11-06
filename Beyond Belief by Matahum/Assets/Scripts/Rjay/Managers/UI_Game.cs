@@ -642,6 +642,7 @@ public class UI_Game : MonoBehaviour
         HideUI();
         Blur();
         PauseGame();
+        AudioManager.instance.PlayButtonClickSFX();
     }
     private void OnClickCloseArchive()
     {
@@ -649,6 +650,7 @@ public class UI_Game : MonoBehaviour
         ShowUI();
         UnBlur();
         ResumeGame();
+        AudioManager.instance.PlayButtonClickSFX();
     }
     #endregion
 

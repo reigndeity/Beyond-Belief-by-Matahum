@@ -49,6 +49,8 @@ public class BB_Archive_ButtonManager : MonoBehaviour
 
         archivePopUp.HighlightButton(creatureCategoryButton.GetComponent<RectTransform>());
         BB_ArchiveUI.instance.OnOpenJournal(BB_ArchiveUI.instance.creaturesScrollContent);
+
+        AudioManager.instance.PlayButtonClickSFX();
     }
     public void OnOpenLocationCategory()
     {
@@ -60,6 +62,8 @@ public class BB_Archive_ButtonManager : MonoBehaviour
 
         archivePopUp.HighlightButton(locationCategoryButton.GetComponent<RectTransform>());
         BB_ArchiveUI.instance.OnOpenJournal(BB_ArchiveUI.instance.locationsScrollContent);
+
+        AudioManager.instance.PlayButtonClickSFX();
 
     }
     public void OnOpenWildlifeCategory()
@@ -82,6 +86,8 @@ public class BB_Archive_ButtonManager : MonoBehaviour
 
         archivePopUp.HighlightButton(plantCategoryButton.GetComponent<RectTransform>());
         BB_ArchiveUI.instance.OnOpenJournal(BB_ArchiveUI.instance.plantsScrollContent);
+
+        AudioManager.instance.PlayButtonClickSFX();
     }
     #endregion
     #region Exit Archives

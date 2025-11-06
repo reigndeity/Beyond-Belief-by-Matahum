@@ -24,13 +24,13 @@ MonoBehaviour:
     inside a balate tree that weakens her power to bring you home.
   questHudDescription: 
   questType: 0
-  state: 0
+  state: 1
   missions:
   - whatMustBeDone: Defeat all enemies
     targetID: A2_Q3_Enemy_P2
     hasCounter: 1
-    requiredAmount: 5
-    currentAmount: 0
+    requiredAmount: 3
+    currentAmount: 5
   - whatMustBeDone: Destroy the Haligi
     targetID: A2_Q3_Destroy_P2
     hasCounter: 1
@@ -43,5 +43,5 @@ MonoBehaviour:
     currentAmount: 0
   rewards:
   - {fileID: 11400000, guid: 101c20bc40428964ba248a57aef9ed65, type: 2}
-  isBeingTracked: 0
+  isBeingTracked: 1
   isInCompletedPanel: 0

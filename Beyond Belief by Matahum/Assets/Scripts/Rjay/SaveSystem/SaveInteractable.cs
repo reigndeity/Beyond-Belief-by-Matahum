@@ -65,6 +65,7 @@ public class SaveInteractable : Interactable
     {
         if (isSaving) return;
         StartCoroutine(SaveRoutine());
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     private void OnNoClicked()
@@ -75,6 +76,7 @@ public class SaveInteractable : Interactable
 
         // 🔹 Invoke UnityEvent
         onSaveCancelled?.Invoke();
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     private IEnumerator SaveRoutine()
@@ -119,6 +121,7 @@ public class SaveInteractable : Interactable
         savePanel.SetActive(false);
         UnlockPlayer();
         onSaveClosed?.Invoke();
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
     async Task SaveProgressAsync()

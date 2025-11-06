@@ -441,6 +441,7 @@ public class TutorialManager : MonoBehaviour
     }
     public void QuestJournalTutorial()
     {
+        AudioManager.instance.PlayButtonClickSFX();
         switch (currentQuestJournalTutorial)
         {
             case 0:
@@ -524,6 +525,7 @@ public class TutorialManager : MonoBehaviour
     }
     public void AgimatTutorial()
     {
+        AudioManager.instance.PlayButtonClickSFX();
         switch (currentAgimatTutorial)
         {
             case 0:
@@ -617,7 +619,7 @@ public class TutorialManager : MonoBehaviour
                 confirmSwitchButton.onClick.AddListener(AgimatTutorial);
                 confirmTextTH.enabled = true;
                 agimatTutorialArrow[9].SetActive(false);
-                agimatTutorialArrow[10].SetActive(true);    
+                agimatTutorialArrow[10].SetActive(true);
                 break;
             case 9:
                 agimatTutorialText.text = "Now click on the close button";
@@ -717,6 +719,7 @@ public class TutorialManager : MonoBehaviour
 
     public void PamanaTutorial()
     {
+        AudioManager.instance.PlayButtonClickSFX();
         switch (currentPamanaTutorial)
         {
             case 0:
@@ -771,7 +774,7 @@ public class TutorialManager : MonoBehaviour
 
                 pamanaTutorialText.text = "This shows what set it comes from and what bonuses you can unlock";
                 pamanaItemDescriptionTH.enabled = true;
-                
+
                 break;
             case 5:
                 pamanaItemDescriptionTH.enabled = false;
@@ -899,6 +902,7 @@ public class TutorialManager : MonoBehaviour
     }
     public void InventoryTutorial()
     {
+        AudioManager.instance.PlayButtonClickSFX();
         switch (currentInventoryTutorial)
         {
             case 0:
@@ -961,6 +965,7 @@ public class TutorialManager : MonoBehaviour
     }
     public void ArchiveTutorial()
     {
+        AudioManager.instance.PlayButtonClickSFX();
         switch (currentArchiveTutorial)
         {
             case 0:
