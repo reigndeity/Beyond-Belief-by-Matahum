@@ -3256,7 +3256,7 @@ GameObject:
   - component: {fileID: 8948243766785521830}
   - component: {fileID: 2651022778668287327}
   - component: {fileID: 7906774482335435750}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Enemy Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8330,7 +8330,7 @@ MonoBehaviour:
   _Editor_OnValidateTrigger: 1
   _EditorAllowAutoUpdateFeetParams: 1
   _EditorCategory: 0
-  _EditorSetupCategory: 2
+  _EditorSetupCategory: 0
   _EditorMotionCategory: 2
   _EditorExtraCategory: 0
   setupPose:
@@ -8345,7 +8345,7 @@ MonoBehaviour:
   LimitLegStretch: 0.99
   FeetYOffset: 0
   FeetLengthAdjust: 0
-  baseTransform: {fileID: 0}
+  baseTransform: {fileID: 3141945982813389349}
   Hips: {fileID: 5254233490624692059}
   ScaleReferenceMode: 3
   finalScaleReference: 1.0053359
@@ -8420,7 +8420,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}

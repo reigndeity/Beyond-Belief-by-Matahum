@@ -102,6 +102,8 @@ public class BB_ArchiveUI : MonoBehaviour
 
     public void ShowDetails(BB_ArchiveSO archiveSO, BB_ArchiveUITemplate uiTemplate)
     {
+        AudioManager.instance.PlayButtonClickSFX();
+
         if (PlayerPrefs.GetInt($"{archiveSO.archiveName}_Discovered", 0) == 0)
         {
             archiveTitleName.text = $"{undiscoveredName} {archiveSO.archiveType.ToString()}";

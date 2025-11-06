@@ -49,6 +49,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip onHoverSFX;
     public AudioClip equipSFX;
     public AudioClip unequipSFX;
+    public AudioClip archiveFilterSFX;
 
     [Header("NPC Audio")]
     public AudioSource npcSource;
@@ -268,6 +269,10 @@ public class AudioManager : MonoBehaviour
     public void PlayUnequipSFX()
     {
         sfxSource.PlayOneShot(unequipSFX);
+    }
+    public void PlayArchiveFilterSFX()
+    {
+        sfxSource.PlayOneShot(archiveFilterSFX);
     }
     #endregion
     #region NPC SFX

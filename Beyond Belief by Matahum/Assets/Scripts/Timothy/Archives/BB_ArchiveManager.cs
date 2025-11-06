@@ -15,6 +15,9 @@ public class BB_ArchiveManager : MonoBehaviour
     public List<BB_ArchiveSO> wildlifeList = new List<BB_ArchiveSO>();
     public List<BB_ArchiveSO> plantList = new List<BB_ArchiveSO>();
 
+    [Header("Auto Update Magindara in Archives")]
+    public BB_ArchiveSO magindaraArchive;
+
     public event Action<BB_ArchiveSO> OnArchiveUpdate;
 
     private void Awake()
@@ -29,14 +32,17 @@ public class BB_ArchiveManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    /*private void Start()
+    private void Start()
     {
-        foreach (var archive in allArchives)
-        {
-            archive.isDiscovered = PlayerPrefs.GetInt($"{archive.archiveName}_Discovered", 0) == 1;
-            archive.isViewed = PlayerPrefs.GetInt($"{archive.archiveName}_Viewed", 0) == 1;
-        }
-    }*/
+        Invoke("DelayUpdateMagindara", 0.5f);
+    }
+
+    void DelayUpdateMagindara()
+    {
+        PlayerPrefs.SetInt($"{magindaraArchive.archiveName}_Discovered", 1);
+        PlayerPrefs.Save();
+    }
+
     public void SettingUpArchives()
     {
         foreach (var obj in allArchives)
