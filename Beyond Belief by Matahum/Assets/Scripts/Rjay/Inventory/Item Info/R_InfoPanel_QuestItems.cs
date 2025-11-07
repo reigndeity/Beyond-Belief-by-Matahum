@@ -31,7 +31,7 @@ public class R_InfoPanel_QuestItem : R_ItemInfoDisplay
 
         nameText.text = itemData.itemName;
         descriptionText.text = itemData.description;
-        itemType.text = itemData.itemType.ToString();
+        itemType.text = "Quest Item";
 
         useButton.SetActive(itemData.isConsumable); // Show only if it's a consumable quest item
     }

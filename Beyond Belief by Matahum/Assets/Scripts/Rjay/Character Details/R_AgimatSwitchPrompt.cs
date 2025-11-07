@@ -22,12 +22,15 @@ public class R_AgimatSwitchPrompt : MonoBehaviour
         yesButton.onClick.RemoveAllListeners();
         cancelButton.onClick.RemoveAllListeners();
 
-        yesButton.onClick.AddListener(() => {
+        yesButton.onClick.AddListener(() =>
+        {
             onConfirm?.Invoke();
             Close();
         });
 
         cancelButton.onClick.AddListener(Close);
+
+        AudioManager.instance.PlayEquipSFX();
     }
 
     // Specific helper for Agimat messages
@@ -61,5 +64,7 @@ public class R_AgimatSwitchPrompt : MonoBehaviour
     {
         gameObject.SetActive(false);
         onConfirm = null;
+
+        AudioManager.instance.PlayUnequipSFX();
     }
 }
