@@ -28,6 +28,9 @@ public class DialogueQuestLinker : MonoBehaviour
     public DialogueStateHolder nunoSaPunso;
     public DialogueStateHolder mangkukulam;
     public DialogueStateHolder albularyo;
+    public DialogueStateHolder hignaw;
+    public DialogueStateHolder sabiyak;
+    public DialogueStateHolder dula;
     
     [Header("Quest Minimap Item")]
     [SerializeField] private GameObject questMinimapItem; // ✅ single persistent prefab
@@ -41,6 +44,10 @@ public class DialogueQuestLinker : MonoBehaviour
     [Header("Marker Cooldown")]
     [SerializeField] private float markerCooldown = 5f; // seconds
     private float lastMarkerTime = -999f;
+
+    [Header("Side Quest Components")]
+    public GameObject lakeBorder;
+    public Transform lake;
 
     [Header("Act 0 Components")]
     [SerializeField] GameObject movementTutorialPopUp;
@@ -313,7 +320,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.lewenriSacredStatue.gameObject.layer = LayerMask.NameToLayer("Teleporter");
                     m_uiGame.closeMapButton.onClick.AddListener(FirstStatueInteraction);
                     if (questMinimapItem != null)
-                    { 
+                    {
                         questMinimapItem.SetActive(false);
                     }
                     break;
@@ -454,7 +461,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     TutorialManager.instance.noSaveButton.onClick.AddListener(TutorialManager.instance.ContinueQuestAfterSave);
 
                     if (questMinimapItem != null)
-                    { 
+                    {
                         questMinimapItem.SetActive(false);
                     }
                     break;
@@ -483,7 +490,7 @@ public class DialogueQuestLinker : MonoBehaviour
                     bangkaw.SetDialogueState("Default");
 
                     if (questMinimapItem != null)
-                    { 
+                    {
                         questMinimapItem.SetActive(false);
                     }
                     break;
@@ -644,7 +651,7 @@ public class DialogueQuestLinker : MonoBehaviour
 
                     albularyoNpc.transform.SetPositionAndRotation(a2_q10_albularyoTransform.position, a2_q10_albularyoTransform.rotation);
                     albularyo.SetDialogueState("A2_Q10_HowDoIgetHome");
-                    albularyoNpc.GetComponent<BlazeAI>().StayIdle();    
+                    albularyoNpc.GetComponent<BlazeAI>().StayIdle();
                     ApplyStates(albularyo);
                     PlayerCamera.Instance.AdjustCamera();
 
@@ -662,14 +669,14 @@ public class DialogueQuestLinker : MonoBehaviour
                     repairSecondBalete.gameObject.layer = LayerMask.NameToLayer("Fake Balete Tree Domain");
                     AddActiveMarker(currentQuestID, tracked);
 
-                    if(firstFragment != null) inventory.RemoveItem(firstFragment, 1);
+                    if (firstFragment != null) inventory.RemoveItem(firstFragment, 1);
 
                     break;
                 case "A2_Q11_RepairThirdBalete_P1":
                     repairThirdBalete.gameObject.layer = LayerMask.NameToLayer("Fake Balete Tree Domain");
                     AddActiveMarker(currentQuestID, tracked);
 
-                    if(secondFragment != null) inventory.RemoveItem(secondFragment, 1);
+                    if (secondFragment != null) inventory.RemoveItem(secondFragment, 1);
 
                     break;
                 case "A2_Q12_TimeToGoHome":
@@ -681,6 +688,21 @@ public class DialogueQuestLinker : MonoBehaviour
 
                     if (thirdFragment != null) inventory.RemoveItem(thirdFragment, 1);
 
+                    break;
+                #endregion
+
+                #region SIDE QUESTS
+                case "S_Q1_LostMotivation":
+                    AddActiveMarker(currentQuestID, tracked);
+                    hignaw.SetDialogueState("S_Q1_LostMotivation");
+                    sabiyak.SetDialogueState("S_Q1_LostMotivation");
+                    ApplyStates(hignaw, sabiyak);
+                    break;
+                case "S_Q2_SecretTreasure":
+                    AddActiveMarker(currentQuestID, tracked);
+                    dula.SetDialogueState("S_Q2_SecretTreasure");
+                    lakeBorder.SetActive(false);
+                    ApplyStates(dula);
                     break;
                 #endregion
             }
@@ -936,6 +958,29 @@ public class DialogueQuestLinker : MonoBehaviour
             ApplyStates(albularyo);
             RemoveActiveMarker();
             questMinimapItem.SetActive(false);
+
+            if (BB_QuestManager.Instance.IsQuestDone("S_Q1_LostMotivation"))
+            {
+                sabiyak.SetDialogueState("Default");
+                hignaw.SetDialogueState("Default_New");
+                ApplyStates(sabiyak, hignaw);
+                return;
+            }
+            else
+            {
+                sabiyak.SetDialogueState("S_Q1_LostMotivation_Start");
+                ApplyStates(sabiyak);
+            }
+            if (BB_QuestManager.Instance.IsQuestDone("S_Q2_SecretTreasure"))
+            {
+                dula.SetDialogueState("default");
+                ApplyStates(dula);
+            }
+            else
+            {
+                dula.SetDialogueState("S_Q2_SecretTreasure_Start");
+                ApplyStates(dula);
+            }
         }
     }
     #endregion
@@ -1019,6 +1064,8 @@ public class DialogueQuestLinker : MonoBehaviour
             case "A2_Q11_RepairSecondBalete_P1": return repairSecondBalete.transform;
             case "A2_Q11_RepairThirdBalete_P1": return repairThirdBalete.transform;
             case "A2_Q12_TimeToGoHome": return albularyoNpc.transform;
+            case "S_Q1_LostMotivation": return hignaw.transform;
+            case "S_Q2_SecretTreasure": return lake.transform;
         }
         return null;
     }

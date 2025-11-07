@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Chest : Interactable
 {
@@ -23,6 +24,8 @@ public class Chest : Interactable
     private Animator animator;
     [SerializeField] private GameObject chestParticlePrefab;
     private GameObject activeParticle;
+
+    public UnityEvent onInteract;
 
     private void OnValidate()
     {
@@ -90,6 +93,7 @@ public class Chest : Interactable
             if (col != null) col.enabled = false;
         }
 
+        onInteract?.Invoke();
     }
 
     public void ShootOutLoot()

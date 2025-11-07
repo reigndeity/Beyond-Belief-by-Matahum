@@ -20,9 +20,12 @@ public class ChestContent_Editor : Editor
     // Save system properties
     SerializedProperty isOpenedProp;
     SerializedProperty chestIdProp;
-    SerializedProperty isLewenriChestProp; // ✅ Added for quest gating
+    SerializedProperty isLewenriChestProp;
 
-    bool[] foldouts; // For collapsible entries
+    // UnityEvent
+    SerializedProperty onInteractProp;
+
+    bool[] foldouts;
 
     private void OnEnable()
     {
@@ -42,9 +45,11 @@ public class ChestContent_Editor : Editor
         // Save system properties
         isOpenedProp = serializedObject.FindProperty("isOpened");
         chestIdProp = serializedObject.FindProperty("chestId");
-        isLewenriChestProp = serializedObject.FindProperty("isLewenriChest"); // ✅ Added
+        isLewenriChestProp = serializedObject.FindProperty("isLewenriChest");
 
-        // Initialize foldouts
+        // UnityEvent property
+        onInteractProp = serializedObject.FindProperty("onInteract");
+
         foldouts = new bool[chestDropsProp.arraySize];
     }
 
@@ -79,7 +84,7 @@ public class ChestContent_Editor : Editor
 
         EditorGUILayout.PropertyField(isOpenedProp, new GUIContent("Is Opened"));
         EditorGUILayout.PropertyField(chestIdProp, new GUIContent("Chest ID"));
-        EditorGUILayout.PropertyField(isLewenriChestProp, new GUIContent("Is Lewenri Chest")); // ✅ Now visible
+        EditorGUILayout.PropertyField(isLewenriChestProp, new GUIContent("Is Lewenri Chest"));
 
         if (Application.isPlaying)
         {
@@ -103,6 +108,15 @@ public class ChestContent_Editor : Editor
             EditorGUILayout.EndHorizontal();
         }
 
+        EditorGUILayout.EndVertical();
+        EditorGUILayout.Space(10);
+
+        // =============================
+        // 🎯 OnInteract Event
+        // =============================
+        EditorGUILayout.LabelField("Interaction Events", EditorStyles.boldLabel);
+        EditorGUILayout.BeginVertical(GUI.skin.box);
+        EditorGUILayout.PropertyField(onInteractProp, new GUIContent("On Interact"));
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);
 
@@ -163,7 +177,6 @@ public class ChestContent_Editor : Editor
                 bool isRandomAgimat = randomAgimat.boolValue;
                 bool goldMode = isGold.boolValue;
 
-                // Always show loot prefab
                 EditorGUILayout.PropertyField(lootDropPrefab, new GUIContent("Loot Prefab"));
 
                 if (isRandomPamana)

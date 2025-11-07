@@ -36,3 +36,55 @@ MonoBehaviour:
       isChoiceLine: 0
       choices: []
       animationName: 
+  - dialogueState: Default_New
+    lines:
+    - speakerName: Hignaw
+      dialogueText: It's finally good to have some peace of mind.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Hignaw
+      dialogueText: Everything feels peaceful.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+  - dialogueState: S_Q1_LostMotivation
+    lines:
+    - speakerName: Hignaw
+      dialogueText: Lately I find myself struggling to keep going.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Hignaw
+      dialogueText: I don't feel motivated to do anything at all.
+      voiceClip: {fileID: 0}
+      skippable: 0
+      isChoiceLine: 1
+      choices:
+      - choiceText: "You don\u2019t have to be at your best every day"
+        dialogueState: S_Q1_LostMotivation_Response
+      - choiceText: Maybe you just need to remember why you started
+        dialogueState: S_Q1_LostMotivation_Response
+      animationName: 
+  - dialogueState: S_Q1_LostMotivation_Response
+    lines:
+    - speakerName: Hignaw
+      dialogueText: I needed to hear that.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Hignaw
+      dialogueText: " I\u2019ve been pushing myself too hard lately."
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
