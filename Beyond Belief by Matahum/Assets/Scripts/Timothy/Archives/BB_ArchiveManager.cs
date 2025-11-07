@@ -39,6 +39,8 @@ public class BB_ArchiveManager : MonoBehaviour
 
     void DelayUpdateMagindara()
     {
+        if (magindaraArchive == null) return;
+
         PlayerPrefs.SetInt($"{magindaraArchive.archiveName}_Discovered", 1);
         PlayerPrefs.Save();
     }

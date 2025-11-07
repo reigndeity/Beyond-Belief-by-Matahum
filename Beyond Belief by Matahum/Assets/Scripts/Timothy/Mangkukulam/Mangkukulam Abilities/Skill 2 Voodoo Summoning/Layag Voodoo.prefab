@@ -75831,15 +75831,15 @@ MonoBehaviour:
   hitCooldown: 3
   hitStateBehaviour: {fileID: 8646051565317871179}
   deathAnim: player_death
-  deathAnimT: 0.25
-  disableCapsuleColliderOnDeath: 0
+  deathAnimT: 0.5
+  disableCapsuleColliderOnDeath: 1
   playDeathAudio: 0
   deathCallRadius: 10
   agentLayersToDeathCall:
     serializedVersion: 2
     m_Bits: 0
   showDeathCallRadius: 0
-  useRagdoll: 1
+  useRagdoll: 0
   useNaturalVelocity: 0
   hipBone: {fileID: 8496471279522670120}
   deathRagdollForce: {x: 0, y: 0, z: 0}
@@ -76159,6 +76159,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charAudios: {fileID: 4522921383167298178}
   charAudioIndex: 0
+  charAudioHitSFX: 0
+  pushBackOnHit: 0.5
   isDead: 0
 --- !u!114 &7513005907472831836
 MonoBehaviour:
@@ -76263,8 +76265,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
-  clips: []
-  clipGroup: []
+  clips:
+  - clip: {fileID: 8300000, guid: a4db9327ed0ee404da03abb689f5c191, type: 3}
+    volume: 0
+    pitch: 0
+  clipGroup:
+  - clipGroupName: hit
+    clips:
+    - clip: {fileID: 8300000, guid: 5cd7bef244cba0d45b0168508f3ff62d, type: 3}
+      volume: 0
+      pitch: 0
   wrapper: {fileID: 0}
 --- !u!1 &4990504537615104624
 GameObject:
