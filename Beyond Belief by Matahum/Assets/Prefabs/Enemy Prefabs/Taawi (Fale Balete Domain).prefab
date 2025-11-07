@@ -36909,16 +36909,16 @@ MonoBehaviour:
   maxHitCount: 3
   hitCooldown: 8
   hitStateBehaviour: {fileID: 6201152485816486496}
-  deathAnim: 
-  deathAnimT: 0.25
-  disableCapsuleColliderOnDeath: 0
+  deathAnim: Taawi_Death
+  deathAnimT: 0.5
+  disableCapsuleColliderOnDeath: 1
   playDeathAudio: 0
   deathCallRadius: 10
   agentLayersToDeathCall:
     serializedVersion: 2
     m_Bits: 0
   showDeathCallRadius: 0
-  useRagdoll: 1
+  useRagdoll: 0
   useNaturalVelocity: 1
   hipBone: {fileID: 0}
   deathRagdollForce: {x: 1, y: 1, z: 1}

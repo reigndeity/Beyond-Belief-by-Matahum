@@ -251,7 +251,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
         gameObject.layer = LayerMask.NameToLayer("Default");
         HideCanvas();
         m_legsAnimator.enabled = false;
-        EnableAllRagdollParts();
+        //EnableAllRagdollParts();
         m_blazeAI.Death();
         IgnorePlayerLayer();
 
