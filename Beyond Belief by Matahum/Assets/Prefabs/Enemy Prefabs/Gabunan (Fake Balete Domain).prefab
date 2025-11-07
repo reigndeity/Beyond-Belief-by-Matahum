@@ -9007,8 +9007,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charAudios: {fileID: 5122814182568886753}
   charAudioIndex: 0
-  charAudioHitSFX: 2
-  pushBackOnHit: 0
+  charAudioHitSFX: 1
+  pushBackOnHit: 0.2
   isDead: 0
 --- !u!114 &1523728016205171200
 MonoBehaviour:
@@ -9071,9 +9071,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 7611694655124090694}
   clips:
-  - clip: {fileID: 8300000, guid: a4db9327ed0ee404da03abb689f5c191, type: 3}
-    volume: 0
-    pitch: 0
+  - clip: {fileID: 8300000, guid: bab5b7df5da9e18479ac4d73423dc2b6, type: 3}
+    volume: 1
+    pitch: 1
+  - clip: {fileID: 8300000, guid: c8e5749c95aed6043ab08e798549c027, type: 3}
+    volume: 1
+    pitch: 1
+  - clip: {fileID: 8300000, guid: ef09391457234b94f939b86f8a1bd1ed, type: 3}
+    volume: 1
+    pitch: 1
+  - clip: {fileID: 8300000, guid: 642ec72ef8bab324485fc678a1729c8f, type: 3}
+    volume: 1
+    pitch: 1
   clipGroup:
   - clipGroupName: Walk SFX
     clips:
@@ -9093,17 +9102,6 @@ MonoBehaviour:
       volume: 1
       pitch: 1
     - clip: {fileID: 8300000, guid: bc32f5baeefb770408f1fa88295fee1f, type: 3}
-      volume: 1
-      pitch: 1
-  - clipGroupName: Alert SFX
-    clips:
-    - clip: {fileID: 8300000, guid: e43afb0984cf50742a8ab8bc7317bb51, type: 3}
-      volume: 1
-      pitch: 1
-    - clip: {fileID: 8300000, guid: 45b97871742e2ea42839ac23be4bef80, type: 3}
-      volume: 1
-      pitch: 1
-    - clip: {fileID: 8300000, guid: 9c588481eeff8ff4ea3826a970f04bf2, type: 3}
       volume: 1
       pitch: 1
   - clipGroupName: Hit SFX

@@ -15746,7 +15746,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -20559,7 +20559,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -25417,7 +25417,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -30269,7 +30269,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -37226,7 +37226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charAudios: {fileID: 5122814182568886753}
   charAudioIndex: 0
-  charAudioHitSFX: 2
+  charAudioHitSFX: 1
   pushBackOnHit: 0
   isDead: 0
 --- !u!114 &1523728016205171200
@@ -37290,9 +37290,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 7611694655124090694}
   clips:
-  - clip: {fileID: 8300000, guid: a4db9327ed0ee404da03abb689f5c191, type: 3}
-    volume: 0
-    pitch: 0
+  - clip: {fileID: 8300000, guid: 5ad30cf1fbbb44f4190d28a79b607ec9, type: 3}
+    volume: 1
+    pitch: 1
+  - clip: {fileID: 8300000, guid: 7f7c981cbf9a75c47b1011bff196ab96, type: 3}
+    volume: 1
+    pitch: 1
+  - clip: {fileID: 8300000, guid: 3788329adb3e9b8449d7a3a57cfdc251, type: 3}
+    volume: 1
+    pitch: 1
+  - clip: {fileID: 8300000, guid: 046f62291ff9ccb4bbc27a24b54bd897, type: 3}
+    volume: 1
+    pitch: 1
+  - clip: {fileID: 8300000, guid: 7357170c5b00584418b1ca760810dd6f, type: 3}
+    volume: 1
+    pitch: 1
   clipGroup:
   - clipGroupName: Walk SFX
     clips:
@@ -37312,17 +37324,6 @@ MonoBehaviour:
       volume: 1
       pitch: 1
     - clip: {fileID: 8300000, guid: 464975a150fe8d84ba7bee65d8a05adf, type: 3}
-      volume: 1
-      pitch: 1
-  - clipGroupName: Alert SFX
-    clips:
-    - clip: {fileID: 8300000, guid: e43afb0984cf50742a8ab8bc7317bb51, type: 3}
-      volume: 1
-      pitch: 1
-    - clip: {fileID: 8300000, guid: 45b97871742e2ea42839ac23be4bef80, type: 3}
-      volume: 1
-      pitch: 1
-    - clip: {fileID: 8300000, guid: 9c588481eeff8ff4ea3826a970f04bf2, type: 3}
       volume: 1
       pitch: 1
   - clipGroupName: Hit SFX
