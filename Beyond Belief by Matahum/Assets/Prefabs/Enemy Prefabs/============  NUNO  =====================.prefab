@@ -6264,6 +6264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxVolume: 1
   isSFX: 1
+  isAmbience: 0
 --- !u!114 &7693192050904881160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6280,18 +6281,25 @@ MonoBehaviour:
   clips:
   - clip: {fileID: 8300000, guid: 0e19986df528ab147abc5647d8796e59, type: 3}
     volume: 1
+    pitch: 1
   - clip: {fileID: 8300000, guid: cdc6923d6abf7454fa8e6822926db7cb, type: 3}
     volume: 1
+    pitch: 1
   - clip: {fileID: 8300000, guid: f21993fba8c14e84a978018c03ae6684, type: 3}
     volume: 1
+    pitch: 1
   - clip: {fileID: 8300000, guid: ba9b70f6fcdc13d43b8d058c1f8fa550, type: 3}
     volume: 1
+    pitch: 1
   - clip: {fileID: 8300000, guid: 306be412399761a499510ab6ef663ce0, type: 3}
     volume: 1
+    pitch: 1
   - clip: {fileID: 8300000, guid: 2e9ceedfc394d1148a62a5161c578f5c, type: 3}
     volume: 1
+    pitch: 1
   - clip: {fileID: 8300000, guid: aaadace2e0addb844bd27c787ddd212e, type: 3}
     volume: 1
+    pitch: 1
   clipGroup: []
   wrapper: {fileID: 5576420670383737322}
 --- !u!1 &4103319931766075873
@@ -9913,6 +9921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 486217ce4af19e5439808283db6ee763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 0}
 --- !u!1 &7374925074754157065
 GameObject:
   m_ObjectHideFlags: 0
@@ -12254,3 +12263,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 486217ce4af19e5439808283db6ee763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 0}
