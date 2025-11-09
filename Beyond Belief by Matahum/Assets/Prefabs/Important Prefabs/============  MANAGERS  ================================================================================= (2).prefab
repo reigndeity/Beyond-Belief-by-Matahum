@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14ec87d2c1db42c48a5fc9356d8aa89f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: e1fb894f8fa3434cb0ee4d37a487c601
+  guid: 01717274d6594452bd07bfec82b378c4
 --- !u!114 &2819117383280230892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4427,7 +4427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14ec87d2c1db42c48a5fc9356d8aa89f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: 8f4b789086ee4b0388c360c9978d0a34
+  guid: b8caf4bfa2cf4492a78f0f7fdef2ee69
 --- !u!1 &3644958024598243777
 GameObject:
   m_ObjectHideFlags: 0
@@ -10314,6 +10314,7 @@ MonoBehaviour:
   locationList: []
   wildlifeList: []
   plantList: []
+  magindaraArchive: {fileID: 0}
 --- !u!114 &5687629304873891955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11851,12 +11852,18 @@ MonoBehaviour:
   nunoSaPunso: {fileID: 0}
   mangkukulam: {fileID: 0}
   albularyo: {fileID: 0}
+  hignaw: {fileID: 0}
+  sabiyak: {fileID: 0}
+  dula: {fileID: 0}
   questMinimapItem: {fileID: 0}
   questMarker: {fileID: 0}
   uiMarkerParent: {fileID: 0}
   mainQuestSprite: {fileID: 117534696, guid: 31f54bd5977cf814194c37796607019f, type: 3}
   sideQuestSprite: {fileID: 1608079350, guid: 31f54bd5977cf814194c37796607019f, type: 3}
   markerCooldown: 5
+  lakeBorder: {fileID: 0}
+  lake: {fileID: 0}
+  informationInfoPop: {fileID: 0}
   movementTutorialPopUp: {fileID: 0}
   A0_Q0_InitialTalk_NQP: {fileID: 0}
   SwordTrainingDummies: {fileID: 0}
@@ -11889,6 +11896,7 @@ MonoBehaviour:
   duwendeCamp: {fileID: 0}
   garlicParent: {fileID: 0}
   garlicHighlight: {fileID: 0}
+  garlicItemData: {fileID: 0}
   duwendeAreaMap: {fileID: 332630877169372329}
   mapPinPopUp: {fileID: 0}
   besikNPC: {fileID: 0}
@@ -11915,6 +11923,9 @@ MonoBehaviour:
   repairFirstBalete: {fileID: 0}
   repairSecondBalete: {fileID: 0}
   repairThirdBalete: {fileID: 0}
+  firstFragment: {fileID: 0}
+  secondFragment: {fileID: 0}
+  thirdFragment: {fileID: 0}
   a2_q12_albularyoTransform: {fileID: 0}
   portalInteractable: {fileID: 0}
 --- !u!1 &8910831775855200276
