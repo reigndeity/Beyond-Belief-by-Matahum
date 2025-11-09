@@ -5,19 +5,18 @@ public class BananaTreeEasterEgg : Interactable
     public LootContent mutyaNgSaging;
 
     public Transform spawnPoint;
+    public bool isInteracted;
 
     [Header("Loot Physics Settings")]
     public float explosionForce = 5f;
     public Vector3 spawnOffset = Vector3.up * 1f;
+    
 
-    public bool IsInteractedAlready()
-    {
-        return PlayerPrefs.GetInt("BananaTree_IsInteracted", 0) == 1;
-    }
+
 
     private void Start()
     {
-        if (IsInteractedAlready())
+        if (isInteracted == true)
         {
             gameObject.layer = LayerMask.NameToLayer("Default");
             this.enabled = false;
@@ -46,8 +45,6 @@ public class BananaTreeEasterEgg : Interactable
         }
 
         gameObject.layer = LayerMask.NameToLayer("Default");
-
-        PlayerPrefs.SetInt("BananaTree_IsInteracted", 1);
-        PlayerPrefs.Save();
+        isInteracted = true;
     }
 }

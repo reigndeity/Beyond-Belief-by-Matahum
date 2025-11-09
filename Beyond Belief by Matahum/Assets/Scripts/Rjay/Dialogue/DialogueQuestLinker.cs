@@ -48,6 +48,7 @@ public class DialogueQuestLinker : MonoBehaviour
     [Header("Side Quest Components")]
     public GameObject lakeBorder;
     public Transform lake;
+    public GameObject informationInfoPop;
 
     [Header("Act 0 Components")]
     [SerializeField] GameObject movementTutorialPopUp;
@@ -958,6 +959,19 @@ public class DialogueQuestLinker : MonoBehaviour
             ApplyStates(albularyo);
             RemoveActiveMarker();
             questMinimapItem.SetActive(false);
+
+            
+            int info = PlayerPrefs.GetInt("HasInformationPop", 0);
+            if (info == 0)
+            {
+                PlayerPrefs.SetInt("HasInformationPop", 1);
+                informationInfoPop.SetActive(true);
+            }
+            else
+            {
+                Debug.Log("INFO DONE");
+            }
+            
 
             if (BB_QuestManager.Instance.IsQuestDone("S_Q1_LostMotivation"))
             {
