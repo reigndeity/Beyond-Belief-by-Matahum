@@ -504,7 +504,7 @@ public class DialogueQuestLinker : MonoBehaviour
 
                     break;
                 case "A1_Q3_BesikTheScout":
-                    if (garlicItemData != null) inventory.RemoveItem(garlicItemData, 10);
+                    if (garlicItemData != null) inventory.RemoveItemByName(garlicItemData.itemName, 10);
 
                     besikNPC.SetActive(true);
                     tupas.SetDialogueState("A1_Q3_BesikTheScout");
@@ -601,6 +601,11 @@ public class DialogueQuestLinker : MonoBehaviour
                     AddActiveMarker(currentQuestID, tracked);
                     break;
                 case "A2_Q5_WhatHappened":
+
+                    if (firstFragment != null) inventory.RemoveItemByName("Top Agimat Fragment Piece", 1);
+                    if (secondFragment != null) inventory.RemoveItemByName("Left Agimat Fragment Piece", 1);
+                    if (thirdFragment != null) inventory.RemoveItemByName("Right Agimat Fragment Piece", 1);
+
                     WorldLevelSetter.Instance.SetWorldLevel(4);
 
                     albularyoNpc.SetActive(true);
@@ -670,15 +675,11 @@ public class DialogueQuestLinker : MonoBehaviour
                     repairSecondBalete.gameObject.layer = LayerMask.NameToLayer("Fake Balete Tree Domain");
                     AddActiveMarker(currentQuestID, tracked);
 
-                    if (firstFragment != null) inventory.RemoveItem(firstFragment, 1);
-
                     break;
                 case "A2_Q11_RepairThirdBalete_P1":
                     repairThirdBalete.gameObject.layer = LayerMask.NameToLayer("Fake Balete Tree Domain");
                     AddActiveMarker(currentQuestID, tracked);
-
-                    if (secondFragment != null) inventory.RemoveItem(secondFragment, 1);
-
+                   
                     break;
                 case "A2_Q12_TimeToGoHome":
                     AddActiveMarker(currentQuestID, tracked);
@@ -687,7 +688,6 @@ public class DialogueQuestLinker : MonoBehaviour
                     albularyoNpc.transform.SetPositionAndRotation(a2_q12_albularyoTransform.position, a2_q12_albularyoTransform.rotation);
                     albularyoNpc.GetComponent<BlazeAI>().StayIdle();
 
-                    if (thirdFragment != null) inventory.RemoveItem(thirdFragment, 1);
 
                     break;
                 #endregion
