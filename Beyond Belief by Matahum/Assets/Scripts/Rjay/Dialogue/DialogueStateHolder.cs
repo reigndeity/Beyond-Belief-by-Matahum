@@ -80,4 +80,11 @@ public class DialogueStateHolder : MonoBehaviour
             // no TriggerStateEnter or Exit
         }
     }
+
+    public void SetCurrentStateSilently(string newState)
+    {
+        currentState = newState;
+        // Do NOT trigger OnStateEnter or OnStateExit here
+    }
+
 }

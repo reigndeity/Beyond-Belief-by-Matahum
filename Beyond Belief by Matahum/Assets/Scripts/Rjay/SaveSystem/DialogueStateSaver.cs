@@ -23,7 +23,10 @@ public class DialogueStateSaver : MonoBehaviour, ISaveable
     public string SaveId => $"DialogueState.{uniqueId}";
 
     [System.Serializable]
-    class DTO { public string currentState; }
+    class DTO
+    {
+        public string currentState;
+    }
 
     public string CaptureJson()
     {
@@ -37,8 +40,7 @@ public class DialogueStateSaver : MonoBehaviour, ISaveable
         var dto = JsonUtility.FromJson<DTO>(json);
         if (dto == null) return;
 
-        // Restore silently (so you don’t accidentally fire enter/exit twice)
-        holder.currentState = dto.currentState;
-        holder.TriggerStateEnter(holder.currentState); // ensure events for that state are active
+        // ✅ Restore silently so state enter/exit isn't triggered by load
+        holder.SetCurrentStateSilently(dto.currentState);
     }
 }
