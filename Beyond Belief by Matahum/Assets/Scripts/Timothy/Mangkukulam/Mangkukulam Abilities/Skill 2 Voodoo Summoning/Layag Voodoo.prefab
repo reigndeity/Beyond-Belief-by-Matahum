@@ -76160,6 +76160,8 @@ MonoBehaviour:
   charAudios: {fileID: 4522921383167298178}
   charAudioIndex: 0
   charAudioHitSFX: 0
+  deathPoofVFX: {fileID: 19819134, guid: 736aa91c1f0802548a9ba925af6bb498, type: 3}
+  deathPoofPosition: {fileID: 3100620008589098480}
   pushBackOnHit: 0.5
   isDead: 0
 --- !u!114 &7513005907472831836
@@ -87102,6 +87104,7 @@ Transform:
   - {fileID: 1405447326283767611}
   - {fileID: 3771177049392741476}
   - {fileID: 4268955062740712546}
+  - {fileID: 3100620008589098480}
   m_Father: {fileID: 7968475958904789224}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &590176264462779131
@@ -101380,6 +101383,37 @@ Transform:
   m_Children:
   - {fileID: 6872047479454855383}
   m_Father: {fileID: 3999465331434169703}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8512029879447438743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3100620008589098480}
+  m_Layer: 0
+  m_Name: Deathpoof Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3100620008589098480
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8512029879447438743}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8496471279522670120}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8544910835754834516
 GameObject:

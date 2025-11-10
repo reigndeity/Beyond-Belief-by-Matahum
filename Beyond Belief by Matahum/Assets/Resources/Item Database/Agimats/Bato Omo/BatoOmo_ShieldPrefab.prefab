@@ -127,6 +127,7 @@ MonoBehaviour:
   clips:
   - clip: {fileID: 8300000, guid: 101106cd810615041bb13f121e59a2d7, type: 3}
     volume: 1
+    pitch: 1
   randomPitch: 0
 --- !u!114 &4756224785197618445
 MonoBehaviour:
@@ -142,6 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxVolume: 1
   isSFX: 1
+  isAmbience: 0
 --- !u!82 &536599294111969608
 AudioSource:
   m_ObjectHideFlags: 0
@@ -154,7 +156,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

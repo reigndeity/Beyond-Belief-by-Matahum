@@ -10,10 +10,11 @@ public class StartRandomAudio : MonoBehaviour
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        wrapper = GetComponent<AudioWrapper>();
 
         int randomizer = Random.Range(0, clips.Length);
         audioSource.clip = clips[randomizer].clip;
-        audioSource.volume = AdjustVolume(clips[randomizer]);
+        //audioSource.volume = AdjustVolume(clips[randomizer]);
         audioSource.pitch = ChangePitch();
         audioSource.Play();
     }
