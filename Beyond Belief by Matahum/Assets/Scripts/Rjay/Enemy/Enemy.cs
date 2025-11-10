@@ -20,8 +20,9 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
     public CharacterAudios charAudios;
     public int charAudioIndex;
     public int charAudioHitSFX;
-    public ParticleSystem deathPoofVFX;
-    public Transform deathPoofPosition;
+
+    public EnemyDissolve enemyDissolveScript;
+
     public event System.Action OnDeath;
     private bool isChasingPlayer = false;
 
@@ -259,19 +260,12 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
 
         if(charAudios.clips[charAudioIndex].clip != null) charAudios.SFX(charAudioIndex);
 
-        if (deathPoofVFX != null && deathPoofPosition != null) StartCoroutine(DeathPoof());
-
         OnDeath?.Invoke();
         yield return new WaitForSeconds(0.5f);
-    }
 
-    IEnumerator DeathPoof()
-    {
-        yield return new WaitForSeconds(4.9f);
-        GameObject deathVFX = Instantiate(deathPoofVFX.gameObject, deathPoofPosition.position, deathPoofVFX.transform.rotation);
-        Destroy(deathVFX, 2);
-    }
+        if (enemyDissolveScript != null) enemyDissolveScript.Dissolve(1);
 
+    }
     #endregion
 
     public void EnableAttack() => m_enemyAttack.EnableAttackCollider();
