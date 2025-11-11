@@ -10,11 +10,11 @@ public class SaveInteractable : Interactable
     private Player m_player;
 
     [Header("Save UI References")]
-    public GameObject savePanel;           
-    public Button yesButton;               
-    public Button noButton;                
+    public GameObject savePanel;
+    public Button yesButton;
+    public Button noButton;
     public Button closeButton;
-    public TextMeshProUGUI feedbackText;   
+    public TextMeshProUGUI feedbackText;
 
     [Header("Events")]
     public UnityEvent onInteract;      // Fired when interacted
@@ -128,6 +128,19 @@ public class SaveInteractable : Interactable
     {
         await GameManager.instance.SaveAll();
     }
+    
+    public static bool IsAnySavePanelActive
+    {
+        get
+        {
+            foreach (var save in Object.FindObjectsByType<SaveInteractable>(FindObjectsSortMode.None))
+            {
+                if (save.savePanel != null && save.savePanel.activeSelf)
+                    return true;
+            }
+            return false;
+        }
+    }
 }
 
 // Helper extension so async Tasks can be awaited in Coroutines
@@ -139,3 +152,5 @@ public static class TaskExtensions
         if (task.Exception != null) throw task.Exception;
     }
 }
+
+

@@ -991,7 +991,8 @@ public class UI_Game : MonoBehaviour
         return inventoryPanel.activeSelf ||
             characterDetailPanel.activeSelf ||
             m_questButtonManager.IsJournalOpen() ||
-            m_archiveButtonManager.IsArchiveOpen();
+            m_archiveButtonManager.IsArchiveOpen() ||
+            SaveInteractable.IsAnySavePanelActive;
     }
     #endregion
 
