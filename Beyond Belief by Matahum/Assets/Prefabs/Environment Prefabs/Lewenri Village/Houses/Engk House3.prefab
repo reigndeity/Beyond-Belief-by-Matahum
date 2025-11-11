@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3346857133229963262}
   - component: {fileID: 7631992685958220744}
   - component: {fileID: 6035560233142422284}
+  - component: {fileID: 8338580287026063426}
   m_Layer: 14
   m_Name: Floor.002
   m_TagString: Untagged
@@ -86,6 +87,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8338580287026063426
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 26087653674231828}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7050133448750523310, guid: a7b606ab3dcfe1043afbb1118d6368eb, type: 3}
 --- !u!1 &336300077757284525
 GameObject:
   m_ObjectHideFlags: 0
@@ -5669,6 +5692,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxVolume: 1
   isSFX: 1
+  isAmbience: 0
 --- !u!1 &6860698560236684117
 GameObject:
   m_ObjectHideFlags: 0
