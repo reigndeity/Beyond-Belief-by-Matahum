@@ -15,12 +15,15 @@ public class Settings_Manager : MonoBehaviour
     private const string cameraSensitivityPlayerPrefs = "Camera_Sensitivity";
 
     [Header("Audio Settings")]
+    public TextMeshProUGUI generalVolumeValueText;
+    public Slider generalSlider;
     public TextMeshProUGUI sfxValueText;
     public Slider sfxSlider;
     public TextMeshProUGUI bgmValueText;
     public Slider bgmSlider;
     public TextMeshProUGUI ambienceValueText;
     public Slider ambienceSlider;
+    private const string generalVolumePlayerPrefs = "General_Volume";
     private const string audioSFXPlayerPrefs = "Audio_SFX";
     private const string audioBGMPlayerPrefs = "Audio_BGM";
     private const string audioAmbiencePlayerPrefs = "Audio_Ambience";
@@ -52,6 +55,9 @@ public class Settings_Manager : MonoBehaviour
         if (camSensSlider != null)
             camSensSlider.onValueChanged.AddListener(delegate { OnCamSensSliderChanged(); });
 
+        if (generalSlider != null)
+            generalSlider.onValueChanged.AddListener(OnGeneralVolumeSliderChanged);
+
         if (sfxSlider != null)
             sfxSlider.onValueChanged.AddListener(OnSFXSliderChanged);
 
@@ -66,6 +72,7 @@ public class Settings_Manager : MonoBehaviour
     public void SaveSettingsOnReturn()
     {
         PlayerPrefs.SetFloat(cameraSensitivityPlayerPrefs, CameraSensitivityValue());
+        PlayerPrefs.SetFloat(generalVolumePlayerPrefs, generalSlider.value);
         PlayerPrefs.SetFloat(audioSFXPlayerPrefs, sfxSlider.value);
         PlayerPrefs.SetFloat(audioBGMPlayerPrefs, bgmSlider.value);
         PlayerPrefs.SetFloat(audioAmbiencePlayerPrefs, ambienceSlider.value);
@@ -108,6 +115,8 @@ public class Settings_Manager : MonoBehaviour
     #region Audio
     void LoadAudioSetting()
     {
+        generalSlider.minValue = 0;
+        generalSlider.maxValue = 1;
         sfxSlider.minValue = 0f;
         sfxSlider.maxValue = 1f;
         bgmSlider.minValue = 0f;
@@ -115,14 +124,17 @@ public class Settings_Manager : MonoBehaviour
         ambienceSlider.minValue = 0f;
         ambienceSlider.maxValue = 1f;
 
+        float savedGeneralVolume = PlayerPrefs.GetFloat(generalVolumePlayerPrefs, 1);
         float savedSFX = PlayerPrefs.GetFloat(audioSFXPlayerPrefs, 1);
         float savedBGM = PlayerPrefs.GetFloat(audioBGMPlayerPrefs, 1f);
         float savedAmbience = PlayerPrefs.GetFloat(audioAmbiencePlayerPrefs, 1f);
 
+        generalSlider.value = savedGeneralVolume;
         sfxSlider.value = savedSFX;
         bgmSlider.value = savedBGM;
         ambienceSlider.value = savedAmbience;
 
+        AudioManager.instance.SetGeneralVolume(savedGeneralVolume);
         AudioManager.instance.SetSFXVolume(savedSFX);
         AudioManager.instance.SetBGMVolume(savedBGM);
         AudioManager.instance.SetAmbienceVolume(savedAmbience);
@@ -130,6 +142,11 @@ public class Settings_Manager : MonoBehaviour
         UpdateAudioText();
     }
 
+    void OnGeneralVolumeSliderChanged(float value)
+    {
+        AudioManager.instance.SetGeneralVolume(generalSlider.value);
+        UpdateAudioText();
+    }
     void OnSFXSliderChanged(float value)
     {
         AudioManager.instance.SetSFXVolume(sfxSlider.value);
@@ -150,6 +167,7 @@ public class Settings_Manager : MonoBehaviour
 
     void UpdateAudioText()
     {
+        generalVolumeValueText.text = Mathf.RoundToInt(generalSlider.value * 100).ToString();
         sfxValueText.text = Mathf.RoundToInt(sfxSlider.value * 100).ToString();
         bgmValueText.text = Mathf.RoundToInt(bgmSlider.value * 100).ToString();
         ambienceValueText.text = Mathf.RoundToInt(ambienceSlider.value * 100).ToString();

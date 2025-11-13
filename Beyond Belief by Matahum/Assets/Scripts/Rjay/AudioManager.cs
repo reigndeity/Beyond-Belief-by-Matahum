@@ -74,11 +74,13 @@ public class AudioManager : MonoBehaviour
     private AudioSource inactiveAmbienceSource;
 
     //===================================================================================================
+    public event System.Action<float> OnGeneralVolumeChanged;
     public event System.Action<float> OnSFXVolumeChanged;
     public event System.Action<float> OnBGMVolumeChanged;
     public event System.Action<float> OnAmbienceVolumeChanged;
 
     [Header("SFX and BGM Volume")]
+    public float GeneralVolumeValue;
     public float SFXvolumeValue;
     public float BGMvolumeValue;
     public float ambienceVolumeValue;
@@ -97,9 +99,12 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
+        GeneralVolumeValue = PlayerPrefs.GetFloat("General_Volume", 100);
         SFXvolumeValue = PlayerPrefs.GetFloat("Audio_SFX", 100);
         BGMvolumeValue = PlayerPrefs.GetFloat("Audio_BGM", 100);
         ambienceVolumeValue = PlayerPrefs.GetFloat("Audio_Ambience", 100);
+
+        SetGeneralVolume(GeneralVolumeValue);
         SetSFXVolume(SFXvolumeValue);
         SetBGMVolume(BGMvolumeValue);
         SetAmbienceVolume(ambienceVolumeValue);
@@ -291,6 +296,12 @@ public class AudioManager : MonoBehaviour
     #endregion
 
     #region SET VOLUME
+    public void SetGeneralVolume(float newValue)
+    {
+        GeneralVolumeValue = newValue; ;
+        AudioListener.volume = Mathf.Clamp01(newValue);
+        OnGeneralVolumeChanged?.Invoke(newValue);
+    }
     public void SetSFXVolume(float newValue)
     {
         SFXvolumeValue = newValue;
