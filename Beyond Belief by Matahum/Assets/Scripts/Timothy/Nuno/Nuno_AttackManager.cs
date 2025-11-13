@@ -185,6 +185,7 @@ public class Nuno_AttackManager : MonoBehaviour
     private bool canAttack = true;
     public bool isStunned = false;
     public float stunDuration = 3;
+    public GameObject stunVFX;
 
     private Player player;
     private Animator anim;
@@ -306,6 +307,11 @@ public class Nuno_AttackManager : MonoBehaviour
         isStunned = true;
         uiCanvas.currentCastingSkillTxt.text = "Nuno is Stunned!";
 
+        if (stunVFX != null)
+        {
+            stunVFX.SetActive(true);
+        }
+
         // Cancel any ongoing attack immediately
         if (attackRoutine != null)
         {
@@ -324,5 +330,10 @@ public class Nuno_AttackManager : MonoBehaviour
         isStunned = false;
         uiCanvas.currentCastingSkillTxt.text = " ";
         canAttack = true; // allow next attack
+
+        if (stunVFX != null)
+        {
+            stunVFX.SetActive(false);
+        }
     }
 }

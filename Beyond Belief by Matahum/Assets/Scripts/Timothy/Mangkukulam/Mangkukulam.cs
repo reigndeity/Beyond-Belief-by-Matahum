@@ -15,6 +15,8 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
     public bool isMoving;
     public bool isFlying;
 
+    public GameObject StunVFX;
+
     [Header("References")]
     private EnemyStats stats;
     private PlayerStats m_playerStats;
@@ -46,7 +48,12 @@ public class Mangkukulam : MonoBehaviour, IDamageable, IDeathHandler
     private void Update()
     {
         if (isStunned)
+        {
             uiCanvas.currentCastingSkillTxt.text = "Mangkukulam is stunned!";
+            if(StunVFX != null) StunVFX.SetActive(true);
+        }
+        else if (StunVFX != null) StunVFX.SetActive(false);
+
     }
 
     public void BattleStart()
