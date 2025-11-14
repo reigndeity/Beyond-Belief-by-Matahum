@@ -43,6 +43,9 @@ public class TeleportInteractable : Interactable, ISaveable
     [SerializeField] private float idleRockSpeed = 2f;
     [SerializeField] private float blendDuration = 1.0f;
 
+
+    private RebultoVFX rebultoVFX;
+
     [Header("Unlock Events")]
     public UnityEvent OnUnlockedStart; // ✅ Called when unlocking starts
     public UnityEvent OnUnlockedEnd;   // ✅ Called when unlocking fully completes
@@ -61,7 +64,19 @@ public class TeleportInteractable : Interactable, ISaveable
         archiveTracker = GetComponent<BB_ArchiveTracker>();
 
         SaveManager.Instance.Register(this);
+
+        rebultoVFX = GetComponent<RebultoVFX>();
     }
+
+    void Start()
+    {
+        if (isUnlocked == true)
+        {
+            rebultoVFX.AlreadyUnlockedVFX();
+            PlayBoatAnimation();
+        }
+    }
+
 
     private void OnDestroy()
     {
@@ -211,7 +226,7 @@ public class TeleportInteractable : Interactable, ISaveable
     private IEnumerator UnlockSequence()
     {
         SetUnlocked(true);
-
+        rebultoVFX.InitialUnlockVFX();
         yield return StartCoroutine(PlayUnlockAnimation());
 
         if (playerMinimap == null)
@@ -222,7 +237,7 @@ public class TeleportInteractable : Interactable, ISaveable
 
         MapManager.instance.RevealAreas(revealAreaIds);
 
-                // ✅ Trigger end event once fully unlocked
+        // ✅ Trigger end event once fully unlocked
         m_player.SetPlayerLocked(false);
         PlayerCamera.Instance.HardUnlockCamera();
         OnUnlockedEnd?.Invoke();
@@ -306,5 +321,15 @@ public class TeleportInteractable : Interactable, ISaveable
 
             yield return null;
         }
+    }
+    public void PlayBoatAnimation()
+    {
+        if (boatObject != null)
+            boatObject.localScale = Vector3.one;   // 🔥 force scale to 1,1,1
+
+        if (boatRoutine != null)
+            StopCoroutine(boatRoutine);
+
+        boatRoutine = StartCoroutine(PlayUnlockAnimation());
     }
 }
