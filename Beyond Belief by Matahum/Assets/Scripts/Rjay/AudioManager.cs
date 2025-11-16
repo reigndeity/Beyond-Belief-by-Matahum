@@ -39,6 +39,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] walkStepSFX;
     private int walkCount = 0;
     public AudioClip[] footStepSFX;
+    public AudioClip[] grassFootstepSFX;
+    public AudioClip[] mudFootstepSFX;
+    public int groundType; // 0 = default, 1 = grass, 2 = mud
 
     [Header("UI SFX Audio")]
     public AudioSource sfxSource;
@@ -183,16 +186,40 @@ public class AudioManager : MonoBehaviour
 
     public void PlayWalkStepSFX()
     {
-        if (walkStepSFX == null || walkStepSFX.Length == 0)
-            return;
-
-        playerFootstepAudioSource.PlayOneShot(walkStepSFX[walkCount % walkStepSFX.Length]);
+        // if (walkStepSFX == null || walkStepSFX.Length == 0)
+        //     return;
+        // playerFootstepAudioSource.PlayOneShot(walkStepSFX[walkCount % walkStepSFX.Length]);
+        switch (groundType)
+        {
+            case 0:
+                playerFootstepAudioSource.PlayOneShot(walkStepSFX[walkCount % walkStepSFX.Length]);
+                break;
+            case 1:
+                playerFootstepAudioSource.PlayOneShot(grassFootstepSFX[walkCount % grassFootstepSFX.Length]);
+                break;
+            case 2:
+                playerFootstepAudioSource.PlayOneShot(mudFootstepSFX[walkCount % mudFootstepSFX.Length]);
+                break;
+        }
         walkCount++;
     }
     public void PlayFootStepSFX()
     {
-        int random = Random.Range(0, 6);
-        playerFootstepAudioSource.PlayOneShot(footStepSFX[random]);
+        switch (groundType)
+        {
+            case 0:
+                int normal = Random.Range(0, footStepSFX.Length);
+                playerFootstepAudioSource.PlayOneShot(footStepSFX[normal]);
+                break;
+            case 1:
+                int grass = Random.Range(0, grassFootstepSFX.Length);
+                playerFootstepAudioSource.PlayOneShot(grassFootstepSFX[grass]);
+                break;
+            case 2:
+                int mud = Random.Range(0, mudFootstepSFX.Length);
+                playerFootstepAudioSource.PlayOneShot(mudFootstepSFX[mud]);
+                break;
+        }
     }
 
     public void PlayJumpSFX()
