@@ -45,6 +45,7 @@ public class TeleportInteractable : Interactable, ISaveable
 
 
     private RebultoVFX rebultoVFX;
+    private RebultoSFX rebultoSFX;
 
     [Header("Unlock Events")]
     public UnityEvent OnUnlockedStart; // ✅ Called when unlocking starts
@@ -66,6 +67,7 @@ public class TeleportInteractable : Interactable, ISaveable
         SaveManager.Instance.Register(this);
 
         rebultoVFX = GetComponent<RebultoVFX>();
+        rebultoSFX = GetComponent<RebultoSFX>();
     }
 
     void Start()
@@ -73,6 +75,7 @@ public class TeleportInteractable : Interactable, ISaveable
         if (isUnlocked == true)
         {
             rebultoVFX.AlreadyUnlockedVFX();
+            rebultoSFX.PlayUnlockedLoop();
             PlayBoatAnimation();
         }
     }
@@ -151,6 +154,7 @@ public class TeleportInteractable : Interactable, ISaveable
             else
             {
                 if (boatObject != null) boatRoutine = StartCoroutine(BoatIdleLoop());
+                rebultoSFX.PlayUnlockedLoop();
             }
         }
         else
@@ -227,6 +231,7 @@ public class TeleportInteractable : Interactable, ISaveable
     {
         SetUnlocked(true);
         rebultoVFX.InitialUnlockVFX();
+        rebultoSFX.PlayUnlockSFX();
         yield return StartCoroutine(PlayUnlockAnimation());
 
         if (playerMinimap == null)
