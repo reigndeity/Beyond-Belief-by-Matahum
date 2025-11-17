@@ -1,7 +1,7 @@
 using UnityEngine;
 using MTAssets.EasyMinimapSystem;
 using System.Collections;
-using UnityEngine.Events; // ✅ Needed for UnityEvent
+using UnityEngine.Events;
 
 [RequireComponent(typeof(PersistentGuid))]
 public class TeleportInteractable : Interactable, ISaveable
@@ -12,7 +12,6 @@ public class TeleportInteractable : Interactable, ISaveable
     [SerializeField] private bool isSacredStatue = false;
 
     [Header("Sacred Statue Reveal")]
-    [Tooltip("IDs of map areas to reveal on unlock (must match MapManager areas).")]
     [SerializeField] private string[] revealAreaIds;
 
     [Header("State")]
@@ -20,7 +19,7 @@ public class TeleportInteractable : Interactable, ISaveable
     private bool wasPreviouslyUnlocked = false;
     private BB_ArchiveTracker archiveTracker;
 
-    [Header("Prompt Icon (world interaction prompt)")]
+    [Header("Prompt Icon")]
     [SerializeField] private Sprite lockedPromptIcon;
     [SerializeField] private Sprite unlockedPromptIcon;
 
@@ -43,20 +42,21 @@ public class TeleportInteractable : Interactable, ISaveable
     [SerializeField] private float idleRockSpeed = 2f;
     [SerializeField] private float blendDuration = 1.0f;
 
-
     private RebultoVFX rebultoVFX;
     private RebultoSFX rebultoSFX;
 
     [Header("Unlock Events")]
-    public UnityEvent OnUnlockedStart; // ✅ Called when unlocking starts
-    public UnityEvent OnUnlockedEnd;   // ✅ Called when unlocking fully completes
+    public UnityEvent OnUnlockedStart;
+    public UnityEvent OnUnlockedEnd;
 
     private Coroutine boatRoutine;
-    private bool appliedOnceThisEnable = false;
     private PlayerMinimap playerMinimap;
     private PersistentGuid persistentGuid;
 
-    // ---- LIFECYCLE ----
+
+    // ---------------------------------------------------------
+    // LIFECYCLE
+    // ---------------------------------------------------------
     private void Awake()
     {
         m_player = FindFirstObjectByType<Player>();
@@ -64,34 +64,21 @@ public class TeleportInteractable : Interactable, ISaveable
         persistentGuid = GetComponent<PersistentGuid>();
         archiveTracker = GetComponent<BB_ArchiveTracker>();
 
-        SaveManager.Instance.Register(this);
-
         rebultoVFX = GetComponent<RebultoVFX>();
         rebultoSFX = GetComponent<RebultoSFX>();
-    }
 
-    void Start()
-    {
-        if (isUnlocked == true)
-        {
-            rebultoVFX.AlreadyUnlockedVFX();
-            rebultoSFX.PlayUnlockedLoop();
-            PlayBoatAnimation();
-        }
+        SaveManager.Instance.Register(this);
     }
-
 
     private void OnDestroy()
     {
         SaveManager.Instance?.Unregister(this);
     }
 
-    private void OnEnable()
-    {
-        appliedOnceThisEnable = false;
-    }
 
-    // ---- INTERACTION ----
+    // ---------------------------------------------------------
+    // INTERACTION
+    // ---------------------------------------------------------
     public override void OnInteract()
     {
         if (useInteractCooldown && IsOnCooldown()) return;
@@ -102,7 +89,6 @@ public class TeleportInteractable : Interactable, ISaveable
         if (!isUnlocked)
         {
             Unlock();
-
         }
         else
         {
@@ -129,37 +115,37 @@ public class TeleportInteractable : Interactable, ISaveable
 
         if (playerMinimap != null)
             playerMinimap.OpenMapAndCenter();
-        else
-            Debug.LogWarning("PlayerMinimap not found in scene.");
     }
 
-    // ---- STATE ----
+
+    // ---------------------------------------------------------
+    // STATE HANDLING
+    // ---------------------------------------------------------
     public void SetUnlocked(bool value)
     {
-        if (isUnlocked == value && appliedOnceThisEnable) return;
-
+        bool stateChanged = isUnlocked != value;
         isUnlocked = value;
+
         ApplyAll();
-        StartCoroutine(ApplyIconNextFrame());
 
-        if (boatRoutine != null) StopCoroutine(boatRoutine);
-
-        if (isUnlocked)
+        if (!isUnlocked)
         {
-            if (!wasPreviouslyUnlocked)
-            {
-                boatRoutine = StartCoroutine(PlayUnlockAnimation());
-                wasPreviouslyUnlocked = true;
-            }
-            else
-            {
-                if (boatObject != null) boatRoutine = StartCoroutine(BoatIdleLoop());
-                rebultoSFX.PlayUnlockedLoop();
-            }
+            if (boatObject != null)
+                boatObject.localScale = Vector3.zero;
+            return;
+        }
+
+        // If this is the very first unlock → play full animation
+        if (stateChanged && !wasPreviouslyUnlocked)
+        {
+            if (boatRoutine != null) StopCoroutine(boatRoutine);
+            boatRoutine = StartCoroutine(PlayUnlockAnimation());
+            wasPreviouslyUnlocked = true;
         }
         else
         {
-            if (boatObject != null) boatObject.localScale = Vector3.zero;
+            // Scene reload, returning to area, etc.
+            ApplyUnlockedVisuals();
         }
     }
 
@@ -177,22 +163,17 @@ public class TeleportInteractable : Interactable, ISaveable
 
     private void RefreshMinimapIcon()
     {
-        if (minimapItem != null)
-        {
-            var targetSprite = isUnlocked ? unlockedMinimapSprite : lockedMinimapSprite;
-            if (targetSprite != null)
-                minimapItem.itemSprite = targetSprite;
-        }
+        if (minimapItem == null) return;
+
+        minimapItem.itemSprite = isUnlocked
+            ? unlockedMinimapSprite
+            : lockedMinimapSprite;
     }
 
-    private IEnumerator ApplyIconNextFrame()
-    {
-        yield return null;
-        RefreshMinimapIcon();
-        appliedOnceThisEnable = true;
-    }
 
-    // ---- SAVE SYSTEM ----
+    // ---------------------------------------------------------
+    // SAVE SYSTEM
+    // ---------------------------------------------------------
     public string SaveId => persistentGuid != null ? persistentGuid.Guid : null;
 
     [System.Serializable]
@@ -204,62 +185,85 @@ public class TeleportInteractable : Interactable, ISaveable
 
     public string CaptureJson()
     {
-        var saveData = new TeleportInteractableSaveData
+        var data = new TeleportInteractableSaveData
         {
             isUnlocked = this.isUnlocked,
             wasPreviouslyUnlocked = this.wasPreviouslyUnlocked
         };
-        return JsonUtility.ToJson(saveData);
+        return JsonUtility.ToJson(data);
     }
 
     public void RestoreFromJson(string json)
     {
-        var saveData = JsonUtility.FromJson<TeleportInteractableSaveData>(json);
+        var data = JsonUtility.FromJson<TeleportInteractableSaveData>(json);
 
-        wasPreviouslyUnlocked = saveData.wasPreviouslyUnlocked;
-
-        appliedOnceThisEnable = false;
-        SetUnlocked(saveData.isUnlocked);
+        wasPreviouslyUnlocked = data.wasPreviouslyUnlocked;
+        SetUnlocked(data.isUnlocked);
     }
 
     public string GetGuid() => persistentGuid != null ? persistentGuid.Guid : null;
     public bool IsUnlocked() => isUnlocked;
     public void ForceUnlockSilent(bool value) => SetUnlocked(value);
 
-    // ---- SEQUENCES ----
+
+    // ---------------------------------------------------------
+    // VISUAL FIX — THIS IS THE IMPORTANT NEW METHOD
+    // ---------------------------------------------------------
+    private void ApplyUnlockedVisuals()
+    {
+        if (rebultoVFX != null) rebultoVFX.AlreadyUnlockedVFX();
+        if (rebultoSFX != null) rebultoSFX.PlayUnlockedLoop();
+
+        if (boatRoutine != null)
+            StopCoroutine(boatRoutine);
+
+        if (boatObject != null)
+        {
+            boatObject.localScale = Vector3.one;
+            boatRoutine = StartCoroutine(BoatIdleLoop());
+        }
+    }
+
+
+    // ---------------------------------------------------------
+    // UNLOCK SEQUENCE
+    // ---------------------------------------------------------
     private IEnumerator UnlockSequence()
     {
         SetUnlocked(true);
+
         rebultoVFX.InitialUnlockVFX();
         rebultoSFX.PlayUnlockSFX();
+
         yield return StartCoroutine(PlayUnlockAnimation());
 
         if (playerMinimap == null)
             playerMinimap = FindFirstObjectByType<PlayerMinimap>();
 
-        if (playerMinimap != null)
-            playerMinimap.OpenMapAndCenter();
+        if (playerMinimap) playerMinimap.OpenMapAndCenter();
 
         MapManager.instance.RevealAreas(revealAreaIds);
 
-        // ✅ Trigger end event once fully unlocked
         m_player.SetPlayerLocked(false);
         PlayerCamera.Instance.HardUnlockCamera();
         OnUnlockedEnd?.Invoke();
     }
 
-    // ---- BOAT ANIMATIONS ----
+
+    // ---------------------------------------------------------
+    // BOAT ANIMATIONS
+    // ---------------------------------------------------------
     private IEnumerator PlayUnlockAnimation()
     {
         if (boatObject == null) yield break;
 
-        // ✅ Trigger start event
         m_player.ForceIdleOverride();
         m_player.SetPlayerLocked(true);
         PlayerCamera.Instance.HardLockCamera();
         OnUnlockedStart?.Invoke();
 
         boatObject.localScale = Vector3.zero;
+
         float elapsed = 0f;
         Vector3 startScale = Vector3.zero;
         Vector3 endScale = Vector3.one;
@@ -271,12 +275,10 @@ public class TeleportInteractable : Interactable, ISaveable
 
             boatObject.localScale = Vector3.Lerp(startScale, endScale, t);
             boatObject.Rotate(Vector3.up, unlockSpinSpeed * Time.deltaTime, Space.Self);
-
             yield return null;
         }
 
         boatObject.localScale = endScale;
-
         yield return StartCoroutine(BlendIntoIdle());
     }
 
@@ -294,7 +296,7 @@ public class TeleportInteractable : Interactable, ISaveable
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / blendDuration);
 
-            boatObject.Rotate(Vector3.up, Mathf.Lerp(unlockSpinSpeed, 0f, t) * Time.deltaTime, Space.Self);
+            boatObject.Rotate(Vector3.up, Mathf.Lerp(unlockSpinSpeed, 0f, t) * Time.deltaTime);
 
             float bobOffset = Mathf.Lerp(0, Mathf.Sin(Time.time * idleBobSpeed) * idleBobHeight, t);
             float rockAngle = Mathf.Lerp(0, Mathf.Sin(Time.time * idleRockSpeed) * idleRockAngle, t);
@@ -327,10 +329,11 @@ public class TeleportInteractable : Interactable, ISaveable
             yield return null;
         }
     }
+
     public void PlayBoatAnimation()
     {
         if (boatObject != null)
-            boatObject.localScale = Vector3.one;   // 🔥 force scale to 1,1,1
+            boatObject.localScale = Vector3.one;
 
         if (boatRoutine != null)
             StopCoroutine(boatRoutine);
