@@ -140,6 +140,7 @@ public class DialogueQuestLinker : MonoBehaviour
     void Start()
     {
         Invoke("QuestPropertiesCheck", 0.5f);
+        Invoke("SideQuestPropertiesCheck", 0.5f);
     }
 
     void Update()
@@ -971,30 +972,31 @@ public class DialogueQuestLinker : MonoBehaviour
             {
                 Debug.Log("INFO DONE");
             }
-            
-
-            if (BB_QuestManager.Instance.IsQuestDone("S_Q1_LostMotivation"))
-            {
-                sabiyak.SetDialogueState("Default");
-                hignaw.SetDialogueState("Default_New");
-                ApplyStates(sabiyak, hignaw);
-                return;
-            }
-            else
-            {
-                sabiyak.SetDialogueState("S_Q1_LostMotivation_Start");
-                ApplyStates(sabiyak);
-            }
-            if (BB_QuestManager.Instance.IsQuestDone("S_Q2_SecretTreasure"))
-            {
-                dula.SetDialogueState("default");
-                ApplyStates(dula);
-            }
-            else
-            {
-                dula.SetDialogueState("S_Q2_SecretTreasure_Start");
-                ApplyStates(dula);
-            }
+        }
+    }
+    public void SideQuestPropertiesCheck()
+    {
+        if (BB_QuestManager.Instance.IsQuestDone("S_Q1_LostMotivation"))
+        {
+            sabiyak.SetDialogueState("Default");
+            hignaw.SetDialogueState("Default_New");
+            ApplyStates(sabiyak, hignaw);
+            return;
+         }
+        else
+        {
+            sabiyak.SetDialogueState("S_Q1_LostMotivation_Start");
+            ApplyStates(sabiyak);
+        }
+        if (BB_QuestManager.Instance.IsQuestDone("S_Q2_SecretTreasure"))
+        {
+            dula.SetDialogueState("default");
+            ApplyStates(dula);
+        }
+        else
+        {
+            dula.SetDialogueState("S_Q2_SecretTreasure_Start");
+            ApplyStates(dula);
         }
     }
     #endregion
