@@ -118,6 +118,7 @@ public class UI_MainMenu : MonoBehaviour
         else
         {
             StartCoroutine(NewGame());
+            GameManager.instance.DeleteAll();
         }
         AudioManager.instance.PlayButtonClickSFX();
     }
@@ -131,6 +132,7 @@ public class UI_MainMenu : MonoBehaviour
     private void OnClickYesNewGame()
     {
         StartCoroutine(NewGame());
+        GameManager.instance.DeleteAll();
         AudioManager.instance.PlayButtonClickSFX();
     }
 
