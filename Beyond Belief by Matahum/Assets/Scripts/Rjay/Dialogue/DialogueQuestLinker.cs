@@ -955,7 +955,7 @@ public class DialogueQuestLinker : MonoBehaviour
         {
             portalInteractable.SetActive(true);
             albularyoNpc.transform.SetPositionAndRotation(a2_q12_albularyoTransform.position, a2_q12_albularyoTransform.rotation);
-            albularyoNpc.GetComponent<BlazeAI>().StayIdle();
+            //albularyoNpc.GetComponent<BlazeAI>().StayIdle();
             albularyo.SetDialogueState("Default");
             ApplyStates(albularyo);
             RemoveActiveMarker();

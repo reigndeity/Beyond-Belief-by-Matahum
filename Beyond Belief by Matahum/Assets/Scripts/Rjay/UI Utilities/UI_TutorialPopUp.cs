@@ -13,10 +13,15 @@ public class UI_TutorialPopUp : MonoBehaviour
     public KeyCode requiredKey = KeyCode.None;   // Key to continue
 
     [Header("Events")]
+    public UnityEvent onActivated; 
     public UnityEvent onFadeInComplete;
     public UnityEvent onFadeOutComplete;
 
     private Coroutine fadeRoutine;
+    private void OnEnable()
+    {
+        onActivated?.Invoke();
+    }
 
     private void Awake()
     {
