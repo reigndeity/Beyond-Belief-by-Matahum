@@ -1,5 +1,5 @@
 # Beyond Belief
-<p>College Level: 4nd Year
+<p>Year Level: 4
 <br>Semester: 1st Semester
 <br>Project Type: Thesis Capstone
 </p>
