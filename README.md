@@ -25,7 +25,7 @@ Beyond Belief was submitted to the GameOn Awards 2025 School Category and won Be
 
 
 # Game Link
-<br>[**Beyond Belief**]([https://drive.google.com/file/d/1TY_GN0JgQI3ydLFrDn8f64bpuOk68Jp-/view?usp=sharing](https://matahum.itch.io/bbrpg))
+<br>[**Beyond Belief**](https://matahum.itch.io/bbrpg)
 
 # Software Used
 - Unity
