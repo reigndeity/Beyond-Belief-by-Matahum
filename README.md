@@ -24,12 +24,17 @@ Beyond Belief is an open-world RPG that brings Philippine mythology to life thro
 # Download Link
 <br>Windows: [**Windows - Beyond Belief**](https://drive.google.com/file/d/1TY_GN0JgQI3ydLFrDn8f64bpuOk68Jp-/view?usp=sharing)
 
+# GameOn Awards 2025 School Category
+Beyond Belief was submitted to the GameOn Awards 2025 School Category and won Best Game Art Direction
+<img width="1280" height="720" alt="Untitled design (1)" src="https://github.com/user-attachments/assets/4b216181-b159-45e9-bf4b-6198ccc7a2fb" />
 
 # Software Used
 - Unity
-- Medibang
 - Krita
-- Piskel
+- Blender
+- Substance 3D Painter
+- Audacity
+- Capcut
 
 # Project Members
 - Cedeño, Aaron Jason 
@@ -38,9 +43,8 @@ Beyond Belief is an open-world RPG that brings Philippine mythology to life thro
 - Sasil, Kyrsten Shaen
 
 # Project Role
-- Programmer
-- Tile and UI Artist
-- Game Producer
+- Game Programmer
 - Game Design
+- Sound Design
 
-In this project, I did most of the coding and half of the game design document. I don't usually draw but I think I did a nice job with the UI and Tiles.
+This thesis capstone serves as a milestone of what I’m capable of today. It was built for academic requirements rather than long-term release, but it reflects the level of effort, creativity, and technical skill I can bring to a project. And as I continue learning, I know I’ll be able to produce even better, more polished work.
