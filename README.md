@@ -18,16 +18,14 @@ Beyond Belief is an open-world RPG that brings Philippine mythology to life thro
 <img width="1919" height="1079" alt="Beyond Belief In Game Screenshot 3" src="https://github.com/user-attachments/assets/7b242300-3b4f-40f9-8497-4b007c8a9c72" />
 
 
-
-
-
-# Itch.io Link
-<br>[**Beyond Belief**]([https://drive.google.com/file/d/1TY_GN0JgQI3ydLFrDn8f64bpuOk68Jp-/view?usp=sharing](https://matahum.itch.io/bbrpg))
-
 # GameOn Awards 2025 School Category
 Beyond Belief was submitted to the GameOn Awards 2025 School Category and won Best Game Art Direction
+
 <img width="1280" height="720" alt="Untitled design" src="https://github.com/user-attachments/assets/b2b8fafd-e815-4a8b-9e23-89354cb3744e" />
 
+
+# Game Link
+<br>[**Beyond Belief**]([https://drive.google.com/file/d/1TY_GN0JgQI3ydLFrDn8f64bpuOk68Jp-/view?usp=sharing](https://matahum.itch.io/bbrpg))
 
 # Software Used
 - Unity
