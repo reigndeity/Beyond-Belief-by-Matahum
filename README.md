@@ -38,6 +38,7 @@ Beyond Belief was submitted to the GameOn Awards 2025 School Category and won Be
 - Capcut
 
 # Project Members
+- Angeles, Timothy Joseph
 - Cedeño, Aaron Jason 
 - Cedeño, Vince Julius 
 - Ramirez, Randall Jay 
