@@ -26,7 +26,8 @@ Beyond Belief is an open-world RPG that brings Philippine mythology to life thro
 
 # GameOn Awards 2025 School Category
 Beyond Belief was submitted to the GameOn Awards 2025 School Category and won Best Game Art Direction
-<img width="1280" height="720" alt="Untitled design (1)" src="https://github.com/user-attachments/assets/4b216181-b159-45e9-bf4b-6198ccc7a2fb" />
+<img width="1280" height="720" alt="Untitled design" src="https://github.com/user-attachments/assets/b2b8fafd-e815-4a8b-9e23-89354cb3744e" />
+
 
 # Software Used
 - Unity
