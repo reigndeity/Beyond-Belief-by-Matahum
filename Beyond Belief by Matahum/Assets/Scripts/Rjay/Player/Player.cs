@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using FIMSpace.FProceduralAnimation;
 using Unity.VisualScripting;
 using UnityEngine;
 public enum PlayerState 
@@ -14,13 +15,14 @@ public enum PlayerState
 }
 public class Player : MonoBehaviour, IDamageable
 {
+    private UI_Game m_uiGame;
     private PlayerAnimator m_playerAnimator;
     private PlayerMovement m_playerMovement;
     private PlayerInput m_playerInput;
     private PlayerCombat m_playerCombat;
     private PlayerSkills m_playerSkills;
     private PlayerStats m_playerStats;
-    
+
     private PlayerMinimap m_playerMinimap;
     private PlayerCamera m_playerCamera;
     private PlayerPamanaSetBonus m_setBonus;
@@ -28,20 +30,22 @@ public class Player : MonoBehaviour, IDamageable
     [Header("Player States")]
     public PlayerState currentState;
     public bool isDead = false;
+    public bool isInvulnerable = false;
+    [Header("Combat Awareness")]
+    [SerializeField] private int dangerCount = 0; // how many enemies are chasing
+    public bool inDanger = false;
 
     [Header("Inventory Properties")]
     public R_Inventory playerInventory;
 
     [HideInInspector] public bool suppressInputUntilNextFrame = false;
 
-    
+
     void Awake()
     {
         foreach (R_PamanaSlotType slot in System.Enum.GetValues(typeof(R_PamanaSlotType)))
             equippedPamanaSet[slot] = null;
-    }
-    void Start()
-    {
+
         m_playerAnimator = GetComponent<PlayerAnimator>();
         m_playerMovement = GetComponent<PlayerMovement>();
         m_playerInput = GetComponent<PlayerInput>();
@@ -51,12 +55,13 @@ public class Player : MonoBehaviour, IDamageable
         m_playerMinimap = GetComponentInChildren<PlayerMinimap>();
         m_playerCamera = FindFirstObjectByType<PlayerCamera>();
         m_setBonus = GetComponent<PlayerPamanaSetBonus>();
+        m_uiGame = FindFirstObjectByType<UI_Game>();
     }
 
     void Update()
-    {   
+    {
         if (UI_TransitionController.instance.isTeleporting) return;
-        
+
         // Player Camera
         m_playerCamera.HandleMouseLock();
         if (Cursor.lockState == CursorLockMode.Locked)
@@ -75,7 +80,7 @@ public class Player : MonoBehaviour, IDamageable
         m_playerMinimap.ProjectionRotation();
         m_playerMinimap.HandleMapToggle();
         m_playerMinimap.ZoomControl();
-        
+
         if (!isLocked && !m_playerMinimap.IsMapOpen() && !DialogueManager.Instance.isDialoguePlaying)
         {
             m_playerMovement.HandleMovement();
@@ -84,6 +89,7 @@ public class Player : MonoBehaviour, IDamageable
             m_playerCombat.HandleAttack();
             m_playerSkills.HandleSkills();
             HandleGrassInteraction();
+
         }
 
 
@@ -117,21 +123,7 @@ public class Player : MonoBehaviour, IDamageable
         {
             currentState = PlayerState.IDLE;
         }
-
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            TakeDamage(50);
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            GainXP(5000);
-        }
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            GainWeaponXP(500);
-        }
-
+        
         if (suppressInputUntilNextFrame)
             suppressInputUntilNextFrame = false;
     }
@@ -152,7 +144,6 @@ public class Player : MonoBehaviour, IDamageable
             StartCoroutine(ApplyGravityUntilGrounded());
         }
 
-        Debug.Log("🧍 ForceIdleOverride: Player forcibly reset to idle.");
     }
 
 
@@ -179,18 +170,76 @@ public class Player : MonoBehaviour, IDamageable
             m_playerSkills.ForceStopSkills();
             m_playerAnimator.ForceIdleState();
         }
+        else // THIS ELSE BLOCK IS ALSO NEW IN AN ATTEMPT TO FIX THE SLIDING BUG 09/07/2025 - 2:23PM
+        {
+            m_playerAnimator.HandleAnimations();
+        }
 
-        Debug.Log($"🔒 Player locked: {isLocked}");
     }
 
     #endregion
 
+    #region DANGER SYSTEM
+
+    public Coroutine dangerCoroutine;
+    public void SetInDanger(bool value)
+    {
+        // Safety — just use this if you want manual control
+        if (value) EnterDanger();
+        else ExitDanger();
+    }
+
+    public void EnterDanger()
+    {
+        dangerCount++;
+        if (!inDanger)
+        {
+            inDanger = true;
+            AudioManager.instance.HandleDangerMusic(inDanger);   
+        }
+    }
+
+    public void ExitDanger()
+    {
+        dangerCount = Mathf.Max(0, dangerCount - 1);
+
+        // If there are still enemies chasing, stay in danger
+        if (dangerCount > 0)
+            return;
+
+        inDanger = false;
+        AudioManager.instance.HandleDangerMusic(inDanger);
+
+        // Start a grace delay before actually exiting danger
+        /*if (dangerCoroutine != null)
+            StopCoroutine(dangerCoroutine);
+
+        dangerCoroutine = StartCoroutine(DelayExitDanger());*/
+    }
+
+    private IEnumerator DelayExitDanger()
+    {
+        yield return new WaitForSeconds(.5f);
+
+        // Only exit danger if no enemies are chasing after the delay
+        if (dangerCount == 0 && inDanger)
+        {
+            inDanger = false;
+            AudioManager.instance.HandleDangerMusic(inDanger);
+            Debug.Log("Player: Exited danger after delay.");
+        }
+
+        dangerCoroutine = null;
+    }
+
+
+    #endregion
 
     #region DAMAGE / HEAL FUNCTIONS
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, bool hitAnimOn = true)
     {
-        if (m_playerSkills.isUsingUltimateSkill) return;
-        
+        if (m_playerSkills.isUsingUltimateSkill || isInvulnerable || isDead) return;
+
         bool isCriticalHit = Random.value <= (m_playerStats.p_criticalRate / 100f); // Crit Check
         float damageReduction = m_playerStats.p_defense * 0.66f; // Defense Scaling
         float reducedDamage = damage - damageReduction; // Damage after Defense
@@ -203,25 +252,25 @@ public class Player : MonoBehaviour, IDamageable
         m_playerStats.p_currentHealth -= finalDamage; // Final Damage
         m_playerStats.p_currentHealth = Mathf.Clamp(m_playerStats.p_currentHealth, 0f, m_playerStats.p_maxHealth); // Health cannot go below 0
 
-        Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f),Random.Range(0f, 0.25f),Random.Range(0f, 0.25f));
+        Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
         if (isCriticalHit) // Damage Pop Up Here
         {
             DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.red);
-            Debug.Log($"💥 CRITICAL HIT! Player took {finalDamage} damage. Current Health: {m_playerStats.p_currentHealth}");
         }
         else
         {
-            
+
             DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, finalDamage.ToString(), Color.white);
-            Debug.Log($"Player took {finalDamage} damage. Current Health: {m_playerStats.p_currentHealth}");
         }
 
-        if (m_playerStats.p_currentHealth <= 0f) // Death check
+        if (m_playerStats.p_currentHealth <= 0f && !isDead) // Death check
         {
-            Debug.Log("Player is dead.");
+            HandleDeath();
         }
         if (m_playerSkills.isUsingNormalSkill) return;
-        m_playerAnimator.GetHit();
+
+        if (hitAnimOn)
+            m_playerAnimator.GetHit();
     }
     public void Heal(float amount)
     {
@@ -233,7 +282,26 @@ public class Player : MonoBehaviour, IDamageable
 
         m_playerStats.p_currentHealth = Mathf.Min(oldHP + amount, maxHP);
 
-        Debug.Log($"💚 Healed {amount} HP. Current Health: {m_playerStats.p_currentHealth} / {maxHP}");
+        int displayAmount = Mathf.Max(1, Mathf.FloorToInt(amount));
+
+        Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
+        DamagePopUpGenerator.instance.CreatePopUp(transform.position + PopUpRandomness, displayAmount.ToString(), Color.green);
+    }
+    #endregion
+    #region DEATH
+    public async void HandleDeath()
+    {
+        if (isDead) return;
+        isDead = true;
+        SetPlayerLocked(true);
+        m_playerAnimator.animator.applyRootMotion = true;
+        GetComponent<LegsAnimator>().enabled = false;
+        m_uiGame.HideUI();
+        m_playerAnimator.PlayDeathAnimation();
+        await System.Threading.Tasks.Task.Delay(1800);
+        StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
+        await System.Threading.Tasks.Task.Delay(1000);
+        Loader.Load(4);
     }
     #endregion
 
@@ -247,7 +315,6 @@ public class Player : MonoBehaviour, IDamageable
         {
             m_playerStats.currentExp -= PlayerLevelTable.GetXPRequiredForLevel(m_playerStats.currentLevel);
             m_playerStats.currentLevel++;
-            Debug.Log($"🔼 Level up! New level: {m_playerStats.currentLevel}");
             m_playerStats.RecalculateStats();
         }
 
@@ -264,7 +331,6 @@ public class Player : MonoBehaviour, IDamageable
         {
             m_playerStats.weaponXP -= GetWeaponXPRequired(m_playerStats.weaponLevel);
             m_playerStats.weaponLevel++;
-            Debug.Log($"🔼 Weapon leveled up to Lv.{m_playerStats.weaponLevel}!");
             m_playerStats.RecalculateStats();
         }
     }
@@ -286,7 +352,6 @@ public class Player : MonoBehaviour, IDamageable
         m_playerStats.currentGoldCoins += amount;
         if (m_playerStats.currentGoldCoins < 0) m_playerStats.currentGoldCoins = 0;
 
-        Debug.Log($"Gold Coins: {m_playerStats.currentGoldCoins}");
         // TODO: You can call a UI update here
     }
     public bool SpendGoldCoins(int amount)
@@ -294,11 +359,9 @@ public class Player : MonoBehaviour, IDamageable
         if (m_playerStats.currentGoldCoins >= amount)
         {
             m_playerStats.currentGoldCoins -= amount;
-            Debug.Log($"Spent {amount} coins. Remaining: {m_playerStats.currentGoldCoins}");
             return true;
         }
 
-        Debug.Log("Not enough coins!");
         return false;
     }
     #endregion
@@ -338,7 +401,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (equippedPamanaSet.ContainsKey(slot))
             equippedPamanaSet[slot] = null;
-        
+
         ReapplyPamanaBonuses();
     }
 
@@ -392,10 +455,23 @@ public class Player : MonoBehaviour, IDamageable
     public void UnequipAgimat(int slotIndex)
     {
         if (slotIndex == 1)
+        {
+            if (equippedAgimatSlot1 != null && equippedAgimatSlot1.itemData?.slot1Ability != null)
+            {
+                equippedAgimatSlot1.itemData.slot1Ability.Deactivate(gameObject);
+            }
             equippedAgimatSlot1 = null;
+        }
         else if (slotIndex == 2)
+        {
+            if (equippedAgimatSlot2 != null && equippedAgimatSlot2.itemData?.slot2Ability != null)
+            {
+                equippedAgimatSlot2.itemData.slot2Ability.Deactivate(gameObject);
+            }
             equippedAgimatSlot2 = null;
+        }
     }
+
 
     public R_ItemRarity GetAgimatRarity(int slot)
     {
@@ -410,7 +486,13 @@ public class Player : MonoBehaviour, IDamageable
 
         return slot == 1 ? item.itemData.slot1Ability : item.itemData.slot2Ability;
     }
-
+    public R_ItemData GetAgimatItemData(int slot)
+    {
+        var item = GetEquippedAgimat(slot);
+        return item?.itemData;
+    }
     #endregion
+
+
 
 }

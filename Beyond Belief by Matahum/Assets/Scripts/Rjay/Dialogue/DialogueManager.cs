@@ -17,6 +17,9 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI speakerNameText;
     public TextMeshProUGUI dialogueText;
 
+    [Header("Indicator")]
+    public GameObject indicatorObj;
+
     [Header("Optional Voice")]
     public AudioSource voiceSource;
 
@@ -26,6 +29,10 @@ public class DialogueManager : MonoBehaviour
     [Header("Input Settings")]
     public KeyCode continueKey = KeyCode.Space;
     public KeyCode fastForwardKey = KeyCode.Mouse0;
+
+    [Header("Input Delay Settings")]
+    [Tooltip("Time (in seconds) before another skip input is allowed.")]
+    public float inputDelaySeconds = 0.25f;
 
     [Header("Choice Settings")]
     public GameObject choicePanel;
@@ -53,20 +60,37 @@ public class DialogueManager : MonoBehaviour
 
     private DialogueStateHolder activeStateHolder;
 
+    private bool isEndingDialogue = false;
+    private KeyCode lastInputKey = KeyCode.None;
+    private float nextInputAllowedTime = 0f;
+
     void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        if (indicatorObj != null) indicatorObj.SetActive(false);
     }
 
     void Update()
     {
         if (!isPlaying) return;
+        if (Time.time < nextInputAllowedTime) return;
 
-        if ((Input.GetKeyDown(continueKey) || Input.GetKeyDown(fastForwardKey)) && 
-            !waitingForChoice && 
-            !inputCooldown && 
-            flattenedLines[currentIndex].skippable)
+        bool spacePressed = Input.GetKeyDown(continueKey);
+        bool mousePressed = Input.GetKeyDown(fastForwardKey);
+
+        if (spacePressed && mousePressed) return;
+
+        KeyCode currentKey = KeyCode.None;
+        if (spacePressed) currentKey = continueKey;
+        if (mousePressed) currentKey = fastForwardKey;
+        if (currentKey == KeyCode.None) return;
+
+        lastInputKey = currentKey;
+        nextInputAllowedTime = Time.time + inputDelaySeconds;
+
+        if (!waitingForChoice && !inputCooldown && flattenedLines[currentIndex].skippable)
         {
             if (!textFullyRevealed)
             {
@@ -74,7 +98,11 @@ public class DialogueManager : MonoBehaviour
             }
             else
             {
-                ShowNextLine();
+                // If last line, end; otherwise show next
+                if (currentIndex >= flattenedLines.Count - 1)
+                    EndDialogue();
+                else
+                    ShowNextLine();
             }
         }
     }
@@ -94,13 +122,12 @@ public class DialogueManager : MonoBehaviour
         if (activeStateHolder != null)
         {
             debugCurrentDialogueState = activeStateHolder.currentState;
-            // ✅ Trigger enter event for the current state so animations or events play
             activeStateHolder.TriggerStateEnter(activeStateHolder.currentState);
         }
 
         foreach (var group in currentSequence.groups)
         {
-            if (group.dialogueState == (activeStateHolder != null ? activeStateHolder.currentState : "Default") 
+            if (group.dialogueState == (activeStateHolder != null ? activeStateHolder.currentState : "Default")
                 || string.IsNullOrEmpty(group.dialogueState))
             {
                 flattenedLines.AddRange(group.lines);
@@ -108,12 +135,14 @@ public class DialogueManager : MonoBehaviour
         }
 
         dialoguePanel.SetActive(true);
+        if (indicatorObj != null) indicatorObj.SetActive(false);
         onDialogueStart?.Invoke();
         ShowNextLine();
     }
 
     private void ShowNextLine()
     {
+        if (indicatorObj != null) indicatorObj.SetActive(false); // ensure hidden when moving to next
         choicePanel.SetActive(false);
         foreach (Transform child in choiceButtonContainer)
             Destroy(child.gameObject);
@@ -123,7 +152,7 @@ public class DialogueManager : MonoBehaviour
             currentIndex++;
             DialogueLine line = flattenedLines[currentIndex];
 
-            // 🔹 Animation Handling — only for active NPCs
+            // Animation Handling
             if (activeStateHolder != null)
             {
                 NPC npc = activeStateHolder.GetComponent<NPC>();
@@ -146,12 +175,13 @@ public class DialogueManager : MonoBehaviour
 
             if (typewriterRoutine != null) StopCoroutine(typewriterRoutine);
 
-            onLineStart?.Invoke();   // 🔹 Fire line start event
+            onLineStart?.Invoke();
+            if (indicatorObj != null) indicatorObj.SetActive(false); // hide while typing
             typewriterRoutine = StartCoroutine(TypeText(line.dialogueText, line));
             return;
         }
 
-        EndDialogue(); // ✅ Only ends if no valid lines remain
+        EndDialogue();
     }
 
     private IEnumerator TypeText(string text, DialogueLine line)
@@ -159,17 +189,39 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = "";
         textFullyRevealed = false;
 
-        foreach (char c in text)
+        int i = 0;
+        while (i < text.Length)
         {
-            dialogueText.text += c;
+            if (text[i] == '<')
+            {
+                int closingIndex = text.IndexOf('>', i);
+                if (closingIndex != -1)
+                {
+                    string tag = text.Substring(i, closingIndex - i + 1);
+                    dialogueText.text += tag;
+                    i = closingIndex + 1;
+                    continue;
+                }
+            }
+
+            dialogueText.text += text[i];
+            i++;
             yield return new WaitForSeconds(characterDelay);
         }
 
         textFullyRevealed = true;
-        onLineFinish?.Invoke();   // 🔹 Fire line finish event
+        onLineFinish?.Invoke();
 
-        if (line.isChoiceLine && line.choices != null && line.choices.Length > 0)
+        // Only show indicator if this is NOT a choice line
+        bool isChoice = line.isChoiceLine && line.choices != null && line.choices.Length > 0;
+        if (!isChoice)
         {
+            if (indicatorObj != null) indicatorObj.SetActive(true);
+        }
+
+        if (isChoice)
+        {
+            if (indicatorObj != null) indicatorObj.SetActive(false);
             DisplayChoices(line.choices);
         }
     }
@@ -181,10 +233,25 @@ public class DialogueManager : MonoBehaviour
             StopCoroutine(typewriterRoutine);
         }
 
-        dialogueText.text = flattenedLines[currentIndex].dialogueText;
-        textFullyRevealed = true;
+        DialogueLine line = flattenedLines[currentIndex];
 
-        onLineFinish?.Invoke();   // 🔹 Ensure finish event fires when skipped
+        dialogueText.text = line.dialogueText;
+        textFullyRevealed = true;
+        onLineFinish?.Invoke();
+
+        bool isChoice = line.isChoiceLine && line.choices != null && line.choices.Length > 0;
+
+        if (isChoice)
+        {
+            if (indicatorObj != null) indicatorObj.SetActive(false);
+            DisplayChoices(line.choices);
+        }
+        else
+        {
+            if (indicatorObj != null) indicatorObj.SetActive(true);
+        }
+
+        // No auto EndDialogue here — wait for next input if it's the last line
         StartCoroutine(InputCooldownRoutine());
     }
 
@@ -206,6 +273,7 @@ public class DialogueManager : MonoBehaviour
 
     private void DisplayChoices(DialogueChoice[] choices)
     {
+        if (indicatorObj != null) indicatorObj.SetActive(false); // hide when choices are shown
         choicePanel.SetActive(true);
         waitingForChoice = true;
 
@@ -237,6 +305,9 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+        if (isEndingDialogue) return;
+        isEndingDialogue = true;
+
         if (activeStateHolder != null)
         {
             activeStateHolder.TriggerStateExit(activeStateHolder.currentState);
@@ -255,10 +326,13 @@ public class DialogueManager : MonoBehaviour
         isPlaying = false;
         isDialoguePlaying = false;
         dialoguePanel.SetActive(false);
+        if (indicatorObj != null) indicatorObj.SetActive(false);
         currentSequence = null;
 
         onDialogueEnd?.Invoke();
         FindFirstObjectByType<Player>().suppressInputUntilNextFrame = true;
+
+        isEndingDialogue = false;
     }
 
     public void SetDialogueState(string newState)

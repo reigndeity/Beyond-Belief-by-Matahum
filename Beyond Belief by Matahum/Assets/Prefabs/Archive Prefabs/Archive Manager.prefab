@@ -4948,10 +4948,13 @@ MonoBehaviour:
   plantsScrollContent: {fileID: 6308683652957667735}
   archiveSlotPrefab: {fileID: 644024593657816005, guid: 64220a39c17e0844ba7ba4b2b4aa283a, type: 3}
   archiveList: []
+  selectedNormalArchive: {fileID: 0}
+  selectedLocationArchive: {fileID: 0}
   archiveTitleName: {fileID: 4152302580603937109}
   archiveImage: {fileID: 7995535179224887439}
   archiveDetailText: {fileID: 2904808498917147981}
-  undiscoveredImage: {fileID: 117534696, guid: 31f54bd5977cf814194c37796607019f, type: 3}
+  undiscoveredLocationImage: {fileID: 0}
+  undiscoveredButtonImage: {fileID: 0}
 --- !u!114 &3383481268164270970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4965,7 +4968,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   archiveUI: {fileID: 1387101089890530625}
-  openArchiveButton: {fileID: 383555954420564078}
   archivePopUp: {fileID: 8684361850512803301}
   creatureCategoryButton: {fileID: 840143372988366402}
   locationCategoryButton: {fileID: 4304294609771481625}
@@ -4973,9 +4975,9 @@ MonoBehaviour:
   plantCategoryButton: {fileID: 245065709337645277}
   creaturePanel: {fileID: 5113017242907880332}
   locationPanel: {fileID: 5638091049504032397}
+  locationImage: {fileID: 0}
   wildlifePanel: {fileID: 979381144377200171}
   plantPanel: {fileID: 10360062164186250}
-  exitButton: {fileID: 2454041417087262010}
 --- !u!114 &567061824534711998
 MonoBehaviour:
   m_ObjectHideFlags: 0

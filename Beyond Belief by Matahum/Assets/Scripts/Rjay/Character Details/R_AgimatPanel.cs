@@ -16,14 +16,17 @@ public class R_AgimatPanel : MonoBehaviour
     [Header("Slot Highlights")]
     [SerializeField] private GameObject highlightSlot1;
     [SerializeField] private GameObject highlightSlot2;
+    [Header("Default Empty Slot Sprites")]
+    [SerializeField] private Sprite emptySlot1Sprite;
+    [SerializeField] private Sprite emptySlot2Sprite;
 
     [Header("Equipped Icons")]
     [SerializeField] private Image iconSlot1;
     [SerializeField] private Image iconSlot2;
 
     [Header("Inventory List")]
-    [SerializeField] private GameObject agimatListParent;         // controls SetActive(true/false)
-    [SerializeField] private Transform agimatSlotContainer;       // where slots are actually instantiated
+    [SerializeField] private GameObject agimatListParent;
+    [SerializeField] private Transform agimatSlotContainer;
     [SerializeField] private GameObject agimatSlotPrefab;
 
     [Header("Info Panel")]
@@ -38,6 +41,8 @@ public class R_AgimatPanel : MonoBehaviour
 
     private R_InventoryItem selectedItem;
     private int? selectedSlot = null;
+
+    private List<R_AgimatSlotUI> slotUIs = new();
 
     private void Start()
     {
@@ -104,11 +109,14 @@ public class R_AgimatPanel : MonoBehaviour
 
         UpdateSelectionVisuals();
         UpdateInfoPanelAndButtons();
+
+        AudioManager.instance.PlayButtonClickSFX();
     }
 
-    private void RefreshAgimatList()
+    public void RefreshAgimatList()
     {
         agimatItems.Clear();
+        slotUIs.Clear();
 
         foreach (var item in playerInventory.items)
         {
@@ -125,7 +133,9 @@ public class R_AgimatPanel : MonoBehaviour
             GameObject slotObj = Instantiate(agimatSlotPrefab, agimatSlotContainer);
             var slotUI = slotObj.GetComponent<R_AgimatSlotUI>();
             slotUI.Setup(item, this);
+
             slotUIObjects.Add(slotObj);
+            slotUIs.Add(slotUI); // 👈 keep typed reference
         }
 
         Canvas.ForceUpdateCanvases();
@@ -133,8 +143,6 @@ public class R_AgimatPanel : MonoBehaviour
 
         UpdateSelectionVisuals();
     }
-
-
     public void OnAgimatSelected(R_InventoryItem item)
     {
         selectedItem = item;
@@ -152,6 +160,7 @@ public class R_AgimatPanel : MonoBehaviour
         UpdateInfoPanelAndButtons();
         UpdateSelectionVisuals();
     }
+
     private void OnClickEquip()
     {
         if (selectedItem == null || selectedSlot == null)
@@ -163,52 +172,96 @@ public class R_AgimatPanel : MonoBehaviour
         var equippedInCurrent = player.GetEquippedAgimat(currentSlot);
         var equippedInOther = player.GetEquippedAgimat(otherSlot);
 
-        bool isSelectedEquippedInCurrent = equippedInCurrent != null && 
-                                        equippedInCurrent.runtimeID == selectedItem.runtimeID;
+        bool isSelectedEquippedInCurrent = equippedInCurrent != null &&
+                                           equippedInCurrent.runtimeID == selectedItem.runtimeID;
 
-        bool isSelectedEquippedInOther = equippedInOther != null && 
-                                        equippedInOther.runtimeID == selectedItem.runtimeID;
+        bool isSelectedEquippedInOther = equippedInOther != null &&
+                                         equippedInOther.runtimeID == selectedItem.runtimeID;
 
-        // 🟡 CASE 1: Trying to re-equip the same Agimat in the same slot
+        string selectedName = selectedItem.itemData.itemName;
+        string equippedCurrentName = equippedInCurrent != null ? equippedInCurrent.itemData.itemName : null;
+        string equippedOtherName = equippedInOther != null ? equippedInOther.itemData.itemName : null;
+
+        // 🟡 CASE 1: Already equipped in this slot
         if (isSelectedEquippedInCurrent)
         {
             Debug.Log("This Agimat is already equipped in the selected slot.");
             return;
         }
 
-        // 🔵 CASE 2: Trying to switch equipped Agimat to another slot (desired prompt)
+        // 🔵 CASE 2: Same instance in the other slot → prompt switch
         if (isSelectedEquippedInOther)
         {
-            string itemName = selectedItem.itemData.itemName;
-            switchPrompt.Open(itemName, otherSlot, currentSlot, () => {
-                player.UnequipAgimat(otherSlot);
-                player.EquipAgimat(selectedItem, currentSlot);
-                infoPanel.Show(selectedItem.itemData);
-                UpdateSlotIcons();
-                UpdateInfoPanelAndButtons();
-                UpdateSelectionVisuals();
-                RefreshAgimatList();
-            });
+            switchPrompt.OpenForAgimat(
+                selectedName,
+                equippedOtherName,
+                otherSlot,
+                currentSlot,
+                true,  // isSameInstance
+                false, // isSameType
+                () =>
+                {
+                    player.UnequipAgimat(otherSlot);
+                    player.EquipAgimat(selectedItem, currentSlot);
+                    infoPanel.Show(selectedItem.itemData);
+                    UpdateSlotIcons();
+                    UpdateInfoPanelAndButtons();
+                    UpdateSelectionVisuals();
+                    RefreshAgimatList();
+                }
+            );
             return;
         }
 
-        // 🔴 CASE 3: Trying to equip a DIFFERENT Agimat with the same name → reject
-        if (equippedInCurrent != null && equippedInCurrent.itemData.name == selectedItem.itemData.name)
+        // 🔴 CASE 3: Another copy of the same type already equipped elsewhere → prompt replacement
+        if (equippedInOther != null &&
+            equippedInOther.itemData != null &&
+            equippedInOther.itemData.itemName == selectedName)
         {
-            Debug.Log("A different copy of this Agimat is already equipped. Select the equipped one to move it.");
+            switchPrompt.OpenForAgimat(
+                selectedName,
+                equippedOtherName,
+                otherSlot,
+                currentSlot,
+                false, // not same instance
+                true,  // same type
+                () =>
+                {
+                    player.UnequipAgimat(otherSlot);
+                    player.EquipAgimat(selectedItem, currentSlot);
+                    infoPanel.Show(selectedItem.itemData);
+                    UpdateSlotIcons();
+                    UpdateInfoPanelAndButtons();
+                    UpdateSelectionVisuals();
+                    RefreshAgimatList();
+                }
+            );
             return;
         }
 
-        // ✅ Prevent equipping two of the same named Agimat in both slots
-        bool duplicateNameEquippedElsewhere =
-            equippedInOther != null &&
-            equippedInOther.itemData.name == selectedItem.itemData.name &&
-            equippedInOther.runtimeID != selectedItem.runtimeID;
-
-        if (duplicateNameEquippedElsewhere)
+        // 🔶 CASE 4: A different Agimat already equipped in this slot → prompt replacement
+        if (equippedInCurrent != null &&
+            equippedInCurrent.itemData != null &&
+            equippedInCurrent.itemData.itemName != selectedName)
         {
-            // ADD VISUAL POP UP LATER
-            Debug.Log("You cannot equip two of the same Agimat.");
+            switchPrompt.OpenForAgimat(
+                selectedName,
+                equippedCurrentName,
+                currentSlot,
+                currentSlot,
+                false, // not same instance
+                false, // not same type
+                () =>
+                {
+                    player.UnequipAgimat(currentSlot);
+                    player.EquipAgimat(selectedItem, currentSlot);
+                    infoPanel.Show(selectedItem.itemData);
+                    UpdateSlotIcons();
+                    UpdateInfoPanelAndButtons();
+                    UpdateSelectionVisuals();
+                    RefreshAgimatList();
+                }
+            );
             return;
         }
 
@@ -219,9 +272,9 @@ public class R_AgimatPanel : MonoBehaviour
         UpdateInfoPanelAndButtons();
         UpdateSelectionVisuals();
         RefreshAgimatList();
-        
-    }
 
+        AudioManager.instance.PlayEquipSFX();
+    }
 
     private void OnClickUnequip()
     {
@@ -238,27 +291,29 @@ public class R_AgimatPanel : MonoBehaviour
         UpdateInfoPanelAndButtons();
         UpdateSelectionVisuals();
         RefreshAgimatList();
+
+        AudioManager.instance.PlayUnequipSFX();
     }
 
     private void UpdateSlotIcons()
     {
-        SetIcon(iconSlot1, player.GetEquippedAgimat(1));
-        SetIcon(iconSlot2, player.GetEquippedAgimat(2));
+        SetIcon(iconSlot1, player.GetEquippedAgimat(1), emptySlot1Sprite);
+        SetIcon(iconSlot2, player.GetEquippedAgimat(2), emptySlot2Sprite);
     }
 
-    private void SetIcon(Image target, R_InventoryItem item)
+    private void SetIcon(Image target, R_InventoryItem item, Sprite emptySprite)
     {
-        if (item != null && item.itemData != null)
+        if (item != null && item.itemData != null && item.itemData.itemIcon != null)
         {
             target.sprite = item.itemData.itemIcon;
-            target.enabled = true;
         }
         else
         {
-            target.sprite = null;
-            target.enabled = false;
+            target.sprite = emptySprite;
         }
+        target.enabled = true;
     }
+
 
     private void UpdateSlotHighlight()
     {
@@ -270,7 +325,15 @@ public class R_AgimatPanel : MonoBehaviour
     {
         if (selectedSlot != null && selectedItem != null)
         {
-            equipButton.interactable = true;
+            var equippedInSlot = player.GetEquippedAgimat(selectedSlot.Value);
+
+            // Disable equip button if the selected item is already equipped in this slot
+            bool isAlreadyEquippedInThisSlot = equippedInSlot != null &&
+                                            equippedInSlot.runtimeID == selectedItem.runtimeID;
+
+            equipButton.interactable = !isAlreadyEquippedInThisSlot;
+
+            // Update button text
             equipButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = $"Equip to Slot {selectedSlot}";
         }
         else
@@ -288,8 +351,8 @@ public class R_AgimatPanel : MonoBehaviour
         {
             unequipButton.interactable = false;
         }
-
     }
+
 
     private void UpdateSelectionVisuals()
     {
@@ -298,5 +361,11 @@ public class R_AgimatPanel : MonoBehaviour
             if (obj.TryGetComponent<R_AgimatSlotUI>(out var slotUI))
                 slotUI.SetSelected(slotUI.RepresentsItem(selectedItem));
         }
+    }
+    public Button GetSlotButton(int index)
+    {
+        if (index >= 0 && index < slotUIs.Count)
+            return slotUIs[index].GetButton();
+        return null;
     }
 }

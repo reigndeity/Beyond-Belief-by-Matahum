@@ -8,7 +8,7 @@ public static class R_SubstatRollTable
     {
         { R_StatType.FlatHP, new float[] { 448.13f, 896.25f, 1344.38f, 1792.5f } },
         { R_StatType.FlatATK, new float[] { 29.18f, 58.35f, 87.52f, 116.7f } },
-        { R_StatType.FlatDEF, new float[] { 34.73f, 69.45f, 104.18f, 138.9f } },
+        { R_StatType.FlatDEF, new float[] { 8.75f, 17.49f, 26.23f, 34.98f } },//original stat. just remove the text and leave the stat     { 34.73f, 69.45f, 104.18f, 138.9f } },
         { R_StatType.PercentHP, new float[] { 8.75f, 17.49f, 26.23f, 34.98f } },
         { R_StatType.PercentATK, new float[] { 8.75f, 17.49f, 26.23f, 34.98f } },
         { R_StatType.PercentDEF, new float[] { 10.94f, 21.87f, 32.81f, 43.74f } },

@@ -16,6 +16,7 @@ public class BB_Archive_ButtonManager : MonoBehaviour
     [Header("Archive Panels")]
     public GameObject creaturePanel;
     public GameObject locationPanel;
+    public Image locationImage;
     public GameObject wildlifePanel;
     public GameObject plantPanel;
 
@@ -30,6 +31,8 @@ public class BB_Archive_ButtonManager : MonoBehaviour
     #region Open Archives
     public void OnOpenArchives()
     {
+        PlayerCamera.Instance.SetCursorVisibility(true);
+
         archiveUI.SetActive(true);
 
         OnOpenCreatureCategory();
@@ -38,6 +41,7 @@ public class BB_Archive_ButtonManager : MonoBehaviour
     #region Archive Categories
     public void OnOpenCreatureCategory()
     {
+        locationImage.gameObject.SetActive(false);
         creaturePanel.SetActive(true);
         locationPanel.SetActive(false);
         wildlifePanel.SetActive(false);
@@ -45,9 +49,12 @@ public class BB_Archive_ButtonManager : MonoBehaviour
 
         archivePopUp.HighlightButton(creatureCategoryButton.GetComponent<RectTransform>());
         BB_ArchiveUI.instance.OnOpenJournal(BB_ArchiveUI.instance.creaturesScrollContent);
+
+        AudioManager.instance.PlayArchiveFilterSFX();
     }
     public void OnOpenLocationCategory()
     {
+        locationImage.gameObject.SetActive(true);
         creaturePanel.SetActive(false);
         locationPanel.SetActive(true);
         wildlifePanel.SetActive(false);
@@ -55,6 +62,8 @@ public class BB_Archive_ButtonManager : MonoBehaviour
 
         archivePopUp.HighlightButton(locationCategoryButton.GetComponent<RectTransform>());
         BB_ArchiveUI.instance.OnOpenJournal(BB_ArchiveUI.instance.locationsScrollContent);
+
+        AudioManager.instance.PlayArchiveFilterSFX();
 
     }
     public void OnOpenWildlifeCategory()
@@ -69,6 +78,7 @@ public class BB_Archive_ButtonManager : MonoBehaviour
     }
     public void OnOpenPlantCategory()
     {
+        locationImage.gameObject.SetActive(false);
         creaturePanel.SetActive(false);
         locationPanel.SetActive(false);
         wildlifePanel.SetActive(false);
@@ -76,13 +86,22 @@ public class BB_Archive_ButtonManager : MonoBehaviour
 
         archivePopUp.HighlightButton(plantCategoryButton.GetComponent<RectTransform>());
         BB_ArchiveUI.instance.OnOpenJournal(BB_ArchiveUI.instance.plantsScrollContent);
+
+        AudioManager.instance.PlayArchiveFilterSFX();
     }
     #endregion
     #region Exit Archives
     public void ExitArchives()
     {
+        PlayerCamera.Instance.SetCursorVisibility(false);
+
         archiveUI.SetActive(false);
         OnOpenCreatureCategory();
     }
     #endregion
+
+    public bool IsArchiveOpen()
+    {
+        return archiveUI.activeSelf;
+    }
 }

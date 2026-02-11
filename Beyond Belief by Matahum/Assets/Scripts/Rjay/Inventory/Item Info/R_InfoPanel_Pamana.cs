@@ -19,10 +19,11 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
     [Header("Condensed Body Panel")]
     [SerializeField] private TextMeshProUGUI pamanaCondensedBodyText;
 
-    public override void Show(R_ItemData itemData)
+   public override void Show(R_ItemData itemData)
     {
         gameObject.SetActive(true);
 
+        // --- ICONS & BASIC INFO ---
         iconImage.sprite = itemData.itemIcon;
         iconImage.enabled = itemData.itemIcon != null;
 
@@ -38,6 +39,7 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
         nameText.text = itemData.itemName;
         itemTypeTxt.text = FormatEnumName(itemData.pamanaSlot.ToString());
 
+        // --- PAMANA DETAILS ---
         if (itemData.pamanaData != null)
         {
             var pamana = itemData.pamanaData;
@@ -46,47 +48,41 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
             mainStatTxt.text = FormatStatName(pamana.mainStatType);
             mainStatValueTxt.text = FormatStatValue(pamana.mainStatType, pamana.mainStatValue);
 
-            // 🧠 Determine if set bonuses are active
-            int equippedCount = 0;
+            // 🧠 Count how many items of the same SET are equipped
+            int sameSetCount = 0;
             var player = FindFirstObjectByType<Player>();
             var equipped = player.GetEquippedPamanas();
+
             foreach (var kvp in equipped)
             {
-                var equippedPamana = kvp.Value?.itemData?.pamanaData;
-                if (equippedPamana != null && equippedPamana.set == pamana.set)
-                    equippedCount++;
+                var equippedItem = kvp.Value?.itemData;
+                if (equippedItem != null && equippedItem.set == itemData.set)
+                    sameSetCount++;
             }
 
-            
+            // --- BUILD BONUS LINES ---
+            string twoPieceText = $"2-Piece Set: {itemData.twoPieceBonusDescription}";
+            string threePieceText = $"3-Piece Set: {itemData.threePieceBonusDescription}";
 
-            // ✨ Apply glow to bonuses if active
-            string twoPieceBonus = itemData.twoPieceBonusDescription;
-            string threePieceBonus = itemData.threePieceBonusDescription;
-            string twoPieceLine = $" 2-Piece Set: {twoPieceBonus}";
-            string threePieceLine = $" 3-Piece Set: {threePieceBonus}";
+            // ✨ Apply glow only for same-set thresholds
+            if (sameSetCount >= 2)
+                twoPieceText = $"<wave><color=#FFA500>{twoPieceText}</color></wave>";
 
-            if (equippedCount >= 2)
-                twoPieceBonus = $"<wave><color=#FFA500>{twoPieceBonus}</color></wave>";
-            if (equippedCount >= 3)
-                threePieceBonus = $"<wave><color=#FFA500>{threePieceBonus}</color></wave>";
+            if (sameSetCount >= 3)
+                threePieceText = $"<wave><color=#FFA500>{threePieceText}</color></wave>";
 
-            if (equippedCount >= 2)
-                twoPieceLine = $"<wave><color=#FFA500>{twoPieceLine}</color></wave>";
-            if (equippedCount >= 3)
-                threePieceLine = $"<wave><color=#FFA500>{threePieceLine}</color></wave>";
+            string twoPieceLine = $" {twoPieceText}";
+            string threePieceLine = $" {threePieceText}";
 
-
-            // Build substat block
+            // --- BUILD SUBSTATS ---
             string substatBlock = "";
             foreach (var sub in pamana.substats)
-            {
                 substatBlock += $" •{FormatStat(sub.statType, sub.value)}\n";
-            }
 
-            // Build final body text
+            // --- FINAL BODY TEXT ---
             string bodyText =
                 $"<size=36><color=#000000>{substatBlock}</color></size>\n" +
-                $"<size=36><color=green>{FormatSetName(itemData.set)}</color></size>\n" +
+                $"<size=36><color=#000000>{FormatSetName(itemData.set)}</color></size>\n" +
                 $"<size=30><color=#000000>{twoPieceLine}</color>\n" +
                 $"<color=#000000>{threePieceLine}</color></size>\n\n" +
                 $"<size=36><color=#000000>{itemData.description}</color></size>";
@@ -101,6 +97,7 @@ public class R_InfoPanel_Pamana : R_ItemInfoDisplay
             pamanaCondensedBodyText.text = "";
         }
     }
+
 
 
     private string FormatStat(R_StatType statType, float value)

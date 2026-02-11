@@ -73,6 +73,12 @@ public class PlayerWeapon : MonoBehaviour
             float damage = m_playerStats.p_attack * m_scalingAmount;
             damageable.TakeDamage(damage);
 
+            MutyaNgLinta_Lifesteal lifesteal = m_playerStats.GetComponent<MutyaNgLinta_Lifesteal>();
+            if (lifesteal != null && lifesteal.enabled)
+            {
+                lifesteal.OnDamageDealt(damage);
+            }
+
             hitTimestamps[other] = Time.time; // Record this hit
             SpawnHitImpact(other.ClosestPoint(transform.position));
         }

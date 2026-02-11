@@ -1,19 +1,32 @@
 using UnityEngine;
 
+public enum ArchiveTrackerMode
+{
+    OnSight,
+    OnTriggerEnter,
+    OnInteract
+}
+
 public class BB_ArchiveTracker : MonoBehaviour
 {
-    public string archiveID;
+    public BB_ArchiveSO archiveData;
     private bool hasBeenDiscovered = false;
-    public Camera detectionCamera; // assign this to your player camera
+    private Camera detectionCamera; // assign this to your player camera
     public float checkInterval = 0.3f;
     public float detectionRange = 30f; // Maximum range in units
+    public CanvasGroup canvasGroup;
+
+    public ArchiveTrackerMode mode;
 
     private void Start()
     {
-        if (detectionCamera == null)
-            detectionCamera = Camera.main;
+        if(mode == ArchiveTrackerMode.OnSight) 
+        {
+            if (detectionCamera == null)
+                detectionCamera = Camera.main;
 
-        InvokeRepeating(nameof(CheckIfVisibleToPlayer), 0f, checkInterval);
+            InvokeRepeating(nameof(CheckIfVisibleToPlayer), 0f, checkInterval);
+        }
     }
 
     void CheckIfVisibleToPlayer()
@@ -37,10 +50,26 @@ public class BB_ArchiveTracker : MonoBehaviour
         {
             if (hit.collider == col)
             {
-                BB_ArchiveManager.instance.UpdateArchive(archiveID);
-                hasBeenDiscovered = true;
+                DiscoveredArchive();
             }
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (mode == ArchiveTrackerMode.OnTriggerEnter) return;
+        if (hasBeenDiscovered) return;
+
+        if (other.gameObject.CompareTag("Player"))
+        {
+            DiscoveredArchive();
+        }
+    }
+
+    public void DiscoveredArchive()
+    {
+        BB_ArchiveManager.instance.UpdateArchive(archiveData);
+        hasBeenDiscovered = true;
     }
 
 

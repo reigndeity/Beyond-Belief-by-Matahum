@@ -7,7 +7,8 @@ public class PlayerCamera : MonoBehaviour
     public Transform playerTarget;
 
     [Header("Rotation Settings")]
-    public float mouseSensitivity = 50;
+    [Range(1f, 250f)]
+    public float mouseSensitivity = 50f;
     public float rotationSmoothTime = 0.02f;
     public float pitchMin = -30f;
     public float pitchMax = 60;
@@ -44,7 +45,7 @@ public class PlayerCamera : MonoBehaviour
     private Vector3 shakeOffset = Vector3.zero;
 
     // Cursor toggle
-    private bool isCursorVisible = false;
+    private bool cursorUsedBySystem = false;
 
     // Toggles
     [SerializeField] private bool rotationEnabled = true;
@@ -62,6 +63,8 @@ public class PlayerCamera : MonoBehaviour
 
     private bool isCameraLocked = false;
 
+    private UI_Game uiGame;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -74,6 +77,8 @@ public class PlayerCamera : MonoBehaviour
 
     void Start()
     {
+        uiGame = FindFirstObjectByType<UI_Game>();
+
         desiredDistance = currentDistance = maxDistance;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -87,6 +92,7 @@ public class PlayerCamera : MonoBehaviour
     {
         if (playerTarget == null) return;
         if (isCameraLocked) return;
+        if (uiGame.IsGamePaused()) return;
         Vector3 targetPosition = playerTarget.position;
 
         UpdateShake();
@@ -105,18 +111,39 @@ public class PlayerCamera : MonoBehaviour
     void UpdateDistanceWithCollision(Vector3 targetPosition)
     {
         Quaternion rotation = Quaternion.Euler(currentRotation);
-        Vector3 desiredCameraPos = targetPosition - (rotation * Vector3.forward * desiredDistance);
+        Vector3 camDir = rotation * Vector3.back;
+        Vector3 desiredCamPos = targetPosition + camDir * desiredDistance;
 
-        if (Physics.SphereCast(targetPosition, cameraRadius, desiredCameraPos - targetPosition, out RaycastHit hit, desiredDistance, collisionLayers))
+        float targetDist = desiredDistance;
+
+        // --- Perform a solid spherecast from target to desired camera position ---
+        if (Physics.SphereCast(targetPosition, cameraRadius, camDir, out RaycastHit hit, desiredDistance, collisionLayers, QueryTriggerInteraction.Ignore))
         {
-            float adjustedDistance = Mathf.Max(hit.distance - 0.1f, minDistance);
-            currentDistance = Mathf.SmoothDamp(currentDistance, adjustedDistance, ref distanceSmoothVelocity, 1f / collisionSmoothSpeed);
+            // Position the camera right before the obstacle
+            targetDist = Mathf.Clamp(hit.distance - 0.05f, minDistance, desiredDistance);
         }
-        else
+
+        // --- Smoothly interpolate distance ---
+        currentDistance = Mathf.Lerp(currentDistance, targetDist, Time.deltaTime * collisionSmoothSpeed);
+
+        // --- Compute final camera position ---
+        Vector3 finalCamPos = targetPosition + camDir * currentDistance;
+
+        // --- Hard clamp: ensure camera never spawns inside geometry ---
+        if (Physics.CheckSphere(finalCamPos, cameraRadius, collisionLayers))
         {
-            currentDistance = Mathf.SmoothDamp(currentDistance, desiredDistance, ref distanceSmoothVelocity, 1f / collisionSmoothSpeed);
+            if (Physics.Raycast(targetPosition, camDir, out RaycastHit pushHit, currentDistance, collisionLayers, QueryTriggerInteraction.Ignore))
+            {
+                finalCamPos = pushHit.point + hit.normal * 0.05f;
+                currentDistance = Vector3.Distance(targetPosition, finalCamPos);
+            }
         }
+
+        transform.position = Vector3.Lerp(transform.position, finalCamPos, Time.deltaTime * (followSmoothSpeed * 0.5f));
     }
+
+
+
 
     void UpdateCameraPosition(Vector3 targetPosition)
     {
@@ -156,20 +183,17 @@ public class PlayerCamera : MonoBehaviour
 
     public void HandleMouseLock()
     {
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
-        {
-            isCursorVisible = !isCursorVisible;
+        if (cursorUsedBySystem) return;
 
-            if (isCursorVisible)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
+        if (Input.GetKey(KeyCode.LeftAlt))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 
@@ -230,9 +254,9 @@ public class PlayerCamera : MonoBehaviour
 
     public void SetCursorVisibility(bool visible)
     {
-        isCursorVisible = visible;
+        cursorUsedBySystem = visible;
 
-        if (isCursorVisible)
+        if (cursorUsedBySystem)
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;

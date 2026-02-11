@@ -25,12 +25,15 @@ public class PlayerInput : MonoBehaviour
     public KeyCode ultimateSkillKey = KeyCode.Q;
     
     [Header("Agimat Input")]
-    public KeyCode agimatOneKey = KeyCode.R;
+    public KeyCode agimatOneKey = KeyCode.X;
     public KeyCode agimatTwoKey = KeyCode.C;
     
     [Header("Hud Input")]
     public KeyCode gameMenuKey = KeyCode.Escape;
-    public KeyCode inventoryKey = KeyCode.Tab;
+    public KeyCode archiveKey = KeyCode.K;
+    public KeyCode inventoryKey = KeyCode.B;
+    public KeyCode characterDetailsKey = KeyCode.L;
+
     public KeyCode questGuideKey = KeyCode.V;
     public KeyCode questLogKey = KeyCode.J;
     public KeyCode cursorShowKey = KeyCode.LeftAlt;

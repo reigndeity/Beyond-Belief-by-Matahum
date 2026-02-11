@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96f6ae9bcd23cb64780b824aeb56a38a, type: 3}
+  m_Name: Besik - Scout NPC
+  m_EditorClassIdentifier: 
+  groups:
+  - dialogueState: Default
+    lines:
+    - speakerName: Besik
+      dialogueText: Subtle movements along the grass...
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Besik
+      dialogueText: I wonder what it was.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+  - dialogueState: A1_Q3_BesikTheScout
+    lines:
+    - speakerName: Besik
+      dialogueText: Are you the human Tupas told me about?
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Besik
+      dialogueText: You look a little too young to be doing these things. Sigh...
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: curious
+    - speakerName: Besik
+      dialogueText: Here, this map is a bit outdated but surely it still holds some
+        value.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: curious
+    - speakerName: Besik
+      dialogueText: "All you have to do is go to this albularyo. She\u2019s been
+        known to have helped a lot of lost souls like you, but they aren\u2019t usually...
+        Well, alive and as young as you."
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: curious
+    - speakerName: Besik
+      dialogueText: "Waste no time, hurry along to the albularyo\u2019s hut."
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: curious
+  - dialogueState: A1_Q4_AlbularyoHut
+    lines:
+    - speakerName: Besik
+      dialogueText: Hurry along now.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 
+    - speakerName: Besik
+      dialogueText: And be careful.
+      voiceClip: {fileID: 0}
+      skippable: 1
+      isChoiceLine: 0
+      choices: []
+      animationName: 

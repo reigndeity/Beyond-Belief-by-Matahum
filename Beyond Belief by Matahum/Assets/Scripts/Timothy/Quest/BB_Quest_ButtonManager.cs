@@ -57,7 +57,7 @@ public class BB_Quest_ButtonManager : MonoBehaviour
         //sideQuestPanel.SetActive(false);
         //BB_QuestJournalUI.instance.OnOpenJournal(mainQuestScrollView);
 
-        OpenAllQuest();
+        //OpenAllQuest();
     }
     #endregion
     #region Quest Category
@@ -120,11 +120,13 @@ public class BB_Quest_ButtonManager : MonoBehaviour
     public void TrackQuest()
     {
         BB_QuestJournalUI.instance.TrackQuest(BB_QuestJournalUI.instance.currentSelectedQuest);
+
     }
 
     public void UnTrackQuest()
     {
         BB_QuestJournalUI.instance.UnTrackQuest(BB_QuestJournalUI.instance.currentSelectedQuest);
+
     }
     #endregion
     #region Claim Rewards
@@ -132,6 +134,7 @@ public class BB_Quest_ButtonManager : MonoBehaviour
     {
         BB_QuestManager.Instance.ClaimRewards(BB_QuestJournalUI.instance.currentSelectedQuest);
         claimRewardsButton.gameObject.SetActive(false);
+
     }
     #endregion
     #region Exit Journal
@@ -141,4 +144,9 @@ public class BB_Quest_ButtonManager : MonoBehaviour
         questHud.SetActive(true);
     }
     #endregion
+
+    public bool IsJournalOpen()
+    {
+        return questJournal.activeSelf;
+    }
 }

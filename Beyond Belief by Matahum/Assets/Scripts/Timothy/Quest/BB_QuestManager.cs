@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.IO;
 
 public class BB_QuestManager : MonoBehaviour
 {
@@ -14,7 +15,13 @@ public class BB_QuestManager : MonoBehaviour
     public List<BB_Quest> activeMainQuests = new List<BB_Quest>();
     public List<BB_Quest> activeSideQuests = new List<BB_Quest>();
 
+    private BB_QuestSaveSystem saveSystem;
+
     public event Action OnQuestUpdate;
+
+    [Header("For Clearing Quest Save Data(Dev Stuff)")]
+    private string savePath;
+    public bool clearQuestSaveData = false;
 
     private void Awake()
     {
@@ -22,9 +29,38 @@ public class BB_QuestManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); // Optional: persist across scenes
-            allQuests = new List<BB_Quest>(Resources.LoadAll<BB_Quest>("Quests")); //Loads all available quests
+
+            // Load all available quests
+            allQuests = new List<BB_Quest>(Resources.LoadAll<BB_Quest>("Quests"));
+            allQuests.Sort((a, b) => a.questID.CompareTo(b.questID));
+
+            // Attach save system
+            saveSystem = gameObject.AddComponent<BB_QuestSaveSystem>();
+            savePath = Path.Combine(Application.persistentDataPath, "quests.json");
+
+            // ✅ Only reset quest states if no save file exists
+            if (!File.Exists(savePath))
+            {
+                foreach (var quest in allQuests)
+                {
+                    quest.state = QuestState.Inactive;
+                    quest.isBeingTracked = false;
+
+                    foreach (var mission in quest.missions)
+                        mission.currentAmount = 0;
+                }
+            }
         }
-        else Destroy(gameObject);
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void Start()
+    {
+        //saveSystem.LoadQuests(allQuests);
+        //LoadQuestToJournal();
     }
 
     public void AcceptQuest(BB_Quest quest)
@@ -56,12 +92,14 @@ public class BB_QuestManager : MonoBehaviour
 
         if (BB_QuestHUD.instance.trackedQuest == null)
             BB_QuestJournalUI.instance.TrackQuest(quest);
+
     }
 
     public void AcceptQuestByID(string questID)
     {
         var quest = allQuests.Find(q => q.questID == questID);
         AcceptQuest(quest);
+
     }
 
 
@@ -173,4 +211,131 @@ public class BB_QuestManager : MonoBehaviour
             Debug.LogWarning($"Quest with ID {questID} not found.");
         }
     }
+
+    // DEV FUNCTIONS
+    public void DebugCompleteAndClaimTrackedQuest()
+    {
+        var quest = BB_QuestHUD.instance.trackedQuest;
+        if (quest == null)
+        {
+            Debug.LogWarning("⚠️ No quest is currently tracked.");
+            return;
+        }
+
+        // Force complete all missions
+        foreach (var mission in quest.missions)
+        {
+            mission.currentAmount = mission.requiredAmount;
+        }
+
+        quest.state = QuestState.Completed;
+
+        // Claim instantly
+        ClaimRewards(quest);
+
+        Debug.Log($"✅ DEBUG: Force-completed and claimed quest: {quest.questTitle}");
+    }
+
+
+    #region Saving Quest Data
+    public void SaveQuestData()
+    {
+        saveSystem.SaveQuests(allQuests);
+    }
+    #endregion
+
+    #region Load Quest Data
+    public void LoadQuestToJournal()
+    {
+        foreach (var quest in allQuests)
+        {
+            quest.isInCompletedPanel = false;
+
+            if (quest.state != QuestState.Inactive)
+            {
+                BB_QuestJournalUI.instance.AddQuestToJournal(quest);
+
+                switch (quest.questType)
+                {
+                    case BB_QuestType.Main:
+                        activeMainQuests.Add(quest);
+                        break;
+                    case BB_QuestType.Side:
+                        activeSideQuests.Add(quest);
+                        break;
+                }
+
+                if (quest.state == QuestState.Claimed)
+                    BB_QuestJournalUI.instance.MoveQuestToCompletedPanel(quest);
+
+                if (quest.isBeingTracked)
+                {
+                    BB_QuestJournalUI.instance.TrackQuest(quest);
+                }
+            }
+        }
+    }
+    public void LoadQuestData()
+    {
+        saveSystem.LoadQuests(allQuests);
+        LoadQuestToJournal();
+    }
+    #endregion
+
+    #region Clearing Quest Save Data
+    /// <summary>
+    /// Deletes quest save data from disk and resets quest states.
+    /// </summary>
+    public void ClearQuestSaveData()
+    {
+        // Delete the save file if it exists
+        if (File.Exists(savePath))
+        {
+            File.Delete(savePath);
+            Debug.Log($"Quest save data cleared at {savePath}");
+        }
+        else
+        {
+            Debug.Log("No quest save file found to clear.");
+        }
+
+        // Reset in-memory quest states
+        foreach (BB_Quest quest in allQuests)
+        {
+            quest.state = QuestState.Inactive;
+            quest.isBeingTracked = false;
+
+            foreach (var mission in quest.missions)
+            {
+                mission.currentAmount = 0;
+            }
+        }
+
+        // Tell the journal UI to refresh (so it hides everything)
+        if (BB_QuestJournalUI.instance != null)
+        {
+            BB_QuestJournalUI.instance.ClearDetails();
+            // You could also trigger a full rebuild here if you want
+        }
+    }
+    #endregion
+
+    public bool IsQuestDone(string questID)
+    {
+        var quest = BB_QuestManager.Instance.allQuests.Find(q => q.questID == questID);
+        if (quest == null) return false;
+
+        return quest.state == QuestState.Completed || quest.state == QuestState.Claimed;
+    }
+
+    public bool HasQuest(string questID)
+    {
+        var quest = allQuests.Find(q => q.questID == questID);
+        if (quest == null) return false;
+
+        return quest.state == QuestState.Active 
+            || quest.state == QuestState.Completed 
+            || quest.state == QuestState.Claimed;
+    }
+
 }

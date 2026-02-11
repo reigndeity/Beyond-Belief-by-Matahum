@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a962021d732214296807c0b79bcfcf, type: 3}
+  m_Name: A1_Q8_ReturnToTheVillage
+  m_EditorClassIdentifier: 
+  questID: A1_Q8_ReturnToTheVillage
+  questTitle: Close Call
+  actNumber: ACT 1
+  questJournalDescription:
+  - After listening to Nuno's warning, you realize the dangers of the forest is real
+    and should not be taken lightly.
+  - After listening to Nuno's warning, you realize the dangers of the forest is real
+    and should not be taken lightly.
+  - After listening to Nuno's warning, you realize the dangers of the forest is real
+    and should not be taken lightly.
+  questHudDescription: 
+  questType: 0
+  state: 0
+  missions:
+  - whatMustBeDone: Talk to Tupas
+    targetID: A1_A8_Tupas
+    hasCounter: 0
+    requiredAmount: 1
+    currentAmount: 0
+  rewards: []
+  isBeingTracked: 0
+  isInCompletedPanel: 0

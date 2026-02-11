@@ -4,6 +4,7 @@ using TMPro;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
+using static UnityEngine.GraphicsBuffer;
 
 public class BB_ArchiveUI : MonoBehaviour
 {
@@ -26,10 +27,13 @@ public class BB_ArchiveUI : MonoBehaviour
     public List<GameObject> archiveList = new List<GameObject>();
 
     [Header("Archive Details")]
+    public GameObject selectedNormalArchive;
+    public GameObject selectedLocationArchive;
     public TextMeshProUGUI archiveTitleName;
     public Image archiveImage;
     public TextMeshProUGUI archiveDetailText;
-    public Sprite undiscoveredImage;
+    public Sprite undiscoveredLocationImage;
+    public Sprite undiscoveredButtonImage;
     private string undiscoveredName = "Undiscovered";
     private string undiscoveredBodyText = "You have not yet discovered this";
 
@@ -66,7 +70,10 @@ public class BB_ArchiveUI : MonoBehaviour
             BB_ArchiveUITemplate slotUI = slotGO.GetComponent<BB_ArchiveUITemplate>();
             if (slotUI != null)
             {
-                slotUI.Setup(localObj, undiscoveredImage);
+                if (obj.archiveType == ArchiveType.location)
+                    slotUI.Setup(localObj, undiscoveredLocationImage);
+                else
+                    slotUI.Setup(localObj, undiscoveredButtonImage);
             }
 
             Button archiveBtn = slotGO.GetComponent<Button>();
@@ -76,22 +83,31 @@ public class BB_ArchiveUI : MonoBehaviour
         }
     }
 
-
+    Transform currentScrollPane;
     public void OnOpenJournal(Transform scrollPanel) //This will auto select the first Quest when opening either the Journal, or switching between quest panels
     {
+        if (currentScrollPane == scrollPanel) return;
+
+        currentScrollPane = scrollPanel;
+
+        selectedNormalArchive.SetActive(false);
+        selectedLocationArchive.SetActive(false);
+
         if (scrollPanel.childCount > 0)
         {
             Button archiveBtn = scrollPanel.GetChild(0).GetComponent<Button>();
-            archiveBtn?.onClick.Invoke();
+            archiveBtn?.onClick.Invoke();    
         }
     }
 
     public void ShowDetails(BB_ArchiveSO archiveSO, BB_ArchiveUITemplate uiTemplate)
     {
-        if (!archiveSO.isDiscovered)
+        AudioManager.instance.PlayButtonClickSFX();
+
+        if (PlayerPrefs.GetInt($"{archiveSO.archiveName}_Discovered", 0) == 0)
         {
             archiveTitleName.text = $"{undiscoveredName} {archiveSO.archiveType.ToString()}";
-            archiveImage.sprite = undiscoveredImage;
+            archiveImage.sprite = undiscoveredLocationImage;
             archiveDetailText.text = $"{undiscoveredBodyText} {archiveSO.archiveType.ToString()}";
         }
         else
@@ -100,14 +116,32 @@ public class BB_ArchiveUI : MonoBehaviour
             archiveImage.sprite = archiveSO.archiveImage;
             archiveDetailText.text = archiveSO.archiveDescription;
 
-            if (!archiveSO.isViewed)
+            if (PlayerPrefs.GetInt($"{archiveSO.archiveName}_Viewed", 0) == 0) //0 = not viewed, 1 = viewed.
             {
-                archiveSO.isViewed = true;
+                //archiveSO.isViewed = true;
                 uiTemplate.newDiscoverySprite.SetActive(false);
+                PlayerPrefs.SetInt($"{archiveSO.archiveName}_Viewed", 1);
+                PlayerPrefs.Save();
             }
         }
+
+        StartCoroutine(SetHighlightNextFrame(uiTemplate.transform, archiveSO));
+
     }
 
+    private IEnumerator SetHighlightNextFrame(Transform target, BB_ArchiveSO archiveSO)
+    {
+        yield return null; // wait one frame for layout
+
+        GameObject selectedBorder;
+
+        if (archiveSO.archiveType == ArchiveType.location) selectedBorder = selectedLocationArchive;
+        else selectedBorder = selectedNormalArchive;
+
+        selectedBorder.SetActive(true);
+        selectedBorder.transform.parent = target;
+        selectedBorder.transform.position = target.position;
+    }
     private void RefreshArchiveDisplay(BB_ArchiveSO ignoreThis)
     {
         foreach (var slotGO in archiveList)

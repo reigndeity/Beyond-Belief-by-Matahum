@@ -1,0 +1,1040 @@
+using System;
+using System.Collections;
+using System.Threading.Tasks;
+using Abu;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public class TutorialManager : MonoBehaviour
+{
+    public static TutorialManager instance;
+    [SerializeField] private UI_Game m_uiGame;
+    public bool isTutorialDone;
+    [SerializeField] private LewenriGate lewenriGate;
+
+    [Header("Script References")]
+    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private R_Inventory inventory;
+    [SerializeField] private R_AgimatPanel agimatPanel;
+    [SerializeField] private R_PamanaPanel pamanaPanel;
+
+    [Header("Tutorial Components")]
+    public UI_CanvasGroup characterDetailsButton;
+    public UI_CanvasGroup inventoryButton;
+    public UI_CanvasGroup archiveButton;
+    public UI_CanvasGroup questButton;
+    public UI_CanvasGroup minimap;
+    public UI_CanvasGroup normalSkill;
+    public UI_CanvasGroup ultimateSkill;
+    public UI_CanvasGroup agimatOne;
+    public UI_CanvasGroup agimatTwo;
+    public UI_CanvasGroup health;
+
+    [Header("Tupas House")]
+    public GameObject temporaryCollider;
+    public GameObject tupasHouseStairs;
+    public DoorInteractable tupasHouseDoor;
+    public GameObject cutsceneTriggerOne;
+    public GameObject cutsceneBakalNPC;
+    public GameObject lewenriSacredStatue;
+    public GameObject saveStatue;
+
+    [Header("Player Variables")]
+    public bool tutorial_canMovementToggle = true;
+    public bool tutorial_canJump = true;
+    public bool tutorial_canCameraZoom = true;
+    public bool tutorial_canCameraDirection = true;
+    public bool tutorial_canAttack;
+    public bool tutorial_canSprintAndDash = true;
+    public bool tutorial_canNormalSkill = true;
+    public bool tutorial_canUltimateSkill = true;
+    public bool tutorial_canOpenMap = true;
+    public bool tutorial_canToggleMouse = true;
+
+    // tutorial for later
+    public bool tutorial_canArchives = false;
+
+    [Header("Other Variables")]
+    public bool tutorial_isFirstStatueInteract = true;
+    public bool tutorial_isGateOpen = true;
+    public bool tutorial_isFirstSaveStatueInteract = true;
+
+    [Header("UI Tutorial")]
+    public TutorialFadeImage tutorialFadeImage; // default smoothness is 0.0005
+    public GameObject journalTutorialArrow;
+    public GameObject characterDetailsTutorialArrow;
+    public GameObject inventoryTutorialArrow;
+    public GameObject archiveTutorialArrow;
+    public GameObject[] questJournalTutorialArrow;
+    public GameObject[] agimatTutorialArrow;
+    public GameObject[] pamanaTutorialArrow;
+    public GameObject[] backpackTutorialArrow;
+    public GameObject[] archiveJournalTutorialArrow;
+
+    [Header("Quest Journal UI Tutorial")]
+    [SerializeField] private BB_Quest_ButtonManager m_questButtonManager;
+    public bool canHotKeyJournal;
+    public GameObject questJournalTutorial;
+    public TutorialHighlight mainQuestViewportTH;
+    public TutorialHighlight questSelectionPanelTH;
+    public TutorialHighlight questDetailsPanelTH;
+    public TutorialHighlight questButtonFiltersTH;
+    public TutorialHighlight claimQuestButtonTH;
+    public TutorialHighlight closeQuestJournalButtonTH;
+    public Button claimQuestButton;
+    public Button closeQuestButton;
+    public TextMeshProUGUI questJournalTextTutorial;
+    public Button nextJournalTutorialButton;
+    public UI_CanvasGroup nextJournalTutorialCanvasGroup;
+    public TutorialHighlight nextJournalTutorialTH;
+    public GameObject nonInteractablePanel;
+    public int currentQuestJournalTutorial = 0;
+    [SerializeField] GameObject questJournalHotkeyPopup;
+    
+    [Header("Character Details UI Tutorial")]
+    public bool canHotKeyCharacterDetails;
+    public Button weaponButtonTH;
+    public Button closeCharacterDetailButton;
+    public Button confirmSwitchButton;
+    public TutorialHighlight confirmTextTH;
+    [SerializeField] GameObject characterDetailsHotkeyPopup;
+
+    [Header("Agimat Tutorial")]
+    public Button agimatButtonTH;
+    public GameObject agimatTutorial;
+    public Button agimatOneTH;
+    public Button agimatTwoTH;
+    public Button unequipAgimatButtonTH;
+    public Button equipAgimatButtonTH;
+    public TutorialHighlight agimatInventoryTH;
+    public TutorialHighlight agimatItemImageTH;
+    public TutorialHighlight agimatItemDescriptionTH;
+    public int currentAgimatTutorial = 0;
+    public TextMeshProUGUI agimatTutorialText;
+    public Button firstAgimatSlot;
+    public Button nextAgimatTutorialButton;
+
+    [Header("Pamana Tutorial")]
+    public Button pamanaButtonTH;
+    public Button attributesButtonTH;
+    public int currentPamanaTutorial = 0;
+    public Button firstPamanaSlot;
+    public TextMeshProUGUI pamanaTutorialText;
+    public GameObject pamanaTutorial;
+    public Button diwataSlotButtonTH;
+    public TutorialHighlight pamanaInventoryTH;
+    public TutorialHighlight pamanaItemImageTH;
+    public TutorialHighlight pamanaItemDescriptionTH;
+    public Button equipPamanaButtonTH;
+    public Button nextPamanaTutorialButtonTH;
+    public TutorialHighlight attributeBackgroundTH;
+
+    [Header("Inventory Tutorial")]
+    public bool canHotKeyInventory;
+    public GameObject inventoryTutorial;
+    public TextMeshProUGUI inventoryTutorialTxt;
+    public GameObject[] inventoryTutorialText;
+    public GameObject nonInteractableInventory;
+    public TutorialHighlight sortButtonsTH;
+    public TutorialHighlight currentFilterTextTH;
+    public TutorialHighlight inventorySlotTH;
+    public Button nextInventoryTutorial;
+    public int currentInventoryTutorial;
+    public TutorialHighlight inventoryItemImageTH;
+    public TutorialHighlight inventoryDescriptionTH;
+    public Button closeInventoryButtonTH;
+    [SerializeField] GameObject inventoryHotkeyPopUp;
+
+    [Header("Archives Tutorial")]
+    public bool canHotKeyArchives;
+    public GameObject nonInteractablePanelArchives;
+    public GameObject archiveTutorial;
+    public TextMeshProUGUI archiveTutorialTxt;
+    public TutorialHighlight archiveLayoutTH;
+    public TutorialHighlight archiveCategoryFilterTH;
+    public TutorialHighlight archiveSelectionTH;
+    public TutorialHighlight archiveDetailsTH;
+    public TutorialHighlight closeArchiveTH;
+    public Button nextArchiveTutorial;
+    public int currentArchiveTutorial;
+    [SerializeField] GameObject archiveHotkeyPopup;
+
+    [Header("Save Tutorial")]
+    public Button noSaveButton;
+    public Button closeSaveButton;
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject); // prevent duplicates
+            return;
+        }
+
+        instance = this;
+        //DontDestroyOnLoad(gameObject);
+    }
+    void Start()
+    {
+        PlayerCamera.Instance.HardLockCamera();
+    }
+
+    public void AllowTemporaryBooleans()
+    {
+        isTutorialDone = true;
+        tutorial_canCameraDirection = true;
+        tutorial_canCameraZoom = true;
+        tutorial_canMovementToggle = true;
+        tutorial_canJump = true;
+        tutorial_canSprintAndDash = true;
+        tutorial_canAttack = true;
+        tutorial_canNormalSkill = true;
+        tutorial_canUltimateSkill = true;
+        tutorial_canOpenMap = true;
+        ShowNormalSkill();
+        ShowUltimateSkill();
+        ShowHealth();
+        ShowQuestJournal();
+        ShowMinimap();
+        ShowCharacterDetails();
+        ShowAgimatOne();
+        ShowAgimatTwo();
+        ShowInventory();
+        ShowArchives();
+
+        PlayerCamera.Instance.HardUnlockCamera();
+        PlayerCamera.Instance.AdjustCamera();
+
+        canHotKeyInventory = true;
+        canHotKeyJournal = true;
+        canHotKeyCharacterDetails = true;
+        canHotKeyArchives = true;
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainMenuScene")
+        {
+            Destroy(gameObject);
+        }
+    }
+    public void TutorialCheck()
+    {
+        if (!isTutorialDone)
+        {
+            StartTutorial();
+        }
+        else
+        {
+            cutsceneBakalNPC.SetActive(false);
+            tutorial_isFirstStatueInteract = false;
+            tutorial_isFirstSaveStatueInteract = false;
+            PlayerCamera.Instance.HardUnlockCamera();
+            PlayerCamera.Instance.AdjustCamera();
+            if (tutorial_isGateOpen == true)
+            {
+                lewenriGate.Open();
+            }
+            else
+            {
+                lewenriGate.Close();
+            }
+
+            // Tupas House
+            tupasHouseStairs.SetActive(true);
+            temporaryCollider.SetActive(false);
+            tupasHouseDoor.interactCooldown = 1;
+            cutsceneBakalNPC.SetActive(false);
+
+            saveStatue.gameObject.layer = LayerMask.NameToLayer("Save Statue");
+
+            canHotKeyInventory = true;
+            canHotKeyJournal = true;
+            canHotKeyCharacterDetails = true;
+
+        }
+
+        nextJournalTutorialButton.onClick.AddListener(QuestJournalTutorial);
+
+        // if (tutorial_canArchives)
+        // {
+        //     archiveButton.FadeIn(0.5f);
+        //     archiveButton.GetComponent<Button>().enabled = true;
+        // }
+        // else
+        // {
+        //     archiveButton.FadeOut(0);
+        //     archiveButton.GetComponent<Button>().enabled = false;
+        // }
+    }
+
+    void StartTutorial()
+    {
+        PlayerCamera.Instance.HardLockCamera();
+        BB_QuestManager.Instance.AcceptQuestByID("A0_Q0_InitialTalk");
+
+        // UI Visibility
+        characterDetailsButton.FadeOut(0);
+        inventoryButton.FadeOut(0);
+        archiveButton.FadeOut(0);
+        questButton.FadeOut(0);
+        minimap.FadeOut(0);
+        normalSkill.FadeOut(0);
+        ultimateSkill.FadeOut(0);
+        agimatOne.FadeOut(0);
+        agimatTwo.FadeOut(0);
+        health.FadeOut(0);
+
+        // Button State
+        characterDetailsButton.GetComponent<Button>().enabled = false;
+        inventoryButton.GetComponent<Button>().enabled = false;
+        archiveButton.GetComponent<Button>().enabled = false;
+
+
+        // Tupas House
+        tupasHouseStairs.SetActive(false);
+        temporaryCollider.SetActive(true);
+        tupasHouseDoor.interactCooldown = 9999f;
+        cutsceneBakalNPC.SetActive(false);
+
+        // Misc
+        lewenriSacredStatue.gameObject.layer = LayerMask.NameToLayer("Default");
+        saveStatue.gameObject.layer = LayerMask.NameToLayer("Default");
+
+
+        // Player Variables
+        tutorial_canMovementToggle = false;
+        tutorial_canJump = false;
+        tutorial_canCameraDirection = false;
+        tutorial_canCameraZoom = false;
+        tutorial_canAttack = false;
+        tutorial_canSprintAndDash = false;
+        tutorial_canNormalSkill = false;
+        tutorial_canUltimateSkill = false;
+        tutorial_canOpenMap = false;
+        tutorial_canToggleMouse = false;
+        tutorial_canArchives = false;
+        playerMovement.ToggleWalk();
+
+        // Other Variables
+        tutorial_isFirstStatueInteract = false;
+        tutorial_isGateOpen = false;
+
+        canHotKeyInventory = false;
+        canHotKeyJournal = false;
+        canHotKeyCharacterDetails = false;
+        canHotKeyArchives = false;
+
+        lewenriGate.Close();
+
+        HideArchives();
+    }
+
+    #region PLAYER BOOLEANS TUTORIAL
+    public void AllowCameraDirection() => tutorial_canCameraDirection = true;
+    public void AllowCameraZoom() => tutorial_canCameraZoom = true;
+    public void AllowMovementToggle() => tutorial_canMovementToggle = true;
+    public void AllowJump() => tutorial_canJump = true;
+    public void AllowAttack() => tutorial_canAttack = true;
+    public void AllowDash() => tutorial_canSprintAndDash = true;
+    public void AllowNormalSkill() => tutorial_canNormalSkill = true;
+    public void AllowUltimateSkill() => tutorial_canUltimateSkill = true;
+
+    public void ShowNormalSkill() => normalSkill.FadeIn(0.5f);
+    public void HideNormalSkill() => normalSkill.FadeOut(0.5f);
+    public void ShowUltimateSkill() => ultimateSkill.FadeIn(0.5f);
+    public void HideUltimateSkill() => ultimateSkill.FadeOut(0.5f);
+    public void ShowHealth() => health.FadeIn(0.5f);
+    public void HideHealth() => health.FadeOut(0.5f);
+
+    public void ShowMinimap() => minimap.FadeIn(0.5f);
+    public void HideMinimap() => minimap.FadeOut(0.5f);
+
+    public void AllowFirstStatueInteraction() => tutorial_isFirstStatueInteract = true;
+    public void AllowFullscreenMap() => tutorial_canOpenMap = true;
+    public void DisableFullscreenMap() => tutorial_canOpenMap = false;
+
+    public void AllowQuestJournalHotKey() => canHotKeyJournal = true;
+    public void AllowInventoryHotkey() => canHotKeyInventory = true;
+    public void AllowCharacterDetailsHotKey() => canHotKeyCharacterDetails = true;
+    public void AllowArchivesHotkey() => canHotKeyArchives = true;
+
+    public void ShowInventoryHotkeyPopUp() => inventoryHotkeyPopUp.SetActive(true);
+    public void ShowQuestJournal()
+    {
+        questButton.GetComponent<Button>().enabled = true;
+        questButton.FadeIn(0.5f);
+    }
+    public void HideQuestJournal()
+    {
+        questButton.GetComponent<Button>().enabled = false;
+        questButton.FadeOut(0.5f);
+    }
+
+    public void ShowAgimatOne() => agimatOne.FadeIn(0.5f);
+    public void HideAgimatOne() => agimatOne.FadeOut(0.5f);
+    public void ShowAgimatTwo() => agimatTwo.FadeIn(0.5f);
+    public void HideAgimatTwo() => agimatTwo.FadeOut(0.5f);
+
+    public void AllowArchives() => tutorial_canArchives = true;
+    public void ShowArchives()
+    {
+        archiveButton.GetComponent<Button>().enabled = true;
+        archiveButton.FadeIn(0.5f);
+    }
+    public void HideArchives()
+    {
+        archiveButton.GetComponent<Button>().enabled = false;
+        archiveButton.FadeOut(0.5f);
+    }
+
+    public void HideCharacterDetails()
+    {
+        characterDetailsButton.GetComponent<Button>().enabled = false;
+        characterDetailsButton.FadeOut(0.5f);
+    }
+
+    public void ShowCharacterDetails()
+    {
+        characterDetailsButton.GetComponent<Button>().enabled = true;
+        characterDetailsButton.FadeIn(0.5f);
+    }
+
+    public void ShowInventory()
+    {
+        inventoryButton.GetComponent<Button>().enabled = true;
+        inventoryButton.FadeIn(0.5f);
+    }
+    public void HideInventory()
+    {
+        inventoryButton.GetComponent<Button>().enabled = false;
+        inventoryButton.FadeOut(0.5f);
+    }
+
+    #endregion
+
+    #region QUEST JOURNAL UI TUTORIAL
+
+    public void EnableQuestJournalTutorial()
+    {
+        questJournalTutorial.SetActive(true);
+        tutorialFadeImage.enabled = true;
+        nonInteractablePanel.gameObject.SetActive(true);
+        questJournalTextTutorial.text = "this is where you can filter your quest and even view completed ones";
+        questJournalTextTutorial.GetComponent<TutorialHighlight>().enabled = true;
+        questButtonFiltersTH.enabled = true;
+
+        journalTutorialArrow.SetActive(false);
+        questJournalTutorialArrow[0].SetActive(true);
+    }
+    public void QuestJournalTutorial()
+    {
+        AudioManager.instance.PlayButtonClickSFX();
+        switch (currentQuestJournalTutorial)
+        {
+            case 0:
+                m_uiGame.questButton.onClick.RemoveListener(TutorialManager.instance.EnableQuestJournalTutorial);
+                questJournalTextTutorial.text = "Here you can see your main quests and your side quest";
+                questButtonFiltersTH.enabled = false;
+                questSelectionPanelTH.enabled = true;
+                break;
+            case 1:
+                questJournalTextTutorial.text = "You can also see the quest details here";
+                questSelectionPanelTH.enabled = false;
+                questDetailsPanelTH.enabled = true;
+                break;
+            case 2:
+                BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q8_QuestJournal");
+                BB_QuestJournalUI.instance.ChangeTrackerButtonDisplay(BB_QuestJournalUI.instance.currentSelectedQuest);
+                nextJournalTutorialCanvasGroup.FadeOut(0.25f);
+                nextJournalTutorialTH.enabled = false;
+                nextJournalTutorialButton.enabled = false;
+
+                nonInteractablePanel.SetActive(false);
+                questJournalTextTutorial.text = "Here you can claim, track, or untrack your current selected quest";
+
+                questDetailsPanelTH.enabled = false;
+                mainQuestViewportTH.enabled = true;
+                claimQuestButtonTH.enabled = true;
+                claimQuestButton.onClick.AddListener(QuestJournalTutorial);
+
+                questJournalTutorialArrow[0].SetActive(false);
+                questJournalTutorialArrow[1].SetActive(true);
+                break;
+            case 3:
+                questJournalTextTutorial.text = "Now click on this button to resume your journey";
+                mainQuestViewportTH.enabled = false;
+                claimQuestButtonTH.enabled = false;
+                claimQuestButton.onClick.RemoveListener(QuestJournalTutorial);
+                closeQuestJournalButtonTH.enabled = true;
+                closeQuestButton.onClick.AddListener(QuestJournalTutorial);
+                questJournalTutorialArrow[1].SetActive(false);
+                questJournalTutorialArrow[2].SetActive(true);
+                break;
+            case 4:
+                questJournalTextTutorial.GetComponent<TutorialHighlight>().enabled = false;
+                closeQuestJournalButtonTH.enabled = false;
+                closeQuestButton.onClick.RemoveListener(QuestJournalTutorial);
+                questJournalTutorial.SetActive(false);
+                tutorialFadeImage.enabled = false;
+                BB_QuestManager.Instance.AcceptQuestByID("A0_Q9_OneMoreThing");
+                questJournalHotkeyPopup.SetActive(true);
+                questJournalTutorialArrow[2].SetActive(false);
+                break;
+        }
+        currentQuestJournalTutorial++;
+    }
+
+    #endregion
+
+    #region AGIMAT UI TUTORIAL
+    public void EnableAgimatSlotOneTutorial()
+    {
+        agimatTutorial.SetActive(true);
+        tutorialFadeImage.enabled = true;
+        agimatTutorialText.text = "Click on the button";
+        agimatButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+        agimatButtonTH.onClick.AddListener(AgimatTutorial);
+
+        characterDetailsTutorialArrow.SetActive(false);
+        agimatTutorialArrow[0].SetActive(true);
+    }
+    public void EnableAgimatSlotTwoTutorial()
+    {
+        agimatTutorial.SetActive(true);
+        tutorialFadeImage.enabled = true;
+        agimatTutorialText.text = "Click on the button";
+        agimatButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+        agimatButtonTH.onClick.AddListener(AgimatTutorial);
+
+        characterDetailsTutorialArrow.SetActive(false);
+        agimatTutorialArrow[5].SetActive(false);
+        agimatTutorialArrow[6].SetActive(true);
+    }
+    public void AgimatTutorial()
+    {
+        AudioManager.instance.PlayButtonClickSFX();
+        switch (currentAgimatTutorial)
+        {
+            case 0:
+                agimatButtonTH.onClick.RemoveListener(AgimatTutorial);
+                agimatButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                m_uiGame.characterDetailsButton.onClick.RemoveListener(TutorialManager.instance.EnableAgimatSlotOneTutorial);
+
+                agimatTutorialText.text = "Now select the first empty agimat slot";
+                agimatOneTH.GetComponent<TutorialHighlight>().enabled = true;
+                agimatOneTH.onClick.AddListener(AgimatTutorial);
+                agimatTutorialArrow[0].SetActive(false);
+                agimatTutorialArrow[1].SetActive(true);
+                break;
+            case 1:
+                agimatOneTH.GetComponent<TutorialHighlight>().enabled = false;
+                agimatOneTH.onClick.RemoveListener(AgimatTutorial);
+                agimatTutorialText.text = "Select the ngipin ng kidlat agimat";
+                agimatInventoryTH.enabled = true;
+                agimatPanel.RefreshAgimatList();
+                StartCoroutine(AttachAgimatTutorialToFirstAgimatSlot());
+                agimatTutorialArrow[1].SetActive(false);
+                agimatTutorialArrow[2].SetActive(true);
+                break;
+            case 2:
+                agimatTutorialText.text = "Here you can see the type of agimat that you have";
+                firstAgimatSlot.onClick.RemoveListener(AgimatTutorial);
+                agimatInventoryTH.enabled = false;
+                nextAgimatTutorialButton.gameObject.SetActive(true);
+                StartCoroutine(ShowNextAgimatTutorialButton());
+                nextAgimatTutorialButton.onClick.AddListener(AgimatTutorial);
+                agimatItemDescriptionTH.enabled = true;
+                agimatItemImageTH.enabled = true;
+                agimatOneTH.GetComponent<TutorialHighlight>().enabled = false;
+                agimatTutorialArrow[2].SetActive(false);
+                break;
+            case 3:
+                agimatItemDescriptionTH.enabled = false;
+                agimatItemImageTH.enabled = false;
+                agimatTutorialText.text = "Try equipping it to slot 1";
+                equipAgimatButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+                equipAgimatButtonTH.onClick.AddListener(AgimatTutorial);
+
+                nextAgimatTutorialButton.gameObject.SetActive(false);
+                agimatTutorialArrow[3].SetActive(false);
+                agimatTutorialArrow[4].SetActive(true);
+                break;
+            case 4:
+                agimatTutorialText.text = "Now select this button to continue";
+                equipAgimatButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                equipAgimatButtonTH.onClick.RemoveListener(AgimatTutorial);
+                closeCharacterDetailButton.GetComponent<TutorialHighlight>().enabled = true;
+                closeCharacterDetailButton.onClick.AddListener(CloseAndAcceptAgimatTrainingP2);
+                agimatTutorialArrow[4].SetActive(false);
+                agimatTutorialArrow[5].SetActive(true);
+                break;
+            case 5:
+                agimatButtonTH.onClick.RemoveListener(AgimatTutorial);
+                agimatButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                m_uiGame.characterDetailsButton.onClick.RemoveListener(TutorialManager.instance.EnableAgimatSlotTwoTutorial);
+
+                agimatTutorialText.text = "Now select the second empty agimat slot";
+                agimatTwoTH.GetComponent<TutorialHighlight>().enabled = true;
+                agimatTwoTH.onClick.AddListener(AgimatTutorial);
+                agimatTutorialArrow[6].SetActive(false);
+                agimatTutorialArrow[7].SetActive(true);
+                break;
+            case 6:
+                agimatTwoTH.GetComponent<TutorialHighlight>().enabled = false;
+                agimatTwoTH.onClick.RemoveListener(AgimatTutorial);
+                agimatTutorialText.text = "Select the ngipin ng kidlat agimat";
+                agimatInventoryTH.enabled = true;
+                agimatPanel.RefreshAgimatList();
+                StartCoroutine(AttachAgimatTutorialToFirstAgimatSlot());
+                agimatTutorialArrow[7].SetActive(false);
+                agimatTutorialArrow[8].SetActive(true);
+                break;
+            case 7:
+                agimatInventoryTH.enabled = false;
+                firstAgimatSlot.onClick.RemoveListener(AgimatTutorial);
+                agimatTutorialText.text = "Try equipping it to slot 2";
+                equipAgimatButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+                equipAgimatButtonTH.onClick.AddListener(AgimatTutorial);
+                agimatTutorialArrow[8].SetActive(false);
+                agimatTutorialArrow[9].SetActive(true);
+                break;
+            case 8:
+                agimatTutorialText.text = "Click on the confirm button";
+                equipAgimatButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                equipAgimatButtonTH.onClick.RemoveListener(AgimatTutorial);
+                confirmSwitchButton.GetComponent<TutorialHighlight>().enabled = true;
+                confirmSwitchButton.onClick.AddListener(AgimatTutorial);
+                confirmTextTH.enabled = true;
+                agimatTutorialArrow[9].SetActive(false);
+                agimatTutorialArrow[10].SetActive(true);
+                break;
+            case 9:
+                agimatTutorialText.text = "Now click on the close button";
+                confirmSwitchButton.GetComponent<TutorialHighlight>().enabled = false;
+                confirmSwitchButton.onClick.RemoveListener(AgimatTutorial);
+                confirmTextTH.enabled = false;
+                closeCharacterDetailButton.GetComponent<TutorialHighlight>().enabled = true;
+                closeCharacterDetailButton.onClick.AddListener(CloseAndAcceptAgimatTrainingP4);
+                agimatTutorialArrow[10].SetActive(false);
+                agimatTutorialArrow[11].SetActive(true);
+                break;
+
+        }
+        currentAgimatTutorial++;
+    }
+
+    private IEnumerator AttachAgimatTutorialToFirstAgimatSlot()
+    {
+        yield return null; // wait one frame so RefreshAgimatList is done
+
+        firstAgimatSlot = agimatPanel.GetSlotButton(0);
+
+        if (firstAgimatSlot != null)
+        {
+            firstAgimatSlot.onClick.AddListener(AgimatTutorial);
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ First Agimat Slot not found.");
+        }
+    }
+    private IEnumerator ShowNextAgimatTutorialButton()
+    {
+        // wait 1 second first
+        yield return new WaitForSecondsRealtime(1f);
+
+        CanvasGroup cg = nextAgimatTutorialButton.GetComponent<CanvasGroup>();
+        if (cg == null) yield break;
+
+        float duration = 0.25f;
+        float elapsed = 0f;
+
+        // start from current alpha (maybe 0)
+        float startAlpha = cg.alpha;
+        float endAlpha = 1f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime; // use unscaled so it ignores Time.timeScale
+            float t = Mathf.Clamp01(elapsed / duration);
+            cg.alpha = Mathf.Lerp(startAlpha, endAlpha, t);
+            yield return null;
+        }
+
+        nextAgimatTutorialButton.GetComponent<TutorialHighlight>().enabled = true;
+        cg.alpha = 1f; // make sure it ends at 1
+        agimatTutorialArrow[3].SetActive(true);
+    }
+
+    private void CloseAndAcceptAgimatTrainingP2()
+    {
+        closeCharacterDetailButton.GetComponent<TutorialHighlight>().enabled = false;
+        agimatTutorial.SetActive(false);
+        tutorialFadeImage.enabled = false;
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q11_AgimatSkillOne");
+        BB_QuestManager.Instance.ClaimRewardsByID("A0_Q11_AgimatTraining_P1");
+        closeCharacterDetailButton.onClick.RemoveListener(CloseAndAcceptAgimatTrainingP2);
+        BB_QuestManager.Instance.AcceptQuestByID("A0_Q11_AgimatTraining_P2");
+        HideCharacterDetails();
+    }
+    private void CloseAndAcceptAgimatTrainingP4()
+    {
+        closeCharacterDetailButton.GetComponent<TutorialHighlight>().enabled = false;
+        agimatTutorial.SetActive(false);
+        tutorialFadeImage.enabled = false;
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q11_AgimatSkillTwo");
+        BB_QuestManager.Instance.ClaimRewardsByID("A0_Q11_AgimatTraining_P3");
+        closeCharacterDetailButton.onClick.RemoveListener(CloseAndAcceptAgimatTrainingP4);
+        BB_QuestManager.Instance.AcceptQuestByID("A0_Q11_AgimatTraining_P4");
+        HideCharacterDetails();
+        m_uiGame.UnBlur();
+    }
+    #endregion
+
+    #region PAMANA TUTORIAL
+    public void EnablePamanaTutorial()
+    {
+        pamanaTutorial.SetActive(true);
+        tutorialFadeImage.enabled = true;
+        pamanaTutorialText.text = "Here you can see your current stats";
+        attributesButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+        attributeBackgroundTH.enabled = true;
+        nextPamanaTutorialButtonTH.onClick.AddListener(PamanaTutorial);
+        characterDetailsTutorialArrow.SetActive(false);
+        pamanaTutorialArrow[0].SetActive(true);
+    }
+
+    public void PamanaTutorial()
+    {
+        AudioManager.instance.PlayButtonClickSFX();
+        switch (currentPamanaTutorial)
+        {
+            case 0:
+                attributeBackgroundTH.enabled = false;
+                attributesButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                nextPamanaTutorialButtonTH.gameObject.SetActive(false);
+                nextPamanaTutorialButtonTH.onClick.RemoveListener(PamanaTutorial);
+                nextPamanaTutorialButtonTH.GetComponent<CanvasGroup>().alpha = 0;
+                nextPamanaTutorialButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+
+
+                pamanaTutorialText.text = "Now click on this button to check your pamana";
+                pamanaButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+                pamanaButtonTH.onClick.AddListener(PamanaTutorial);
+
+                pamanaTutorialArrow[0].SetActive(false);
+                pamanaTutorialArrow[1].SetActive(true);
+                break;
+            case 1:
+                pamanaButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                pamanaButtonTH.onClick.RemoveListener(PamanaTutorial);
+
+                pamanaTutorialText.text = "Click on the diwata slot";
+                diwataSlotButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+                diwataSlotButtonTH.onClick.AddListener(PamanaTutorial);
+
+                pamanaTutorialArrow[1].SetActive(false);
+                pamanaTutorialArrow[2].SetActive(true);
+                break;
+            case 2:
+                diwataSlotButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                diwataSlotButtonTH.onClick.AddListener(PamanaTutorial);
+
+                pamanaTutorialText.text = "Now click on the pamana";
+                pamanaInventoryTH.enabled = true;
+                StartCoroutine(AttachPamanaTutorialToFirstPamanaSlot());
+                pamanaTutorialArrow[2].SetActive(false);
+                pamanaTutorialArrow[3].SetActive(true);
+                break;
+            case 3:
+                pamanaInventoryTH.enabled = false;
+                firstPamanaSlot.onClick.RemoveListener(PamanaTutorial);
+
+                pamanaTutorialText.text = "Here you can see the main stat that it has";
+                pamanaItemImageTH.enabled = true;
+                StartCoroutine(ShowNextPamanaTutorialButton());
+                nextPamanaTutorialButtonTH.onClick.AddListener(PamanaTutorial);
+                pamanaTutorialArrow[3].SetActive(false);
+                break;
+            case 4:
+                pamanaItemImageTH.enabled = false;
+
+                pamanaTutorialText.text = "This shows what set it comes from and what bonuses you can unlock";
+                pamanaItemDescriptionTH.enabled = true;
+
+                break;
+            case 5:
+                pamanaItemDescriptionTH.enabled = false;
+                nextPamanaTutorialButtonTH.gameObject.SetActive(false);
+                nextPamanaTutorialButtonTH.onClick.RemoveListener(PamanaTutorial);
+                nextPamanaTutorialButtonTH.GetComponent<CanvasGroup>().alpha = 0;
+                nextPamanaTutorialButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+
+                pamanaTutorialText.text = "Now let's equip it";
+                equipPamanaButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+                equipPamanaButtonTH.onClick.AddListener(PamanaTutorial);
+                pamanaTutorialArrow[0].SetActive(false);
+                pamanaTutorialArrow[4].SetActive(true);
+                break;
+            case 6:
+                equipPamanaButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                equipPamanaButtonTH.onClick.RemoveListener(PamanaTutorial);
+
+                pamanaTutorialText.text = "Let's go back and see your stats";
+                attributesButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+                attributesButtonTH.onClick.AddListener(PamanaTutorial);
+                pamanaTutorialArrow[4].SetActive(false);
+                pamanaTutorialArrow[5].SetActive(true);
+                break;
+            case 7:
+                attributesButtonTH.GetComponent<TutorialHighlight>().enabled = false;
+                attributesButtonTH.onClick.RemoveListener(PamanaTutorial);
+
+                pamanaTutorialText.text = "As you can see, your stats have increased";
+                attributeBackgroundTH.enabled = true;
+                StartCoroutine(ShowNextPamanaTutorialButton());
+                nextPamanaTutorialButtonTH.onClick.AddListener(PamanaTutorial);
+                pamanaTutorialArrow[5].SetActive(false);
+                break;
+            case 8:
+                attributeBackgroundTH.enabled = false;
+                nextPamanaTutorialButtonTH.gameObject.SetActive(false);
+                m_uiGame.characterDetailsButton.onClick.RemoveListener(PamanaTutorial);
+
+                pamanaTutorialText.text = "Now click on this button to resume your journey";
+                closeCharacterDetailButton.GetComponent<TutorialHighlight>().enabled = true;
+                closeCharacterDetailButton.onClick.AddListener(ClosePamanaTutorial);
+                pamanaTutorialArrow[0].SetActive(false);
+                pamanaTutorialArrow[6].SetActive(true);
+
+                break;
+
+        }
+
+        currentPamanaTutorial++;
+    }
+    private IEnumerator ShowNextPamanaTutorialButton()
+    {
+        // wait 1 second first
+        nextPamanaTutorialButtonTH.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(1f);
+
+        CanvasGroup cg = nextPamanaTutorialButtonTH.GetComponent<CanvasGroup>();
+        if (cg == null) yield break;
+
+        float duration = 0.25f;
+        float elapsed = 0f;
+
+        // start from current alpha (maybe 0)
+        float startAlpha = cg.alpha;
+        float endAlpha = 1f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime; // use unscaled so it ignores Time.timeScale
+            float t = Mathf.Clamp01(elapsed / duration);
+            cg.alpha = Mathf.Lerp(startAlpha, endAlpha, t);
+            yield return null;
+        }
+
+        nextPamanaTutorialButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+        cg.alpha = 1f; // make sure it ends at 1
+        pamanaTutorialArrow[0].SetActive(true);
+    }
+
+    private IEnumerator AttachPamanaTutorialToFirstPamanaSlot()
+    {
+        yield return null; // wait one frame so RefreshAgimatList is done
+
+        firstPamanaSlot = pamanaPanel.GetSlotButton(0);
+
+        if (firstPamanaSlot != null)
+        {
+            firstPamanaSlot.onClick.AddListener(PamanaTutorial);
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ First Pamana Slot not found.");
+        }
+    }
+    private void ClosePamanaTutorial()
+    {
+        pamanaTutorial.SetActive(false);
+        tutorialFadeImage.enabled = false;
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q12_P1_Pamana");
+        BB_QuestManager.Instance.ClaimRewardsByID("A0_Q12_PamanaTraining_P1");
+        BB_QuestManager.Instance.AcceptQuestByID("A0_Q12_PamanaTraining_P2");
+        m_uiGame.UnBlur();
+    }
+    #endregion
+
+    #region INVENTORY TUTORIAL
+    public void EnableInventoryTutorial()
+    {
+        inventoryTutorialArrow.SetActive(false);
+        inventoryTutorial.SetActive(true);
+        tutorialFadeImage.enabled = true;
+
+
+
+        nonInteractableInventory.gameObject.SetActive(true);
+        sortButtonsTH.enabled = true;
+
+        nextInventoryTutorial.onClick.AddListener(InventoryTutorial);
+        
+        backpackTutorialArrow[0].SetActive(true);
+
+        inventoryTutorialTxt.text = "These buttons allows you to display specific types of item";
+        inventoryTutorialText[0].SetActive(true);
+    }
+    public void InventoryTutorial()
+    {
+        AudioManager.instance.PlayButtonClickSFX();
+        switch (currentInventoryTutorial)
+        {
+            case 0:
+                sortButtonsTH.enabled = false;
+                m_uiGame.OnClickAgimatFilter();
+                currentFilterTextTH.enabled = true;
+                inventoryTutorialTxt.text = "As of now, we are currently on the agimat filter";
+                break;
+            case 1:
+                currentFilterTextTH.enabled = false;
+                inventorySlotTH.enabled = true;
+                inventoryDescriptionTH.enabled = true;
+                inventoryItemImageTH.enabled = true;
+                inventoryTutorialTxt.text = "You can see the details of the item you selected here";
+                break;
+            case 2:
+                inventorySlotTH.enabled = false;
+                inventoryDescriptionTH.enabled = false;
+                inventoryItemImageTH.enabled = false;
+                nextInventoryTutorial.gameObject.SetActive(false);
+                nonInteractableInventory.gameObject.SetActive(false);
+                closeInventoryButtonTH.GetComponent<TutorialHighlight>().enabled = true;
+                closeInventoryButtonTH.onClick.AddListener(CloseAndUpdateBackpack);
+
+                inventoryTutorialText[0].SetActive(false);
+                inventoryTutorialText[1].SetActive(true);
+                backpackTutorialArrow[0].SetActive(false);
+                backpackTutorialArrow[1].SetActive(true);
+                break;
+        }
+        currentInventoryTutorial++;
+    }
+
+    public void CloseAndUpdateBackpack()
+    {
+        inventoryTutorial.SetActive(false);
+        tutorialFadeImage.enabled = false;
+        m_uiGame.inventoryButton.onClick.RemoveListener(EnableInventoryTutorial);
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q13_Backpack");
+        isTutorialDone = true;
+        m_uiGame.UnBlur();
+        inventoryHotkeyPopUp.SetActive(true);
+    }
+    #endregion
+
+    #region ARCHIVE TUTORIAL
+    public void EnableArchiveTutorial()
+    {
+        archiveTutorialArrow.SetActive(false);
+        archiveTutorial.SetActive(true);
+        tutorialFadeImage.enabled = true;
+        nonInteractablePanelArchives.SetActive(true);
+
+        nextArchiveTutorial.onClick.AddListener(ArchiveTutorial);
+        
+        archiveTutorialTxt.text = "This is your archive journal.";
+
+        archiveLayoutTH.enabled = true;
+        archiveJournalTutorialArrow[0].SetActive(true);
+    }
+    public void ArchiveTutorial()
+    {
+        AudioManager.instance.PlayButtonClickSFX();
+        switch (currentArchiveTutorial)
+        {
+            case 0:
+                archiveTutorialTxt.text = "It stores information about all discovered creatures, locations, and plants.";
+                break;
+            case 1:
+                archiveTutorialTxt.text = "These buttons filters and categorizes what needs to be shown";
+
+                archiveLayoutTH.enabled = false;
+                archiveCategoryFilterTH.enabled = true;
+                break;
+            case 2:
+                archiveTutorialTxt.text = "When you discover a new creature, location, or a plant, they will show up here.";
+                archiveCategoryFilterTH.enabled = false;
+                archiveSelectionTH.enabled = true;
+                break;
+            case 3:
+                archiveTutorialTxt.text = "Here you can learn what they are and even their nature";
+                archiveSelectionTH.enabled = false;
+                archiveDetailsTH.enabled = true;
+                break;
+            case 4:
+                archiveTutorialTxt.text = "Now click on this button to resume your journey";
+                archiveDetailsTH.enabled = false;
+                closeArchiveTH.enabled = true;
+                closeArchiveTH.GetComponent<Button>().onClick.AddListener(CloseAndUpdateArchives);
+                archiveJournalTutorialArrow[0].SetActive(false);
+                archiveJournalTutorialArrow[1].SetActive(true);
+
+                nextArchiveTutorial.gameObject.SetActive(false);
+                nonInteractablePanelArchives.SetActive(false);
+                archiveLayoutTH.gameObject.SetActive(false);
+                break;
+        }
+        currentArchiveTutorial++;
+    }
+
+    public void CloseAndUpdateArchives()
+    {
+        archiveTutorial.SetActive(false);
+        tutorialFadeImage.enabled = false;
+        m_uiGame.archiveButton.onClick.RemoveListener(EnableInventoryTutorial);
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A0_Q13_Archive");
+        isTutorialDone = true;
+        m_uiGame.UnBlur();
+        archiveHotkeyPopup.SetActive(true);
+    }
+    #endregion
+
+    #region  SAVE TUTORIAL
+    public void SaveTutorial()
+    {
+        BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q1.1_Statue");
+    }
+    public void ContinueQuestAfterSave()
+    {
+        StartCoroutine(ContinueQuestAfterSaving());
+    }
+    public IEnumerator ContinueQuestAfterSaving()
+    {
+        BB_QuestManager.Instance.ClaimRewardsByID("A1_Q1.1_Amihan'sOrder_P2");
+        yield return new WaitForSeconds(1f);
+        BB_QuestManager.Instance.AcceptQuestByID("A1_Q1_Tupas'Request_P2");
+        yield return new WaitForSeconds(1f);
+        _ = SaveProgressAsync();
+    }
+    async Task SaveProgressAsync()
+    {
+        await GameManager.instance.SaveAll();
+    }
+    #endregion
+}

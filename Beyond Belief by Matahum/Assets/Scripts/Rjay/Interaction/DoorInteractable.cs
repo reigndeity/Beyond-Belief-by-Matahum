@@ -29,25 +29,25 @@ public class DoorInteractable : Interactable
     float targetY;
     Coroutine moveCo;
 
+    private Collider doorCollider;
+
     void Awake()
     {
         isOpen = startOpen;
         targetY = isOpen ? openAngleY : closedAngleY;
+
         if (doorPivot != null)
             doorPivot.localRotation = Quaternion.Euler(0f, targetY, 0f);
+
+        doorCollider = GetComponent<Collider>();
     }
 
     public override void OnInteract()
     {
-        // respect cooldown from Interactable
         if (useInteractCooldown && IsOnCooldown()) return;
-
-        // block if door can't be interacted with
         if (doorPivot == null || isMoving) return;
 
-        // start cooldown
         TriggerCooldown();
-
         ToggleDoor();
 
         if (autoClose && isOpen)
@@ -62,13 +62,18 @@ public class DoorInteractable : Interactable
         isOpen = !isOpen;
         targetY = isOpen ? openAngleY : closedAngleY;
 
+        // Disable collider while door is moving
+        if (doorCollider != null)
+            doorCollider.enabled = false;
+
         if (moveCo != null) StopCoroutine(moveCo);
         moveCo = StartCoroutine(RotateTo(targetY));
 
         if (audioSource != null)
         {
             var clip = isOpen ? openSfx : closeSfx;
-            if (clip) audioSource.PlayOneShot(clip);
+            audioSource.clip = clip;
+            if (clip) audioSource.Play();
         }
     }
 
@@ -86,11 +91,13 @@ public class DoorInteractable : Interactable
         {
             float currentY = doorPivot.localEulerAngles.y;
             float delta = Mathf.DeltaAngle(currentY, targetAngleY);
+
             if (Mathf.Abs(delta) < 0.1f)
                 break;
 
             float step = Mathf.Sign(delta) * speedDegPerSec * Time.deltaTime;
-            if (Mathf.Abs(step) > Mathf.Abs(delta)) step = delta;
+            if (Mathf.Abs(step) > Mathf.Abs(delta)) 
+                step = delta;
 
             doorPivot.localRotation = Quaternion.Euler(0f, currentY + step, 0f);
             yield return null;
@@ -98,5 +105,9 @@ public class DoorInteractable : Interactable
 
         doorPivot.localRotation = Quaternion.Euler(0f, targetAngleY, 0f);
         isMoving = false;
+
+        // Re-enable collider when fully opened OR fully closed
+        if (doorCollider != null)
+            doorCollider.enabled = true;
     }
 }

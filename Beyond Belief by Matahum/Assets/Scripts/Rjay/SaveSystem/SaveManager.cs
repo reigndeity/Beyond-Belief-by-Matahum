@@ -192,9 +192,57 @@ public class SaveManager : MonoBehaviour
     public void SavePlayerStats(string slot)      { _ = SaveSystemsAsync(slot, updateScene: false, "Player.Stats"); }
     public void SavePlayerInventory(string slot)  { _ = SaveSystemsAsync(slot, updateScene: false, "Inventory.Main"); }
     public void SavePlayerEquipment(string slot)  { _ = SaveSystemsAsync(slot, updateScene: false, "Equipment.Main"); }
+    
+    public async Task SaveSystemsExceptAsync(string slot, bool updateScene = false, params string[] excludeIds)
+    {
+        if (IsBusy) return;
+        IsBusy = true;
+        try
+        {
+            var exclude = new System.Collections.Generic.HashSet<string>(excludeIds ?? System.Array.Empty<string>());
+
+            var dir = Path.Combine(SavesRoot, slot);
+            Directory.CreateDirectory(dir);
+            var path = Path.Combine(dir, "save.json");
+            var tmp = Path.Combine(dir, "save.tmp");
+            var bak = Path.Combine(dir, "save.bak");
+
+            // Load existing payload if exists
+            SavePayload payload = new SavePayload { activeScene = null, systems = new List<SystemEntry>() };
+            if (File.Exists(path))
+            {
+                var existingJson = await File.ReadAllTextAsync(path);
+                payload = JsonUtility.FromJson<SavePayload>(existingJson) ?? payload;
+            }
+
+            // Ensure all currently registered saveables (except excludes) are in the file
+            foreach (var s in _saveables)
+            {
+                if (string.IsNullOrEmpty(s.SaveId) || exclude.Contains(s.SaveId))
+                    continue;
+
+                var json = s.CaptureJson();
+                UpsertSystemEntry(payload.systems, s.SaveId, json);
+            }
+
+            if (updateScene)
+                payload.activeScene = SceneManager.GetActiveScene().name;
+
+            // Atomic write
+            var outJson = JsonUtility.ToJson(payload, true);
+            await File.WriteAllTextAsync(tmp, outJson);
+            if (File.Exists(path)) { File.Copy(path, bak, true); File.Delete(path); }
+            File.Move(tmp, path);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
     #endregion
     #region ACCESSIBLE LOAD FUNCTIONS
-    public void LoadPlayerTransform(string slot)  { _ = LoadSystemsAsync(slot, updateScene: true,  "Player.Transform"); }
+    public void LoadPlayerTransform(string slot) { _ = LoadSystemsAsync(slot, updateScene: true, "Player.Transform"); }
     public void LoadPlayerStats(string slot)  { _ = LoadSystemsAsync(slot, updateScene: false,  "Player.Stats"); }
     public void LoadPlayerInventory(string slot)  { _ = LoadSystemsAsync(slot, updateScene: false, "Inventory.Main"); }
     public void LoadPlayerEquipment(string slot)  { _ = LoadSystemsAsync(slot, updateScene: false, "Equipment.Main"); }

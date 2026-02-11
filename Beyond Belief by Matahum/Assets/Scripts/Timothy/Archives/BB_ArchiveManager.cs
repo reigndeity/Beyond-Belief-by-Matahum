@@ -15,6 +15,9 @@ public class BB_ArchiveManager : MonoBehaviour
     public List<BB_ArchiveSO> wildlifeList = new List<BB_ArchiveSO>();
     public List<BB_ArchiveSO> plantList = new List<BB_ArchiveSO>();
 
+    [Header("Auto Update Magindara in Archives")]
+    public BB_ArchiveSO magindaraArchive;
+
     public event Action<BB_ArchiveSO> OnArchiveUpdate;
 
     private void Awake()
@@ -24,9 +27,22 @@ public class BB_ArchiveManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
             allArchives = new List<BB_ArchiveSO>(Resources.LoadAll<BB_ArchiveSO>("Archives"));
-            allArchives.Sort((a, b) => a.archiveName.CompareTo(b.archiveName));
+            allArchives.Sort((a, b) => a.name.CompareTo(b.name));
         }
         else Destroy(gameObject);
+    }
+
+    private void Start()
+    {
+        Invoke("DelayUpdateMagindara", 0.5f);
+    }
+
+    void DelayUpdateMagindara()
+    {
+        if (magindaraArchive == null) return;
+
+        PlayerPrefs.SetInt($"{magindaraArchive.archiveName}_Discovered", 1);
+        PlayerPrefs.Save();
     }
 
     public void SettingUpArchives()
@@ -54,29 +70,40 @@ public class BB_ArchiveManager : MonoBehaviour
         }
     }
 
-    public void UpdateArchive(string archiveID)
+    public void UpdateArchive(BB_ArchiveSO archiveData)
     {
         foreach (var obj in creatureList)       
-            CheckArchive(obj, archiveID);
+            CheckArchive(obj, archiveData);
 
         foreach (var obj in locationList)
-            CheckArchive(obj, archiveID);
+            CheckArchive(obj, archiveData);
 
         foreach (var obj in wildlifeList)
-            CheckArchive(obj, archiveID);
+            CheckArchive(obj, archiveData);
 
         foreach (var obj in plantList)
-            CheckArchive(obj, archiveID);
+            CheckArchive(obj, archiveData);
     }
 
-    public void CheckArchive(BB_ArchiveSO archiveObj, string archiveID)
+    public void CheckArchive(BB_ArchiveSO archiveObj, BB_ArchiveSO archiveData)
     {
-        if (archiveObj.archiveName == archiveID && !archiveObj.isDiscovered)
+        bool isDiscovered = PlayerPrefs.GetInt($"{archiveObj.archiveName}_Discovered", 0) == 1;
+        if (archiveObj == archiveData && !isDiscovered)
         {
-            archiveObj.isDiscovered = true;
+            //archiveObj.isDiscovered = true;
+            PlayerPrefs.SetInt($"{archiveObj.archiveName}_Discovered", 1);
+            PlayerPrefs.Save();
             OnArchiveUpdate?.Invoke(archiveObj);
             Debug.Log(archiveObj.archiveName + " has been discovered (visible and unobstructed)");
         }
     }
 
+    public void ResetArchiveDiscovery()
+    {
+        foreach (var archive in allArchives)
+        {
+            archive.isDiscovered = false;
+            archive.isViewed = false;
+        }
+    }
 }

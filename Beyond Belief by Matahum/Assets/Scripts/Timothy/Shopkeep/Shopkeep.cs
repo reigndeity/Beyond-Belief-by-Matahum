@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using System;
-using static UnityEditor.Progress;
 using Unity.VisualScripting;
 
 public class Shopkeep : MonoBehaviour
@@ -63,10 +62,11 @@ public class Shopkeep : MonoBehaviour
         var allowedTypes = new HashSet<R_ItemType>
         {
             R_ItemType.UpgradeMaterial,
-            R_ItemType.Consumable
+            R_ItemType.Consumable,
+            R_ItemType.Agimat
         };
 
-        itemList = Resources.LoadAll<R_ItemData>("Items")
+        itemList = Resources.LoadAll<R_ItemData>("")
             .Where(item => allowedTypes.Contains(item.itemType))
             .ToList();
     }
@@ -77,6 +77,14 @@ public class Shopkeep : MonoBehaviour
         playerStats = FindFirstObjectByType<PlayerStats>();
         inventory = FindFirstObjectByType<R_Inventory>();
         //inventoryUI = Resources.FindObjectsOfTypeAll<R_InventoryUI>().FirstOrDefault();
+
+        foreach (var items in itemList)
+        {
+            if (items.itemType == R_ItemType.Agimat)
+            {
+                items.itemCost = 100;
+            }
+        }
 
         LoadOrCreateRestockTime();
         
@@ -221,7 +229,12 @@ public class Shopkeep : MonoBehaviour
         int itemQuantity = 0;
         foreach (R_InventoryItem inventoryItem in inventory.items)
         {
-            if (itemData == inventoryItem.itemData)
+            /*if (itemData == inventoryItem.itemData)
+            {
+                itemQuantity += inventoryItem.quantity;
+            }*/
+
+            if (itemData.itemName == inventoryItem.itemData.itemName)
             {
                 itemQuantity += inventoryItem.quantity;
             }
@@ -281,7 +294,16 @@ public class Shopkeep : MonoBehaviour
         int totalCost = selectedItemData.itemCost * buying_itemQuantity;
 
         playerStats.currentGoldCoins -= totalCost;
-        inventory.AddItem(selectedItemData, buying_itemQuantity);
+
+        if (selectedItemData.itemType == R_ItemType.Agimat)
+        {
+            for(int i = 0; i < buying_itemQuantity; i++)
+                R_GeneralItemSpawner.instance.SpawnSingleAgimat(new R_ItemData[] { selectedItemData });
+        }
+        else
+        {
+            inventory.AddItem(selectedItemData, buying_itemQuantity);
+        }
         inventoryUI.RefreshUI();
 
         // Update stock

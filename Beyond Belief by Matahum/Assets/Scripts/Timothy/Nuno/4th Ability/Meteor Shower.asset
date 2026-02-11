@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c657400768d169478bda4b2857998e4, type: 3}
+  m_Name: Meteor Shower
+  m_EditorClassIdentifier: 
+  meteorShowerPrefab: {fileID: 4883668428339430134, guid: 0dbb0ef9f07c9ab438b95a6a33c700a4, type: 3}
+  center: {fileID: 0}
+  radius: 12.5
+  spawnCount: 15
+  minDistanceBetween: 5
+  meteorLifetime: 2
+  areaToSpawn:
+  - {x: 8.054987, y: -0.65, z: 7.7311764}
+  - {x: -3.5546396, y: -0.65, z: 2.408368}
+  - {x: 9.434155, y: -0.65, z: -5.41473}
+  - {x: -0.77992433, y: -0.65, z: -11.360956}
+  - {x: 0.56425065, y: -0.65, z: 7.6206512}
+  - {x: 8.07535, y: -0.65, z: 2.2751622}
+  - {x: -6.3343153, y: -0.65, z: 10.234807}
+  - {x: -8.060782, y: -0.65, z: -5.5882354}
+  - {x: -9.876592, y: -0.65, z: 6.7037}
+  - {x: 4.4412622, y: -0.65, z: -2.6232777}
+  - {x: 5.654297, y: -0.65, z: -10.99445}
+  - {x: 12.258467, y: -0.65, z: -0.52125}
+  - {x: 3.0231035, y: -0.65, z: 2.2200375}
+  - {x: -10.600238, y: -0.65, z: 1.1399624}
+  - {x: -1.5802642, y: -0.65, z: -5.560269}
+  startMovingDelay: 2.5

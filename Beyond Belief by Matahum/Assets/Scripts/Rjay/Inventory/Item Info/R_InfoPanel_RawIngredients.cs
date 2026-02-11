@@ -31,7 +31,7 @@ public class R_InfoPanel_RawIngredients : R_ItemInfoDisplay
         }
 
         // Set text
-        itemType.text = itemData.itemType.ToString();
+        itemType.text = "Collectible";
         nameText.text = itemData.itemName;
         descriptionText.text = itemData.description;
     }

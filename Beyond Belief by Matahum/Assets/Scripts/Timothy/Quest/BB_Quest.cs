@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 public enum BB_QuestType
 {
@@ -37,6 +38,7 @@ public class BB_Quest : ScriptableObject
 
     public bool IsCompleted => missions.TrueForAll(m => m.isCompleted);
     public bool isBeingTracked = false;
+    public bool isInCompletedPanel = false;
 }
 
 [Serializable]

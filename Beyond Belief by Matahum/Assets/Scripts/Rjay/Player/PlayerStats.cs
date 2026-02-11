@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,6 +46,9 @@ public class PlayerStats : MonoBehaviour
     public float p_critRate;
     public float p_critDmg;
     public float p_cooldownReduction;
+    
+    [Header("Restore Save")]
+    [HideInInspector] public bool restoredFromSave = false;  // 🔹 new flag
 
 
     void Awake()
@@ -53,8 +57,19 @@ public class PlayerStats : MonoBehaviour
     }
     void Start()
     {
+        // RecalculateStats();
+        // p_currentHealth = p_maxHealth;
+         StartCoroutine(InitializeStats());
+    }
+
+    IEnumerator InitializeStats()
+    {
         RecalculateStats();
-        p_currentHealth = p_maxHealth;
+        yield return new WaitForSeconds(0.25f);
+
+        // 🔹 Only reset HP to full if this is a fresh start (no save restored)
+        if (!restoredFromSave)
+            p_currentHealth = p_maxHealth;
     }
 
     public void RecalculateStats()
@@ -83,7 +98,6 @@ public class PlayerStats : MonoBehaviour
         }
 
         p_attack += Mathf.RoundToInt(m_player.GetWeaponATK());
-
         p_currentHealth = Mathf.Clamp(p_currentHealth, 0f, p_maxHealth);
     }
 

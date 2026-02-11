@@ -15,7 +15,7 @@ public class R_Inventory : MonoBehaviour
 
         if (itemData.isStackable)
         {
-            var existingItem = items.Find(i => i.itemData == itemData);
+            var existingItem = items.Find(i => i.itemData.itemName == itemData.itemName);
             if (existingItem != null)
             {
                 int spaceLeft = itemData.maxStackSize - existingItem.quantity;
@@ -51,6 +51,32 @@ public class R_Inventory : MonoBehaviour
         {
             var item = items[i];
             if (item.itemData == itemData)
+            {
+                int removeAmount = Mathf.Min(item.quantity, amount);
+                item.quantity -= removeAmount;
+                amount -= removeAmount;
+
+                if (item.quantity <= 0)
+                    items.RemoveAt(i);
+
+                if (amount <= 0)
+                {
+                    SortItems(); // 🔹 auto-sort
+                    return true;
+                }
+            }
+        }
+
+        SortItems(); // 🔹 still sort what's left
+        return false;
+    }
+
+    public bool RemoveItemByName(string nameOfItem, int amount)
+    {
+        for (int i = items.Count - 1; i >= 0; i--)
+        {
+            var item = items[i];
+            if (item.itemData.itemName == nameOfItem)
             {
                 int removeAmount = Mathf.Min(item.quantity, amount);
                 item.quantity -= removeAmount;

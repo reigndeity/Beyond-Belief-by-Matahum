@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1994812542976509153
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 3.5, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &7443913292791015383
@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 8321188235703556784}
   - component: {fileID: 5494761856177145659}
   - component: {fileID: -1986853359522296276}
+  - component: {fileID: 4725565932118533402}
   m_Layer: 5
   m_Name: Dialogue Choice Prefab
   m_TagString: Untagged
@@ -137,14 +138,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 1338571438, guid: c81ee1a5fc10bca41b29f10fae3b44e3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -198,6 +199,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4725565932118533402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4566025213654851125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0b0b629fc303e41a6a4c2f9eb8350f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleUpFactor: 1.1
+  scaleSpeed: 10
 --- !u!1 &4574488840306438714
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,8 +247,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 245, y: 50}
+  m_AnchoredPosition: {x: -7.2, y: 0}
+  m_SizeDelta: {x: 242.01, y: 38.6}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &3381519860343935072
 CanvasRenderer:
@@ -265,8 +280,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: The quick brown fox jumps over the lazy dog
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 585cf7aaea3a61043bc3fb9ed1701b77, type: 2}
-  m_sharedMaterial: {fileID: -5747318785482412787, guid: 585cf7aaea3a61043bc3fb9ed1701b77, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9c7e0371356831343a4d3fc8ad543cb6, type: 2}
+  m_sharedMaterial: {fileID: -5747318785482412787, guid: 9c7e0371356831343a4d3fc8ad543cb6, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -290,15 +305,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.05
+  m_fontSize: 18
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 36
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 4096
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -368,8 +383,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -125, y: 0}
-  m_SizeDelta: {x: 39.583332, y: 31.666666}
+  m_AnchoredPosition: {x: -121.5, y: 0}
+  m_SizeDelta: {x: 34.58333, y: 26.66667}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4853512356795972923
 CanvasRenderer:

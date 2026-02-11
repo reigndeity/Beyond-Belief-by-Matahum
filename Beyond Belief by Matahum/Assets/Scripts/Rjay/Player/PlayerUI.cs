@@ -43,6 +43,8 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Image agimat2CooldownOverlay;
     [SerializeField] private TextMeshProUGUI agimat1CooldownText;
     [SerializeField] private TextMeshProUGUI agimat2CooldownText;
+    [SerializeField] private TextMeshProUGUI agimat1KeyText;
+    [SerializeField] private TextMeshProUGUI agimat2KeyText;
 
     void Start()
     {
@@ -204,6 +206,7 @@ public class PlayerUI : MonoBehaviour
         agimat1Icon.enabled = has1;
         agimat1CooldownOverlay.enabled = has1;
         agimat1CooldownText.enabled = has1;
+        agimat1KeyText.enabled = has1 && !agimat1.isPassive; // 🔹 Show only if active
 
         if (has1)
         {
@@ -215,12 +218,19 @@ public class PlayerUI : MonoBehaviour
             float fill = total > 0f ? remaining / total : 0f;
             agimat1CooldownOverlay.fillAmount = fill;
 
-            agimat1CooldownText.text = remaining > 0f ? remaining.ToString("F1") : "";
-
-            // 🔹 Fade icon if on cooldown
-            Color iconColor = agimat1Icon.color;
-            iconColor.a = fill <= 0f ? 1f : 0.5f;
-            agimat1Icon.color = iconColor;
+            if (fill <= 0f)
+            {
+                agimat1CooldownOverlay.enabled = false;
+                agimat1CooldownText.enabled = false;
+                agimat1Icon.color = new Color(1f, 1f, 1f, 1f);
+            }
+            else
+            {
+                agimat1CooldownOverlay.enabled = true;
+                agimat1CooldownText.enabled = true;
+                agimat1CooldownText.text = remaining.ToString("F1");
+                agimat1Icon.color = new Color(1f, 1f, 1f, 0.5f);
+            }
         }
 
         // SLOT 2
@@ -230,6 +240,7 @@ public class PlayerUI : MonoBehaviour
         agimat2Icon.enabled = has2;
         agimat2CooldownOverlay.enabled = has2;
         agimat2CooldownText.enabled = has2;
+        agimat2KeyText.enabled = has2 && !agimat2.isPassive; // 🔹 Show only if active
 
         if (has2)
         {
@@ -241,15 +252,20 @@ public class PlayerUI : MonoBehaviour
             float fill = total > 0f ? remaining / total : 0f;
             agimat2CooldownOverlay.fillAmount = fill;
 
-            agimat2CooldownText.text = remaining > 0f ? remaining.ToString("F1") : "";
-
-            // 🔹 Fade icon if on cooldown
-            Color iconColor = agimat2Icon.color;
-            iconColor.a = fill <= 0f ? 1f : 0.5f;
-            agimat2Icon.color = iconColor;
+            if (fill <= 0f)
+            {
+                agimat2CooldownOverlay.enabled = false;
+                agimat2CooldownText.enabled = false;
+                agimat2Icon.color = new Color(1f, 1f, 1f, 1f);
+            }
+            else
+            {
+                agimat2CooldownOverlay.enabled = true;
+                agimat2CooldownText.enabled = true;
+                agimat2CooldownText.text = remaining.ToString("F1");
+                agimat2Icon.color = new Color(1f, 1f, 1f, 0.5f);
+            }
         }
     }
-
-
 
 }

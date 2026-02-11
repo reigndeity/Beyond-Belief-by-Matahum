@@ -17,6 +17,9 @@ namespace SaveSystemDTO
         public string soType;         // AssemblyQualifiedName of the runtime ScriptableObject
         public string soJson;         // full JSON of itemData (runtime clone)
         public string displayName;    // optional, debug
+
+        // NEW: Pamana-specific save
+        public string pamanaJson;     // serialized R_PamanaData
     }
 
     [Serializable]

@@ -31,6 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3810339668078620088}
+  - {fileID: 6052074182682565943}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8338800888051268141
@@ -81,22 +82,43 @@ MonoBehaviour:
   m_characterDetailsPanel: {fileID: 0}
   m_player: {fileID: 0}
   m_playerMovement: {fileID: 0}
+  currentFilteredInventoryText: {fileID: 0}
   inventoryButton: {fileID: 0}
   inventoryPanel: {fileID: 0}
   closeInventoryButton: {fileID: 0}
-  consumablesFilterButton: {fileID: 0}
-  questItemsFilterButton: {fileID: 0}
-  pamanaFilterButton: {fileID: 0}
-  agimatFilterButton: {fileID: 0}
-  upgradeMaterialsFilterButton: {fileID: 0}
-  rawIngredientsFilterButton: {fileID: 0}
+  consumablesFilter:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  questItemsFilter:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  pamanaFilter:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  agimatFilter:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  upgradeMaterialsFilter:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  rawIngredientsFilter:
+    button: {fileID: 0}
+    icon: {fileID: 0}
   characterDetailsButton: {fileID: 0}
   characterDetailPanel: {fileID: 0}
   closeCharacterDetailsButton: {fileID: 0}
-  attributesTabButton: {fileID: 0}
-  weaponTabButton: {fileID: 0}
-  agimatTabButton: {fileID: 0}
-  pamanaTabButton: {fileID: 0}
+  attributesTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  weaponTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  agimatTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  pamanaTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
   diwataSlotButton: {fileID: 0}
   lihimSlotButton: {fileID: 0}
   salamangkeroSlotButton: {fileID: 0}
@@ -104,14 +126,102 @@ MonoBehaviour:
   m_questButtonManager: {fileID: 0}
   questButton: {fileID: 0}
   closeQuestButton: {fileID: 0}
+  allQuestTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  mainQuestTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  sideQuestTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
+  completedQuestTab:
+    button: {fileID: 0}
+    icon: {fileID: 0}
   m_archiveButtonManager: {fileID: 0}
   archiveButton: {fileID: 0}
   closeArchiveButton: {fileID: 0}
   teleportPanel: {fileID: 0}
   closeTeleportPanelButton: {fileID: 0}
   teleportButton: {fileID: 0}
+  closeMapButton: {fileID: 0}
+  pauseMenuPanel: {fileID: 0}
+  resumeButton: {fileID: 0}
+  settingsButton: {fileID: 0}
+  returnToMenuButton: {fileID: 0}
+  confirmReturnPanel: {fileID: 0}
+  confirmYesButton: {fileID: 0}
+  confirmNoButton: {fileID: 0}
   topUIObj: {fileID: 0}
   bottomUIObj: {fileID: 0}
   fadeDuration: 0.2
   uiMoveDuration: 0.25
   hideYOffset: 350
+  blurImage: {fileID: 0}
+  blurDuration: 0.5
+--- !u!1001 &234285985031532505
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3310434376230819774}
+    m_Modifications:
+    - target: {fileID: 5177961302470110361, guid: 1d7790938066ffe4b98f67def03d8746, type: 3}
+      propertyPath: m_Name
+      value: Quest Marker Minimap
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616851880054619077, guid: 1d7790938066ffe4b98f67def03d8746, type: 3}
+      propertyPath: followRotationOf
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817824692546007790, guid: 1d7790938066ffe4b98f67def03d8746, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -105.678375
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817824692546007790, guid: 1d7790938066ffe4b98f67def03d8746, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -89.24752
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817824692546007790, guid: 1d7790938066ffe4b98f67def03d8746, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -723.3736
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817824692546007790, guid: 1d7790938066ffe4b98f67def03d8746, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817824692546007790, guid: 1d7790938066ffe4b98f67def03d8746, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817824692546007790, guid: 1d7790938066ffe4b98f67def03d8746, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817824692546007790, guid: 1d7790938066ffe4b98f67def03d8746, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817824692546007790, guid: 1d7790938066ffe4b98f67def03d8746, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817824692546007790, guid: 1d7790938066ffe4b98f67def03d8746, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817824692546007790, guid: 1d7790938066ffe4b98f67def03d8746, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1d7790938066ffe4b98f67def03d8746, type: 3}
+--- !u!4 &6052074182682565943 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5817824692546007790, guid: 1d7790938066ffe4b98f67def03d8746, type: 3}
+  m_PrefabInstance: {fileID: 234285985031532505}
+  m_PrefabAsset: {fileID: 0}

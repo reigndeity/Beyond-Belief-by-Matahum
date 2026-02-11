@@ -45,7 +45,6 @@ public class BB_QuestJournalUI : MonoBehaviour
 
     [Header("Quest Selected Indicator")] 
     public Sprite defaultSprite;
-    public Sprite selectedSprite; // Assign this manually or load it
     private Button currentlySelectedButton;
     private Image currentlySelectedImage;
     
@@ -125,28 +124,6 @@ public class BB_QuestJournalUI : MonoBehaviour
         }
     }
 
-    private Button FindTrackedQuestButton(Transform questList)
-    {
-        if (questList == null) return null;
-
-        foreach (Transform child in questList)
-        {
-            BB_QuestMetaData meta = child.GetComponent<BB_QuestMetaData>();
-            if (meta != null)
-            {
-                BB_Quest matchingQuest = BB_QuestManager.Instance.allQuests
-                    .FirstOrDefault(q => q.questTitle == child.name);
-
-                if (matchingQuest != null && matchingQuest.isBeingTracked)
-                {
-                    return child.GetComponent<Button>();
-                }
-            }
-        }
-
-        return null;
-    }
-
     public void AddQuestToJournal(BB_Quest quest)
     {
         // Determine panel and content holder based on quest type
@@ -188,6 +165,8 @@ public class BB_QuestJournalUI : MonoBehaviour
         //newQuestButton.onClick.AddListener(() => ShowQuestDetails(quest));
         Button capturedButton = newQuestButton;
         Image capturedImage = newQuestButton.GetComponent<Image>();
+        if (capturedImage != null)
+        capturedImage.color = Color.white;
 
         newQuestButton.onClick.AddListener(() =>
         {
@@ -208,21 +187,25 @@ public class BB_QuestJournalUI : MonoBehaviour
 
     private void OnQuestButtonClicked(BB_Quest quest, Button clickedButton, Image clickedImage)
     {
-        // Reset previous button to default sprite
+        // Reset previous button back to white
         if (currentlySelectedImage != null)
         {
-            currentlySelectedImage.sprite = defaultSprite;
+            currentlySelectedImage.color = Color.white; // #FFFFFF
         }
 
-        // Set new button sprite to selected
+        // Set new button color to gray (#969696)
         currentlySelectedButton = clickedButton;
         currentlySelectedImage = clickedImage;
-        currentlySelectedImage.sprite = selectedSprite;
+
+        Color selectedColor;
+        ColorUtility.TryParseHtmlString("#969696", out selectedColor);
+        currentlySelectedImage.color = selectedColor;
 
         // Show quest details
         ShowQuestDetails(quest);
     }
 
+    #region QUEST DETAILS
     public void ShowQuestDetails(BB_Quest quest)
     {
         currentSelectedQuest = quest;
@@ -322,7 +305,30 @@ public class BB_QuestJournalUI : MonoBehaviour
         bool isActive = isObjectActive.gameObject.activeSelf;
         isObjectActive.gameObject.SetActive(!isActive);
     }
+    #endregion
 
+    #region QUEST TRACKING
+    private Button FindTrackedQuestButton(Transform questList)
+    {
+        if (questList == null) return null;
+
+        foreach (Transform child in questList)
+        {
+            BB_QuestMetaData meta = child.GetComponent<BB_QuestMetaData>();
+            if (meta != null)
+            {
+                BB_Quest matchingQuest = BB_QuestManager.Instance.allQuests
+                    .FirstOrDefault(q => q.questTitle == child.name);
+
+                if (matchingQuest != null && matchingQuest.isBeingTracked)
+                {
+                    return child.GetComponent<Button>();
+                }
+            }
+        }
+
+        return null;
+    }
     public void ChangeSiblingArrangement(BB_Quest quest)
     {
         // Get the list container for the current quest
@@ -413,21 +419,25 @@ public class BB_QuestJournalUI : MonoBehaviour
         buttonManager.questUntrackButton.gameObject.SetActive(quest.isBeingTracked);
 
     }
+    #endregion
 
+    #region QUEST STATE CHECKING
     private void HandleQuestUpdate()
     {
         foreach (BB_Quest quest in BB_QuestManager.Instance.allQuests)
         {
-            if (quest.state == QuestState.Claimed && !IsInCompletedPanel(quest))
+            if (quest.state == QuestState.Claimed && !quest.isInCompletedPanel )//&& !IsInCompletedPanel(quest))
             {
                 MoveQuestToCompletedPanel(quest);
             }
         }
     }
 
-    private void MoveQuestToCompletedPanel(BB_Quest quest)
+    public void MoveQuestToCompletedPanel(BB_Quest quest)
     {
         string actKey = $"{quest.questType}_{quest.actNumber}";
+
+        quest.isInCompletedPanel = true ;
 
         // Try to get the Act Group in main or side quests
         if (!actGroups.TryGetValue(actKey, out Transform actGroup)) return;
@@ -507,6 +517,8 @@ public class BB_QuestJournalUI : MonoBehaviour
         {
             ClearDetails();
         }
+
+        Debug.Log($"Added {quest.questID} to completed quest");
     }
     private bool IsInCompletedPanel(BB_Quest quest)
     {
@@ -517,5 +529,5 @@ public class BB_QuestJournalUI : MonoBehaviour
         }
         return false;
     }
-
+    #endregion
 }

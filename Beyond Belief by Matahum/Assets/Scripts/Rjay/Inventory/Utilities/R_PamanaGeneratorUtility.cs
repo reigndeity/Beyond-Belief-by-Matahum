@@ -1,8 +1,9 @@
-
 using UnityEngine;
-using UnityEditor;
-using System.IO;
 using System.Collections.Generic;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public static class R_PamanaGeneratorUtility
 {
@@ -20,15 +21,22 @@ public static class R_PamanaGeneratorUtility
         pamanaData.SetupByRarity();
 
         pamanaData.mainStatType = GetValidMainStat(itemData.pamanaSlot);
-        pamanaData.mainStatValue = R_MainStatCurveTable.GetMainStatValue(pamanaData.mainStatType, 0);
+
+        // ❌ Old leveling-based curve system (keep for later upgrades)
+        // pamanaData.mainStatValue = R_MainStatCurveTable.GetMainStatValue(pamanaData.mainStatType, 0);
+
+        // ✅ New rarity-based roll from real curve table
+        pamanaData.mainStatValue = GetMainStatRoll(pamanaData.slot, pamanaData.rarity, pamanaData.mainStatType);
 
         int subCount = GetRandomSubstatCount(itemData.rarity);
         for (int i = 0; i < subCount; i++)
         {
             R_StatType subType;
-            do {
+            do
+            {
                 subType = GetRandomSubstatType();
-            } while (subType == pamanaData.mainStatType || pamanaData.substats.Exists(s => s.statType == subType));
+            }
+            while (subType == pamanaData.mainStatType || pamanaData.substats.Exists(s => s.statType == subType));
 
             var sub = new R_PamanaData.Substat
             {
@@ -38,6 +46,7 @@ public static class R_PamanaGeneratorUtility
             pamanaData.substats.Add(sub);
         }
 
+#if UNITY_EDITOR
         string path = "Assets/Scripts/Rjay/Inventory/Item Data/Item Database/Pamana Datas";
         EnsureFolderPathExists(path);
 
@@ -46,6 +55,7 @@ public static class R_PamanaGeneratorUtility
         AssetDatabase.CreateAsset(pamanaData, fullPath);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+#endif
 
         return pamanaData;
     }
@@ -61,6 +71,32 @@ public static class R_PamanaGeneratorUtility
             R_StatType[] valid = { R_StatType.PercentATK, R_StatType.PercentDEF, R_StatType.PercentHP, R_StatType.CooldownReduction };
             return valid[Random.Range(0, valid.Length)];
         }
+    }
+
+    private static float GetMainStatRoll(R_PamanaSlotType slot, R_ItemRarity rarity, R_StatType statType)
+    {
+        if (!R_MainStatCurveTable.MainStatCurves.TryGetValue(statType, out var curve))
+        {
+            Debug.LogWarning($"No curve defined for {statType}");
+            return 0f;
+        }
+
+        // Map rarity → index ranges
+        (int minIndex, int maxIndex) = rarity switch
+        {
+            R_ItemRarity.Common    => (0, 1),
+            R_ItemRarity.Rare      => (2, 3),
+            R_ItemRarity.Epic      => (4, 5),
+            R_ItemRarity.Legendary => (6, 7),
+            _ => (0, 0)
+        };
+
+        float min = curve[minIndex];
+        float max = curve[maxIndex];
+        float roll = Random.Range(min, max);
+
+        // ✅ Always clamp to 1 decimal place
+        return (float)System.Math.Round(roll, 1);
     }
 
     private static R_StatType GetRandomSubstatType()
@@ -90,6 +126,7 @@ public static class R_PamanaGeneratorUtility
         };
     }
 
+#if UNITY_EDITOR
     private static void EnsureFolderPathExists(string fullPath)
     {
         string[] folders = fullPath.Split('/');
@@ -104,4 +141,5 @@ public static class R_PamanaGeneratorUtility
             currentPath = nextPath;
         }
     }
+#endif
 }

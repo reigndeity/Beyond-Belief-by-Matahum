@@ -7,6 +7,7 @@ public class PlayerMinimap : MonoBehaviour
 {
     public static PlayerMinimap instance;
     private PlayerInput m_playerInput;
+    private Player m_player;
     [Header("Projected View Rotation Settings")]
     [SerializeField] Transform cameraTransform;
     public MinimapItem projectedViewIcon;
@@ -46,6 +47,7 @@ public class PlayerMinimap : MonoBehaviour
     void Start()
     {
         m_playerInput = GetComponentInParent<PlayerInput>();
+        m_player = GetComponentInParent<Player>();
     }
 
     public void ProjectionRotation()
@@ -66,16 +68,30 @@ public class PlayerMinimap : MonoBehaviour
 
     public void HandleMapToggle()
     {
+        if (TutorialManager.instance.tutorial_canOpenMap == false) return;
+
+        // Block map during dialogue
+        if (DialogueManager.Instance != null && DialogueManager.Instance.isDialoguePlaying) return;
+
+        // Block map when game is paused
+        if (UI_Game.Instance != null && UI_Game.Instance.IsGamePaused()) return;
+
+        // Block map while any major UI panel is open
+        if (FindFirstObjectByType<UI_Game>()?.IsAnyMajorPanelOpen() == true) return;
+
         if (Input.GetKeyDown(m_playerInput.mapKey))
         {
             bool open = !isMapOpen;
             SetMapOpen(open);
 
-            // Auto-center when opening
             if (open)
                 CenterMapOnPlayerWithZoom();
+
+            m_player.ForceIdleOverride();
         }
     }
+
+
 
     public void ZoomControl()
     {
@@ -166,8 +182,9 @@ public class PlayerMinimap : MonoBehaviour
     private void SetMapOpen(bool open)
     {
         fullscreenMap.SetActive(open);
-        Cursor.lockState = open ? CursorLockMode.None : CursorLockMode.Locked;
-        Cursor.visible = open;
+        PlayerCamera.Instance.SetCursorVisibility(open);
+        /*Cursor.lockState = open ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = open;*/
         var wasOpen = isMapOpen;
         isMapOpen = open;
 

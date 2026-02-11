@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Arm
-  m_Shader: {fileID: -6465566751694194690, guid: 2c6e52535f17dfc4b8e0bb3d1e91aea4, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 6699eb5224f1e6e4b80bd3fca9a99958, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -103,6 +103,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - BOOLEAN_DIRECTION_FROM_EULERANGLE: 0
+    - BOOLEAN_USE_WROLDSPACE: 0
+    - BOOLEAN_WORLDORIGIN: 0
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
@@ -115,6 +118,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _DierctionEdgeWidthScale: 10
     - _Dissolve: 0
     - _DstBlend: 0
     - _DstBlendAlpha: 0
@@ -126,7 +130,7 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
-    - _NoiseScale: 50
+    - _NoiseScale: 25
     - _NormalScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
@@ -145,7 +149,9 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EdgeColor: {r: 0, g: 3.890196, b: 4, a: 0}
+    - _DissolveDirection: {r: 0, g: 0.1, b: 0, a: 0}
+    - _DissolveOffest: {r: 0, g: -1, b: 0, a: 0}
+    - _EdgeColor: {r: 3.9999995, g: 3.9800837, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _NoiseUVSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _Offest: {r: 0, g: 0, b: 0, a: 0}

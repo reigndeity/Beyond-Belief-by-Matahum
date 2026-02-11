@@ -1,4 +1,4 @@
- using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -31,8 +31,13 @@ public class PlayerAnimator : MonoBehaviour
     private float speedSampleTimer = 0f;
     private float speedMemoryDuration = 0.1f;
 
+    // 👇 Air time tracking to prevent false land triggers
+    private float airTime = 0f;
+    private const float minFallTime = 0.1f;
+
     [Header("Hit Properties")]
     public bool isHit;
+    public bool isDead;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private float faceEnemyRadius = 10f;
     [SerializeField] private float rotationSmoothness = 10f; // Degrees per second
@@ -59,6 +64,11 @@ public class PlayerAnimator : MonoBehaviour
 
     public void HandleAnimations()
     {
+        if (isDead)
+        {
+            ChangeAnimationState("player_death"); 
+            return;
+        }
         if (isHit) return;
         if (m_playerMovement.IsDashing()) return;
 
@@ -89,19 +99,36 @@ public class PlayerAnimator : MonoBehaviour
             return;
         }
 
-        if (!isGrounded && verticalVelocity < -1f && jumpState != JumpState.Falling)
+        if (!isGrounded)
         {
-            jumpState = JumpState.Falling;
-            ChangeAnimationState("player_falling");
-            return;
+            airTime += Time.deltaTime;
+
+            if (verticalVelocity < -1f && jumpState != JumpState.Falling && airTime > minFallTime)
+            {
+                jumpState = JumpState.Falling;
+                ChangeAnimationState("player_falling");
+                return;
+            }
+        }
+        else
+        {
+            // Handle landing or soft ground contact
+            if (jumpState == JumpState.Falling)
+            {
+                jumpState = JumpState.Landing;
+                StartCoroutine(PlayLandAnimation());
+                return;
+            }
+
+            // 🔥 NEW FIX: if we're grounded but still in Jumping state (on gentle slopes etc.)
+            if (jumpState == JumpState.Jumping)
+            {
+                jumpState = JumpState.None;
+            }
+
+            airTime = 0f; // reset when grounded
         }
 
-        if (isGrounded && jumpState == JumpState.Falling)
-        {
-            jumpState = JumpState.Landing;
-            StartCoroutine(PlayLandAnimation());
-            return;
-        }
 
         if (jumpState != JumpState.None ||
             !isGrounded ||
@@ -137,6 +164,18 @@ public class PlayerAnimator : MonoBehaviour
             {
                 ChangeAnimationState("player_jog");
             }
+        }
+
+        // Chatgpt, this was my attempt to fix but it didnt work hahaha
+        if (m_playerMovement.MoveDirection.magnitude > 0.1f &&
+            currentAnimationState.StartsWith("player_idle"))
+        {
+            if (m_playerMovement.isSprinting)
+                ChangeAnimationState("player_run");
+            else if (m_playerMovement.IsWalking)
+                ChangeAnimationState("player_walk");
+            else
+                ChangeAnimationState("player_jog");
         }
     }
 
@@ -185,7 +224,6 @@ public class PlayerAnimator : MonoBehaviour
 
     private IEnumerator PlayStopAnimation(string animName)
     {
-
         isPlayingStopAnimation = true;
 
         float duration = GetAnimationLength(animName);
@@ -208,8 +246,15 @@ public class PlayerAnimator : MonoBehaviour
 
     private IEnumerator PlayLandAnimation()
     {
+        // Extra safeguard: only land if airtime was real
+        if (airTime < 0.15f)
+        {
+            jumpState = JumpState.None;
+            yield break;
+        }
+
         ChangeAnimationState("player_land");
-        recentSpeeds.Clear(); // clear buffer when landing
+        recentSpeeds.Clear();
 
         float duration = GetAnimationLength("player_land");
         float timer = 0f;
@@ -302,30 +347,26 @@ public class PlayerAnimator : MonoBehaviour
     private void HandleDashAnimation()
     {
         ChangeAnimationState("player_dash");
-        recentSpeeds.Clear(); // clear buffer on dash
+        recentSpeeds.Clear();
     }
 
     public void GetHit()
     {
         isHit = true;
         FaceClosestEnemy();
-        // Play random getHit animation
-        int hitIndex = Random.Range(1, 4); // 1 to 3
+        int hitIndex = Random.Range(1, 4);
         string hitAnim = $"player_getHit_{hitIndex}";
         ChangeAnimationState(hitAnim);
-
-        // Apply brief stun (e.g., can't move for 0.1s)
         StartCoroutine(ApplyHitStun(0.8f));
     }
     private IEnumerator ApplyHitStun(float duration)
     {
         m_playerInput.enabled = false;
         m_playerMovement.enabled = false;
-
         yield return new WaitForSeconds(duration);
-
         m_playerInput.enabled = true;
         m_playerMovement.enabled = true;
+
         isHit = false;
     }
 
@@ -377,9 +418,8 @@ public class PlayerAnimator : MonoBehaviour
             yield return null;
         }
 
-        transform.rotation = targetRotation; // snap to final rotation at end
+        transform.rotation = targetRotation;
     }
-
 
     public void ChangeAnimationState(string newAnimationState)
     {
@@ -436,17 +476,33 @@ public class PlayerAnimator : MonoBehaviour
     }
     public void ForceIdleState()
     {
-        StopAllCoroutines(); // Cancel all active anim coroutines
+        if (isDead) return;
+
+        // Stop any running animation coroutines so we have a clean slate
+        StopAllCoroutines();
+
+        // Clear hit flag
         isHit = false;
 
-        // Reset internal state tracking
+        // Reset internal coroutines / flags
         idleCycleCoroutine = null;
         stopAnimationCoroutine = null;
         isInIdleCycle = false;
         isPlayingStopAnimation = false;
 
-        // Immediately play idle
+        // IMPORTANT: reset jump/fall state and air timer so HandleAnimations() doesn't early-return
+        jumpState = JumpState.None;
+        airTime = 0f;
+
+        // Clear recent speed buffer so JustStoppedAbruptly doesn't trigger incorrectly
+        recentSpeeds.Clear();
+
         ChangeAnimationState("player_idle_1");
     }
 
+    public void PlayDeathAnimation()
+    {
+        isDead = true;
+        ChangeAnimationState("player_death");
+    }
 }
