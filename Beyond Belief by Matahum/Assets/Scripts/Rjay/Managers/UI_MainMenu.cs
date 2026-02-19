@@ -16,6 +16,8 @@ public class UI_MainMenu : MonoBehaviour
 
     [SerializeField] private Button newGameButton;
     [SerializeField] private Button continueGameButton;
+
+    [SerializeField] private Button arenaModeGameButton;
     [SerializeField] private Button closeGameButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button returnButton;
@@ -89,6 +91,7 @@ public class UI_MainMenu : MonoBehaviour
         // Hover listeners
         AddHoverEffect(newGameButton);
         AddHoverEffect(continueGameButton);
+        AddHoverEffect(arenaModeGameButton); // Arena Mode
         AddHoverEffect(closeGameButton);
         AddHoverEffect(settingsButton);
         AddHoverEffect(returnButton);
