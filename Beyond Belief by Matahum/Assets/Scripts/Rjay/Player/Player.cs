@@ -15,7 +15,7 @@ public enum PlayerState
 }
 public class Player : MonoBehaviour, IDamageable
 {
-    private UI_Game m_uiGame;
+    public UI_Game m_uiGame;
     private PlayerAnimator m_playerAnimator;
     private PlayerMovement m_playerMovement;
     private PlayerInput m_playerInput;
@@ -253,6 +253,8 @@ public class Player : MonoBehaviour, IDamageable
 
         Debug.Log("Damage taken by player = " + finalDamage);
 
+        FindFirstObjectByType<DamageTakenGivenCompiler>().GetDamageTaken(finalDamage); //Damage Taken by player
+
         m_playerStats.p_currentHealth -= finalDamage; // Final Damage
         m_playerStats.p_currentHealth = Mathf.Clamp(m_playerStats.p_currentHealth, 0f, m_playerStats.p_maxHealth); // Health cannot go below 0
 
@@ -297,10 +299,10 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (isDead) return;
         isDead = true;
-        SetPlayerLocked(true);
+        //SetPlayerLocked(true);
         m_playerAnimator.animator.applyRootMotion = true;
         GetComponent<LegsAnimator>().enabled = false;
-        //m_uiGame.HideUI();
+        m_uiGame.HideUI();
         m_playerAnimator.PlayDeathAnimation();
         await System.Threading.Tasks.Task.Delay(1800);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));

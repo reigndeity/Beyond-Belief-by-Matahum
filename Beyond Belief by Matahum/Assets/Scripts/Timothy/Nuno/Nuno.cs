@@ -121,16 +121,8 @@ public class Nuno : MonoBehaviour, IDamageable, IDeathHandler
         {
             animator.ChangeAnimationState("Nuno_Death");
             hpCanvas.FadeOut(1f);
-            WorldLevelSetter.Instance.SetWorldLevel(2);
-            BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q6_Nuno");
             await Task.Delay(2500);
-            StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
-            BB_QuestManager.Instance.ClaimRewardsByID("A1_Q6_NunoAnger");
-            await Task.Delay(500);
-            BB_QuestManager.Instance.AcceptQuestByID("A1_Q7_LessonFromNuno");
-            await Task.Delay(500);
-            await GameManager.instance.SavePlayerCoreData();
-            await Task.Delay(500);
+            //StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
 
             FindFirstObjectByType<ArenaManagerScript>().GameFinished();
         }
