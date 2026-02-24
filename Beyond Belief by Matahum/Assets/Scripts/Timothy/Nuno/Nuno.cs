@@ -119,7 +119,7 @@ public class Nuno : MonoBehaviour, IDamageable, IDeathHandler
         }     
         else
         {
-            //ikaw na bahala sir dan
+            FindFirstObjectByType<ArenaManagerScript>().GameFinished();
         }
     }
     #endregion

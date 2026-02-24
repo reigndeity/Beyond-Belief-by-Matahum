@@ -187,6 +187,9 @@ public class Nuno_AttackManager : MonoBehaviour
     public float stunDuration = 3;
     public GameObject stunVFX;
 
+    public float MinimumAttackDuration = 1f;
+    public float MaxAttackDuration = 2f;
+
     private Player player;
     private Animator anim;
     private Nuno nuno;
@@ -260,7 +263,7 @@ public class Nuno_AttackManager : MonoBehaviour
         canAttack = false;
 
         // Random pre-attack delay
-        float cooldown = Random.Range(1f, 2f);
+        float cooldown = Random.Range(MinimumAttackDuration, MaxAttackDuration);
         yield return new WaitForSeconds(cooldown);
 
         int skillIndex = Random.Range(0, abilityList.Count);
