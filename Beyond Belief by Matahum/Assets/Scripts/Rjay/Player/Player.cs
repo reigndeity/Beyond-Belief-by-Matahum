@@ -40,6 +40,8 @@ public class Player : MonoBehaviour, IDamageable
 
     [HideInInspector] public bool suppressInputUntilNextFrame = false;
 
+public bool isARENA;
+public int SceneToLoad;
 
     void Awake()
     {
@@ -301,7 +303,8 @@ public class Player : MonoBehaviour, IDamageable
         await System.Threading.Tasks.Task.Delay(1800);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
         await System.Threading.Tasks.Task.Delay(1000);
-        Loader.Load(4);
+        Loader.Load(SceneToLoad);
+  
     }
     #endregion
 

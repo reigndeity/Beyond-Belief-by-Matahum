@@ -20,6 +20,8 @@ public class Nuno : MonoBehaviour, IDamageable, IDeathHandler
 
     [SerializeField] UI_CanvasGroup hpCanvas;
 
+    public bool isARENA;
+
     void Awake()
     {
         m_playerStats = FindFirstObjectByType<PlayerStats>();
@@ -99,7 +101,9 @@ public class Nuno : MonoBehaviour, IDamageable, IDeathHandler
             ability.Deactivate();
         }
 
-        animator.ChangeAnimationState("Nuno_Death");
+        if(!isARENA)
+        {
+            animator.ChangeAnimationState("Nuno_Death");
         hpCanvas.FadeOut(1f);
         WorldLevelSetter.Instance.SetWorldLevel(2);
         BB_QuestManager.Instance.UpdateMissionProgressOnce("A1_Q6_Nuno");
@@ -112,6 +116,11 @@ public class Nuno : MonoBehaviour, IDamageable, IDeathHandler
         await GameManager.instance.SavePlayerCoreData();
         await Task.Delay(500);
         Loader.Load(7);
+        }     
+        else
+        {
+            //ikaw na bahala sir dan
+        }
     }
     #endregion
 }
