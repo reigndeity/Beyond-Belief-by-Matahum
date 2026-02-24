@@ -95,7 +95,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
 
     #region DAMAGE
 
-    public void TakeDamage(float damage, bool hitAnimOn)
+    public void TakeDamage(float damage, bool hitAnimOn) // DAN Damage Taken by enemy
     {
         if (hitAnimOn)
             GetHit();
@@ -112,6 +112,8 @@ public class Enemy : MonoBehaviour, IDamageable, IDeathHandler
 
         // NEW: centralize health changes in EnemyStats
         bool died = m_enemyStats.ApplyDamage(finalDamage);
+
+        Debug.Log("Damage taken by enemy = " + finalDamage);
 
         Vector3 PopUpRandomness = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
         if (isCriticalHit)

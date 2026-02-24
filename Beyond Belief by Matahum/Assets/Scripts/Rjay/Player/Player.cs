@@ -40,8 +40,8 @@ public class Player : MonoBehaviour, IDamageable
 
     [HideInInspector] public bool suppressInputUntilNextFrame = false;
 
-public bool isARENA;
-public int SceneToLoad;
+    public bool isARENA;
+    public string SceneToLoad;
 
     void Awake()
     {
@@ -238,7 +238,7 @@ public int SceneToLoad;
     #endregion
 
     #region DAMAGE / HEAL FUNCTIONS
-    public void TakeDamage(float damage, bool hitAnimOn = true)
+    public void TakeDamage(float damage, bool hitAnimOn = true) // DAN Damage Taken by enemy
     {
         if (m_playerSkills.isUsingUltimateSkill || isInvulnerable || isDead) return;
 
@@ -250,6 +250,8 @@ public int SceneToLoad;
             reducedDamage *= (1f + (m_playerStats.p_criticalDamage / 100f)); // Crit multiplier if critical hit
         }
         int finalDamage = Mathf.Max(Mathf.FloorToInt(reducedDamage), 1); // If defense is greater, cap the damage at 1
+
+        Debug.Log("Damage taken by player = " + finalDamage);
 
         m_playerStats.p_currentHealth -= finalDamage; // Final Damage
         m_playerStats.p_currentHealth = Mathf.Clamp(m_playerStats.p_currentHealth, 0f, m_playerStats.p_maxHealth); // Health cannot go below 0
@@ -298,13 +300,14 @@ public int SceneToLoad;
         SetPlayerLocked(true);
         m_playerAnimator.animator.applyRootMotion = true;
         GetComponent<LegsAnimator>().enabled = false;
-        m_uiGame.HideUI();
+        //m_uiGame.HideUI();
         m_playerAnimator.PlayDeathAnimation();
         await System.Threading.Tasks.Task.Delay(1800);
         StartCoroutine(UI_TransitionController.instance.Fade(0f, 1f, 0.5f));
         await System.Threading.Tasks.Task.Delay(1000);
-        Loader.Load(SceneToLoad);
-  
+
+        FindFirstObjectByType<ArenaManagerScript>().OnPlayerDeath();
+
     }
     #endregion
 

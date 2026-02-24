@@ -40,6 +40,7 @@ public class UI_MainMenu : MonoBehaviour
     [SerializeField] private SettingTabButton displayAndGraphicsButton;
     [SerializeField] private SettingTabButton controlButton;
 
+
     private SettingTabButton activeSettingTab;
     private readonly Color activeColor = new(0.4f, 0.2f, 0f, 1f);
     private readonly Color inactiveColor = Color.white;
@@ -192,6 +193,13 @@ public class UI_MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenuCreditsScene");
     }
+
+    public void SceneToLoad(string SceneToLoad)
+    {
+        SceneManager.LoadScene(SceneToLoad);
+    }
+
+
     #endregion
     #region SETTINGS FUNCTION
     private void OnOpenSettings()

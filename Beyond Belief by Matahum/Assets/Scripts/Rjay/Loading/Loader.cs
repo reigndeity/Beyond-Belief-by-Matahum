@@ -6,10 +6,18 @@ public static class Loader
     // Set this before we jump to the Loading scene
     public static int NextSceneBuildIndex;
 
+    public static string NextSceneBuildIndexString;
+
     // Call this from your menu: Loader.Load(sceneIndex);
     public static void Load(int targetBuildIndex)
     {
         NextSceneBuildIndex = targetBuildIndex;
+        SceneManager.LoadScene("LoadingScene", LoadSceneMode.Single); // open the loading scene
+    }
+
+    public static void LoadByName(string nameOfScene)
+    {
+        NextSceneBuildIndexString = nameOfScene;
         SceneManager.LoadScene("LoadingScene", LoadSceneMode.Single); // open the loading scene
     }
 }
