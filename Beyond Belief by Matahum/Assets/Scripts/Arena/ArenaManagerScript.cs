@@ -120,13 +120,8 @@ public class ArenaManagerScript : MonoBehaviour
     {
         GameOverCanvas.SetActive(true);
         Time.timeScale = 0f;
-        UnlockMouse();
-    }
 
-    public void UnlockMouse()
-    {
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        UI_TransitionController.SetActive(false);
     }
 
     public void GameFinished()
@@ -141,8 +136,9 @@ public class ArenaManagerScript : MonoBehaviour
         Wave3Time = gameTimer.runTime;
 
         GameFinishedCanvas.SetActive(true);
+        UI_TransitionController.SetActive(false);
         Time.timeScale = 0f;
-        UnlockMouse();
+
 
         //Show Game Data
     }

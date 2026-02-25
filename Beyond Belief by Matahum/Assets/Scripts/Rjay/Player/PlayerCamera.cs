@@ -4,6 +4,7 @@ public class PlayerCamera : MonoBehaviour
 {
     public static PlayerCamera Instance { get; private set; }
     [Header("References")]
+
     public Transform playerTarget;
 
     [Header("Rotation Settings")]
@@ -27,6 +28,7 @@ public class PlayerCamera : MonoBehaviour
     public float followSmoothSpeed = 100f;
 
     private float yaw;
+    public bool isLockedCursor = false;
     private float pitch;
 
     private float currentDistance;
@@ -185,14 +187,16 @@ public class PlayerCamera : MonoBehaviour
     {
         if (cursorUsedBySystem) return;
 
-        if (Input.GetKey(KeyCode.LeftAlt))
+        if (Input.GetKeyDown(KeyCode.LeftAlt) && isLockedCursor)
         {
             Cursor.lockState = CursorLockMode.None;
+            isLockedCursor = false;
             Cursor.visible = true;
         }
-        else
+        else if (Input.GetKeyDown(KeyCode.LeftAlt) && !isLockedCursor)
         {
             Cursor.lockState = CursorLockMode.Locked;
+            isLockedCursor = true;
             Cursor.visible = false;
         }
     }

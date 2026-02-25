@@ -299,7 +299,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (isDead) return;
         isDead = true;
-        //SetPlayerLocked(true);
+        SetPlayerLocked(true);
         m_playerAnimator.animator.applyRootMotion = true;
         GetComponent<LegsAnimator>().enabled = false;
         m_uiGame.HideUI();
